@@ -1,8 +1,8 @@
 import React from "react";
-import Slicing_1 from "./SlicingHomePage/Slicing_1";
+import Slicing_1 from "../assets/components/SlicingHomePage/Slicing_1";
 import Navbar from "../assets/components/Navbar";
-import Slicing_2 from "./SlicingHomePage/Slicing_2";
-import Slicing_3 from "./SlicingHomePage/Slicing_3";
+import Slicing_2 from "../assets/components/SlicingHomePage/Slicing_2";
+import Slicing_3 from "../assets/components/SlicingHomePage/Slicing_3";
 import Footer from "../assets/components/Footer";
 
 export default function HomePage() {

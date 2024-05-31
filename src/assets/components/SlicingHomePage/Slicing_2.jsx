@@ -2,8 +2,6 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slicing_3 from "./Slicing_3";
-import Footer from "../../assets/components/Footer";
 
 export default function Slicing_2() {
   const sliderSettings = {

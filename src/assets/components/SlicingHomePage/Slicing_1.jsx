@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import MyModal from "../../assets/components/Modal/MyModal";
-import Dropdown from "../../assets/components/Modal/Dropdown";
+import MyModal from "../Modal/MyModal";
+import Dropdown from "../Modal/Dropdown";
 import { useDispatch, useSelector } from "react-redux";
-import ModalKeberangkatan from "../../assets/components/Modal/ModalKeberangkatan";
-import ModalLokasi from "../../assets/components/Modal/ModalLokasi";
-import PilihKelasPenerbangan from "../../assets/components/Modal/KelasPenerbangan";
-import { swapLokasi } from "../../redux/Reducers/TiketReducer";
+import ModalKeberangkatan from "../Modal/ModalKeberangkatan";
+import ModalLokasi from "../Modal/ModalLokasi";
+import PilihKelasPenerbangan from "../Modal/KelasPenerbangan";
+import { swapLokasi } from "../../../redux/Reducers/TiketReducer";
 
 export default function Slicing_1() {
   const dispatch = useDispatch();
-  const [tanggal_Pergi, setTanggal_Pergi] = useState("");
   const [modal, setModal] = useState(false);
   const [kelasPenerbangan, setKelasPenerbangan] = useState(false);
   const [modalTiket, setModalTiket] = useState(false);
@@ -29,11 +28,11 @@ export default function Slicing_1() {
     return state?.tiket?.lokasiTujuan;
   });
   const Tanggal_berangkat = useSelector((state) => {
-    console.log("state.tiket", state.tiket.TanggalKeberangkatan);
+    console.log("state.tiket", state.tiket);
     return state.tiket.TanggalKeberangkatan;
   });
   const Total_Penumpang = useSelector((state) => {
-    console.log("state.tiket", state.tiket.totalSemuaPenumpang);
+    // console.log("state.tiket", state.tiket.totalSemuaPenumpang);
     return state.tiket.totalSemuaPenumpang;
   });
 
@@ -48,7 +47,7 @@ export default function Slicing_1() {
         <div className=" px-6">
           <p className="font-bold text-[20px] ml-[10px]">
             Pilih Jadwal Penerbangan spesial di
-            <span className="text-[#176B87]">Jetlajah.In</span>
+            <span className="text-[#176B87]"> Jetlajah.In</span>
           </p>
           <div className="flex gap-[15px]">
             {pilihanUsers.map((e, i) => (
@@ -109,7 +108,7 @@ export default function Slicing_1() {
                     <div className=" flex flex-col">
                       <p>Tanggal</p>
                       <button
-                        className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
+                        className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2 whitespace-nowrap"
                         onClick={() => {
                           setModal(true);
                         }}
