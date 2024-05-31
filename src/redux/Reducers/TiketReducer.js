@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   lokasi: ["A", "B", "C", "AA", "AB", "AC"],
-  lokasiTujuan: "A",
-  LokasiKeberangkatan: "A",
+  lokasiTujuan: "Pilih Lokasi Tujuan",
+  LokasiKeberangkatan: "Pilih Lokasi Keberangkatan",
   KelasPenerbangan: "",
   TanggalKeberangkatan: "Pilih Tanggal",
   TanggalKepulangan: "",
