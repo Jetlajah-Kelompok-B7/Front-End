@@ -5,38 +5,61 @@ import {
   endOfMonth,
   endOfWeek,
   format,
+  isSameDay,
   isSameMonth,
-  parse,
-  startOfDay,
   startOfMonth,
   startOfWeek,
 } from "date-fns";
+import { id } from "date-fns/locale"; // Import locale ID
+import { useDispatch } from "react-redux";
+import { setKeberangaktan } from "../../../redux/Reducers/TiketReducer";
 
 export default function MyModal({ visible, onClose }) {
+  const dispatch = useDispatch();
   const [currentMonth, setCurrentMonth] = useState(startOfMonth(new Date()));
   const [nextMonth, setNextMonth] = useState(addMonths(currentMonth, 1));
+  const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
     setNextMonth(addMonths(currentMonth, 1));
   }, [currentMonth]);
-  const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+
+  const daysOfWeek = ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"]; // Custom Indonesian days of week
+
   const handlePrevMonth = () => {
-    setCurrentMonth(addMonths(currentMonth, -1)); // Go to previous month
+    setCurrentMonth(addMonths(currentMonth, -1));
   };
+
   const handleNextMonth = () => {
-    setCurrentMonth(addMonths(currentMonth, 1)); // Go to next month
+    setCurrentMonth(addMonths(currentMonth, 1));
   };
+
   const getDaysInMonth = (month) => {
     return eachDayOfInterval({
       start: startOfWeek(month),
       end: endOfWeek(endOfMonth(month)),
     });
   };
+
+  const handleDateClick = (date) => {
+    dispatch(setKeberangaktan(format(date, "dd MMMM yyyy", { locale: id })));
+    setSelectedDate(date);
+  };
+
   const currentMonthDays = getDaysInMonth(currentMonth);
   const nextMonthDays = getDaysInMonth(nextMonth);
+
   const handleClose = (e) => {
     if (e.target.id === "container") return onClose();
   };
+
+  useEffect(() => {
+    console.log(
+      "first",
+      selectedDate ? format(selectedDate, "dd MMMM yyyy", { locale: id }) : null
+    );
+  }, [selectedDate]);
+
   if (!visible) return null;
 
   return (
@@ -52,7 +75,7 @@ export default function MyModal({ visible, onClose }) {
           <div className="flex gap-16">
             {/* Current Month */}
             <div className="flex flex-col items-center gap-4">
-              <div className="flex w-full ">
+              <div className="flex w-full">
                 <button onClick={handlePrevMonth} className="text-gray-400">
                   <img
                     src="/images/Arrow.png"
@@ -61,7 +84,8 @@ export default function MyModal({ visible, onClose }) {
                   />
                 </button>
                 <div className="flex-1 flex justify-center">
-                  {format(currentMonth, "MMM - yyyy")}
+                  {format(currentMonth, "MMMM - yyyy", { locale: id })}{" "}
+                  {/* Format dengan locale ID */}
                 </div>
               </div>
               <div className="grid grid-cols-7 gap-x-4 gap-y-8">
@@ -73,22 +97,27 @@ export default function MyModal({ visible, onClose }) {
                 {currentMonthDays.map((day) => (
                   <div
                     key={day}
+                    onClick={() => handleDateClick(day)}
                     className={`text-center hover:cursor-pointer ${
                       isSameMonth(day, currentMonth)
-                        ? "text-black"
+                        ? isSameDay(day, selectedDate)
+                          ? "text-red-500"
+                          : "text-black"
                         : "text-gray-400"
                     }`}
                   >
-                    {format(day, "dd").replace(/^0+/, "")}
+                    {format(day, "d", { locale: id }).replace(/^0+/, "")}{" "}
+                    {/* Format dengan locale ID */}
                   </div>
                 ))}
               </div>
             </div>
             {/* Next Month */}
             <div className="flex flex-col items-center gap-4">
-              <div className="flex w-full ">
+              <div className="flex w-full">
                 <div className="flex-1 flex justify-center">
-                  {format(nextMonth, "MMM - yyyy")}
+                  {format(nextMonth, "MMMM - yyyy", { locale: id })}{" "}
+                  {/* Format dengan locale ID */}
                 </div>
                 <button onClick={handleNextMonth} className="text-gray-400">
                   <img
@@ -107,13 +136,16 @@ export default function MyModal({ visible, onClose }) {
                 {nextMonthDays.map((day) => (
                   <div
                     key={day}
+                    onClick={() => handleDateClick(day)}
                     className={`text-center hover:cursor-pointer ${
                       isSameMonth(day, nextMonth)
-                        ? "text-black"
+                        ? isSameDay(day, selectedDate)
+                          ? "text-red-500"
+                          : "text-black"
                         : "text-gray-400"
                     }`}
                   >
-                    {format(day, "dd").replace(/^0+/, "")}
+                    {format(day, "d", { locale: id }).replace(/^0+/, "")}
                   </div>
                 ))}
               </div>

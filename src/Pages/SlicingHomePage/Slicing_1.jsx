@@ -15,29 +15,25 @@ export default function Slicing_1() {
   const [kelasPenerbangan, setKelasPenerbangan] = useState(false);
   const [modalTiket, setModalTiket] = useState(false);
   const [modalTiketKebernagkatan, setModalTiketKeberangkatan] = useState(false);
-  const [pilihanUser, setPilihanUser] = useState("");
+  const [pilihanUser, setPilihanUser] = useState("Sekali Jalan");
   const [dropdown, setDropdown] = useState(false);
 
   const pilihanUsers = ["Sekali Jalan", "Pergi - Pulang"];
 
   const Data_Kota_Awal = useSelector((state) => {
-    // console.log("state", state?.tiket?.LokasiKeberangkatan);
     return state?.tiket?.LokasiKeberangkatan;
   });
-
   const KelasPenerbanganUser = useSelector((state) => {
-    // console.log('state.tiket', state.tiket.KelasPenerbangan)
     return state.tiket.KelasPenerbangan;
   });
-
   const Data_Kota_Tujuan = useSelector((state) => {
-    // console.log("state Tujuan", state?.tiket?.lokasiTujuan);
     return state?.tiket?.lokasiTujuan;
   });
+  const Tanggal_berangkat = useSelector((state) => {
+    console.log('state.tiket', state.tiket.TanggalKeberangkatan)
+    return state.tiket.TanggalKeberangkatan;
+  });
 
-  const handleInputTanggalChange = (e) => {
-    return setTanggal_Pergi(e.target.value);
-  };
 
   return (
     <div className=" h-screen bg-cover bg-center bg-[url('/images/bg1.png')] flex flex-col justify-center items-center gap-20">
@@ -116,7 +112,7 @@ export default function Slicing_1() {
                           setModal(true);
                         }}
                       >
-                        Pilih Tanggal
+                        {Tanggal_berangkat}
                       </button>
                       <MyModal
                         onClose={() => setModal(false)}
@@ -130,7 +126,7 @@ export default function Slicing_1() {
                           className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
                           onClick={() => setModal(true)}
                         >
-                          Pilih Tanggal
+                          {Tanggal_berangkat}
                         </button>
                         <MyModal
                           onClose={() => setModal(false)}

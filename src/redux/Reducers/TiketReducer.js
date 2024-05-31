@@ -2,9 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   lokasi: ["A", "B", "C", "AA", "AB", "AC"],
-  lokasiTujuan: "",
-  LokasiKeberangkatan: "",
+  lokasiTujuan: "A",
+  LokasiKeberangkatan: "A",
   KelasPenerbangan: "",
+  TanggalKeberangkatan: "Pilih Tanggal",
+  TanggalKepulangan: "",
 };
 
 const tiketSlicer = createSlice({
@@ -26,6 +28,12 @@ const tiketSlicer = createSlice({
     setKelasPenerbangan: (state, action) => {
       state.KelasPenerbangan = action.payload;
     },
+    setKeberangaktan: (state, action) => {
+      state.TanggalKeberangkatan = action.payload;
+    },
+    setKepulangan: (state, action) => {
+      state.TanggalKepulangan = action.payload;
+    },
   },
 });
 
@@ -34,6 +42,8 @@ export const {
   setLokasiTujuan,
   swapLokasi,
   setKelasPenerbangan,
+  setKeberangaktan,
+  setKepulangan,
 } = tiketSlicer.actions;
 
 export default tiketSlicer.reducer;
