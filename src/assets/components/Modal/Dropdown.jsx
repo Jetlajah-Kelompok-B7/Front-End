@@ -1,17 +1,52 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  hitungsemuapenumpang,
+  setTotalPenumpang,
+} from "../../../redux/Reducers/TiketReducer";
 
 export default function Dropdown({ visible, onClose }) {
-  const [count, setCount] = useState(0);
+  const dispatch = useDispatch();
+  const [dewasa, setDewasa] = useState(0);
+  const [anak, setAnak] = useState(0);
+  const [bayi, setBayi] = useState(0);
 
-  const handleIncrement = () => {
-    setCount(count + 1);
+  const handleIncrementDewasa = () => {
+    setDewasa(dewasa + 1);
   };
-
-  const handleDecrement = () => {
-    if (count > 0) {
-      setCount(count - 1);
+  const handleDecrementdewasa = () => {
+    if (dewasa > 0) {
+      setDewasa(dewasa - 1);
     }
   };
+  const handleIncrementAnak = () => {
+    setAnak(anak + 1);
+  };
+
+  const handleDecrementAnak = () => {
+    if (anak > 0) {
+      setAnak(anak - 1);
+    }
+  };
+  const handleIncrementBayi = () => {
+    setBayi(bayi + 1);
+  };
+  const handleDecrementBayi = () => {
+    if (bayi > 0) {
+      setBayi(bayi - 1);
+    }
+  };
+
+  const handleSave = () => {
+    const totalPenumpang = {
+      Dewasa: dewasa,
+      Anak: anak,
+      Bayi: bayi,
+    };
+    dispatch(setTotalPenumpang(totalPenumpang));
+    onClose(); // Tutup dropdown setelah menyimpan data
+  };
+
   if (!visible) return null;
 
   return (
@@ -50,14 +85,14 @@ export default function Dropdown({ visible, onClose }) {
                 src="/images/Minus.png"
                 alt="Decrease"
                 className="cursor-pointer h-10 w-10"
-                onClick={handleDecrement}
+                onClick={handleDecrementdewasa}
               />
-              <div className="px-5 py-[7px] border-2 rounded-md">{count}</div>
+              <div className="px-5 py-[7px] border-2 rounded-md">{dewasa}</div>
               <img
                 src="/images/Plus.png"
                 alt="Increase"
                 className="cursor-pointer h-10 w-10"
-                onClick={handleIncrement}
+                onClick={handleIncrementDewasa}
               />
             </div>
           </div>
@@ -66,7 +101,7 @@ export default function Dropdown({ visible, onClose }) {
             <div className="flex items-start gap-2 w-60">
               <img src="/images/VectorAnak.png" alt="" className="w-full h-5" />
               <div className="flex flex-col gap-1">
-                <p className="leading-none font-bold">Dewasa</p>
+                <p className="leading-none font-bold">Anak</p>
                 <p className=" text-sm text-gray-400 whitespace-nowrap">
                   (12 tahun ke atas)
                 </p>
@@ -77,23 +112,23 @@ export default function Dropdown({ visible, onClose }) {
                 src="/images/Minus.png"
                 alt="Decrease"
                 className="cursor-pointer h-10 w-10"
-                onClick={handleDecrement}
+                onClick={handleDecrementAnak}
               />
-              <div className="px-5 py-[7px] border-2 rounded-md">{count}</div>
+              <div className="px-5 py-[7px] border-2 rounded-md">{anak}</div>
               <img
                 src="/images/Plus.png"
                 alt="Increase"
                 className="cursor-pointer h-10 w-10"
-                onClick={handleIncrement}
+                onClick={handleIncrementAnak}
               />
             </div>
           </div>
-          {/* dewasa */}
+          {/* Bayi */}
           <div className="flex justify-between gap-14 border-b pb-2">
             <div className="flex items-start gap-2 w-60">
               <img src="/images/VectorLaki.png" alt="" className="w-full h-5" />
               <div className="flex flex-col gap-1">
-                <p className="leading-none font-bold">Dewasa</p>
+                <p className="leading-none font-bold">Bayi</p>
                 <p className=" text-sm text-gray-400 whitespace-nowrap">
                   (12 tahun ke atas)
                 </p>
@@ -104,19 +139,22 @@ export default function Dropdown({ visible, onClose }) {
                 src="/images/Minus.png"
                 alt="Decrease"
                 className="cursor-pointer h-10 w-10"
-                onClick={handleDecrement}
+                onClick={handleDecrementBayi}
               />
-              <div className="px-5 py-[7px] border-2 rounded-md">{count}</div>
+              <div className="px-5 py-[7px] border-2 rounded-md">{bayi}</div>
               <img
                 src="/images/Plus.png"
                 alt="Increase"
                 className="cursor-pointer h-10 w-10"
-                onClick={handleIncrement}
+                onClick={handleIncrementBayi}
               />
             </div>
           </div>
           <div className="   w-full flex justify-end">
-            <button className="bg-[#176B87] py-3 px-11 rounded-2xl text-white font-medium">
+            <button
+              className="bg-[#176B87] py-3 px-11 rounded-2xl text-white font-medium"
+              onClick={() => handleSave()}
+            >
               Simpan
             </button>
           </div>

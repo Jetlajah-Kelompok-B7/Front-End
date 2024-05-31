@@ -42,7 +42,7 @@ export default function MyModal({ visible, onClose }) {
   };
 
   const handleDateClick = (date) => {
-    dispatch(setKeberangaktan(format(date, "dd MMMM yyyy", { locale: id })));
+    dispatch(setKeberangaktan(format(date, "d MMMM yyyy", { locale: id })));
     setSelectedDate(date);
   };
 

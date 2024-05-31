@@ -7,6 +7,8 @@ const initialState = {
   KelasPenerbangan: "",
   TanggalKeberangkatan: "Pilih Tanggal",
   TanggalKepulangan: "",
+  TotalPenumpang: { Dewasa: 0, Anak: 0, Bayi: 0 },
+  totalSemuaPenumpang: 0,
 };
 
 const tiketSlicer = createSlice({
@@ -34,6 +36,19 @@ const tiketSlicer = createSlice({
     setKepulangan: (state, action) => {
       state.TanggalKepulangan = action.payload;
     },
+    setTotalPenumpang: (state, action) => {
+      if (!state.TotalPenumpang) {
+        state.TotalPenumpang = { Dewasa: 0, Anak: 0, Bayi: 0 };
+      }
+      const { Dewasa, Anak, Bayi } = action.payload;
+      state.TotalPenumpang.Dewasa = Dewasa;
+      state.TotalPenumpang.Anak = Anak;
+      state.TotalPenumpang.Bayi = Bayi;
+      state.totalSemuaPenumpang = Dewasa + Anak + Bayi;
+    },
+    hitungsemuapenumpang: (state, action) => {
+      state.totalSemuaPenumpang = action.payload;
+    },
   },
 });
 
@@ -44,6 +59,8 @@ export const {
   setKelasPenerbangan,
   setKeberangaktan,
   setKepulangan,
+  setTotalPenumpang,
+  hitungsemuapenumpang,
 } = tiketSlicer.actions;
 
 export default tiketSlicer.reducer;

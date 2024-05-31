@@ -4,7 +4,6 @@ import Dropdown from "../../assets/components/Modal/Dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import ModalKeberangkatan from "../../assets/components/Modal/ModalKeberangkatan";
 import ModalLokasi from "../../assets/components/Modal/ModalLokasi";
-
 import PilihKelasPenerbangan from "../../assets/components/Modal/KelasPenerbangan";
 import { swapLokasi } from "../../redux/Reducers/TiketReducer";
 
@@ -30,10 +29,13 @@ export default function Slicing_1() {
     return state?.tiket?.lokasiTujuan;
   });
   const Tanggal_berangkat = useSelector((state) => {
-    console.log('state.tiket', state.tiket.TanggalKeberangkatan)
+    console.log("state.tiket", state.tiket.TanggalKeberangkatan);
     return state.tiket.TanggalKeberangkatan;
   });
-
+  const Total_Penumpang = useSelector((state) => {
+    console.log("state.tiket", state.tiket.totalSemuaPenumpang);
+    return state.tiket.totalSemuaPenumpang;
+  });
 
   return (
     <div className=" h-screen bg-cover bg-center bg-[url('/images/bg1.png')] flex flex-col justify-center items-center gap-20">
@@ -184,7 +186,9 @@ export default function Slicing_1() {
                             setDropdown(true);
                           }}
                         >
-                          Jumlah Kursi
+                          {Total_Penumpang === 0
+                            ? "Pilih Kursi"
+                            : `${Total_Penumpang} Penumpang`}
                         </button>
                         <Dropdown
                           onClose={() => {
