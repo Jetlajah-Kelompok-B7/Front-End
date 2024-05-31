@@ -45,6 +45,7 @@ export default function Slicing_1() {
         <h1 className="italic font-extrabold text-[70px]">Jetlajah.In</h1>
         <p className="text-[32px] -mt-4">Terbang Menjelajah Angkasa</p>
       </div>
+      {/* Container tiket */}
       <div className="bg-white pt-5  rounded-2xl border w-[968px]">
         <div className=" px-6">
           <p className="font-bold text-[20px] ml-[10px]">
@@ -72,136 +73,151 @@ export default function Slicing_1() {
               </div>
             ))}
           </div>
-          {/* bagian pilih pesawat */}
-          <div className="flex flex-col gap-6">
+          {/* bagian isi data tiket pesawat */}
+          <div className="flex pt-3">
             <div className="flex gap-4 items-center justify-between">
-              <div className="flex items-center relative">
-                <img
-                  src="/images/IconPesawat.png"
-                  alt=""
-                  className="h-6 w-6 -ml-[1px]"
-                />
-                <p className="mr-12 ml-4">Dari</p>
-
-                <button
-                  className="border-b font-medium text-[#176B87] text-[18px] w-[297px] text-start  py-3"
-                  onClick={() => {
-                    setModalTiket(true);
-                    setModalTiketKeberangkatan(false);
-                  }}
-                >
-                  {Data_Kota_Awal}
-                </button>
-                <ModalLokasi
-                  onClose={() => setModalTiket(false)}
-                  visible={modalTiket}
-                />
-              </div>
-              <button
-                className=" self-end mb-2"
-                onClick={() => dispatch(swapLokasi())}
-              >
-                <img src="/images/return.png" alt="" className="h-8 w-8" />
-              </button>
-              <div className="flex items-center relative ">
-                <div className="flex items-center ">
+              {/* Bagian kiri gambar berputar */}
+              <div className="flex flex-col gap-5">
+                <div className="flex items-center relative">
                   <img
                     src="/images/IconPesawat.png"
+                    alt=""
+                    className="h-6 w-6 -ml-[1px]"
+                  />
+                  <p className="mr-12 ml-4">Dari</p>
+
+                  <button
+                    className="border-b font-medium text-[#176B87] text-[18px] w-[297px] text-start  py-3"
+                    onClick={() => {
+                      setModalTiket(true);
+                      setModalTiketKeberangkatan(false);
+                    }}
+                  >
+                    {Data_Kota_Awal}
+                  </button>
+                  <ModalLokasi
+                    onClose={() => setModalTiket(false)}
+                    visible={modalTiket}
+                  />
+                </div>
+                <div className="flex items-center">
+                  <img
+                    src="/images/iconTanggal.png"
                     alt=""
                     className="h-6 w-6"
                   />
                   <p className="mr-12 ml-4">Dari</p>
-                  <button
-                    className="border-b font-medium text-[#176B87] text-[18px] w-[297px] text-start  py-3"
-                    onClick={() => {
-                      setModalTiketKeberangkatan(true), setModalTiket(false);
-                    }}
-                  >
-                    {Data_Kota_Tujuan}
-                  </button>
-                  <ModalKeberangkatan
-                    onClose={() => setModalTiketKeberangkatan(false)}
-                    visible={modalTiketKebernagkatan}
-                  />
-                </div>
-              </div>
-            </div>
-            {/* bagian pilih tanggal */}
-            <div className="flex justify-between  items-center ">
-              <div className="flex items-center">
-                <img src="/images/iconTanggal.png" alt="" className="h-6 w-6" />
-                <p className="mr-12 ml-4">Dari</p>
-                <div className="flex gap-5">
-                <div className=" flex flex-col">
-                    <p>Tanggal</p>
-                    <button
-                      className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
-                      onClick={() => {
-                        setModal(true);
-                      }}
-                    >
-                      Pilih Tanggal
-                    </button>
-                    <MyModal onClose={() => setModal(false)} visible={modal} />
-                  </div>
-                  <div className=" flex flex-col">
-                    <p>Tanggal</p>
-                    <button
-                      className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
-                      onClick={() => {
-                        setModal(true);
-                      }}
-                    >
-                      Pilih Tanggal
-                    </button>
-                    <MyModal onClose={() => setModal(false)} visible={modal} />
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center">
-                <img src="/images/iconDuduk.png" alt="" className="w-6 h-6" />
-                <p className="mr-12 ml-4">Dari</p>
-                <div className=" flex flex-col">
-                  <div className="flex gap-4">
-                    <div className=" relative flex flex-col items-start justify-start">
-                      <p>Penumpang</p>
+                  <div className="flex gap-5">
+                    <div className=" flex flex-col">
+                      <p>Tanggal</p>
                       <button
                         className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
                         onClick={() => {
-                          setDropdown(true);
+                          setModal(true);
                         }}
                       >
-                        Jumlah Kursi
+                        Pilih Tanggal
                       </button>
-                      <Dropdown
-                        onClose={() => {
-                          setDropdown(false);
-                        }}
-                        visible={dropdown}
+                      <MyModal
+                        onClose={() => setModal(false)}
+                        visible={modal}
                       />
                     </div>
-                    <div className=" flex flex-col relative">
-                      <p>Kelas Penerbangan</p>
+                    <div className=" flex flex-col">
+                      <p>Tanggal</p>
                       <button
                         className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
                         onClick={() => {
-                          setKelasPenerbangan(true);
+                          setModal(true);
                         }}
                       >
-                        {KelasPenerbanganUser === "" ? (
-                          <div>Pilih Kelas</div>
-                        ) : (
-                          <div className="whitespace-nowrap">
-                            {KelasPenerbanganUser}
-                          </div>
-                        )}
+                        Pilih Tanggal
                       </button>
-                      <PilihKelasPenerbangan
-                        onClose={() => {
-                          setKelasPenerbangan(false);
-                        }}
-                        visible={kelasPenerbangan}
+                      <MyModal
+                        onClose={() => setModal(false)}
+                        visible={modal}
                       />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* gambar berputar */}
+              <button
+                className="self-start mt-5 mb-2"
+                onClick={() => dispatch(swapLokasi())}
+              >
+                <img src="/images/return.png" alt="" className="h-8 w-8" />
+              </button>
+
+              {/* bagian kanan image putar */}
+              <div className=" flex flex-col gap-5">
+                <div className="flex items-center relative ">
+                  <div className="flex items-center ">
+                    <img
+                      src="/images/IconPesawat.png"
+                      alt=""
+                      className="h-6 w-6"
+                    />
+                    <p className="mr-12 ml-4">Dari</p>
+                    <button
+                      className="border-b font-medium text-[#176B87] text-[18px] w-[297px] text-start  py-3"
+                      onClick={() => {
+                        setModalTiketKeberangkatan(true), setModalTiket(false);
+                      }}
+                    >
+                      {Data_Kota_Tujuan}
+                    </button>
+                    <ModalKeberangkatan
+                      onClose={() => setModalTiketKeberangkatan(false)}
+                      visible={modalTiketKebernagkatan}
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <img src="/images/iconDuduk.png" alt="" className="w-6 h-6" />
+                  <p className="mr-12 ml-4">Dari</p>
+                  <div className=" flex flex-col">
+                    <div className="flex gap-4">
+                      <div className=" relative flex flex-col items-start justify-start">
+                        <p>Penumpang</p>
+                        <button
+                          className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
+                          onClick={() => {
+                            setDropdown(true);
+                          }}
+                        >
+                          Jumlah Kursi
+                        </button>
+                        <Dropdown
+                          onClose={() => {
+                            setDropdown(false);
+                          }}
+                          visible={dropdown}
+                        />
+                      </div>
+                      <div className=" flex flex-col relative">
+                        <p>Kelas Penerbangan</p>
+                        <button
+                          className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
+                          onClick={() => {
+                            setKelasPenerbangan(true);
+                          }}
+                        >
+                          {KelasPenerbanganUser === "" ? (
+                            <div>Pilih Kelas</div>
+                          ) : (
+                            <div className="whitespace-nowrap">
+                              {KelasPenerbanganUser}
+                            </div>
+                          )}
+                        </button>
+                        <PilihKelasPenerbangan
+                          onClose={() => {
+                            setKelasPenerbangan(false);
+                          }}
+                          visible={kelasPenerbangan}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
