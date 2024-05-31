@@ -16,7 +16,6 @@ const tiketSlicer = createSlice({
   initialState,
   reducers: {
     setLokasiTujuan: (state, action) => {
-      console.log("action.payload", action.payload);
       state.lokasiTujuan = action.payload;
     },
     setLokasiKeberangkatan: (state, action) => {

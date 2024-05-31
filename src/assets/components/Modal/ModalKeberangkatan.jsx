@@ -7,7 +7,6 @@ export default function ModalKeberangkatan({ visible, onClose }) {
   const dispatch = useDispatch();
 
   const DataLokasi = useSelector((state) => {
-    // console.log("state.tiket", state.tiket);
     return state?.tiket?.lokasi;
   });
 

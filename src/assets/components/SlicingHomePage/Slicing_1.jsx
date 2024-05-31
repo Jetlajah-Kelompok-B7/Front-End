@@ -28,11 +28,9 @@ export default function Slicing_1() {
     return state?.tiket?.lokasiTujuan;
   });
   const Tanggal_berangkat = useSelector((state) => {
-    console.log("state.tiket", state.tiket);
     return state.tiket.TanggalKeberangkatan;
   });
   const Total_Penumpang = useSelector((state) => {
-    // console.log("state.tiket", state.tiket.totalSemuaPenumpang);
     return state.tiket.totalSemuaPenumpang;
   });
 
@@ -104,11 +102,11 @@ export default function Slicing_1() {
                     className="h-6 w-6"
                   />
                   <p className="mr-12 ml-4">Dari</p>
-                  <div className="flex gap-5">
+                  <div className="flex gap-2">
                     <div className=" flex flex-col">
                       <p>Tanggal</p>
                       <button
-                        className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2 whitespace-nowrap"
+                        className="w-[145px] border-b font-medium text-[#176B87] text-[18px] text-start py-2 whitespace-nowrap"
                         onClick={() => {
                           setModal(true);
                         }}
@@ -124,7 +122,7 @@ export default function Slicing_1() {
                       <div className="flex flex-col">
                         <p>Tanggal</p>
                         <button
-                          className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
+                          className="w-[145px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
                           onClick={() => setModal(true)}
                         >
                           {Tanggal_berangkat}

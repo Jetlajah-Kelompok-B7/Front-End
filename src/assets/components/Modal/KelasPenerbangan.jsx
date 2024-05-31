@@ -13,7 +13,6 @@ export default function PilihKelasPenerbangan({ visible, onClose }) {
   ];
 
   const KelasPenerbangan = useSelector((state) => {
-    // console.log('state.tiket', state.tiket.KelasPenerbangan)
     return state.tiket.KelasPenerbangan;
   });
 

@@ -53,13 +53,6 @@ export default function MyModal({ visible, onClose }) {
     if (e.target.id === "container") return onClose();
   };
 
-  useEffect(() => {
-    console.log(
-      "first",
-      selectedDate ? format(selectedDate, "dd MMMM yyyy", { locale: id }) : null
-    );
-  }, [selectedDate]);
-
   if (!visible) return null;
 
   return (
