@@ -10,14 +10,15 @@ import { swapLokasi } from "../../redux/Reducers/TiketReducer";
 
 export default function Slicing_1() {
   const dispatch = useDispatch();
-  const [ke_kota, setKe_kota] = useState("");
   const [tanggal_Pergi, setTanggal_Pergi] = useState("");
   const [modal, setModal] = useState(false);
   const [kelasPenerbangan, setKelasPenerbangan] = useState(false);
   const [modalTiket, setModalTiket] = useState(false);
   const [modalTiketKebernagkatan, setModalTiketKeberangkatan] = useState(false);
-
+  const [pilihanUser, setPilihanUser] = useState("");
   const [dropdown, setDropdown] = useState(false);
+
+  const pilihanUsers = ["Sekali Jalan", "Pergi - Pulang"];
 
   const Data_Kota_Awal = useSelector((state) => {
     // console.log("state", state?.tiket?.LokasiKeberangkatan);
@@ -34,17 +35,8 @@ export default function Slicing_1() {
     return state?.tiket?.lokasiTujuan;
   });
 
-  const handleInputKeChange = (e) => {
-    return setKe_kota(e.target.value);
-  };
-
   const handleInputTanggalChange = (e) => {
     return setTanggal_Pergi(e.target.value);
-  };
-  const handleSwap = () => {
-    const temp = Data_Kota_Awal;
-    setDari_kota(Data_Kota_Tujuan);
-    setKe_kota(temp);
   };
 
   return (
@@ -53,19 +45,32 @@ export default function Slicing_1() {
         <h1 className="italic font-extrabold text-[70px]">Jetlajah.In</h1>
         <p className="text-[32px] -mt-4">Terbang Menjelajah Angkasa</p>
       </div>
-      <div className="bg-white pt-5  rounded-2xl border">
+      <div className="bg-white pt-5  rounded-2xl border w-[968px]">
         <div className=" px-6">
           <p className="font-bold text-[20px] ml-[10px]">
             Pilih Jadwal Penerbangan spesial di
             <span className="text-[#176B87]">Jetlajah.In</span>
           </p>
-          <div className="flex gap-[15px] ">
-            <button className="rounded-full border-2 border-[#176B87] px-6">
-              Sekali Jalan
-            </button>
-            <button className="rounded-full border-2 border-[#176B87] px-6">
-              Pergi - Pulang
-            </button>
+          <div className="flex gap-[15px]">
+            {pilihanUsers.map((e, i) => (
+              <div
+                key={i}
+                className=" hover:cursor-pointer"
+                onClick={() => {
+                  setPilihanUser(e);
+                }}
+              >
+                {e === pilihanUser ? (
+                  <button className="rounded-full border-2 border-[#176B87] bg-[#64CCC5] px-6">
+                    {e}
+                  </button>
+                ) : (
+                  <button className="rounded-full border-2 border-[#176B87] px-6">
+                    {e}
+                  </button>
+                )}
+              </div>
+            ))}
           </div>
           {/* bagian pilih pesawat */}
           <div className="flex flex-col gap-6">
@@ -127,15 +132,17 @@ export default function Slicing_1() {
                 <img src="/images/iconTanggal.png" alt="" className="h-6 w-6" />
                 <p className="mr-12 ml-4">Dari</p>
                 <div className="flex gap-5">
-                  <div className=" flex flex-col">
-                    <p>Tanggal Pergi</p>
-                    <input
-                      type="text"
-                      placeholder="Kota Asal ..."
-                      className="py-2 outline-none w-[135px]  border-b font-medium text-[#176B87] text-[18px]"
-                      value={tanggal_Pergi}
-                      onChange={handleInputTanggalChange}
-                    />
+                <div className=" flex flex-col">
+                    <p>Tanggal</p>
+                    <button
+                      className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
+                      onClick={() => {
+                        setModal(true);
+                      }}
+                    >
+                      Pilih Tanggal
+                    </button>
+                    <MyModal onClose={() => setModal(false)} visible={modal} />
                   </div>
                   <div className=" flex flex-col">
                     <p>Tanggal</p>
@@ -184,7 +191,9 @@ export default function Slicing_1() {
                         {KelasPenerbanganUser === "" ? (
                           <div>Pilih Kelas</div>
                         ) : (
-                          <div className="whitespace-nowrap">{KelasPenerbanganUser}</div>
+                          <div className="whitespace-nowrap">
+                            {KelasPenerbanganUser}
+                          </div>
                         )}
                       </button>
                       <PilihKelasPenerbangan
