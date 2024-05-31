@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  games: [],
   lokasi: ["A", "B", "C", "AA", "AB", "AC"],
-  lokasiTujuan: "A",
-  LokasiKeberangkatan: "A",
+  lokasiTujuan: "",
+  LokasiKeberangkatan: "",
   KelasPenerbangan: "",
 };
 

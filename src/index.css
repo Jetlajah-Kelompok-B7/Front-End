@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-slick .slick-arrow.slick-prev:before,
+.custom-slick .slick-arrow.slick-next:before {
+  color: #fe5d02; /* Replace with actual color value from Tailwind CSS */
+  border: px solid #fe5d02; /* Replace with actual color value from Tailwind CSS */
+  border-radius: 0.5rem; /* Adjust border radius as needed */
+  margin: 0 -200px;
+}

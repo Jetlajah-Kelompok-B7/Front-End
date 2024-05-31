@@ -13,7 +13,7 @@ export default function ModalKeberangkatan({ visible, onClose }) {
 
   if (!visible) return null;
   return (
-    <div className="absolute z-50 top-[55px] right-[80px]">
+    <div className="absolute z-50 top-[55px] right-[86px]">
       <div className="flex justify-center items-center z-50">
         <div className="bg-white py-3 px-6 border-4 rounded-2xl border-[#176B87] w-[701px]">
           <div className="flex justify-between">
