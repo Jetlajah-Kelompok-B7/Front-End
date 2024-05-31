@@ -74,7 +74,7 @@ export default function Slicing_1() {
             ))}
           </div>
           {/* bagian isi data tiket pesawat */}
-          <div className="flex pt-3">
+          <div className="pt-3">
             <div className="flex gap-4 items-center justify-between">
               {/* Bagian kiri gambar berputar */}
               <div className="flex flex-col gap-5">
@@ -123,21 +123,23 @@ export default function Slicing_1() {
                         visible={modal}
                       />
                     </div>
-                    <div className=" flex flex-col">
-                      <p>Tanggal</p>
-                      <button
-                        className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
-                        onClick={() => {
-                          setModal(true);
-                        }}
-                      >
-                        Pilih Tanggal
-                      </button>
-                      <MyModal
-                        onClose={() => setModal(false)}
-                        visible={modal}
-                      />
-                    </div>
+                    {pilihanUser === "Pergi - Pulang" ? (
+                      <div className="flex flex-col">
+                        <p>Tanggal</p>
+                        <button
+                          className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
+                          onClick={() => setModal(true)}
+                        >
+                          Pilih Tanggal
+                        </button>
+                        <MyModal
+                          onClose={() => setModal(false)}
+                          visible={modal}
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-[140px] bg-white h-1"></div> // untuk placeholder saja supaya ukuran tidak berubah
+                    )}
                   </div>
                 </div>
               </div>
