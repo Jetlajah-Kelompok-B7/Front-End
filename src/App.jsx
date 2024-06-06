@@ -7,6 +7,7 @@ import AddPin from "./Pages/addPin";
 import ConfirmPin from "./Pages/confirmPin";
 import ProfileUser from "./Pages/profileUser";
 import HomePage from "./Pages/HomePage";
+import ResultSearchFilm from "./Pages/searchResult";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -33,6 +34,10 @@ export default function App() {
     {
       path: "/",
       element: <HomePage />,
+    },
+    {
+      path: "/resultSearchFilm",
+      element: <ResultSearchFilm />,
     },
   ]);
   return <RouterProvider router={router} />;

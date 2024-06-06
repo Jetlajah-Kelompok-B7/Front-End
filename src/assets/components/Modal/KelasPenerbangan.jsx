@@ -14,6 +14,7 @@ export default function PilihKelasPenerbangan({ visible, onClose }) {
 
   const KelasPenerbangan = useSelector((state) => {
     return state.tiket.KelasPenerbangan;
+    
   });
 
   if (!visible) return null;
