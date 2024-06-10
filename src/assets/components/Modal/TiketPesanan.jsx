@@ -8,35 +8,51 @@ import ModalLokasi from "./ModalLokasi";
 import PilihKelasPenerbangan from "./KelasPenerbangan";
 import { swapLokasi } from "../../../redux/Reducers/TiketReducer";
 
-
 const TiketPesawat = () => {
-    const [openModal, setOpenModal] = useState(true);
-    const dispatch = useDispatch();
-    const [modal, setModal] = useState(false);
-    const [kelasPenerbangan, setKelasPenerbangan] = useState(false);
-    const [modalTiket, setModalTiket] = useState(false);
-    const [modalTiketKebernagkatan, setModalTiketKeberangkatan] = useState(false);
-    const [pilihanUser, setPilihanUser] = useState("Sekali Jalan");
-    const [dropdown, setDropdown] = useState(false);
-  
-    const pilihanUsers = ["Sekali Jalan", "Pergi - Pulang"];
-  
-    const Data_Kota_Awal = useSelector((state) => state?.tiket?.LokasiKeberangkatan);
-    const KelasPenerbanganUser = useSelector((state) => state.tiket.KelasPenerbangan);
-    const Data_Kota_Tujuan = useSelector((state) => state?.tiket?.lokasiTujuan);
-    const Tanggal_berangkat = useSelector((state) => state.tiket.TanggalKeberangkatan);
-    const Total_Penumpang = useSelector((state) => state.tiket.totalSemuaPenumpang);
-  
-  
-    useEffect(() => {
-        // Set modal visibility to false after the initial render
-        setOpenModal(false);
-      }, []);
-    
-    return (
+  const [openModal, setOpenModal] = useState(true);
+  const dispatch = useDispatch();
+  const [modal, setModal] = useState(false);
+  const [kelasPenerbangan, setKelasPenerbangan] = useState(false);
+  const [modalTiket, setModalTiket] = useState(false);
+  const [modalTiketKebernagkatan, setModalTiketKeberangkatan] = useState(false);
+  const [pilihanUser, setPilihanUser] = useState("Sekali Jalan");
+  const [dropdown, setDropdown] = useState(false);
+
+  const pilihanUsers = ["Sekali Jalan", "Pergi - Pulang"];
+
+  const Data_Kota_Awal = useSelector(
+    (state) => state?.tiket?.LokasiKeberangkatan
+  );
+  const KelasPenerbanganUser = useSelector(
+    (state) => state.tiket.KelasPenerbangan
+  );
+  const Data_Kota_Tujuan = useSelector((state) => state?.tiket?.lokasiTujuan);
+  const Tanggal_berangkat = useSelector(
+    (state) => state.tiket.TanggalKeberangkatan
+  );
+  const Total_Penumpang = useSelector(
+    (state) => state.tiket.totalSemuaPenumpang
+  );
+
+  useEffect(() => {
+    // Set modal visibility to false after the initial render
+    setOpenModal(false);
+  }, []);
+
+  return (
     <>
-      <Button onClick={() => setOpenModal(true)} className="bg-[#176B87] flex items-center text-white rounded-xl w-[150px] px-2">Cari Penerbangan</Button>
-      <Modal show={openModal} onClose={() => setOpenModal(false)} className="fixed inset-0 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50">
+      <Button
+        onClick={() => setOpenModal(true)}
+        className="bg-[#176B87] flex items-center text-white rounded-xl w-[150px] px-2"
+      >
+        Cari Penerbangan
+      </Button>
+      <Modal
+        style={{ width: "auto" }}
+        show={openModal}
+        onClose={() => setOpenModal(false)}
+        className="fixed inset-0 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50"
+      >
         <div className="bg-white rounded-2xl w-full max-w-4xl">
           <Modal.Header>Pilih Tiket</Modal.Header>
           <div className="bg-white pt-5 rounded-2xl border w-full">
@@ -174,7 +190,9 @@ const TiketPesawat = () => {
                               className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
                               onClick={() => setDropdown(true)}
                             >
-                              {Total_Penumpang === 0 ? "Pilih Kursi" : `${Total_Penumpang} Penumpang`}
+                              {Total_Penumpang === 0
+                                ? "Pilih Kursi"
+                                : `${Total_Penumpang} Penumpang`}
                             </button>
                             <Dropdown
                               onClose={() => setDropdown(false)}
@@ -190,7 +208,9 @@ const TiketPesawat = () => {
                               {KelasPenerbanganUser === "" ? (
                                 <div>Pilih Kelas</div>
                               ) : (
-                                <div className="whitespace-nowrap">{KelasPenerbanganUser}</div>
+                                <div className="whitespace-nowrap">
+                                  {KelasPenerbanganUser}
+                                </div>
                               )}
                             </button>
                             <PilihKelasPenerbangan

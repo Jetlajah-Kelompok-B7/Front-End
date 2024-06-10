@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setKelasPenerbangan } from "../../../redux/Reducers/TiketReducer"; 
+import { setKelasPenerbangan } from "../../../redux/Reducers/TiketReducer";
 
 export default function PilihKelasPenerbangan({ visible, onClose }) {
   const dispatch = useDispatch();
@@ -14,13 +14,12 @@ export default function PilihKelasPenerbangan({ visible, onClose }) {
 
   const KelasPenerbangan = useSelector((state) => {
     return state.tiket.KelasPenerbangan;
-    
   });
 
   if (!visible) return null;
 
   return (
-    <div className="absolute top-20 shadow-lg rounded-2xl">
+    <div className="absolute top-20 shadow-lg rounded-2xl ">
       <div
         className="flex justify-end border-b bg-white text-base rounded-t-2xl"
         onClick={() => {
@@ -61,7 +60,7 @@ export default function PilihKelasPenerbangan({ visible, onClose }) {
           ))}
         </div>
       </div>
-      <div className="flex justify-end py-3 px-2">
+      <div className="bg-white flex justify-end py-3 px-2">
         <button
           className="bg-[#176B87] py-3 px-11 rounded-2xl text-white font-medium"
           onClick={() => {
