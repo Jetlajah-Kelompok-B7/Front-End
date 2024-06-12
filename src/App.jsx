@@ -8,6 +8,7 @@ import ConfirmPin from "./Pages/confirmPin";
 import ProfileUser from "./Pages/profileUser";
 import HomePage from "./Pages/HomePage";
 import ResultSearchFilm from "./Pages/searchResult";
+import Notification from "./Pages/Notification";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -38,6 +39,10 @@ export default function App() {
     {
       path: "/resultSearchFilm",
       element: <ResultSearchFilm />,
+    },
+    {
+      path: "/notification",
+      element: <Notification />,
     },
   ]);
   return <RouterProvider router={router} />;
