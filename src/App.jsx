@@ -29,7 +29,7 @@ export default function App() {
       element: <ConfirmPin />,
     },
     {
-      path: "/ProfileUser",
+      path: "/profileUser",
       element: <ProfileUser />,
     },
     {

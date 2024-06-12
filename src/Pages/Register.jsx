@@ -1,7 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../App.css";
 import background from "../assets/images/bgregister.png";
 import jetlajah from "../assets/images/logojetlajah.png";
+import {
+  setEmail,
+  setPassword,
+  setNama,
+  setNo_telp,
+} from "../redux/Reducers/reducersLogin";
+import { register } from "../redux/Action/actionLogin";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [isClicked, setIsClicked] = useState(false);
@@ -9,6 +18,41 @@ export default function Register() {
   const handleClick = () => {
     setIsClicked(!isClicked);
   };
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const email = useSelector((state) => state.login?.email);
+  const password = useSelector((state) => state.login?.password);
+  const nama = useSelector((state) => state.login?.nama);
+  const no_telp = useSelector((state) => state.login?.no_telp);
+  const theState = useSelector((state) => state);
+  console.log("theState", theState);
+
+  const handleEmailChange = (event) => {
+    dispatch(setEmail(event.target.value)); // Dispatch action untuk mengubah email di Redux state
+  };
+
+  const handlePasswordChange = (event) => {
+    dispatch(setPassword(event.target.value)); // Dispatch action untuk mengubah password di Redux state
+  };
+  const handleNamaChange = (event) => {
+    dispatch(setNama(event.target.value)); // Dispatch action untuk mengubah password di Redux state
+  };
+  const handleNo_telpChange = (event) => {
+    dispatch(setNo_telp(event.target.value)); // Dispatch action untuk mengubah password di Redux state
+  };
+
+  const handleLogin = async () => {
+    const response = await dispatch(
+      register(email, password, nama, no_telp, navigate)
+    ); // Kirim email dan password ke action creator login
+    if (response.status === 200) {
+      window.location.reload();
+    } else {
+      alert("Gagal login. Silakan coba lagi."); // Handle error jika login gagal
+    }
+  };
+
   return (
     <div className="flex justify-between bg-[#FFFFFF] relative h-screen w-screen">
       <div
@@ -24,6 +68,7 @@ export default function Register() {
           </h1>
           <div className="flex flex-col justify-center mt-7">
             <div>
+              {/* Input Nama */}
               <label className="block poppins-bold text-sm font-medium leading-6 text-[#176B87]">
                 Nama
               </label>
@@ -32,10 +77,12 @@ export default function Register() {
                   type="text"
                   className="block w-[400px] rounded-xl border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
                   placeholder="Example: John Doe"
+                  onChange={handleNamaChange}
                 />
               </div>
             </div>
             <div>
+              {/* Input Email */}
               <label className="block mt-3 poppins-bold text-sm font-medium leading-6 text-[#176B87]">
                 Email
               </label>
@@ -44,10 +91,12 @@ export default function Register() {
                   type="text"
                   className="block w-[400px] rounded-xl border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
                   placeholder="Example: john.doe@gmail.com"
+                  onChange={handleEmailChange}
                 />
               </div>
             </div>
             <div>
+              {/* Input Nomor tilpun */}
               <label className="block mt-3 poppins-bold text-sm font-medium leading-6 text-[#176B87]">
                 Nomor Telepon
               </label>
@@ -56,12 +105,14 @@ export default function Register() {
                   type="text"
                   className="block w-[400px] rounded-xl border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
                   placeholder="Example: +621234567890"
+                  onChange={handleNo_telpChange}
                 />
               </div>
             </div>
           </div>
           <div className="flex flex-col justify-center">
             <div>
+              {/* Input Password */}
               <label className="block mt-3 poppins-bold text-sm font-medium leading-6 text-[#176B87]">
                 Password
               </label>
@@ -70,6 +121,7 @@ export default function Register() {
                   type="password"
                   className="block w-[400px] rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
                   placeholder="Masukkan password"
+                  onChange={handlePasswordChange}
                 />
                 <div className="absolute inset-y-0 right-0 flex items-center mr-3">
                   <button>
@@ -101,7 +153,10 @@ export default function Register() {
               </div>
             </div>
           </div>
-          <button className="hover:scroll-p-8 flex justify-center text-sm text-white py-3 bg-[#176B87] hover:bg-[#114B5E] rounded-full mt-5">
+          <button
+            onClick={handleLogin}
+            className="hover:scroll-p-8 flex justify-center text-sm text-white py-3 bg-[#176B87] hover:bg-[#114B5E] rounded-full mt-5"
+          >
             Masuk
           </button>
         </div>
