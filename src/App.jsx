@@ -15,7 +15,7 @@ import DetailTiket from "./Pages/DetailTiket";
 export default function App() {
   const router = createBrowserRouter([
     {
-      path: "/asd",
+      path: "/Login",
       element: <Login />,
     },
     {
