@@ -54,6 +54,10 @@ export default function App() {
       path: "/DetailTiket",
       element: <DetailTiket />,
     },
+    {
+      path: "/Payment",
+      element: <Payment />,
+    },
   ]);
   return <RouterProvider router={router} />;
 }
