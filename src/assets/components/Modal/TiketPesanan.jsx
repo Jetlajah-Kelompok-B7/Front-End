@@ -1,10 +1,10 @@
 import { Button, Modal } from "flowbite-react";
 import { useState, useEffect } from "react";
-import MyModal from "./MyModal";
-import Dropdown from "./Dropdown";
+import MyModal from "./ModalKalender";
+import Dropdown from "./ModalJumlahPenumpang";
 import { useDispatch, useSelector } from "react-redux";
 import ModalKeberangkatan from "./ModalKeberangkatan";
-import ModalLokasi from "./ModalLokasi";
+import ModalLokasi from "./ModalLokasiAwal";
 import PilihKelasPenerbangan from "./KelasPenerbangan";
 import { swapLokasi } from "../../../redux/Reducers/TiketReducer";
 
@@ -53,7 +53,7 @@ const TiketPesawat = () => {
         onClose={() => setOpenModal(false)}
         className="fixed inset-0 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50"
       >
-         <div className="bg-white rounded-2xl w-[960px]">
+        <div className="bg-white rounded-2xl w-[960px]">
           <Modal.Header>Pilih Tiket</Modal.Header>
           <div className="bg-white pt-5 rounded-2xl border w-full">
             <div className="px-6">

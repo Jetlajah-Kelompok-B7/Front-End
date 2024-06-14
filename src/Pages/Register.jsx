@@ -162,7 +162,12 @@ export default function Register() {
         </div>
         <div className="flex justify-center gap-2 mt-6">
           <p>Sudah punya akun?</p>
-          <button className="poppins-bold text-[#176B87] hover:text-[#1C88AC] hover:underline">
+          <button
+            onClick={() => {
+              navigate("/login");
+            }}
+            className="poppins-bold text-[#176B87] hover:text-[#1C88AC] hover:underline"
+          >
             Masuk di sini
           </button>
         </div>
