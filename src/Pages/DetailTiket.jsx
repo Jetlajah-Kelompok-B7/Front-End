@@ -8,8 +8,7 @@ import ModalRincianHarga from "../assets/components/Modal/ModalRincianHarga";
 import ModalCetakTiket from "../assets/components/Modal/ModalCetakTiket";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { GetTiket } from "../redux/actions/TiketAction";
-
+import { GetTiket } from "../redux/Action/TiketAction";
 
 export default function DetailTiket() {
   const [modal, setModal] = useState(false);
@@ -19,7 +18,6 @@ export default function DetailTiket() {
   // const token = useSelector((state) => {
   //   console.log("state", state);
   // });
-
 
   useEffect(() => {
     dispatch(GetTiket());
@@ -42,7 +40,9 @@ export default function DetailTiket() {
             <div className="flex ml-4 items-center mt-6 gap-4">
               <button
                 className="bg-[#176b87] py-3 rounded-xl text-start px-4 text-base text-white font-semibold flex-1"
-                onClick={() => {navigate("/History")}}
+                onClick={() => {
+                  navigate("/History");
+                }}
               >
                 <ArrowBackIcon className="font-bold mr-3" />
                 Kembali

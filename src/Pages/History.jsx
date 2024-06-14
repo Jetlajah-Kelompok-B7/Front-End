@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import SearchHistoryModal from "../assets/components/Modal/SearchHistoryModal";
-import { GetTiket } from "../redux/actions/TiketAction";
+import { GetTiket } from "../redux/Action/TiketAction";
 
 export default function History() {
   const [modal, setModal] = useState(false);
@@ -20,7 +20,6 @@ export default function History() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const navigate = useNavigate();
-
 
   const data = [
     "Unpaid",
