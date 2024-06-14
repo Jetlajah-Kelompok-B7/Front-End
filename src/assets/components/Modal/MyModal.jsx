@@ -58,7 +58,7 @@ export default function MyModal({ visible, onClose }) {
   return (
     <div
       id="container"
-      className="fixed inset-0 bg-white bg-opacity-30 backdrop-blur-sm z-50 flex justify-center items-center"
+      className="fixed inset-0 bg-white bg-opacity-30 backdrop-blur-sm z-40 flex justify-center items-center"
       onClick={(e) => {
         handleClose(e);
       }}

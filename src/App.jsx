@@ -7,11 +7,14 @@ import AddPin from "./Pages/addPin";
 import ConfirmPin from "./Pages/confirmPin";
 import ProfileUser from "./Pages/profileUser";
 import HomePage from "./Pages/HomePage";
+import Payment from "./Pages/Payment";
+import History from "./Pages/History";
+import DetailTiket from "./Pages/DetailTiket";
 
 export default function App() {
   const router = createBrowserRouter([
     {
-      path: "/login",
+      path: "/asd",
       element: <Login />,
     },
     {
@@ -31,8 +34,16 @@ export default function App() {
       element: <ProfileUser />,
     },
     {
-      path: "/",
+      path: "/Home",
       element: <HomePage />,
+    },
+    {
+      path: "/History",
+      element: <History />,
+    },
+    {
+      path: "/",
+      element: <DetailTiket />,
     },
   ]);
   return <RouterProvider router={router} />;

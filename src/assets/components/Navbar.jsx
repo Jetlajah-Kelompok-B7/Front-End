@@ -9,7 +9,7 @@ export default function Navbar() {
 
   return (
     <nav className="flex items-center justify-between py-[14px] pl-[75px] pr-[49px] text-[24px]">
-      <div className="flex">
+      <div className="flex items-center">
         <div className="mr-[78px]">
           <img src="/images/Logo.png" alt="" />
         </div>
