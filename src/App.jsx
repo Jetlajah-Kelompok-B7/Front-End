@@ -7,6 +7,8 @@ import AddPin from "./Pages/addPin";
 import ConfirmPin from "./Pages/confirmPin";
 import ProfileUser from "./Pages/profileUser";
 import HomePage from "./Pages/HomePage";
+import ResultSearchFilm from "./Pages/searchResult";
+import Notification from "./Pages/Notification";
 import Payment from "./Pages/Payment";
 import History from "./Pages/History";
 import DetailTiket from "./Pages/DetailTiket";
@@ -30,12 +32,20 @@ export default function App() {
       element: <ConfirmPin />,
     },
     {
-      path: "/ProfileUser",
+      path: "/profileUser",
       element: <ProfileUser />,
     },
     {
       path: "/Home",
       element: <HomePage />,
+    },
+    {
+      path: "/resultSearchFilm",
+      element: <ResultSearchFilm />,
+    },
+    {
+      path: "/notification",
+      element: <Notification />,
     },
     {
       path: "/History",

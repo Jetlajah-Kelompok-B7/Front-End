@@ -4,8 +4,14 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import TiketReducer from "./Reducers/TiketReducer";
+import FilterHargaReducers from "./Reducers/FilterHargaReducers";
+import reducersLogin from "./Reducers/reducersLogin";
 
-const rootReducers = combineReducers({ tiket: TiketReducer });
+const rootReducers = combineReducers({
+  tiket: TiketReducer,
+  filter: FilterHargaReducers,
+  login: reducersLogin,
+});
 
 const persistConfig = { key: "root", storage };
 
