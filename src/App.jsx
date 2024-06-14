@@ -7,10 +7,11 @@ import AddPin from "./Pages/addPin";
 import ConfirmPin from "./Pages/confirmPin";
 import ProfileUser from "./Pages/profileUser";
 import HomePage from "./Pages/HomePage";
-import ResultSearchFilm from "./Pages/searchResult";
+import ResultSearch from "./Pages/searchResult";
 import Notification from "./Pages/Notification";
 import History from "./Pages/History";
 import DetailTiket from "./Pages/DetailTiket";
+import Payment from "./Pages/Payment";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -39,8 +40,8 @@ export default function App() {
       element: <HomePage />,
     },
     {
-      path: "/resultSearchFilm",
-      element: <ResultSearchFilm />,
+      path: "/resultSearch",
+      element: <ResultSearch />,
     },
     {
       path: "/notification",

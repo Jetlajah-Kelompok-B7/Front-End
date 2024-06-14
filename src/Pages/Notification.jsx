@@ -69,9 +69,11 @@ export default function Notification() {
                           <h2 className="text-[#8A8A8A] text-sm poppins-regular">
                             Kategori
                           </h2>
-                          <h1 className="text-black text-xl">Lorem ipsum</h1>
-                          <h2 className="text-[#8A8A8A] text-sm poppins-regular bg-red-200">
-                            Lorem ipsum dolor
+                          {/* Judul */}
+                          <h1 className="text-black text-xl">Judul</h1>
+                          {/* Deskripsi */}
+                          <h2 className="text-[#8A8A8A] text-sm poppins-regular">
+                            Deskripsi
                           </h2>
                         </div>
                       </div>

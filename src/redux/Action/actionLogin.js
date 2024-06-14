@@ -70,7 +70,7 @@ export const register =
 export const profileUser = () => async (dispatch, getState) => {
   const token = getState().login.token;
   try {
-    const response_profile = await axios.get("/api/register", {
+    const response_profile = await axios.get("/api/user/profile", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
