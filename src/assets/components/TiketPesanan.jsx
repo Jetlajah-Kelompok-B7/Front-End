@@ -1,12 +1,12 @@
 import { Button, Modal } from "flowbite-react";
 import { useState, useEffect } from "react";
-import MyModal from "./MyModal";
-import Dropdown from "./Dropdown";
+import MyModal from "./Modal/ModalKalender";
+import Dropdown from "./Modal/ModalJumlahPenumpang";
 import { useDispatch, useSelector } from "react-redux";
-import ModalKeberangkatan from "./ModalKeberangkatan";
-import ModalLokasi from "./ModalLokasi";
-import PilihKelasPenerbangan from "./KelasPenerbangan";
-import { swapLokasi } from "../../../redux/Reducers/TiketReducer";
+import ModalKeberangkatan from "./Modal/ModalKeberangkatan";
+import ModalLokasi from "./Modal/ModalLokasiAwal";
+import PilihKelasPenerbangan from "./Modal/KelasPenerbangan";
+import { swapLokasi } from "../../redux/Reducers/TiketReducer";
 
 const TiketPesawat = () => {
   const [openModal, setOpenModal] = useState(true);

@@ -15,7 +15,7 @@ import DetailTiket from "./Pages/DetailTiket";
 export default function App() {
   const router = createBrowserRouter([
     {
-      path: "/Login",
+      path: "/login",
       element: <Login />,
     },
     {
@@ -35,7 +35,7 @@ export default function App() {
       element: <ProfileUser />,
     },
     {
-      path: "/Home",
+      path: "/",
       element: <HomePage />,
     },
     {
@@ -51,7 +51,7 @@ export default function App() {
       element: <History />,
     },
     {
-      path: "/",
+      path: "/DetailTiket",
       element: <DetailTiket />,
     },
   ]);

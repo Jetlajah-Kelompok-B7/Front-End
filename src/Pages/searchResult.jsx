@@ -13,7 +13,7 @@ import Navbar from "../assets/components/Navbar";
 import Filter from "../assets/components/Modal/Filter";
 import { useDispatch, useSelector } from "react-redux";
 import { resetFilterHarga } from "../redux/Reducers/FilterHargaReducers";
-import TiketPesanan from "../assets/components/Modal/TiketPesanan";
+import TiketPesanan from "../assets/components/TiketPesanan";
 
 const ResultSearchFilm = () => {
   const dispatch = useDispatch();
@@ -159,7 +159,6 @@ const ResultSearchFilm = () => {
       [index]: prevRotasi[index] === "180" ? "0" : "180",
     }));
   };
-
 
   return (
     <div className="container mx-auto">

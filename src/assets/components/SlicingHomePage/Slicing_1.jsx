@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import MyModal from "../Modal/MyModal";
-import Dropdown from "../Modal/Dropdown";
+import MyModal from "../Modal/ModalKalender";
+import Dropdown from "../Modal/ModalJumlahPenumpang";
 import { useDispatch, useSelector } from "react-redux";
 import ModalKeberangkatan from "../Modal/ModalKeberangkatan";
-import ModalLokasi from "../Modal/ModalLokasi";
+import ModalLokasi from "../Modal/ModalLokasiAwal";
 import PilihKelasPenerbangan from "../Modal/KelasPenerbangan";
 import { swapLokasi } from "../../../redux/Reducers/TiketReducer";
 
