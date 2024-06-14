@@ -11,6 +11,7 @@ import ResultSearchFilm from "./Pages/searchResult";
 import Notification from "./Pages/Notification";
 import History from "./Pages/History";
 import DetailTiket from "./Pages/DetailTiket";
+import Payment from "./Pages/Payment";
 
 export default function App() {
   const router = createBrowserRouter([

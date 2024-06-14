@@ -1,10 +1,10 @@
 import { Button, Modal } from "flowbite-react";
 import { useState, useEffect } from "react";
-import MyModal from "./MyModal";
-import Dropdown from "./Dropdown";
+import MyModal from "./ModalKalender";
+import Dropdown from "./ModalJumlahPenumpang";
 import { useDispatch, useSelector } from "react-redux";
 import ModalKeberangkatan from "./ModalKeberangkatan";
-import ModalLokasi from "./ModalLokasi";
+import ModalLokasi from "./ModalLokasiAwal";
 import PilihKelasPenerbangan from "./KelasPenerbangan";
 import { swapLokasi } from "../../../redux/Reducers/TiketReducer";
 
@@ -43,7 +43,7 @@ const TiketPesawat = () => {
     <>
       <Button
         onClick={() => setOpenModal(true)}
-        className="bg-[#176B87] flex items-center text-white rounded-xl w-[180px] px-2"
+        className="bg-[#176B87] flex items-center text-white rounded-xl w-[150px] px-2"
       >
         Cari Penerbangan
       </Button>
@@ -53,7 +53,7 @@ const TiketPesawat = () => {
         onClose={() => setOpenModal(false)}
         className="fixed inset-0 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50"
       >
-         <div className="bg-white rounded-2xl w-[960px]">
+        <div className="bg-white rounded-2xl w-full max-w-4xl">
           <Modal.Header>Pilih Tiket</Modal.Header>
           <div className="bg-white pt-5 rounded-2xl border w-full">
             <div className="px-6">
@@ -89,7 +89,7 @@ const TiketPesawat = () => {
                         alt=""
                         className="h-6 w-6 -ml-[1px]"
                       />
-                      <p className="mr-1 ml-4">Dari</p>
+                      <p className="mr-12 ml-4">Dari</p>
                       <button
                         className="border-b font-medium text-[#176B87] text-[18px] w-[297px] text-start py-3"
                         onClick={() => {
