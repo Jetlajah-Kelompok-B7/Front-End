@@ -9,7 +9,6 @@ import ProfileUser from "./Pages/profileUser";
 import HomePage from "./Pages/HomePage";
 import ResultSearchFilm from "./Pages/searchResult";
 import Notification from "./Pages/Notification";
-import Payment from "./Pages/Payment";
 import History from "./Pages/History";
 import DetailTiket from "./Pages/DetailTiket";
 
