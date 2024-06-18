@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { resetFilterHarga } from "../redux/Reducers/FilterHargaReducers";
 import TiketPesanan from "../assets/components/Modal/TiketPesanan";
 
-const ResultSearch = () => {
+const ResultSearchFilm = () => {
   const dispatch = useDispatch();
   //Accoridon buka tutup
   const [openAccordion, setOpenAccordion] = useState(null);
@@ -58,7 +58,7 @@ const ResultSearch = () => {
   };
 
   // Generate dates for the next 50 days
-  const dates = Array.from({ length: 360 }, (_, i) => CurrentDate(i));
+  const dates = Array.from({ length: 50 }, (_, i) => CurrentDate(i));
 
   // State for current page
   const [currentPage, setCurrentPage] = useState(0);
@@ -160,20 +160,27 @@ const ResultSearch = () => {
     }));
   };
 
-
   return (
-   <>
+    <div className="container mx-auto">
       <Navbar />
-      <div className="container mx-auto">
-         <div className="mx-10 px-20">
-          {/* Content Atas */}
-          <div>
+      <div className="mx-20 px-40">
+        {/* Content Atas */}
+        <div>
           <p className="text-2xl py-10 font-bold">Pilih Penerbangan</p>
           <div className="flex gap-2">
-            <button className="flex items-center pl-5 gap-5 w-[835px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl">
+            <button className="flex items-center pl-5 gap-5 w-[860px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl">
               <ArrowLongLeftIcon className="h-12 w-12 text-slate-200 mr-1 pl-1 flex items-center" />
               JKT - SUB - 1 Penumpang - Ekonomi
             </button>
+            {/* <button onClick={() => setTiketPesawatVisible(true)}>
+              {filterTiketPesawat === "" ? (
+                <div className="flex items-center text-[#176B87]"></div>
+              ) : (
+                <div className="whitespace-nowrap">
+                  {filterTiketPesawatUser}
+                </div>
+              )}
+            </button> */}
             <TiketPesanan
               visible={filterHargaVisible}
               onClose={() => setFilterHargaVisible(false)}
@@ -524,10 +531,8 @@ const ResultSearch = () => {
           </div>
         </div>
       </div>
-      </div>
-      </>
-  
+    </div>
   );
 };
 
-export default ResultSearch;
+export default ResultSearchFilm;
