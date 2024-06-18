@@ -5,12 +5,10 @@ import { setKelasPenerbangan } from "../../../redux/Reducers/TiketReducer";
 export default function PilihKelasPenerbangan({ visible, onClose }) {
   const dispatch = useDispatch();
   const [selectedclass, setSelectedclass] = useState("");
-  const DataKelasPesawat = [
-    "Economy",
-    "Premium Economy",
-    "Business",
-    "First Class",
-  ];
+
+  const Data_Tiket = useSelector((state) => {
+    return state.tiket.lokasi;
+  });
 
   const KelasPenerbangan = useSelector((state) => {
     return state.tiket.KelasPenerbangan;
@@ -34,25 +32,29 @@ export default function PilihKelasPenerbangan({ visible, onClose }) {
       </div>
       <div className="bg-white w-[400px]">
         <div className=" mx-2 font-medium text-sm">
-          {DataKelasPesawat.map((kelas, index) => (
+          {Data_Tiket.map((kelas, index) => (
             <div
               key={index}
               className=" hover:cursor-pointer"
               onClick={() => {
-                setSelectedclass(kelas);
+                setSelectedclass(kelas.class);
               }}
             >
-              {kelas === selectedclass ? (
+              {kelas.class === selectedclass ? (
                 <div className="bg-[#176B87]">
                   <div className="border-b mx-4 py-3 flex justify-between items-center">
-                    <div className="text-white">{kelas}</div>
+                    <div className="text-white">
+                      {kelas.class} <br />
+                      <span className="text-sm">Rp. {kelas.price.toLocaleString('id-ID')}</span>
+                    </div>
                     <img src="/images/centang.png" alt="" className="w-6 h-6" />
                   </div>
                 </div>
               ) : (
                 <div>
                   <div className="border-b py-3 mx-4  items-center">
-                    {kelas}
+                    {kelas.class} <br />
+                    <span>Rp. {kelas.price.toLocaleString('id-ID')}</span>
                   </div>
                 </div>
               )}

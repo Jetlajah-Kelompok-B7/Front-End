@@ -11,6 +11,7 @@ export default function Dropdown({ visible, onClose }) {
   const [anak, setAnak] = useState(0);
   const [bayi, setBayi] = useState(0);
 
+
   const handleIncrementDewasa = () => {
     setDewasa(dewasa + 1);
   };

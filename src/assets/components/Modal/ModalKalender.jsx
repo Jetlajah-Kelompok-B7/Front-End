@@ -9,9 +9,11 @@ import {
   isSameMonth,
   startOfMonth,
   startOfWeek,
+  isBefore,
+  isToday,
 } from "date-fns";
 import { id } from "date-fns/locale"; // Import locale ID
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setKeberangaktan } from "../../../redux/Reducers/TiketReducer";
 
 export default function MyModal({ visible, onClose }) {
@@ -20,6 +22,10 @@ export default function MyModal({ visible, onClose }) {
   const [nextMonth, setNextMonth] = useState(addMonths(currentMonth, 1));
   const [selectedDate, setSelectedDate] = useState(null);
 
+  const tanggal = useSelector((state) => {
+    return state?.tiket?.TanggalKeberangkatan;
+  });
+
   useEffect(() => {
     setNextMonth(addMonths(currentMonth, 1));
   }, [currentMonth]);
@@ -27,6 +33,18 @@ export default function MyModal({ visible, onClose }) {
   const daysOfWeek = ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"]; // Custom Indonesian days of week
 
   const handlePrevMonth = () => {
+    // Format nama bulan dari currentMonth
+    const currentMonthFormatted = format(currentMonth, "MMMM", { locale: id });
+
+    // Ambil nama bulan saat ini dari tanggal sekarang
+    const currentMonthNow = format(new Date(), "MMMM", { locale: id });
+
+    // Menentukan kondisi ketika tombol tidak boleh berfungsi
+    if (currentMonthFormatted === currentMonthNow) {
+      return; // Tidak lakukan apa-apa jika bulan saat ini sama dengan bulan sekarang
+    }
+
+    // Lakukan perubahan bulan seperti biasa
     setCurrentMonth(addMonths(currentMonth, -1));
   };
 
@@ -36,17 +54,23 @@ export default function MyModal({ visible, onClose }) {
 
   const getDaysInMonth = (month) => {
     return eachDayOfInterval({
-      start: startOfWeek(month),
+      start: startOfWeek(startOfMonth(month)),
       end: endOfWeek(endOfMonth(month)),
     });
   };
 
   const handleDateClick = (date) => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    if (isBefore(date, yesterday)) {
+      return null;
+    }
     dispatch(setKeberangaktan(format(date, "d MMMM yyyy", { locale: id })));
     setSelectedDate(date);
   };
 
   const currentMonthDays = getDaysInMonth(currentMonth);
+  console.log("first", format(currentMonth, "MMMM", { locale: id }));
   const nextMonthDays = getDaysInMonth(nextMonth);
 
   const handleClose = (e) => {
@@ -54,6 +78,22 @@ export default function MyModal({ visible, onClose }) {
   };
 
   if (!visible) return null;
+
+  const getDateClass = (day, month) => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1); // Hari ini dikurangi 1 hari
+
+    if (isBefore(day, yesterday)) {
+      return "text-red-500 hover:cursor-not-allowed"; // Jika day sebelum hari ini - 1
+    }
+    if (isSameMonth(day, month)) {
+      if (isSameDay(day, tanggal)) {
+        return "bg-[#176B87] rounded-xl text-white"; // Jika day sama dengan selectedDate
+      }
+      return "text-black";
+    }
+    return "text-gray-400"; // Jika day bukan dalam bulan yang sama dengan month
+  };
 
   return (
     <div
@@ -77,30 +117,27 @@ export default function MyModal({ visible, onClose }) {
                   />
                 </button>
                 <div className="flex-1 flex justify-center">
-                  {format(currentMonth, "MMMM - yyyy", { locale: id })}{" "}
-                  {/* Format dengan locale ID */}
+                  {format(currentMonth, "MMMM - yyyy", { locale: id })}
                 </div>
               </div>
-              <div className="grid grid-cols-7 gap-x-4 gap-y-8">
-                {daysOfWeek.map((day) => (
-                  <div key={day} className="text-center text-gray-400">
+              <div className="grid grid-cols-7">
+                {daysOfWeek.map((day, index) => (
+                  <div key={index} className="text-center text-gray-400">
                     {day}
                   </div>
                 ))}
                 {currentMonthDays.map((day) => (
                   <div
-                    key={day}
+                    key={day.getTime()} // Using getTime() as a unique key for Date objects
+                    className={`my-1 px-3 mx-1 py-4 text-center hover:cursor-pointer ${getDateClass(
+                      day,
+                      currentMonth
+                    )}`}
                     onClick={() => handleDateClick(day)}
-                    className={`text-center hover:cursor-pointer ${
-                      isSameMonth(day, currentMonth)
-                        ? isSameDay(day, selectedDate)
-                          ? "text-red-500"
-                          : "text-black"
-                        : "text-gray-400"
-                    }`}
                   >
-                    {format(day, "d", { locale: id }).replace(/^0+/, "")}{" "}
-                    {/* Format dengan locale ID */}
+                    <div>
+                      {format(day, "d", { locale: id }).replace(/^0+/, "")}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -109,8 +146,7 @@ export default function MyModal({ visible, onClose }) {
             <div className="flex flex-col items-center gap-4">
               <div className="flex w-full">
                 <div className="flex-1 flex justify-center">
-                  {format(nextMonth, "MMMM - yyyy", { locale: id })}{" "}
-                  {/* Format dengan locale ID */}
+                  {format(nextMonth, "MMMM - yyyy", { locale: id })}
                 </div>
                 <button onClick={handleNextMonth} className="text-gray-400">
                   <img
@@ -120,25 +156,24 @@ export default function MyModal({ visible, onClose }) {
                   />
                 </button>
               </div>
-              <div className="grid grid-cols-7 gap-x-4 gap-y-8">
-                {daysOfWeek.map((day) => (
-                  <div key={day} className="text-center text-gray-400">
+              <div className="grid grid-cols-7">
+                {daysOfWeek.map((day, index) => (
+                  <div key={index} className="text-center text-gray-400">
                     {day}
                   </div>
                 ))}
                 {nextMonthDays.map((day) => (
                   <div
-                    key={day}
+                    key={day.getTime()} // Using getTime() as a unique key for Date objects
+                    className={`my-1 px-3 py-4 text-center hover:cursor-pointer ${getDateClass(
+                      day,
+                      nextMonth
+                    )}`}
                     onClick={() => handleDateClick(day)}
-                    className={`text-center hover:cursor-pointer ${
-                      isSameMonth(day, nextMonth)
-                        ? isSameDay(day, selectedDate)
-                          ? "text-red-500"
-                          : "text-black"
-                        : "text-gray-400"
-                    }`}
                   >
-                    {format(day, "d", { locale: id }).replace(/^0+/, "")}
+                    <div>
+                      {format(day, "d", { locale: id }).replace(/^0+/, "")}
+                    </div>
                   </div>
                 ))}
               </div>
