@@ -7,9 +7,8 @@ export default function ModalFilterKeberangkatan({
   setFilter,
 }) {
   const [selectedclass, setSelectedclass] = useState("");
-
-  const filter = ["Semua","Issued", "Unpaid", "Cancelled"];
-
+  const filter = ["Semua", "Issued", "Unpaid", "Cancelled"];
+  console.log("setFilter", setFilter);
   if (!visible) return null;
   return (
     <div className="absolute top-[40px] shadow-lg rounded-2xl">
@@ -20,10 +19,10 @@ export default function ModalFilterKeberangkatan({
         }}
       >
         <ClearRoundedIcon
-            style={{ fontSize: 20}}
-            className="text-white hover:cursor-pointer"
-            onClick={onClose}
-          />
+          style={{ fontSize: 20 }}
+          className="text-white hover:cursor-pointer"
+          onClick={onClose}
+        />
       </div>
       <div className="bg-white w-[200px] rounded-2xl">
         <div className=" font-medium text-sm">
