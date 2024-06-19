@@ -14,6 +14,7 @@ import Filter from "../assets/components/Modal/Filter";
 import { useDispatch, useSelector } from "react-redux";
 import { resetFilterHarga } from "../redux/Reducers/FilterHargaReducers";
 import TiketPesanan from "../assets/components/Modal/TiketPesanan";
+import { getTiketSearch } from "../redux/Action/TiketAction";
 
 const ResultSearchFilm = () => {
   const dispatch = useDispatch();
@@ -89,7 +90,7 @@ const ResultSearchFilm = () => {
   // Modal Tiket Peswat
   const [filterTiketPesawat, setTiketPesawatVisible] = useState(false);
   const filterTiketPesawatUser = useSelector((state) => {
-    console.log("pesawat", state);
+    // console.log("pesawat", state);
     return state.filter.tiketPesawat;
   });
 
@@ -160,27 +161,27 @@ const ResultSearchFilm = () => {
     }));
   };
 
+  // Fetch DAta Tiket Pesawat
+  const allPesawat = useSelector((state) => state);
+  console.log("allpesawat",allPesawat)
+  useEffect(() => {
+    dispatch(getTiketSearch());
+  }, []);
+
+
   return (
     <div className="container mx-auto">
       <Navbar />
-      <div className="mx-20 px-40">
+      <div className="mx-5 md:mx-20 md:px-40">
         {/* Content Atas */}
         <div>
           <p className="text-2xl py-10 font-bold">Pilih Penerbangan</p>
-          <div className="flex gap-2">
-            <button className="flex items-center pl-5 gap-5 w-[860px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl">
-              <ArrowLongLeftIcon className="h-12 w-12 text-slate-200 mr-1 pl-1 flex items-center" />
+          <div className="md:flex md:gap-2 gap-10">
+            <button className="flex items-center md:pl-5 md:gap-5 md:w-[860px] md:h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl">
+              <ArrowLongLeftIcon className="text-sm h-12 w-12 text-slate-200 mr-1 pl-1 flex items-center" />
               JKT - SUB - 1 Penumpang - Ekonomi
             </button>
-            {/* <button onClick={() => setTiketPesawatVisible(true)}>
-              {filterTiketPesawat === "" ? (
-                <div className="flex items-center text-[#176B87]"></div>
-              ) : (
-                <div className="whitespace-nowrap">
-                  {filterTiketPesawatUser}
-                </div>
-              )}
-            </button> */}
+      
             <TiketPesanan
               visible={filterHargaVisible}
               onClose={() => setFilterHargaVisible(false)}
