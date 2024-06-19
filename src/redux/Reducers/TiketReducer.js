@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  lokasi: ["A", "B", "C", "AA", "AB", "AC"],
-  lokasiTujuan: "Pilih Lokasi Tujuan",
-  LokasiKeberangkatan: "Pilih Lokasi Keberangkatan",
+  lokasi: [],
+  lokasiTujuan: "",
+  LokasiKeberangkatan: "",
+  SemuaData: [],
+  Kelas: [],
   KelasPenerbangan: "",
-  TanggalKeberangkatan: "Pilih Tanggal",
+  TanggalKeberangkatan: "",
   TanggalKepulangan: "",
   TotalPenumpang: { Dewasa: 0, Anak: 0, Bayi: 0 },
   totalSemuaPenumpang: 0,
@@ -15,11 +17,20 @@ const tiketSlicer = createSlice({
   name: "tiket",
   initialState,
   reducers: {
-    setLokasiTujuan: (state, action) => {
-      state.lokasiTujuan = action.payload;
+    setLokasi: (state, action) => {
+      state.lokasi = action.payload;
+    },
+    setkelas: (state, action) => {
+      state.kelas = action.payload;
+    },
+    setSemua: (state, action) => {
+      state.SemuaData = action.payload;
     },
     setLokasiKeberangkatan: (state, action) => {
       state.LokasiKeberangkatan = action.payload;
+    },
+    setDestinasiPesawat: (state, action) => {
+      state.lokasiTujuan = action.payload;
     },
     swapLokasi: (state) => {
       const temp = state.lokasiTujuan;
@@ -55,11 +66,15 @@ export const {
   setLokasiKeberangkatan,
   setLokasiTujuan,
   swapLokasi,
+  setSemua,
   setKelasPenerbangan,
   setKeberangaktan,
   setKepulangan,
   setTotalPenumpang,
+  setDestinasiPesawat,
+  setkelas,
   hitungsemuapenumpang,
+  setLokasi,
 } = tiketSlicer.actions;
 
 export default tiketSlicer.reducer;
