@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import MyModal from "./ModalKalender";
 import Dropdown from "./ModalJumlahPenumpang";
 import { useDispatch, useSelector } from "react-redux";
-import ModalKeberangkatan from "./ModalKeberangkatan";
 import ModalLokasi from "./ModalLokasiAwal";
 import PilihKelasPenerbangan from "./KelasPenerbangan";
 import { swapLokasi } from "../../../redux/Reducers/TiketReducer";
@@ -169,10 +168,10 @@ const TiketPesawat = () => {
                         >
                           {Data_Kota_Tujuan}
                         </button>
-                        <ModalKeberangkatan
+                        {/* <ModalKeberangkatan
                           onClose={() => setModalTiketKeberangkatan(false)}
                           visible={modalTiketKebernagkatan}
-                        />
+                        /> */}
                       </div>
                     </div>
                     <div className="flex items-center">
