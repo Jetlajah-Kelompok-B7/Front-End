@@ -115,7 +115,7 @@ const TiketPesawat = () => {
                         <div className="flex flex-col">
                           <p>Tanggal</p>
                           <button
-                            className="w-[145px] border-b font-medium text-[#176B87] text-[18px] text-start py-2 whitespace-nowrap"
+                            className="w-[200px] border-b font-medium text-[#176B87] text-[18px] text-start py-2 whitespace-nowrap"
                             onClick={() => setModal(true)}
                           >
                             {Tanggal_berangkat}
@@ -129,7 +129,7 @@ const TiketPesawat = () => {
                           <div className="flex flex-col">
                             <p>Tanggal</p>
                             <button
-                              className="w-[145px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
+                              className="w-[200px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
                               onClick={() => setModal(true)}
                             >
                               {Tanggal_berangkat}
