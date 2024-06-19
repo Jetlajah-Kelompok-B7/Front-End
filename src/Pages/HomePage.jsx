@@ -8,8 +8,10 @@ import Footer from "../assets/components/Footer";
 export default function HomePage() {
   return (
     <div>
-      <div className="fixed top-0 w-full bg-white z-50">
-        <Navbar />
+      <div className="fixed top-0 w-full bg-white z-50 ">
+        <div className="container mx-auto">
+          <Navbar />
+        </div>
       </div>
       <div className="pt-[85px]">
         <Slicing_1 />

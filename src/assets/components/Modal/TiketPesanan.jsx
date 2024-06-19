@@ -1,12 +1,11 @@
 import { Button, Modal } from "flowbite-react";
 import { useState, useEffect } from "react";
-import MyModal from "./Modal/ModalKalender";
-import Dropdown from "./Modal/ModalJumlahPenumpang";
+import MyModal from "./ModalKalender";
+import Dropdown from "./ModalJumlahPenumpang";
 import { useDispatch, useSelector } from "react-redux";
-import ModalKeberangkatan from "./Modal/ModalKeberangkatan";
-import ModalLokasi from "./Modal/ModalLokasiAwal";
-import PilihKelasPenerbangan from "./Modal/KelasPenerbangan";
-import { swapLokasi } from "../../redux/Reducers/TiketReducer";
+import ModalLokasi from "./ModalLokasiAwal";
+import PilihKelasPenerbangan from "./KelasPenerbangan";
+import { swapLokasi } from "../../../redux/Reducers/TiketReducer";
 
 const TiketPesawat = () => {
   const [openModal, setOpenModal] = useState(true);
@@ -169,10 +168,10 @@ const TiketPesawat = () => {
                         >
                           {Data_Kota_Tujuan}
                         </button>
-                        <ModalKeberangkatan
+                        {/* <ModalKeberangkatan
                           onClose={() => setModalTiketKeberangkatan(false)}
                           visible={modalTiketKebernagkatan}
-                        />
+                        /> */}
                       </div>
                     </div>
                     <div className="flex items-center">

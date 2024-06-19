@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+// import PersonIcon from "@mui/icons-material/Person";
+// import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import { PersonOutline, Person,Notifications,NotificationsNone, NotificationsActiveSharp } from "@mui/icons-material";
 
 export default function Navbar() {
   const navigate = useNavigate();
-
+  const [activeButton, setActiveButton] = useState("");
+  const handleClick = (buttonName) => {
+    setActiveButton(buttonName); // Mengubah state saat tombol diklik
+  };
   const token = "awdawd";
   // const token = null;
 
@@ -14,32 +20,52 @@ export default function Navbar() {
           <img src="/images/Logo.png" alt="" />
         </div>
         <div className="flex text-[#176B87] gap-4">
-          <button className=" font-bold">Beranda</button>
-          <button>Tiket</button>
-          <button>Promo</button>
+          <button
+            className={activeButton === "Beranda" ? "font-bold" : ""}
+            onClick={() => {
+              handleClick("Beranda");
+            }}
+          >
+            Beranda
+          </button>
+          <button
+            className={activeButton === "Tiket" ? "font-bold" : ""}
+            onClick={() => {
+              handleClick("Tiket");
+            }}
+          >
+            Tiket
+          </button>
+          <button
+            className={activeButton === "Promo" ? "font-bold" : ""}
+            onClick={() => {
+              handleClick("Promo");
+            }}
+          >
+            Promo
+          </button>
         </div>
       </div>
       {token !== null ? (
-        <button className="flex text-[#176B87] gap-6 items-center">
-          <img
-            src="/images/fi_user.png"
-            alt=""
-            className="h-6 w-6 hover:cursor-pointer"
-            onClick={() => navigate("/")}
-          />
+        <div className="flex text-[#176B87] gap-6 items-center">
+          <button onClick={() => {
+              handleClick("person");
+            }}>
+            {activeButton === "person" ? <Person /> : <PersonOutline />}
+          </button>
+
           <img
             src="/images/fi_list.png"
             alt=""
             className="h-6 w-6 hover:cursor-pointer"
             onClick={() => navigate("/")}
           />
-          <img
-            src="/images/fi_bell.png"
-            alt=""
-            className="h-6 w-6 hover:cursor-pointer"
-            onClick={() => navigate("/")}
-          />
-        </button>
+          <button onClick={() => {
+              handleClick("bell");
+            }}>
+            {activeButton === "bell" ? <Notifications /> : <NotificationsNone />}
+          </button>
+        </div>
       ) : (
         <button className="flex text-[#176B87] gap-4 items-center">
           <img src="/images/User_Image.png" alt="" />
