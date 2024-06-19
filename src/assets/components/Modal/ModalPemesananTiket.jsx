@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import MyModal from "./ModalKalender";
 import Dropdown from "../Modal/ModalJumlahPenumpang";
 import { useDispatch, useSelector } from "react-redux";
-import ModalKeberangkatan from "../Modal/ModalKeberangkatan";
 import ModalLokasi from "../Modal/ModalLokasiAwal";
 import PilihKelasPenerbangan from "../Modal/KelasPenerbangan";
 import { swapLokasi } from "../../../redux/Reducers/TiketReducer";
@@ -10,34 +9,35 @@ import { GetTiket } from "../../../redux/Action/TiketAction";
 
 export default function ModalPemesananTiket() {
   const dispatch = useDispatch();
-  const [modal, setModal] = useState(false);
+  const [id, setId] = useState(null);
+  const [idTanggal, setIdTanggal] = useState(null);
+  const list_Pilihan = ["Sekali Jalan", "Pergi - Pulang"];
+  const [pilihanUser, setPilihanUser] = useState("Sekali Jalan");
+  const [modalNama, setModalNama] = useState("");
   const [kotaAwal, setKotaAwal] = useState("");
   const [destinasi, setDestinasi] = useState("");
-  const [id, setId] = useState(null);
   const [tanggalBerangkat, setTanggalBerangkat] = useState("");
   const [tanggalPulang, setTanggalPulang] = useState("");
-  const [kelasPenerbangan, setKelasPenerbangan] = useState(false);
-  const [modalTiket, setModalTiket] = useState(false);
-  const [dropdown, setDropdown] = useState(false);
-  const [modalTiketKebernagkatan, setModalTiketKeberangkatan] = useState(false);
-  const [pilihanUser, setPilihanUser] = useState("Sekali Jalan");
-  const pilihanUsers = ["Sekali Jalan", "Pergi - Pulang"];
+  const [total_penumpang, setTotal_penumpang] = useState(0);
+  const [kelas_penerbangan, setKelas_penerbangan] = useState("");
 
-  const Data_Kota_Awal = useSelector((state) => {
-    return state?.tiket?.LokasiKeberangkatan;
-  });
-  const KelasPenerbanganUser = useSelector((state) => {
-    return state.tiket.KelasPenerbangan;
-  });
-  const Data_Kota_Tujuan = useSelector((state) => {
-    return state?.tiket?.lokasiTujuan;
-  });
-  const Tanggal_berangkat = useSelector((state) => {
-    return state.tiket.TanggalKeberangkatan;
-  });
-  const Total_Penumpang = useSelector((state) => {
-    return state.tiket.totalSemuaPenumpang;
-  });
+  // const DataLokasi = useSelector((state) => {
+  //   console.log("------------------------------------------");
+  //   console.log("kelas", state.tiket.KelasPenerbangan);
+  //   console.log("kota", state.tiket.LokasiKeberangkatan);
+  //   console.log("destinasi", state.tiket.lokasiTujuan);
+  //   console.log("tanggalberangkat", state.tiket.TanggalKeberangkatan);
+  //   console.log("tanggalpulang", state.tiket.TanggalKepulangan);
+  //   console.log("totalpenumpang", state.tiket.totalSemuaPenumpang);
+  //   return state?.tiket?.lokasi;
+  // });
+
+  const handleswap = () => {
+    let temp = kotaAwal;
+    setKotaAwal(destinasi);
+    setDestinasi(temp);
+    dispatch(swapLokasi());
+  };
 
   useEffect(() => {
     dispatch(GetTiket());
@@ -52,7 +52,7 @@ export default function ModalPemesananTiket() {
             <span className="text-[#176B87]"> Jetlajah.In</span>
           </p>
           <div className="flex gap-[15px]">
-            {pilihanUsers.map((e, i) => (
+            {list_Pilihan.map((e, i) => (
               <div
                 key={i}
                 className=" hover:cursor-pointer"
@@ -91,20 +91,19 @@ export default function ModalPemesananTiket() {
                   <button
                     className="border-b font-medium text-[#176B87] text-[18px] w-[297px] text-start  py-3"
                     onClick={() => {
-                      setModalTiket(true);
-                      setModalTiketKeberangkatan(false);
+                      setModalNama("tiket");
                       setId(1);
                     }}
                   >
                     {kotaAwal === "" ? (
                       <p>Pilih Kota</p>
                     ) : (
-                      <div>{Data_Kota_Awal}</div>
+                      <div>{kotaAwal}</div>
                     )}
                   </button>
                   <ModalLokasi
-                    onClose={() => setModalTiket(false)}
-                    visible={modalTiket}
+                    onClose={() => setModalNama("")}
+                    visible={modalNama === "tiket"}
                     setKotaAwal={setKotaAwal}
                     setDestinasi={setDestinasi}
                     id={id}
@@ -126,16 +125,23 @@ export default function ModalPemesananTiket() {
                   <button
                     className="w-[145px] border-b font-medium text-[#176B87] text-[18px] text-start py-2 whitespace-nowrap"
                     onClick={() => {
-                      setModal(true);
+                      setModalNama("tanggal"), setIdTanggal(1);
                     }}
                   >
                     {tanggalBerangkat === "" ? (
                       <p>Pilih Tanggal</p>
                     ) : (
-                      <div>{Tanggal_berangkat}</div>
+                      <div>{tanggalBerangkat}</div>
                     )}
                   </button>
-                  <MyModal onClose={() => setModal(false)} visible={modal} />
+                  <MyModal
+                    onClose={() => setModalNama("")}
+                    visible={modalNama === "tanggal"}
+                    idTanggal={idTanggal}
+                    pass_tanggal_berangkat={tanggalBerangkat}
+                    tanggalPulang={setTanggalPulang}
+                    tanggalBerangkat={setTanggalBerangkat}
+                  />
                 </div>
                 <div className="flex items-center">
                   <div className="flex gap-2">
@@ -146,17 +152,23 @@ export default function ModalPemesananTiket() {
                         </p>
                         <button
                           className="w-[145px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
-                          onClick={() => setModal(true)}
+                          onClick={() => {
+                            setModalNama("tanggal"), setIdTanggal(2);
+                          }}
                         >
                           {tanggalPulang === "" ? (
                             <p>Pilih Tanggal</p>
                           ) : (
-                            <div>{Tanggal_berangkat}</div>
+                            <div>{tanggalPulang}</div>
                           )}
                         </button>
                         <MyModal
-                          onClose={() => setModal(false)}
-                          visible={modal}
+                          onClose={() => setModalNama("")}
+                          idTanggal={idTanggal}
+                          visible={modalNama === "tanggal"}
+                          pass_tanggal_berangkat={tanggalBerangkat}
+                          tanggalPulang={setTanggalPulang}
+                          tanggalBerangkat={setTanggalBerangkat}
                         />
                       </div>
                     ) : (
@@ -170,7 +182,9 @@ export default function ModalPemesananTiket() {
             {/* col 2 */}
             <button
               className="mt-9 mx-5 mb-2 self-baseline"
-              onClick={() => dispatch(swapLokasi())}
+              onClick={() => {
+                handleswap();
+              }}
             >
               <img src="/images/return.png" alt="" className="h-8 w-8" />
             </button>
@@ -185,14 +199,13 @@ export default function ModalPemesananTiket() {
                     alt=""
                     className="h-6 w-6 -ml-[1px]"
                   />
-                  <p className="mr-10 ml-4 text-base text-gray-500">Dari</p>
+                  <p className="mr-[54px] ml-4 text-base text-gray-500">Ke</p>
                 </div>
                 <div className="flex items-center py-4">
                   <button
                     className="border-b font-medium text-[#176B87] text-[18px] w-[297px] text-start  py-3"
                     onClick={() => {
-                      setModalTiket(true);
-                      setModalTiketKeberangkatan(false);
+                      setModalNama("tiket");
                       setId(2);
                     }}
                   >
@@ -203,8 +216,8 @@ export default function ModalPemesananTiket() {
                     )}
                   </button>
                   <ModalLokasi
-                    onClose={() => setModalTiket(false)}
-                    visible={modalTiket}
+                    onClose={() => setModalNama("")}
+                    visible={modalNama === "tiket"}
                     setKotaAwal={setKotaAwal}
                     setDestinasi={setDestinasi}
                     id={id}
@@ -223,18 +236,20 @@ export default function ModalPemesananTiket() {
                       <button
                         className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
                         onClick={() => {
-                          setDropdown(true);
+                          setModalNama("kursi");
                         }}
                       >
-                        {Total_Penumpang === 0
+                        {total_penumpang === 0
                           ? "Pilih Kursi"
-                          : `${Total_Penumpang} Penumpang`}
+                          : `${total_penumpang} Penumpang`}
                       </button>
                       <Dropdown
                         onClose={() => {
-                          setDropdown(false);
+                          setModalNama("");
                         }}
-                        visible={dropdown}
+                        total={total_penumpang}
+                        set_total={setTotal_penumpang}
+                        visible={modalNama === "kursi"}
                       />
                     </div>
                     <div className=" flex flex-col relative">
@@ -244,22 +259,23 @@ export default function ModalPemesananTiket() {
                       <button
                         className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
                         onClick={() => {
-                          setKelasPenerbangan(true);
+                          setModalNama("kelas");
                         }}
                       >
-                        {KelasPenerbanganUser === "" ? (
+                        {kelas_penerbangan === "" ? (
                           <div>Pilih Kelas</div>
                         ) : (
                           <div className="whitespace-nowrap">
-                            {KelasPenerbanganUser}
+                            {kelas_penerbangan}
                           </div>
                         )}
                       </button>
                       <PilihKelasPenerbangan
                         onClose={() => {
-                          setKelasPenerbangan(false);
+                          setModalNama("");
                         }}
-                        visible={kelasPenerbangan}
+                        kelas_penerbangan={setKelas_penerbangan}
+                        visible={modalNama === "kelas"}
                       />
                     </div>
                   </div>

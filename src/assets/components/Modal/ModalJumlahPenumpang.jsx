@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   hitungsemuapenumpang,
   setTotalPenumpang,
 } from "../../../redux/Reducers/TiketReducer";
 
-export default function Dropdown({ visible, onClose }) {
+export default function Dropdown({ visible, onClose, total, set_total }) {
   const dispatch = useDispatch();
   const [dewasa, setDewasa] = useState(0);
   const [anak, setAnak] = useState(0);
   const [bayi, setBayi] = useState(0);
-
 
   const handleIncrementDewasa = () => {
     setDewasa(dewasa + 1);
@@ -23,7 +22,6 @@ export default function Dropdown({ visible, onClose }) {
   const handleIncrementAnak = () => {
     setAnak(anak + 1);
   };
-
   const handleDecrementAnak = () => {
     if (anak > 0) {
       setAnak(anak - 1);
@@ -44,8 +42,8 @@ export default function Dropdown({ visible, onClose }) {
       Anak: anak,
       Bayi: bayi,
     };
+    set_total(dewasa + anak + bayi);
     dispatch(setTotalPenumpang(totalPenumpang));
-    onClose(); // Tutup dropdown setelah menyimpan data
   };
 
   if (!visible) return null;

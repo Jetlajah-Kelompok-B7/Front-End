@@ -3,32 +3,49 @@ import {
   addMonths,
   eachDayOfInterval,
   endOfMonth,
-  endOfWeek,
   format,
   isSameDay,
   isSameMonth,
   startOfMonth,
-  startOfWeek,
   isBefore,
   isToday,
+  isAfter,
+  getDay,
 } from "date-fns";
 import { id } from "date-fns/locale"; // Import locale ID
 import { useDispatch, useSelector } from "react-redux";
-import { setKeberangaktan } from "../../../redux/Reducers/TiketReducer";
+import {
+  setKeberangaktan,
+  setKepulangan,
+} from "../../../redux/Reducers/TiketReducer";
 
-export default function MyModal({ visible, onClose }) {
+export default function MyModal({
+  visible,
+  onClose,
+  idTanggal,
+  tanggalPulang,
+  tanggalBerangkat,
+  pass_tanggal_berangkat,
+}) {
   const dispatch = useDispatch();
   const [currentMonth, setCurrentMonth] = useState(startOfMonth(new Date()));
   const [nextMonth, setNextMonth] = useState(addMonths(currentMonth, 1));
-  const [selectedDate, setSelectedDate] = useState(null);
-
-  const tanggal = useSelector((state) => {
-    return state?.tiket?.TanggalKeberangkatan;
-  });
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDatePulang, setSelectedDatePulang] = useState("");
 
   useEffect(() => {
     setNextMonth(addMonths(currentMonth, 1));
   }, [currentMonth]);
+
+  //pengaman agar ketika render ulang, nilai menjadi yang diinginkan
+  useEffect(() => {
+    return () => {
+      tanggalPulang("");
+      setSelectedDate(pass_tanggal_berangkat);
+      setSelectedDatePulang("");
+      dispatch(setKepulangan(""));
+    };
+  }, []);
 
   const daysOfWeek = ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"]; // Custom Indonesian days of week
 
@@ -54,10 +71,20 @@ export default function MyModal({ visible, onClose }) {
 
   const getDaysInMonth = (month) => {
     return eachDayOfInterval({
-      start: startOfWeek(startOfMonth(month)),
-      end: endOfWeek(endOfMonth(month)),
+      start: startOfMonth(month),
+      end: endOfMonth(month),
     });
   };
+
+  const colStartClasses = [
+    "",
+    "col-start-2",
+    "col-start-3",
+    "col-start-4",
+    "col-start-5",
+    "col-start-6",
+    "col-start-7",
+  ];
 
   const handleDateClick = (date) => {
     const yesterday = new Date();
@@ -65,12 +92,18 @@ export default function MyModal({ visible, onClose }) {
     if (isBefore(date, yesterday)) {
       return null;
     }
-    dispatch(setKeberangaktan(format(date, "d MMMM yyyy", { locale: id })));
-    setSelectedDate(date);
+    if (idTanggal === 1) {
+      dispatch(setKeberangaktan(format(date, "d MMMM yyyy", { locale: id })));
+      setSelectedDate(date);
+      tanggalBerangkat(format(date, "d MMMM yyyy", { locale: id }));
+    } else {
+      dispatch(setKepulangan(format(date, "d MMMM yyyy", { locale: id })));
+      setSelectedDatePulang(date);
+      tanggalPulang(format(date, "d MMMM yyyy", { locale: id }));
+    }
   };
 
   const currentMonthDays = getDaysInMonth(currentMonth);
-  console.log("first", format(currentMonth, "MMMM", { locale: id }));
   const nextMonthDays = getDaysInMonth(nextMonth);
 
   const handleClose = (e) => {
@@ -84,17 +117,30 @@ export default function MyModal({ visible, onClose }) {
     yesterday.setDate(yesterday.getDate() - 1); // Hari ini dikurangi 1 hari
 
     if (isBefore(day, yesterday)) {
-      return "text-red-500 hover:cursor-not-allowed"; // Jika day sebelum hari ini - 1
+      return "text-gray-400 hover:cursor-no-drop"; // Jika day sebelum hari ini - 1
     }
+
+    if (
+      selectedDate &&
+      selectedDatePulang &&
+      isBefore(day, selectedDatePulang) &&
+      isAfter(day, selectedDate)
+    ) {
+      return "bg-gray-300"; // Jika day di antara selectedDate dan selectedDateBerangkat
+    }
+
     if (isSameMonth(day, month)) {
-      if (isSameDay(day, tanggal)) {
-        return "bg-[#176B87] rounded-xl text-white"; // Jika day sama dengan selectedDate
+      if (isSameDay(day, selectedDate)) {
+        return "bg-[#176B87] text-white"; // Jika day sama dengan selectedDate atau selectedDateBerangkat
       }
-      return "text-black";
+      if (isSameDay(day, selectedDatePulang)) {
+        return "bg-[#176B87] text-white"; // Jika day sama dengan selectedDate atau selectedDateBerangkat
+      }
+      return "text-black"; // Jika day dalam bulan yang sama dengan month tapi bukan selectedDate atau selectedDateBerangkat
     }
+
     return "text-gray-400"; // Jika day bukan dalam bulan yang sama dengan month
   };
-
   return (
     <div
       id="container"
@@ -126,13 +172,12 @@ export default function MyModal({ visible, onClose }) {
                     {day}
                   </div>
                 ))}
-                {currentMonthDays.map((day) => (
+                {currentMonthDays.map((day, index) => (
                   <div
                     key={day.getTime()} // Using getTime() as a unique key for Date objects
-                    className={`my-1 px-3 mx-1 py-4 text-center hover:cursor-pointer ${getDateClass(
-                      day,
-                      currentMonth
-                    )}`}
+                    className={`my-1 px-3 py-4 text-center hover:cursor-pointer ${
+                      index === 0 && colStartClasses[getDay(day)]
+                    } ${getDateClass(day, currentMonth)}`}
                     onClick={() => handleDateClick(day)}
                   >
                     <div>
@@ -162,13 +207,12 @@ export default function MyModal({ visible, onClose }) {
                     {day}
                   </div>
                 ))}
-                {nextMonthDays.map((day) => (
+                {nextMonthDays.map((day, index) => (
                   <div
-                    key={day.getTime()} // Using getTime() as a unique key for Date objects
-                    className={`my-1 px-3 py-4 text-center hover:cursor-pointer ${getDateClass(
-                      day,
-                      nextMonth
-                    )}`}
+                    key={day.getTime()}
+                    className={`my-1 px-3 py-4 text-center hover:cursor-pointer ${
+                      index === 0 && colStartClasses[getDay(day)]
+                    } ${getDateClass(day, nextMonth)}`}
                     onClick={() => handleDateClick(day)}
                   >
                     <div>
