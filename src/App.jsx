@@ -12,6 +12,7 @@ import Notification from "./Pages/Notification";
 import History from "./Pages/History";
 import DetailTiket from "./Pages/DetailTiket";
 import Payment from "./Pages/Payment";
+import Glogin from "./Pages/gLogin2";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -58,6 +59,10 @@ export default function App() {
     {
       path: "/Payment",
       element: <Payment />,
+    },
+    {
+      path: "/g-login",
+      element: <Glogin />,
     },
   ]);
   return <RouterProvider router={router} />;
