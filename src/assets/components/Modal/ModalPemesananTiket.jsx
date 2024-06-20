@@ -123,7 +123,7 @@ export default function ModalPemesananTiket() {
                 <div className=" flex flex-col">
                   <p className="text-base text-gray-500">Tanggal Pergi</p>
                   <button
-                    className="w-[145px] border-b font-medium text-[#176B87] text-[18px] text-start py-2 whitespace-nowrap"
+                    className="w-[200px] border-b font-medium text-[#176B87] text-[18px] text-start py-2 whitespace-nowrap"
                     onClick={() => {
                       setModalNama("tanggal"), setIdTanggal(1);
                     }}
@@ -151,7 +151,7 @@ export default function ModalPemesananTiket() {
                           Tanggal Pulang
                         </p>
                         <button
-                          className="w-[145px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
+                          className="w-[200px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
                           onClick={() => {
                             setModalNama("tanggal"), setIdTanggal(2);
                           }}
