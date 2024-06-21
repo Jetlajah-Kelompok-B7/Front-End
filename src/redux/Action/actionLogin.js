@@ -5,15 +5,18 @@ import { setToken } from "../Reducers/reducersLogin";
 export const login = (email, password, navigate) => async (dispatch) => {
   try {
     const response_login = await axios.post(
-      "https://jetlajahin.up.railway.app//api/login",
-      {
-        email: email,
-        password: password,
-        expiresInMins: 0.1, // optional, defaults to 60
-      },
-      {
-        headers: { "Content-Type": "application/json" },
-      }
+        "/api/login",
+        {
+          email: email,
+          password: password,
+          expiresInMins: 0.1, // optional, defaults to 60
+        },
+        {
+            withCredentials: true
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
     );
 
     if (response_login?.status === 200) {
@@ -68,17 +71,14 @@ export const register =
   };
 
 export const profileUser = () => async (dispatch, getState) => {
-  // const token = getState().login.token;
   try {
     const response_profile = await axios.get(
-      "https://jetlajahin.up.railway.app//api/user/profile",
+      "/api/user/profile",
       {
         withCredentials: true,
       },
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       }
     );
 
