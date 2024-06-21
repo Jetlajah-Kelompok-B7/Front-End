@@ -82,14 +82,14 @@ export default function ModalPemesananTiket() {
             {/* col 1 */}
             <div className="flex flex-col">
               {/* pesawat */}
-              <div className="flex justify-between items-center">
+              <div className="flex items-center">
                 <div className="flex">
                   <img
                     src="/images/IconPesawat.png"
                     alt=""
                     className="h-6 w-6 -ml-[1px]"
                   />
-                  <p className="mr-12 ml-4 text-base text-gray-500">Dari</p>
+                  <p className="mr-[55px] ml-4 text-base text-gray-500">Dari</p>
                 </div>
                 <div className="flex items-center py-4">
                   <button
@@ -127,7 +127,7 @@ export default function ModalPemesananTiket() {
                 <div className=" flex flex-col">
                   <p className="text-base text-gray-500">Tanggal Pergi</p>
                   <button
-                    className="w-[200px] border-b font-medium text-[#176B87] text-[18px] text-start py-2 whitespace-nowrap"
+                    className="w-[145px] border-b font-medium text-[#176B87] text-[18px] text-start py-2 whitespace-nowrap"
                     onClick={() => {
                       setModalNama("tanggal");
                     }}
@@ -155,7 +155,7 @@ export default function ModalPemesananTiket() {
                           Tanggal Pulang
                         </p>
                         <button
-                          className="w-[200px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
+                          className="w-[145px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
                           onClick={() => {
                             setModalNama("tanggal");
                           }}
