@@ -10,7 +10,7 @@ import { GetTiket } from "../../../redux/Action/TiketAction";
 export default function ModalPemesananTiket() {
   const dispatch = useDispatch();
   const [id, setId] = useState(null);
-  const [idTanggal, setIdTanggal] = useState(null);
+  const [idTanggal, setIdTanggal] = useState(1);
   const list_Pilihan = ["Sekali Jalan", "Pergi - Pulang"];
   const [pilihanUser, setPilihanUser] = useState("Sekali Jalan");
   const [modalNama, setModalNama] = useState("");
@@ -31,6 +31,9 @@ export default function ModalPemesananTiket() {
   //   console.log("totalpenumpang", state.tiket.totalSemuaPenumpang);
   //   return state?.tiket?.lokasi;
   // });
+  // console.log("idTanggal", idTanggal);
+
+
 
   const handleswap = () => {
     let temp = kotaAwal;
@@ -57,7 +60,8 @@ export default function ModalPemesananTiket() {
                 key={i}
                 className=" hover:cursor-pointer"
                 onClick={() => {
-                  setPilihanUser(e);
+                  setPilihanUser(e)
+                  setIdTanggal(i+1);
                 }}
               >
                 {e === pilihanUser ? (
@@ -125,7 +129,7 @@ export default function ModalPemesananTiket() {
                   <button
                     className="w-[145px] border-b font-medium text-[#176B87] text-[18px] text-start py-2 whitespace-nowrap"
                     onClick={() => {
-                      setModalNama("tanggal"), setIdTanggal(1);
+                      setModalNama("tanggal");
                     }}
                   >
                     {tanggalBerangkat === "" ? (
@@ -153,7 +157,7 @@ export default function ModalPemesananTiket() {
                         <button
                           className="w-[145px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
                           onClick={() => {
-                            setModalNama("tanggal"), setIdTanggal(2);
+                            setModalNama("tanggal");
                           }}
                         >
                           {tanggalPulang === "" ? (

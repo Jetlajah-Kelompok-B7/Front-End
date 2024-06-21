@@ -11,9 +11,10 @@ import {
   isToday,
   isAfter,
   getDay,
+  isSunday,
 } from "date-fns";
 import { id } from "date-fns/locale"; // Import locale ID
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   setKeberangaktan,
   setKepulangan,
@@ -32,6 +33,7 @@ export default function MyModal({
   const [nextMonth, setNextMonth] = useState(addMonths(currentMonth, 1));
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedDatePulang, setSelectedDatePulang] = useState("");
+  const [user_Click, setUser_Click] = useState(false);
 
   useEffect(() => {
     setNextMonth(addMonths(currentMonth, 1));
@@ -44,9 +46,12 @@ export default function MyModal({
       setSelectedDate(pass_tanggal_berangkat);
       setSelectedDatePulang("");
       dispatch(setKepulangan(""));
+      // setUser_Click(false);
     };
   }, []);
-
+  console.log("id", idTanggal);
+  console.log("kondisi", user_Click);
+  console.log("selectedDate", selectedDate);
   const daysOfWeek = ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"]; // Custom Indonesian days of week
 
   const handlePrevMonth = () => {
@@ -76,6 +81,8 @@ export default function MyModal({
     });
   };
 
+  // console.log(selectedDate === selectedDatePulang);
+
   const colStartClasses = [
     "",
     "col-start-2",
@@ -89,17 +96,48 @@ export default function MyModal({
   const handleDateClick = (date) => {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
+
     if (isBefore(date, yesterday)) {
-      return null;
+      return null; // Tidak melakukan apa-apa jika tanggal yang dipilih lebih awal dari hari sebelumnya
     }
     if (idTanggal === 1) {
       dispatch(setKeberangaktan(format(date, "d MMMM yyyy", { locale: id })));
       setSelectedDate(date);
       tanggalBerangkat(format(date, "d MMMM yyyy", { locale: id }));
     } else {
-      dispatch(setKepulangan(format(date, "d MMMM yyyy", { locale: id })));
-      setSelectedDatePulang(date);
-      tanggalPulang(format(date, "d MMMM yyyy", { locale: id }));
+      if (!user_Click) {
+        // if (selectedDate !== "") return setUser_Click(true);
+        setSelectedDatePulang("");
+        setSelectedDate("");
+        dispatch(setKeberangaktan(""));
+        dispatch(setKepulangan(""));
+        tanggalBerangkat("");
+        tanggalPulang("");
+        dispatch(setKeberangaktan(format(date, "d MMMM yyyy", { locale: id })));
+        setSelectedDate(date);
+        tanggalBerangkat(format(date, "d MMMM yyyy", { locale: id }));
+        setUser_Click(true);
+      } else {
+        if (isSameDay(date, selectedDate)) {
+          dispatch(setKepulangan(format(date, "d MMMM yyyy", { locale: id })));
+          setSelectedDatePulang(date);
+          tanggalPulang(format(date, "d MMMM yyyy", { locale: id }));
+          setUser_Click(false);
+        } else if (isAfter(date, selectedDate)) {
+          dispatch(setKepulangan(format(date, "d MMMM yyyy", { locale: id })));
+          setSelectedDatePulang(date);
+          tanggalPulang(format(date, "d MMMM yyyy", { locale: id }));
+          setUser_Click(false);
+        } else {
+          setSelectedDatePulang("");
+          setSelectedDate("");
+          dispatch(setKeberangaktan(""));
+          dispatch(setKepulangan(""));
+          tanggalBerangkat("");
+          tanggalPulang("");
+          setUser_Click(false);
+        }
+      }
     }
   };
 
@@ -126,19 +164,28 @@ export default function MyModal({
       isBefore(day, selectedDatePulang) &&
       isAfter(day, selectedDate)
     ) {
-      return "bg-gray-300"; // Jika day di antara selectedDate dan selectedDateBerangkat
+      return "bg-[#64CCC5]"; // Jika day di antara selectedDate dan selectedDateBerangkat
     }
 
     if (isSameMonth(day, month)) {
       if (isSameDay(day, selectedDate)) {
-        return "bg-[#176B87] text-white"; // Jika day sama dengan selectedDate atau selectedDateBerangkat
+        return `bg-[#176B87] text-white ${
+          idTanggal === 1 ? "rounded-xl" : "rounded-l-xl"
+        }`; // Jika day sama dengan selectedDate atau selectedDateBerangkat
       }
       if (isSameDay(day, selectedDatePulang)) {
-        return "bg-[#176B87] text-white"; // Jika day sama dengan selectedDate atau selectedDateBerangkat
+        return "bg-[#176B87] text-white rounded-r-xl"; // Jika day sama dengan selectedDate atau selectedDateBerangkat
       }
-      return "text-black"; // Jika day dalam bulan yang sama dengan month tapi bukan selectedDate atau selectedDateBerangkat
+      if (isSunday(day)) {
+        return "text-red-500";
+      } else {
+        if (isSameDay(day, new Date())) {
+          return "text-blue-500 relative";
+        }
+        return "text-black";
+      }
+      // Jika day dalam bulan yang sama dengan month tapi bukan selectedDate atau selectedDateBerangkat
     }
-
     return "text-gray-400"; // Jika day bukan dalam bulan yang sama dengan month
   };
   return (
@@ -181,6 +228,13 @@ export default function MyModal({
                     onClick={() => handleDateClick(day)}
                   >
                     <div>
+                      {isToday(day) &&
+                      !isSameDay(day, selectedDate) &&
+                      !isSameDay(day, selectedDatePulang) ? (
+                        <span className="absolute top-0 inset-0 text-xs">
+                          Hari Ini
+                        </span>
+                      ) : null}
                       {format(day, "d", { locale: id }).replace(/^0+/, "")}
                     </div>
                   </div>

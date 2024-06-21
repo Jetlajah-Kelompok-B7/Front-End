@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { GetTiket } from "../../../redux/Action/TiketAction";
 import ModalPemesananTiket from "../Modal/ModalPemesananTiket";
 
 export default function Slicing_1() {
   const dispatch = useDispatch();
+  const [idTanggal, setIdTanggal] = useState(1);
   useEffect(() => {
     dispatch(GetTiket());
   }, [dispatch]);
@@ -16,7 +17,7 @@ export default function Slicing_1() {
         <p className="text-[32px] -mt-4">Terbang Menjelajah Angkasa</p>
       </div>
       {/* Container tiket */}
-      <ModalPemesananTiket />
+      <ModalPemesananTiket/>
     </div>
   );
 }
