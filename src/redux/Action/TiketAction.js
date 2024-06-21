@@ -19,7 +19,7 @@ export const GetTiket = () => async (dispatch, getState) => {
 export const getTiketSearch = () => async (dispatch, getState) => {
   try {
     const response = await axios.get(
-      "/api/ticket?bandara_keberangkatan=CGK&bandara_kedatangan=DPS&tanggal_pergi=2024-06-19&tanggal_pulang=2024-06-19"
+      "/api/ticket?bandara_keberangkatan=CGK&bandara_kedatangan=DPS&tanggal_pergi=2024-06-19&tanggal_pulang=2024-06-19&kelas=Economy"
     );
     dispatch(setTiketPesawat(response.data));
     console.log("CEK DATA",response)
