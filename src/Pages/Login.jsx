@@ -5,7 +5,7 @@ import jetlajah from "../assets/images/logojetlajah.png";
 import logogoogle from "../assets/images/logo-google.png";
 import logofb from "../assets/images/logo-facebook.png";
 import { setEmail, setPassword } from "../redux/Reducers/reducersLogin";
-import { login } from "../redux/Action/actionLogin";
+import { login, get } from "../redux/Action/actionLogin";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -40,8 +40,18 @@ export default function Login() {
     }
   };
 
+  const handleGet = async () => {
+    const response = await dispatch(get()); // Kirim email dan password ke action creator login
+    if (response.status === 200) {
+      window.location.reload();
+    } else {
+      alert("Gagal login. Silakan coba lagi."); // Handle error jika login gagal
+    }
+  };
+
   return (
     <div className="flex justify-between bg-[#FFFFFF] h-screen">
+      <button onClick={handleGet}>Coba get</button>
       <div
         style={{ backgroundImage: `url(${background})` }}
         className="max-sm:hidden mx-auto bg-gradient-to-r from-cyan-500 to-black bg-cover bg-center w-[50%] h-auto flex justify-center items-center rounded-e-3xl relative "
@@ -77,7 +87,7 @@ export default function Login() {
               </label>
               <div className="relative mt-2 rounded-md shadow-sm">
                 <input
-                  type="password"
+                  type="text"
                   className="block w-[400px] rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
                   placeholder="Masukkan password"
                   onChange={handlePasswordChange}
