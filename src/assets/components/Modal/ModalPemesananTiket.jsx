@@ -33,8 +33,6 @@ export default function ModalPemesananTiket() {
   // });
   // console.log("idTanggal", idTanggal);
 
-
-
   const handleswap = () => {
     let temp = kotaAwal;
     setKotaAwal(destinasi);
@@ -60,8 +58,8 @@ export default function ModalPemesananTiket() {
                 key={i}
                 className=" hover:cursor-pointer"
                 onClick={() => {
-                  setPilihanUser(e)
-                  setIdTanggal(i+1);
+                  setPilihanUser(e);
+                  setIdTanggal(i + 1);
                 }}
               >
                 {e === pilihanUser ? (
@@ -89,11 +87,11 @@ export default function ModalPemesananTiket() {
                     alt=""
                     className="h-6 w-6 -ml-[1px]"
                   />
-                  <p className="mr-[55px] ml-4 text-base text-gray-500">Dari</p>
+                  <p className="mr-[67px] ml-4 text-base text-gray-500">Dari</p>
                 </div>
-                <div className="flex items-center py-4">
+                <div className="flex items-center py-4 flex-1">
                   <button
-                    className="border-b font-medium text-[#176B87] text-[18px] w-[297px] text-start  py-3"
+                    className="border-b font-medium text-[#176B87] text-[18px] text-start  py-3 flex-1"
                     onClick={() => {
                       setModalNama("tiket");
                       setId(1);
@@ -115,7 +113,7 @@ export default function ModalPemesananTiket() {
                 </div>
               </div>
               {/* tanggal */}
-              <div className="flex gap-1">
+              <div className="flex gap-4">
                 <div className="flex items-center">
                   <img
                     src="/images/iconTanggal.png"
@@ -127,7 +125,7 @@ export default function ModalPemesananTiket() {
                 <div className=" flex flex-col">
                   <p className="text-base text-gray-500">Tanggal Pergi</p>
                   <button
-                    className="w-[145px] border-b font-medium text-[#176B87] text-[18px] text-start py-2 whitespace-nowrap"
+                    className="w-[200px] border-b font-medium text-[#176B87] text-[18px] text-start py-2 whitespace-nowrap"
                     onClick={() => {
                       setModalNama("tanggal");
                     }}
@@ -155,7 +153,7 @@ export default function ModalPemesananTiket() {
                           Tanggal Pulang
                         </p>
                         <button
-                          className="w-[145px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
+                          className="w-[200px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
                           onClick={() => {
                             setModalNama("tanggal");
                           }}
@@ -176,7 +174,7 @@ export default function ModalPemesananTiket() {
                         />
                       </div>
                     ) : (
-                      <div className="w-[145px] bg-white h-1"></div> // untuk placeholder saja supaya ukuran tidak berubah
+                      <div className="w-[200px] bg-white h-1"></div> // untuk placeholder saja supaya ukuran tidak berubah
                     )}
                   </div>
                 </div>
@@ -205,9 +203,9 @@ export default function ModalPemesananTiket() {
                   />
                   <p className="mr-[54px] ml-4 text-base text-gray-500">Ke</p>
                 </div>
-                <div className="flex items-center py-4">
+                <div className="flex items-center py-4 flex-1">
                   <button
-                    className="border-b font-medium text-[#176B87] text-[18px] w-[297px] text-start  py-3"
+                    className="border-b font-medium text-[#176B87] text-[18px] text-start py-3 flex-1"
                     onClick={() => {
                       setModalNama("tiket");
                       setId(2);
@@ -238,7 +236,7 @@ export default function ModalPemesananTiket() {
                     <div className=" relative flex flex-col items-start justify-start">
                       <p className="text-base text-gray-500">Penumpang</p>
                       <button
-                        className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
+                        className="w-[200px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
                         onClick={() => {
                           setModalNama("kursi");
                         }}
@@ -261,7 +259,7 @@ export default function ModalPemesananTiket() {
                         Kelas Penerbangan
                       </p>
                       <button
-                        className="w-[140px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
+                        className="w-[200px] border-b font-medium text-[#176B87] text-[18px] text-start py-2"
                         onClick={() => {
                           setModalNama("kelas");
                         }}
