@@ -16,13 +16,29 @@ export const GetTiket = () => async (dispatch, getState) => {
   }
 };
 
+export const GetDataBandara = () => async (dispatch, getState) => {
+  try {
+    const response = await axios.get(
+      "/api/airport"
+    );
+    dispatch(setLokasi(response.data));
+    console.log("CEK DATA BARU",response)
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      alert(error.message);
+      return;
+    }
+    alert(error.message)
+  }
+};
+
 export const getTiketSearch = () => async (dispatch, getState) => {
   try {
     const response = await axios.get(
       "/api/ticket?bandara_keberangkatan=CGK&bandara_kedatangan=DPS&tanggal_pergi=2024-06-19&tanggal_pulang=2024-06-19&kelas=Economy"
     );
     dispatch(setTiketPesawat(response.data));
-    console.log("CEK DATA",response)
+    // console.log("CEK DATA",response)
   } catch (error) {
     if (axios.isAxiosError(error)) {
       alert(error.message);
