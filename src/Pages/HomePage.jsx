@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Slicing_1 from "../assets/components/SlicingHomePage/Slicing_1";
 import Navbar from "../assets/components/Navbar";
@@ -11,19 +11,17 @@ import { getTokenFromCookie } from "../assets/utils/cookies"; // Ganti dengan pa
 
 export default function HomePage() {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const theState = useSelector((state) => state);
   console.log("theState", theState);
   useEffect(() => {
     const token = getTokenFromCookie();
     if (!token) {
-      // Jika tidak ada token, arahkan ke halaman login atau halaman lain
-      history.push("/login"); // Ganti dengan halaman yang sesuai untuk redirect
     } else {
       // Jika token ada, maka panggil profileUser()
       dispatch(profileUser());
     }
-  }, [dispatch, history]);
+  }, [dispatch]);
   return (
     <div>
       <div className="fixed top-0 w-full bg-white z-50 ">
