@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../assets/components/Navbar.jsx";
 import "../App.css";
 import {
@@ -9,6 +9,15 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { updateProfile } from "../redux/Action/actionLogin.js";
+import {
+  setNama,
+  setNo_telp,
+  setTanggal_lahir,
+  setAlamat,
+  setFile,
+} from "../redux/Reducers/reducersLogin.js";
 
 function Icon({ id, open }) {
   return (
@@ -32,6 +41,7 @@ function Icon({ id, open }) {
 }
 
 export default function ProfileUser() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(0);
   const [innerOpen, setInnerOpen] = React.useState(0);
@@ -43,7 +53,10 @@ export default function ProfileUser() {
   const [value, setValue] = useState(`henry`);
   const [innerValue, setInnerValue] = useState("");
 
-  const handleSubmit = () => {
+  const theState = useSelector((state) => state);
+  console.log("theState", theState);
+
+  const handleSubmitPin = () => {
     if (value === "111111") {
       toast.success("PIN Terkonfirmasi", {
         position: "bottom-center",
@@ -72,14 +85,38 @@ export default function ProfileUser() {
     }
   };
 
-  function showFileName(input) {
-    if (input.files && input.files.length > 0) {
-      const fileName = input.files[0].name;
-      document.getElementById("file-name").textContent = fileName;
-    } else {
-      document.getElementById("file-name").textContent = "No file selected";
+  // Update Baru
+  const { nama, no_telp, tanggal_lahir, alamat, file } = useSelector(
+    (state) => state.login
+  );
+  const [preview, setPreview] = useState(null);
+
+  useEffect(() => {
+    if (file instanceof Blob) {
+      const fileURL = URL.createObjectURL(file);
+      setPreview(fileURL);
     }
-  }
+  }, [file]);
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      dispatch(setFile(selectedFile));
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    dispatch(updateProfile(nama, no_telp, tanggal_lahir, alamat, file));
+  };
+  // function showFileName(input) {
+  //   if (input.files && input.files.length > 0) {
+  //     const fileName = input.files[0].name;
+  //     document.getElementById("file-name").textContent = fileName;
+  //   } else {
+  //     document.getElementById("file-name").textContent = "No file selected";
+  //   }
+  // }
 
   return (
     <div>
@@ -87,6 +124,7 @@ export default function ProfileUser() {
       <div className="flex flex-col items-center justify-center mb-10">
         <div className="flex flex-col w-[1000px] h-auto p-5 border-[2px] rounded-3xl shadow-lg shadow-[#64CCC5]/20 mt-[15px]">
           <h1 className="poppins-bold ml-5">Akun</h1>
+          {/* Button Beranda */}
           <button onClick={() => navigate("/")}>
             <div className="flex items-center text-white text-left px-[16px] mx-5 mt-[22px] w-auto h-[55px] bg-[#04364A] hover:bg-[#142a32] rounded-xl gap-[8px]">
               <svg
@@ -117,18 +155,19 @@ export default function ProfileUser() {
           <div className="flex mx-5 gap-5">
             <div className="flex flex-col my-5 ">
               <div className="w-full">
+                {/* Ubah Profile */}
                 <div>
                   <Accordion
-                    className="w-full px-2 border rounded-md flex justify-center"
+                    className="w-full px-2  flex justify-center"
                     open={open === 3}
                   >
-                    <span className="flex items-center  poppins-regular text-sm justify-between">
+                    <span className="poppins-regular text-sm">
                       <AccordionHeader
                         className="poppins-medium text-md w-[100%]"
                         onClick={() => handleOpen(3)}
                       >
                         <span>
-                          <ul className="flex items-center gap-2 border shadow-lg active:bg-slate-100 hover:border-2 hover:bg-slate-100 overflow-hidden rounded-md px-2 py-4 w-[328px] h-[50px] mt-2">
+                          <ul className="flex items-center gap-2 border shadow-lg bg-[#176B87] bg-opacity-30 active:bg-opacity-60 hover:bg-opacity-40 hover:border-2 overflow-hidden rounded-md px-2 py-4 w-[328px] h-[50px] mt-2">
                             <li>
                               <svg
                                 width="24"
@@ -159,22 +198,25 @@ export default function ProfileUser() {
                       </AccordionHeader>
                     </span>
                     <AccordionBody>
-                      <div className="ml-10 mt-5 border shadow-lg w-[518px] h-auto py-[10px] px-[16px]">
-                        <h1 className="poppins-bold">Ubah Data Profil </h1>
+                      <div className="ml-10 mt-3 border shadow-lg w-[518px] h-auto py-[10px] px-[16px]">
+                        <h1 className="poppins-bold">Ubah Data Profil</h1>
                         <div className="flex flex-col mt-[16px] mx-5">
                           <div className="flex flex-col">
                             <div className="flex flex-col">
                               <h1 className="bg-[#176B87] w-full h-[40px] flex items-center px-[16px] rounded-t-xl text-white">
                                 Data Diri
                               </h1>
+                              {/* Form Profile */}
                               <div className="p-2">
                                 <div className="flex flex-col">
                                   <div>
                                     <h3>Nama Lengkap</h3>
                                     <input
                                       type="text"
-                                      value={value}
-                                      onChange={(e) => setValue(e.target.value)}
+                                      value={nama || ""}
+                                      onChange={(e) =>
+                                        dispatch(setNama(e.target.value))
+                                      }
                                       className="block w-[100%] rounded-md border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6 mt-[10px]"
                                       placeholder="Masukkan Nama"
                                     />
@@ -183,9 +225,11 @@ export default function ProfileUser() {
                                     <h3>Tanggal Lahir</h3>
                                     <input
                                       type="text"
-                                      value={innerValue}
+                                      value={tanggal_lahir || ""}
                                       onChange={(e) =>
-                                        setInnerValue(e.target.value)
+                                        dispatch(
+                                          setTanggal_lahir(e.target.value)
+                                        )
                                       }
                                       className="block w-[100%] rounded-md border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6 mt-[10px]"
                                       placeholder="Masukkan Tanggal Lahir"
@@ -195,9 +239,9 @@ export default function ProfileUser() {
                                     <h3>Nomor Telepon</h3>
                                     <input
                                       type="text"
-                                      value={innerValue}
+                                      value={no_telp || ""}
                                       onChange={(e) =>
-                                        setInnerValue(e.target.value)
+                                        dispatch(setNo_telp(e.target.value))
                                       }
                                       onInput={(e) => {
                                         e.target.value = e.target.value.replace(
@@ -213,62 +257,79 @@ export default function ProfileUser() {
                                     <h3>Alamat</h3>
                                     <input
                                       type="text"
-                                      value={innerValue}
+                                      value={alamat || ""}
                                       onChange={(e) =>
-                                        setInnerValue(e.target.value)
+                                        dispatch(setAlamat(e.target.value))
                                       }
                                       className="block w-[100%] rounded-md border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6 mt-[10px]"
                                       placeholder="Masukkan Alamat"
                                     />
                                   </div>
                                   <div className="flex flex-col w-full mt-2">
-                                    <label
-                                      htmlFor="img"
-                                      className="block text-gray-700 text-sm font-bold mb-2"
+                                    <form
+                                      className="flex flex-col w-full mt-2"
+                                      onSubmit={handleSubmit}
                                     >
-                                      Select image:
-                                    </label>
-                                    <label
-                                      htmlFor="file-upload"
-                                      className="relative cursor-pointer"
-                                    >
-                                      <div className="flex items-center justify-center w-[100px] h-[100px] bg-gray-200 hover:bg-gray-300 rounded-full">
-                                        <svg
-                                          className="w-8 h-8 text-gray-500"
-                                          fill="none"
-                                          stroke="currentColor"
-                                          viewBox="0 0 24 24"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                          <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                          ></path>
-                                        </svg>
-                                      </div>
-                                      <input
-                                        type="file"
-                                        id="file-upload"
-                                        name="file-upload"
-                                        accept="image/jpeg, image/png"
-                                        className="hidden"
-                                        onChange={showFileName}
-                                      />
-                                    </label>
-                                    <span
-                                      id="file-name"
-                                      className="text-gray-500 text-xs"
-                                    ></span>
+                                      <label
+                                        htmlFor="file-upload"
+                                        className="block text-gray-700 text-sm font-bold mb-2"
+                                      >
+                                        Pilih gambar:
+                                      </label>
+                                      <label
+                                        htmlFor="file-upload"
+                                        className="relative cursor-pointer"
+                                      >
+                                        <div className="flex items-center justify-center w-[100px] h-[100px] bg-gray-200 hover:bg-gray-300 rounded-full">
+                                          {preview ? (
+                                            <img
+                                              src={preview}
+                                              alt="Preview"
+                                              className="w-[100px] h-[100px] object-cover rounded-full"
+                                            />
+                                          ) : (
+                                            <svg
+                                              className="w-8 h-8 text-gray-500"
+                                              fill="none"
+                                              stroke="currentColor"
+                                              viewBox="0 0 24 24"
+                                              xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M12 6v6m0 0v6m-6-6h12"
+                                              />
+                                            </svg>
+                                          )}
+                                        </div>
+                                        <input
+                                          type="file"
+                                          id="file-upload"
+                                          name="file-upload"
+                                          accept="image/jpeg, image/png"
+                                          className="hidden"
+                                          onChange={handleFileChange}
+                                        />
+                                      </label>
+                                      <span
+                                        id="file-name"
+                                        className="text-gray-500 text-xs"
+                                      >
+                                        Nama File: &nbsp;
+                                        {file ? file.name : "Pilih file"}
+                                      </span>
+                                      <button
+                                        type="submit"
+                                        className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                      >
+                                        Simpan
+                                      </button>
+                                    </form>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="flex justify-center">
-                              <button className="w-[150px] h-[48px] text-white bg-[#053B50] hover:bg-[#1b343d] rounded-lg">
-                                Simpan
-                              </button>
                             </div>
                           </div>
                         </div>
@@ -276,18 +337,19 @@ export default function ProfileUser() {
                     </AccordionBody>
                   </Accordion>
                 </div>
+                {/* Pengaturan Akun */}
                 <div>
                   <Accordion
-                    className="w-full mt-[16px] px-2 border rounded-md flex justify-center"
+                    className="w-full mt-[16px] px-2 flex justify-center"
                     open={open === 4}
                   >
-                    <span className="flex items-center  poppins-regular text-sm justify-between">
+                    <span className="poppins-regular text-sm">
                       <AccordionHeader
                         className="poppins-medium text-md w-[100%]"
                         onClick={() => handleOpen(4)}
                       >
                         <span>
-                          <ul className="flex items-center gap-2 border shadow-lg active:bg-slate-100 hover:border-2 hover:bg-slate-100 overflow-hidden rounded-md px-2 py-4 w-[328px] h-[50px] mt-2">
+                          <ul className="flex items-center gap-2 border shadow-lg  bg-[#176B87] bg-opacity-30 active:bg-opacity-60 hover:bg-opacity-40 overflow-hidden rounded-md px-2 py-4 w-[328px] h-[50px] mt-2">
                             <li>
                               <svg
                                 width="24"
@@ -325,7 +387,7 @@ export default function ProfileUser() {
                       </AccordionHeader>
                     </span>
                     <AccordionBody>
-                      <div className="ml-10 mt-5 border shadow-lg w-[518px] h-auto py-[10px] px-[16px]">
+                      <div className="ml-10 mt-3 border shadow-lg w-[518px] h-auto py-[10px] px-[16px]">
                         <h1 className="poppins-bold">Pengaturan Akun</h1>
                         <div className="flex flex-col mt-[16px] mx-5">
                           <div>
@@ -361,7 +423,7 @@ export default function ProfileUser() {
                                   </span>
                                   <div className="flex justify-center">
                                     <button
-                                      onClick={handleSubmit}
+                                      onClick={handleSubmitPin}
                                       className="py-[8px] px-[23.5px] text-white bg-[#053B50] hover:bg-[#142a32] rounded-lg w-[100px] h-[32px] flex justify-center items-center"
                                     >
                                       Lanjutkan
@@ -413,7 +475,7 @@ export default function ProfileUser() {
                                   </span>
                                   <div className="flex justify-center">
                                     <button
-                                      onClick={handleSubmit}
+                                      onClick={handleSubmitPin}
                                       className="py-[8px] px-[23.5px] text-white bg-[#053B50] hover:bg-[#142a32] rounded-lg w-[100px] h-[32px] flex justify-center items-center"
                                     >
                                       Lanjutkan
@@ -428,63 +490,43 @@ export default function ProfileUser() {
                     </AccordionBody>
                   </Accordion>
                 </div>
-                <div>
-                  <Accordion
-                    className=" w-full mt-[16px] px-2 border rounded-md flex justify-center"
-                    open={open === 5}
-                  >
-                    <span className="flex items-center poppins-regular text-sm justify-between ">
-                      <AccordionHeader
-                        className="poppins-medium text-md w-[100%]"
-                        onClick={() => handleOpen(5)}
+                {/* Keluar */}
+                <span>
+                  <ul className="flex items-center gap-2 border shadow-lg active:bg-slate-100 hover:border-2 hover:border-[#64CCC5]  overflow-hidden rounded-md px-2 py-4 w-[328px] h-[50px] mt-2">
+                    <li>
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        <span>
-                          <ul className="flex items-center gap-2 border shadow-lg active:bg-slate-100 hover:border-2 hover:border-[#64CCC5]  overflow-hidden rounded-md px-2 py-4 w-[328px] h-[50px] mt-2">
-                            <li>
-                              <svg
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M16 17L21 12L16 7"
-                                  stroke="#176B87"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M21 12H9"
-                                  stroke="#176B87"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9"
-                                  stroke="#176B87"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </li>
-                            <li>Keluar</li>
-                          </ul>
-                        </span>
-                      </AccordionHeader>
-                    </span>
-                    <AccordionBody>
-                      <div className="flex items-center ml-10 border shadow-lg w-[518px] h-auto py-[10px] px-[16px]">
-                        <button className="text-white bg-red-500 hover:bg-red-600 w-[20%] h-[30px] rounded-lg">
-                          Keluar
-                        </button>
-                      </div>
-                    </AccordionBody>
-                  </Accordion>
-                </div>
+                        <path
+                          d="M16 17L21 12L16 7"
+                          stroke="#176B87"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M21 12H9"
+                          stroke="#176B87"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9"
+                          stroke="#176B87"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </li>
+                    <li>Keluar</li>
+                  </ul>
+                </span>
               </div>
             </div>
           </div>

@@ -5,7 +5,7 @@ import jetlajah from "../assets/images/logojetlajah.png";
 import logogoogle from "../assets/images/logo-google.png";
 import logofb from "../assets/images/logo-facebook.png";
 import { setEmail, setPassword } from "../redux/Reducers/reducersLogin";
-import { login, get } from "../redux/Action/actionLogin";
+import { login } from "../redux/Action/actionLogin";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -40,18 +40,8 @@ export default function Login() {
     }
   };
 
-  const handleGet = async () => {
-    const response = await dispatch(get()); // Kirim email dan password ke action creator login
-    if (response.status === 200) {
-      window.location.reload();
-    } else {
-      alert("Gagal login. Silakan coba lagi."); // Handle error jika login gagal
-    }
-  };
-
   return (
     <div className="flex justify-between bg-[#FFFFFF] h-screen">
-      <button onClick={handleGet}>Coba get</button>
       <div
         style={{ backgroundImage: `url(${background})` }}
         className="max-sm:hidden mx-auto bg-gradient-to-r from-cyan-500 to-black bg-cover bg-center w-[50%] h-auto flex justify-center items-center rounded-e-3xl relative "

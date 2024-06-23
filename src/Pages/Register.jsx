@@ -42,7 +42,7 @@ export default function Register() {
     dispatch(setNo_telp(event.target.value)); // Dispatch action untuk mengubah password di Redux state
   };
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     const response = await dispatch(
       register(email, password, nama, no_telp, navigate)
     ); // Kirim email dan password ke action creator login
@@ -154,7 +154,7 @@ export default function Register() {
             </div>
           </div>
           <button
-            onClick={handleLogin}
+            onClick={handleRegister}
             className="hover:scroll-p-8 flex justify-center text-sm text-white py-3 bg-[#176B87] hover:bg-[#114B5E] rounded-full mt-5"
           >
             Masuk
