@@ -97,26 +97,3 @@ export const profileUser = () => async (dispatch, getState) => {
     return { status: 500 }; // Return status for internal server error
   }
 };
-
-export const get = () => async (dispatch) => {
-  try {
-    const response_get = await axios.get("/api", {
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (response_get?.status === 200) {
-      //   navigate("/");
-      console.log("Data", response_get);
-      const isiToken = response_get;
-      dispatch(setToken(isiToken));
-      alert("Berhasil login");
-      return { status: 200 }; // Return status for successful login
-    } else {
-      alert("password atau username salah");
-      return { status: 401 }; // Return status for failed login
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    return { status: 500 }; // Return status for internal server error
-  }
-};
