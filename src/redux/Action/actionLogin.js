@@ -1,4 +1,5 @@
 import axios from "axios";
+import formData from "form-data";
 import {
   setNama,
   setNo_telp,
@@ -85,7 +86,7 @@ export const profileUser = () => async (dispatch) => {
         headers: { "Content-Type": "application/json" },
       }
     );
-
+    console.log("asdasd");
     const isiAlamat = response_profile?.data?.data?.alamat;
     dispatch(setAlamat(isiAlamat));
 
@@ -148,8 +149,52 @@ export const createPin = (pin, navigate) => async (dispatch) => {
   }
 };
 
+// export const updateProfile =
+//   (nama, no_telp, tanggal_lahir, alamat, file) => async (dispatch) => {
+//     try {
+//       const response_updateProfile = await axios.put(
+//         "/api/user/profile",
+//         {
+//           nama,
+//           no_telp,
+//           tanggal_lahir,
+//           alamat,
+//           file,
+//         },
+//         {
+//           withCredentials: true,
+//         },
+//         {
+//           headers: {
+//             "content-type": "multipart/form-data",
+//           },
+//         }
+//       );
+
+//       if (response_updateProfile?.status === 200) {
+//         console.log("Response:", response_updateProfile);
+//         alert("Berhasil Update");
+//         return { status: 200 }; // Return status for successful login
+//       } else {
+//         alert("Gagal Update");
+//         return { status: 401 }; // Return status for failed login
+//       }
+//     } catch (error) {
+//       console.error("Error:", error);
+//       return { status: 500 }; // Return status for internal server error
+//     }
+//   };
+
 export const updateProfile =
   (nama, no_telp, tanggal_lahir, alamat, file) => async (dispatch) => {
+    const data = new formData();
+    data.append("nama", nama);
+    data.append("no_telp", no_telp);
+    data.append("tanggal_lahir", tanggal_lahir);
+    data.append("alamat", alamat);
+    data.append("file", file);
+
+    console.log(file);
     try {
       const response_updateProfile = await axios.put(
         "/api/user/profile",
@@ -162,15 +207,14 @@ export const updateProfile =
         },
         {
           withCredentials: true,
-        },
-        {
           headers: {
-            "content-type": "multipart/form-data",
+            "Content-Type": "multipart/form-data",
           },
         }
       );
 
       if (response_updateProfile?.status === 200) {
+        console.log("Response", response_updateProfile);
         alert("Berhasil Update");
         return { status: 200 }; // Return status for successful login
       } else {
@@ -183,36 +227,22 @@ export const updateProfile =
     }
   };
 
-// export const updateProfile =
-//   (nama, no_telp, tanggal_lahir, alamat, file) => async (dispatch) => {
-//     const axios = require("axios");
-//     const FormData = require("form-data");
-//     const fs = require("fs");
-//     let data = new FormData();
-//     data.append("file", fs.createReadStream("/path/to/file"));
-//     data.append("nama", "");
-//     data.append("tanggal_lahir", "");
-//     data.append("no_telp", "");
-//     data.append("alamat", "");
+export const logout = () => async () => {
+  try {
+    const response_login = await axios.post("/api/logout", {
+      withCredentials: true,
+    });
 
-//     let config = {
-//       method: "put",
-//       maxBodyLength: Infinity,
-//       url: "https://jelajahin-paling-goksss.vercel.app/api/user/profile",
-//       headers: {
-//         Authorization:
-//           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJpc192ZXJpZmllZCI6ZmFsc2UsInJvbGUiOiJVU0VSIiwiZ29vZ2xlaWQiOm51bGwsImlzX2dvb2dsZXVzZXIiOmZhbHNlLCJpYXQiOjE3MTg5NTQ4NDJ9.zih2ihfRPm0EAyAeUuod6pd_9pJNIwSrd4MlHtg6bJs",
-//         ...data.getHeaders(),
-//       },
-//       data: data,
-//     };
-
-//     axios
-//       .request(config)
-//       .then((response) => {
-//         console.log(JSON.stringify(response.data));
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   };
+    if (response_login?.status === 200) {
+      // navigate("/");
+      alert("Berhasil Logout");
+      return { status: 200 }; // Return status for successful login
+    } else {
+      alert("Gagal Logout");
+      return { status: 401 }; // Return status for failed login
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return { status: 500 }; // Return status for internal server error
+  }
+};

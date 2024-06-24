@@ -117,7 +117,10 @@ export default function Login() {
               </div>
             </div>
           </div>
-          <button className="flex justify-end text-[12px] text-[#176B87] hover:text-[#1C88AC] hover:underline mt-5">
+          <button
+            onClick={() => navigate("/forgot")}
+            className="flex justify-end text-[12px] text-[#176B87] hover:text-[#1C88AC] hover:underline mt-5"
+          >
             Lupa kata sandi?
           </button>
           <button

@@ -10,7 +10,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { updateProfile } from "../redux/Action/actionLogin.js";
+import {
+  updateProfile,
+  logout,
+  profileUser,
+} from "../redux/Action/actionLogin.js";
 import {
   setNama,
   setNo_telp,
@@ -18,6 +22,7 @@ import {
   setAlamat,
   setFile,
   setEmail,
+  setLogout,
 } from "../redux/Reducers/reducersLogin.js";
 
 function Icon({ id, open }) {
@@ -57,6 +62,10 @@ export default function ProfileUser() {
   const theState = useSelector((state) => state);
   console.log("theState", theState);
 
+  useEffect(() => {
+    dispatch(profileUser());
+  }, [dispatch]);
+
   const handleSubmitPin = () => {
     if (value === "111111") {
       toast.success("PIN Terkonfirmasi", {
@@ -92,24 +101,17 @@ export default function ProfileUser() {
   );
   const [preview, setPreview] = useState(null);
 
-  // useEffect(() => {
-  //   if (file instanceof Blob) {
-  //     const fileURL = URL.createObjectURL(file);
-  //     setPreview(fileURL);
-  //   }
-  // }, [file]);
-
-  const theFile = useSelector((state) => state.login.email);
-
   useEffect(() => {
     if (file instanceof Blob) {
       const fileURL = URL.createObjectURL(file);
-      dispatch(setEmail(fileURL));
+      console.log("fileURL", fileURL);
+      setPreview(fileURL);
     }
   }, [file]);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
+    console.log("selectedFile", selectedFile);
     if (selectedFile) {
       dispatch(setFile(selectedFile));
     }
@@ -119,15 +121,24 @@ export default function ProfileUser() {
     event.preventDefault();
     dispatch(updateProfile(nama, no_telp, tanggal_lahir, alamat, file));
   };
-  // function showFileName(input) {
-  //   if (input.files && input.files.length > 0) {
-  //     const fileName = input.files[0].name;
-  //     document.getElementById("file-name").textContent = fileName;
-  //   } else {
-  //     document.getElementById("file-name").textContent = "No file selected";
-  //   }
-  // }
 
+  //Logout
+  const handleLogout = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await dispatch(logout());
+      if (response.status === 200) {
+        dispatch(setLogout()); // Dispatch the reset action
+        navigate("/");
+        alert("Berhasil Logout");
+      } else {
+        alert("Gagal Logout");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Gagal Logout: Terjadi kesalahan pada server");
+    }
+  };
   return (
     <div>
       <Navbar />
@@ -217,7 +228,6 @@ export default function ProfileUser() {
                                 <h1 className="bg-[#176B87] w-full h-[40px] flex items-center px-[16px] rounded-t-xl text-white">
                                   Data Diri
                                 </h1>
-                                {/* Form Profile */}
                                 <div className="p-2">
                                   <div className="flex flex-col">
                                     <div>
@@ -288,48 +298,74 @@ export default function ProfileUser() {
                                         >
                                           Pilih gambar:
                                         </label>
-                                        <label
-                                          htmlFor="file-upload"
-                                          className="relative cursor-pointer"
-                                        >
-                                          <div className="flex items-center justify-center w-[100px] h-[100px] bg-gray-200 hover:bg-gray-300 rounded-full">
-                                            {theFile ? (
-                                              <img
-                                                src={theFile}
-                                                alt="Preview"
-                                                className="w-[100px] h-[100px] object-cover rounded-full"
-                                              />
-                                            ) : (
-                                              <svg
-                                                className="w-8 h-8 text-gray-500"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                              >
-                                                <path
-                                                  strokeLinecap="round"
-                                                  strokeLinejoin="round"
-                                                  strokeWidth="2"
-                                                  d="M12 6v6m0 0v6m-6-6h12"
+                                        {typeof theState?.login?.file ===
+                                        "string" ? (
+                                          <>
+                                            <label
+                                              htmlFor="file-upload"
+                                              className="relative cursor-pointer"
+                                            >
+                                              {preview ? (
+                                                <img
+                                                  src={preview}
+                                                  alt="Preview"
+                                                  className="w-[100px] h-[100px] object-cover rounded-full"
                                                 />
-                                              </svg>
-                                            )}
-                                          </div>
-                                          <input
-                                            type="file"
-                                            id="file-upload"
-                                            name="file-upload"
-                                            accept="image/jpeg, image/png"
-                                            className="hidden"
-                                            onChange={handleFileChange}
-                                          />
-                                        </label>
+                                              ) : (
+                                                <img
+                                                  src={theState?.login?.file}
+                                                  alt="Preview"
+                                                  className="w-[100px] h-[100px] object-cover rounded-full"
+                                                />
+                                              )}
+                                            </label>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <label
+                                              htmlFor="file-upload"
+                                              className="relative cursor-pointer"
+                                            >
+                                              <div className="flex items-center justify-center w-[100px] h-[100px] bg-gray-200 hover:bg-gray-300 rounded-full">
+                                                {preview ? (
+                                                  <img
+                                                    src={preview}
+                                                    alt="Preview"
+                                                    className="w-[100px] h-[100px] object-cover rounded-full"
+                                                  />
+                                                ) : (
+                                                  <svg
+                                                    className="w-8 h-8 text-gray-500"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                  >
+                                                    <path
+                                                      strokeLinecap="round"
+                                                      strokeLinejoin="round"
+                                                      strokeWidth="2"
+                                                      d="M12 6v6m0 0v6m-6-6h12"
+                                                    />
+                                                  </svg>
+                                                )}
+                                              </div>
+                                            </label>
+                                          </>
+                                        )}
+                                        <input
+                                          type="file"
+                                          id="file-upload"
+                                          name="file"
+                                          accept="image/jpeg, image/png"
+                                          className="hidden"
+                                          onChange={handleFileChange}
+                                        />
                                         <span
                                           id="file-name"
                                           className="text-gray-500 text-xs"
                                         >
-                                          Nama File: &nbsp;
+                                          Nama File: &nbsp;{" "}
                                           {file ? file.name : "Pilih file"}
                                         </span>
                                         <button
@@ -433,7 +469,10 @@ export default function ProfileUser() {
                                       placeholder="Masukkan Password lama"
                                     />
                                     <span className="flex justify-end">
-                                      <button className="text-[12px] text-[#176B87] hover:text-[#1C88AC] hover:underline h-10 flex justify-end items-start">
+                                      <button
+                                        onClick={() => navigate("/forgot")}
+                                        className="text-[12px] text-[#176B87] hover:text-[#1C88AC] hover:underline h-10 flex justify-end items-start"
+                                      >
                                         Lupa Password?
                                       </button>
                                     </span>
@@ -509,7 +548,7 @@ export default function ProfileUser() {
                 </div>
                 {/* Keluar */}
                 <div className="flex justify-center mt-5">
-                  <button>
+                  <button onClick={handleLogout}>
                     <ul className="flex items-center justify-center gap-2 border shadow-lg bg-red-500 active:bg-red-700 hover:bg-red-600  overflow-hidden rounded-md px-2 py-4 w-[328px] h-[50px] mt-2">
                       <li>
                         <svg
