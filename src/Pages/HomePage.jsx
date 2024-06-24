@@ -11,16 +11,10 @@ import { getTokenFromCookie } from "../assets/utils/cookies"; // Ganti dengan pa
 
 export default function HomePage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const theState = useSelector((state) => state);
   console.log("theState", theState);
   useEffect(() => {
-    const token = getTokenFromCookie();
-    if (!token) {
-    } else {
-      // Jika token ada, maka panggil profileUser()
-      dispatch(profileUser());
-    }
+    dispatch(profileUser());
   }, [dispatch]);
   return (
     <div>

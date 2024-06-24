@@ -14,11 +14,12 @@ import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [isClicked, setIsClicked] = useState(false);
+  const [passwordType, setPasswordType] = useState("password");
 
   const handleClick = () => {
     setIsClicked(!isClicked);
+    setPasswordType(passwordType === "password" ? "text" : "password");
   };
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const email = useSelector((state) => state.login?.email);
@@ -118,7 +119,7 @@ export default function Register() {
               </label>
               <div className="relative mt-2 rounded-md shadow-sm">
                 <input
-                  type="password"
+                  type={passwordType}
                   className="block w-[400px] rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
                   placeholder="Masukkan password"
                   onChange={handlePasswordChange}

@@ -1,7 +1,5 @@
 import axios from "axios";
 import {
-  setEmail,
-  setPassword,
   setNama,
   setNo_telp,
   setPin,
@@ -29,8 +27,6 @@ export const login = (email, password, navigate) => async (dispatch) => {
 
     if (response_login?.status === 200) {
       navigate("/");
-      const isiToken = response_login.data?.data?.token;
-      dispatch(setToken(isiToken));
       alert("Berhasil login");
       return { status: 200 }; // Return status for successful login
     } else {
@@ -66,8 +62,6 @@ export const register =
       if (response_register?.status === 200) {
         navigate("/add-pin");
         console.log("Data", response_register.data);
-        const isiToken = response_register.data?.data?.token;
-        dispatch(setToken(isiToken));
         alert("Berhasil Register");
         return { status: 200 }; // Return status for successful login
       } else {
@@ -170,7 +164,9 @@ export const updateProfile =
           withCredentials: true,
         },
         {
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "content-type": "multipart/form-data",
+          },
         }
       );
 
@@ -186,3 +182,37 @@ export const updateProfile =
       return { status: 500 }; // Return status for internal server error
     }
   };
+
+// export const updateProfile =
+//   (nama, no_telp, tanggal_lahir, alamat, file) => async (dispatch) => {
+//     const axios = require("axios");
+//     const FormData = require("form-data");
+//     const fs = require("fs");
+//     let data = new FormData();
+//     data.append("file", fs.createReadStream("/path/to/file"));
+//     data.append("nama", "");
+//     data.append("tanggal_lahir", "");
+//     data.append("no_telp", "");
+//     data.append("alamat", "");
+
+//     let config = {
+//       method: "put",
+//       maxBodyLength: Infinity,
+//       url: "https://jelajahin-paling-goksss.vercel.app/api/user/profile",
+//       headers: {
+//         Authorization:
+//           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJpc192ZXJpZmllZCI6ZmFsc2UsInJvbGUiOiJVU0VSIiwiZ29vZ2xlaWQiOm51bGwsImlzX2dvb2dsZXVzZXIiOmZhbHNlLCJpYXQiOjE3MTg5NTQ4NDJ9.zih2ihfRPm0EAyAeUuod6pd_9pJNIwSrd4MlHtg6bJs",
+//         ...data.getHeaders(),
+//       },
+//       data: data,
+//     };
+
+//     axios
+//       .request(config)
+//       .then((response) => {
+//         console.log(JSON.stringify(response.data));
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
+//   };
