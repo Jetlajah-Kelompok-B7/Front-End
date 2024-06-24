@@ -66,6 +66,7 @@ export default function History() {
             <ArrowBackIcon className="font-bold mr-3" />
             Beranda
           </button>
+          {/* Filer Button */}
           <div className="flex items-center gap-4 relative">
             <div
               className="flex gap-1 text-[#176b87] rounded-2xl border border-[#176b87] py-1 px-2 hover:cursor-pointer"
@@ -108,7 +109,7 @@ export default function History() {
             key={i}
             className="flex flex-col bg-white py-3 px-4 border rounded-2xl hover:cursor-pointer"
             onClick={() => {
-              navigate("/");
+              navigate("/DetailTiket");
             }}
           >
             {/* Filter */}

@@ -12,6 +12,9 @@ import Notification from "./Pages/Notification";
 import History from "./Pages/History";
 import DetailTiket from "./Pages/DetailTiket";
 import Payment from "./Pages/Payment";
+import ConfirmPassword from "./Pages/confirmPassword";
+import ForgotPassword from "./Pages/forgotPassword";
+import Payment from "./Pages/Payment";
 import TravelDokumen from "./Pages/DokumenTravel";
 
 export default function App() {
@@ -59,6 +62,14 @@ export default function App() {
     {
       path: "/Payment",
       element: <Payment />,
+    },
+    {
+      path: "/forgot",
+      element: <ForgotPassword />,
+    },
+    {
+      path: "/forgot/confirm-password",
+      element: <ConfirmPassword />,
     },
     {
       path: "/travelDokumen",

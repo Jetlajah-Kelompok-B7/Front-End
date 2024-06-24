@@ -14,11 +14,12 @@ import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [isClicked, setIsClicked] = useState(false);
+  const [passwordType, setPasswordType] = useState("password");
 
   const handleClick = () => {
     setIsClicked(!isClicked);
+    setPasswordType(passwordType === "password" ? "text" : "password");
   };
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const email = useSelector((state) => state.login?.email);
@@ -42,7 +43,7 @@ export default function Register() {
     dispatch(setNo_telp(event.target.value)); // Dispatch action untuk mengubah password di Redux state
   };
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     const response = await dispatch(
       register(email, password, nama, no_telp, navigate)
     ); // Kirim email dan password ke action creator login
@@ -118,7 +119,7 @@ export default function Register() {
               </label>
               <div className="relative mt-2 rounded-md shadow-sm">
                 <input
-                  type="password"
+                  type={passwordType}
                   className="block w-[400px] rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
                   placeholder="Masukkan password"
                   onChange={handlePasswordChange}
@@ -154,7 +155,7 @@ export default function Register() {
             </div>
           </div>
           <button
-            onClick={handleLogin}
+            onClick={handleRegister}
             className="hover:scroll-p-8 flex justify-center text-sm text-white py-3 bg-[#176B87] hover:bg-[#114B5E] rounded-full mt-5"
           >
             Masuk
@@ -162,7 +163,12 @@ export default function Register() {
         </div>
         <div className="flex justify-center gap-2 mt-6">
           <p>Sudah punya akun?</p>
-          <button className="poppins-bold text-[#176B87] hover:text-[#1C88AC] hover:underline">
+          <button
+            onClick={() => {
+              navigate("/login");
+            }}
+            className="poppins-bold text-[#176B87] hover:text-[#1C88AC] hover:underline"
+          >
             Masuk di sini
           </button>
         </div>

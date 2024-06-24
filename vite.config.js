@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://jelajahin-paling-goksss.vercel.app",
+        target: "https://jetlajahin.up.railway.app",
         changeOrigin: true,
         secure: false,
       },
