@@ -14,8 +14,9 @@ import Filter from "../assets/components/Modal/Filter";
 import { useDispatch, useSelector } from "react-redux";
 import { resetFilterHarga } from "../redux/Reducers/FilterHargaReducers";
 import TiketPesanan from "../assets/components/Modal/TiketPesanan";
+import { getTiketSearch, GetDataBandara } from "../redux/Action/TiketAction";
 
-const ResultSearch = () => {
+const ResultSearchFilm = () => {
   const dispatch = useDispatch();
   //Accoridon buka tutup
   const [openAccordion, setOpenAccordion] = useState(null);
@@ -58,7 +59,7 @@ const ResultSearch = () => {
   };
 
   // Generate dates for the next 50 days
-  const dates = Array.from({ length: 360 }, (_, i) => CurrentDate(i));
+  const dates = Array.from({ length: 50 }, (_, i) => CurrentDate(i));
 
   // State for current page
   const [currentPage, setCurrentPage] = useState(0);
@@ -89,7 +90,7 @@ const ResultSearch = () => {
   // Modal Tiket Peswat
   const [filterTiketPesawat, setTiketPesawatVisible] = useState(false);
   const filterTiketPesawatUser = useSelector((state) => {
-    console.log("pesawat", state);
+    // console.log("pesawat", state);
     return state.filter.tiketPesawat;
   });
 
@@ -160,34 +161,49 @@ const ResultSearch = () => {
     }));
   };
 
+  // Fetch DAta Tiket Pesawat
+  const allPesawat = useSelector((state) => state);
+  console.log("allpesawat",allPesawat)
+  useEffect(() => {
+    dispatch(getTiketSearch());
+  }, []);
+
+    // Fetch DAta Tiket Pesawat
+    const allBnadar = useSelector((state) => state);
+ 
+    useEffect(() => {
+      dispatch(GetDataBandara());
+    }, []);
+
+
   return (
-    <>
+    <div className="container mx-auto">
       <Navbar />
-      <div className="container mx-auto">
-        <div className="mx-10 px-20">
-          {/* Content Atas */}
-          <div>
-            <p className="text-2xl py-10 font-bold">Pilih Penerbangan</p>
-            <div className="flex justify-center gap-2">
-              <button className="flex items-center pl-5 gap-5 w-[835px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl">
-                <ArrowLongLeftIcon className="h-12 w-12 text-slate-200 mr-1 pl-1 flex items-center" />
-                JKT - SUB - 1 Penumpang - Ekonomi
+      <div className="mx-5 md:mx-20 md:px-40">
+        {/* Content Atas */}
+        <div>
+          <p className="text-2xl py-10 font-bold">Pilih Penerbangan</p>
+          <div className="md:flex md:gap-2 gap-10">
+            <button className="flex items-center md:pl-5 md:gap-5 md:w-[860px] md:h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl">
+              <ArrowLongLeftIcon className="text-sm h-12 w-12 text-slate-200 mr-1 pl-1 flex items-center" />
+              JKT - SUB - 1 Penumpang - Ekonomi
+            </button>
+      
+            <TiketPesanan
+              visible={filterHargaVisible}
+              onClose={() => setFilterHargaVisible(false)}
+            />
+          </div>
+          <div className="mt-5 p-5 grid grid-cols-10 gap-3">
+            <div className="flex  justify-start">
+              <button
+                onClick={handlePrevPage}
+                disabled={currentPage === 0}
+                className="bg-[#053B50] text-white font-semibold flex justify-center items-center rounded-xl disabled:opacity-50 w-10"
+              >
+                <ChevronLeftIcon className="h-6 w-6 text-white mr-1" />
               </button>
-              <TiketPesanan
-                visible={filterHargaVisible}
-                onClose={() => setFilterHargaVisible(false)}
-              />
             </div>
-            <div className="mt-5 p-5 grid grid-cols-10 gap-3">
-              <div className="flex  justify-start">
-                <button
-                  onClick={handlePrevPage}
-                  disabled={currentPage === 0}
-                  className="bg-[#053B50] text-white font-semibold flex justify-center items-center rounded-xl disabled:opacity-50 w-10"
-                >
-                  <ChevronLeftIcon className="h-6 w-6 text-white mr-1" />
-                </button>
-              </div>
 
               {dates.slice(startIndex, endIndex).map((date, index) => (
                 <button
@@ -511,25 +527,24 @@ const ResultSearch = () => {
                                 </p>
                               </div>
 
-                              <p>{flight.tanggalKedatangan}</p>
-                              <p>
-                                {flight.bandaraKedatangan} -
-                                {flight.terminalKedatangan}
-                              </p>
-                            </div>
+                            <p>{flight.tanggalKedatangan}</p>
+                            <p>
+                              {flight.bandaraKedatangan} -
+                              {flight.terminalKedatangan}
+                            </p>
                           </div>
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
-export default ResultSearch;
+export default ResultSearchFilm;

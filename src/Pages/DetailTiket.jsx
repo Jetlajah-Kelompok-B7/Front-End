@@ -15,13 +15,6 @@ export default function DetailTiket() {
   const [modalTiket, setModalTiket] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const token = useSelector((state) => {
-  //   console.log("state", state);
-  // });
-
-  useEffect(() => {
-    dispatch(GetTiket());
-  }, [dispatch]);
 
   return (
     <div className="bg-white h-screen overflow-y-auto">

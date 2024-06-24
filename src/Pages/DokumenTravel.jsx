@@ -256,18 +256,18 @@ const travelDokumen = () => {
     <>
       <Navbar />
       <div className="container mx-auto">
-        <div className="mx-10 px-20">
+        <div className="">
           {/* Header Atas */}
-          <div className="bg-white shadow-md rounded-xl">
+          <div className="bg-white shadow-md  w-full px-36">
             <div className="mx-20  pt-5 ">
               <div className="flex">
                 <button className="flex items-center ml-4 text-lg font-bold text-[#176B87] ">
                   Isi Data diri
-                  <ChevronRightIcon className="h-6 w-6 text-[#176B87] mr-1" />{" "}
+                  <ChevronRightIcon className="h-6 w-6 text-[#176B87] mr-1" />
                 </button>
                 <button className="flex items-center ml-4 text-lg font-semibold text-slate-500 ">
                   Bayar
-                  <ChevronRightIcon className="h-6 w-6 text-text-slate-500 mr-1" />{" "}
+                  <ChevronRightIcon className="h-6 w-6 text-text-slate-500 mr-1" />
                 </button>
                 <button className="flex items-center ml-4 text-lg font-semibold text-slate-500 ">
                   Selesai
@@ -276,14 +276,14 @@ const travelDokumen = () => {
               </div>
             </div>
             <div className="  mx-20 p-3">
-              <button className="flex items-center pl-5 gap-5 w-[835px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl">
+              <button className="flex items-center pl-5 gap-5 w-[800px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl">
                 <ArrowLongLeftIcon className="h-12 w-12 text-slate-200 mr-1 pl-1 flex items-center" />
                 Kembali
               </button>
             </div>
           </div>
 
-          <div className="flex justify-center gap-10 ">
+          <div className="flex justify-center gap-10 mx-10 px-20">
             <div>
               {/* Data Pemesanan */}
               <div className="mt-10 border rounded-xl border-slate-300 p-10 w-[600px] text-xl">
