@@ -11,6 +11,8 @@ const initialState = {
   TanggalKepulangan: "",
   TotalPenumpang: { Dewasa: 0, Anak: 0, Bayi: 0 },
   totalSemuaPenumpang: 0,
+  dataPesawat: [],
+  dataInputanSearch: [],
 };
 
 const tiketSlicer = createSlice({
@@ -21,7 +23,7 @@ const tiketSlicer = createSlice({
       state.lokasi = action.payload;
     },
     setkelas: (state, action) => {
-      state.kelas = action.payload;
+      state.Kelas = action.payload;
     },
     setSemua: (state, action) => {
       state.SemuaData = action.payload;
@@ -59,6 +61,14 @@ const tiketSlicer = createSlice({
     hitungsemuapenumpang: (state, action) => {
       state.totalSemuaPenumpang = action.payload;
     },
+
+    setTiketPesawat: (state, action) => {
+      state.dataPesawat = action.payload;
+    },
+
+    setInputSearch: (state, action) => {
+      state.dataInputanSearch = action.payload;
+    },
   },
 });
 
@@ -75,6 +85,8 @@ export const {
   setkelas,
   hitungsemuapenumpang,
   setLokasi,
+  setTiketPesawat,
+  setInputSearch,
 } = tiketSlicer.actions;
 
 export default tiketSlicer.reducer;

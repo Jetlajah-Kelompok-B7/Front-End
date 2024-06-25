@@ -26,7 +26,7 @@ const TiketPesawat = () => {
         onClose={() => setOpenModal(false)}
         className="fixed inset-0 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50"
       >
-        <div className="bg-white rounded-2xl w-[1100px]">
+         <div className="bg-white rounded-2xl w-[1150px]">
           <Modal.Header>Pilih Tiket</Modal.Header>
           <div className="bg-white pt-5 rounded-2xl border w-full">
             <ModalPemesananTiket/>

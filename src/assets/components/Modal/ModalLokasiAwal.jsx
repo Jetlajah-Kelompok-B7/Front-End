@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setDestinasiPesawat,
   setLokasiKeberangkatan,
 } from "../../../redux/Reducers/TiketReducer";
+import { GetDataBandara } from "../../../redux/Action/TiketAction";
 
 export default function ModalLokasi({
   visible,
@@ -18,7 +19,17 @@ export default function ModalLokasi({
   // const DataLokasi = useSelector((state) => {
   //   return state?.tiket?.lokasi;
   // });
-  const DataLokasi = ["bali", "surabaya"];
+
+  // Fetch data bandara
+  const allBandara = useSelector((state) => state?.tiket.lokasi);
+  useEffect(() => {
+    dispatch(GetDataBandara());
+    if (allBandara) {
+      // console.log("data pesawatku", allBandara);
+    }
+  }, [allBandara]);
+
+  // const DataLokasi = ["bali", "surabaya"];
 
   if (!visible) return null;
   return (
@@ -45,36 +56,35 @@ export default function ModalLokasi({
               />
             </button>
           </div>
-          <div className="max-h-[262px] overflow-y-auto flex flex-col gap-2 ">
-            {DataLokasi.map((lokasi, index) => (
+          <div className="max-h-[262px] overflow-y-auto flex flex-col gap-2">
+            {allBandara.map((lokasi, index) => (
               <div
                 key={index}
-                className=" hover:cursor-pointer"
+                className="hover:cursor-pointer"
                 onClick={() => {
                   if (id === 1) {
-                    dispatch(setLokasiKeberangkatan(lokasi));
-                    setKotaAwal(lokasi);
-                    setSelectedkota(lokasi);
+                    dispatch(setLokasiKeberangkatan(lokasi.id));
+                    setKotaAwal(lokasi.kode_bandara);
+                    setSelectedkota(lokasi.lokasi);
                   } else {
-                    setDestinasi(lokasi);
-                    dispatch(setDestinasiPesawat(lokasi));
-                    setSelectedDestinasi(lokasi);
+                    setDestinasi(lokasi.kode_bandara);
+                    dispatch(setDestinasiPesawat(lokasi.id));
+                    setSelectedDestinasi(lokasi.lokasi);
                   }
                 }}
               >
                 {lokasi === (id === 1 ? selectedKota : selectedDestinasi) ? (
                   <div className="border-b-2">
-                    {lokasi} <br />
+                    {lokasi.lokasi} <br />
                     <span className="text-gray-500">
-                      {lokasi} - {lokasi}
+                      {lokasi.kode_bandara} - {lokasi.nama_bandara}
                     </span>
                   </div>
                 ) : (
                   <div className="border-b-2">
-                    {lokasi}
-                    <br />
+                    {lokasi.lokasi} <br />
                     <span className="text-gray-500">
-                      {lokasi} - {lokasi}
+                      {lokasi.kode_bandara} - {lokasi.nama_bandara}
                     </span>
                   </div>
                 )}

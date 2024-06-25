@@ -4,8 +4,9 @@ import Dropdown from "../Modal/ModalJumlahPenumpang";
 import { useDispatch, useSelector } from "react-redux";
 import ModalLokasi from "../Modal/ModalLokasiAwal";
 import PilihKelasPenerbangan from "../Modal/KelasPenerbangan";
-import { swapLokasi } from "../../../redux/Reducers/TiketReducer";
-import { GetTiket } from "../../../redux/Action/TiketAction";
+import { setInputSearch, swapLokasi } from "../../../redux/Reducers/TiketReducer";
+import { GetTiket, getTiketSearch } from "../../../redux/Action/TiketAction";
+import { useNavigate } from "react-router-dom";
 
 export default function ModalPemesananTiket() {
   const dispatch = useDispatch();
@@ -17,9 +18,11 @@ export default function ModalPemesananTiket() {
   const [kotaAwal, setKotaAwal] = useState("");
   const [destinasi, setDestinasi] = useState("");
   const [tanggalBerangkat, setTanggalBerangkat] = useState("");
+
   const [tanggalPulang, setTanggalPulang] = useState("");
   const [total_penumpang, setTotal_penumpang] = useState(0);
   const [kelas_penerbangan, setKelas_penerbangan] = useState("");
+  const navigate = useNavigate();
 
   // const DataLokasi = useSelector((state) => {
   //   console.log("------------------------------------------");
@@ -44,6 +47,24 @@ export default function ModalPemesananTiket() {
     dispatch(GetTiket());
   }, [dispatch]);
 
+  //handel search
+  const handleSearch = () => {
+    const params = {
+      bandara_keberangkatan: kotaAwal,
+      bandara_kedatangan: destinasi,
+      tanggal_pergi: tanggalBerangkat,
+      tanggal_pulang: pilihanUser === "Pergi - Pulang" ? tanggalPulang : "",
+      kelas: kelas_penerbangan,
+      jumlah: total_penumpang,
+    };
+   
+    dispatch(getTiketSearch(params));
+    navigate("/resultSearch");
+    dispatch(setInputSearch(params));
+  };
+
+  
+  
   return (
     <div className="relative">
       <div className="bg-white pt-5  rounded-2xl border">
@@ -286,7 +307,10 @@ export default function ModalPemesananTiket() {
             </div>
           </div>
         </div>
-        <button className="w-full text-center font-bold text-[16px] py-4 mt-7 text-white bg-[#176B87] rounded-b-2xl">
+        <button
+          className="w-full text-center font-bold text-[16px] py-4 mt-7 text-white bg-[#176B87] rounded-b-2xl"
+          onClick={() => handleSearch()}
+        >
           Cari Penerbangan
         </button>
       </div>

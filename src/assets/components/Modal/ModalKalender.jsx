@@ -49,17 +49,17 @@ export default function MyModal({
       // setUser_Click(false);
     };
   }, []);
-  console.log("id", idTanggal);
-  console.log("kondisi", user_Click);
-  console.log("selectedDate", selectedDate);
+  // console.log("id", idTanggal);
+  // console.log("kondisi", user_Click);
+  // console.log("selectedDate", selectedDate);
   const daysOfWeek = ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"]; // Custom Indonesian days of week
 
   const handlePrevMonth = () => {
     // Format nama bulan dari currentMonth
-    const currentMonthFormatted = format(currentMonth, "MMMM", { locale: id });
+    const currentMonthFormatted = format(currentMonth, "MM", { locale: id });
 
     // Ambil nama bulan saat ini dari tanggal sekarang
-    const currentMonthNow = format(new Date(), "MMMM", { locale: id });
+    const currentMonthNow = format(new Date(), "MM", { locale: id });
 
     // Menentukan kondisi ketika tombol tidak boleh berfungsi
     if (currentMonthFormatted === currentMonthNow) {
@@ -101,9 +101,9 @@ export default function MyModal({
       return null; // Tidak melakukan apa-apa jika tanggal yang dipilih lebih awal dari hari sebelumnya
     }
     if (idTanggal === 1) {
-      dispatch(setKeberangaktan(format(date, "d MMMM yyyy", { locale: id })));
+      dispatch(setKeberangaktan(format(date, "yyyy MM d ", { locale: id })));
       setSelectedDate(date);
-      tanggalBerangkat(format(date, "d MMMM yyyy", { locale: id }));
+      tanggalBerangkat(format(date, "yyyy MM d", { locale: id }));
     } else {
       if (!user_Click) {
         // if (selectedDate !== "") return setUser_Click(true);
@@ -113,20 +113,20 @@ export default function MyModal({
         dispatch(setKepulangan(""));
         tanggalBerangkat("");
         tanggalPulang("");
-        dispatch(setKeberangaktan(format(date, "d MMMM yyyy", { locale: id })));
+        dispatch(setKeberangaktan(format(date, "yyyy MM d", { locale: id })));
         setSelectedDate(date);
-        tanggalBerangkat(format(date, "d MMMM yyyy", { locale: id }));
+        tanggalBerangkat(format(date, "yyyy MM d", { locale: id }));
         setUser_Click(true);
       } else {
         if (isSameDay(date, selectedDate)) {
-          dispatch(setKepulangan(format(date, "d MMMM yyyy", { locale: id })));
+          dispatch(setKepulangan(format(date, "yyyy MM d", { locale: id })));
           setSelectedDatePulang(date);
-          tanggalPulang(format(date, "d MMMM yyyy", { locale: id }));
+          tanggalPulang(format(date, "yyyy MM d", { locale: id }));
           setUser_Click(false);
         } else if (isAfter(date, selectedDate)) {
-          dispatch(setKepulangan(format(date, "d MMMM yyyy", { locale: id })));
+          dispatch(setKepulangan(format(date, "yyyy MM d", { locale: id })));
           setSelectedDatePulang(date);
-          tanggalPulang(format(date, "d MMMM yyyy", { locale: id }));
+          tanggalPulang(format(date, "yyyy MM d", { locale: id }));
           setUser_Click(false);
         } else {
           setSelectedDatePulang("");
@@ -210,7 +210,7 @@ export default function MyModal({
                   />
                 </button>
                 <div className="flex-1 flex justify-center">
-                  {format(currentMonth, "MMMM - yyyy", { locale: id })}
+                  {format(currentMonth, "MM - yyyy", { locale: id })}
                 </div>
               </div>
               <div className="grid grid-cols-7">
@@ -245,7 +245,7 @@ export default function MyModal({
             <div className="flex flex-col items-center gap-4">
               <div className="flex w-full">
                 <div className="flex-1 flex justify-center">
-                  {format(nextMonth, "MMMM - yyyy", { locale: id })}
+                  {format(nextMonth, "MM - yyyy", { locale: id })}
                 </div>
                 <button onClick={handleNextMonth} className="text-gray-400">
                   <img

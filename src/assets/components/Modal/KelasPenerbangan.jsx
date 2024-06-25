@@ -10,13 +10,15 @@ export default function PilihKelasPenerbangan({
   const dispatch = useDispatch();
   const [selectedclass, setSelectedclass] = useState("");
 
-  const Data_Tiket = useSelector((state) => {
-    return state.tiket.lokasi;
-  });
+  // const Data_Tiket = useSelector((state) => {
+  //   return state.tiket.lokasi;
+  // });
 
-  const KelasPenerbangan = useSelector((state) => {
-    return state.tiket.KelasPenerbangan;
-  });
+  // const KelasPenerbangan = useSelector((state) => {
+  //   return state.tiket.KelasPenerbangan;
+  // });
+
+  const DataKelasPenerbangan = ["Economy", "Business"];
 
   if (!visible) return null;
 
@@ -36,22 +38,19 @@ export default function PilihKelasPenerbangan({
       </div>
       <div className="bg-white w-[400px]">
         <div className=" mx-2 font-medium text-sm">
-          {Data_Tiket.map((kelas, index) => (
+          {DataKelasPenerbangan.map((kelas, index) => (
             <div
               key={index}
               className=" hover:cursor-pointer"
               onClick={() => {
-                setSelectedclass(kelas.class);
+                setSelectedclass(kelas);
               }}
             >
-              {kelas.class === selectedclass ? (
+              {kelas === selectedclass ? (
                 <div className="bg-[#176B87]">
                   <div className="border-b mx-4 py-3 flex justify-between items-center">
                     <div className="text-white">
-                      {kelas.class} <br />
-                      <span className="text-sm">
-                        Rp. {kelas.price.toLocaleString("id-ID")}
-                      </span>
+                      {kelas} <br />
                     </div>
                     <img src="/images/centang.png" alt="" className="w-6 h-6" />
                   </div>
@@ -59,8 +58,7 @@ export default function PilihKelasPenerbangan({
               ) : (
                 <div>
                   <div className="border-b py-3 mx-4  items-center">
-                    {kelas.class} <br />
-                    <span>Rp. {kelas.price.toLocaleString("id-ID")}</span>
+                    {kelas} <br />
                   </div>
                 </div>
               )}
@@ -73,7 +71,7 @@ export default function PilihKelasPenerbangan({
           className="bg-[#176B87] py-3 px-11 rounded-2xl text-white font-medium"
           onClick={() => {
             dispatch(setKelasPenerbangan(selectedclass));
-            kelas_penerbangan(selectedclass)
+            kelas_penerbangan(selectedclass);
             onClose();
           }}
         >
