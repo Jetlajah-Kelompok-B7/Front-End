@@ -36,8 +36,6 @@ export default function Login() {
     const response = await dispatch(login(email, password, navigate)); // Kirim email dan password ke action creator login
     if (response.status === 200) {
       window.location.reload();
-    } else {
-      alert("Gagal login. Silakan coba lagi."); // Handle error jika login gagal
     }
   };
 

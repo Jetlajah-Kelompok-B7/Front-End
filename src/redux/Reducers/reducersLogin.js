@@ -9,6 +9,7 @@ const initialState = {
   tanggal_lahir: "",
   alamat: "",
   file: "",
+  message: "",
 };
 
 const login = createSlice({
@@ -39,6 +40,9 @@ const login = createSlice({
     setFile: (state, action) => {
       state.file = action.payload;
     },
+    setMessage: (state, action) => {
+      state.message = action.payload;
+    },
     setLogout: (state) => {
       state.nama = "";
       state.email = "";
@@ -48,6 +52,9 @@ const login = createSlice({
       state.tanggal_lahir = "";
       state.alamat = "";
       state.file = "";
+    },
+    clearMessage(state) {
+      state.message = "";
     },
   },
 });
@@ -62,6 +69,8 @@ export const {
   setAlamat,
   setFile,
   setLogout,
+  setMessage,
+  clearMessage,
 } = login.actions;
 
 export default login.reducer;

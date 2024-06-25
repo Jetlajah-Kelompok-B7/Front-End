@@ -54,16 +54,6 @@ export default function Login() {
 
     dispatch(setPassword(newPassword)); // Perbarui password di state Redux
 
-    // Untuk sementara, kita matikan fungsi response login
-    // const response = await dispatch(login(email, newPassword, navigate)); // Kirim email dan password ke action creator login
-    // if (response.status === 200) {
-    //   alert("Berhasil");
-    //   window.location.reload();
-    // } else {
-    //   alert("Gagal login. Silakan coba lagi."); // Handle error jika login gagal
-    // }
-
-    // Placeholder untuk menampilkan pesan berhasil
     alert("Berhasil");
   };
 

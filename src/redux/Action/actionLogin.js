@@ -7,6 +7,7 @@ import {
   setTanggal_lahir,
   setAlamat,
   setFile,
+  setMessage,
 } from "../Reducers/reducersLogin";
 
 export const login = (email, password, navigate) => async (dispatch) => {
@@ -20,8 +21,6 @@ export const login = (email, password, navigate) => async (dispatch) => {
       },
       {
         withCredentials: true,
-      },
-      {
         headers: { "Content-Type": "application/json" },
       }
     );
@@ -30,13 +29,25 @@ export const login = (email, password, navigate) => async (dispatch) => {
       navigate("/");
       alert("Berhasil login");
       return { status: 200 }; // Return status for successful login
-    } else {
-      alert("password atau username salah");
+    } else if (response_login?.status === 401) {
+      const pesan =
+        response_login?.data?.message ||
+        "Login gagal, periksa kembali email dan password Anda.";
+      alert(pesan); // Handle error jika login gagal
       return { status: 401 }; // Return status for failed login
     }
   } catch (error) {
-    console.error("Error:", error);
-    return { status: 500 }; // Return status for internal server error
+    if (error.response?.status === 401) {
+      const pesan =
+        error.response?.data?.message ||
+        "Login gagal, periksa kembali email dan password Anda.";
+      alert(pesan); // Handle error jika login gagal
+      return { status: 401 }; // Return status for failed login
+    } else {
+      console.error("Error:", error);
+      alert("Terjadi kesalahan pada server, silakan coba lagi nanti.");
+      return { status: 500 }; // Return status for internal server error
+    }
   }
 };
 
@@ -149,42 +160,6 @@ export const createPin = (pin, navigate) => async (dispatch) => {
   }
 };
 
-// export const updateProfile =
-//   (nama, no_telp, tanggal_lahir, alamat, file) => async (dispatch) => {
-//     try {
-//       const response_updateProfile = await axios.put(
-//         "/api/user/profile",
-//         {
-//           nama,
-//           no_telp,
-//           tanggal_lahir,
-//           alamat,
-//           file,
-//         },
-//         {
-//           withCredentials: true,
-//         },
-//         {
-//           headers: {
-//             "content-type": "multipart/form-data",
-//           },
-//         }
-//       );
-
-//       if (response_updateProfile?.status === 200) {
-//         console.log("Response:", response_updateProfile);
-//         alert("Berhasil Update");
-//         return { status: 200 }; // Return status for successful login
-//       } else {
-//         alert("Gagal Update");
-//         return { status: 401 }; // Return status for failed login
-//       }
-//     } catch (error) {
-//       console.error("Error:", error);
-//       return { status: 500 }; // Return status for internal server error
-//     }
-//   };
-
 export const updateProfile =
   (nama, no_telp, tanggal_lahir, alamat, file) => async (dispatch) => {
     const data = new formData();
@@ -239,6 +214,60 @@ export const logout = () => async () => {
       return { status: 200 }; // Return status for successful login
     } else {
       alert("Gagal Logout");
+      return { status: 401 }; // Return status for failed login
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return { status: 500 }; // Return status for internal server error
+  }
+};
+
+export const forgotPassword = (email) => async (dispatch) => {
+  try {
+    const response_forgot = await axios.post(
+      "/api/request-reset-password",
+      {
+        email: email,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (response_forgot?.status === 200) {
+      const pesan = response_forgot?.data;
+      dispatch(setMessage(pesan));
+      console.log("response_forgot", response_forgot);
+      return { status: 200 }; // Return status for successful login
+    } else {
+      alert("Gagal Mengirim");
+      return { status: 401 }; // Return status for failed login
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return { status: 500 }; // Return status for internal server error
+  }
+};
+
+export const pinValidate = (pin) => async (dispatch) => {
+  try {
+    console.log("pin", pin);
+    const response_validatePin = await axios.post(
+      "/api/pin-validation",
+      {
+        pin: pin,
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    if (response_validatePin?.status === 200) {
+      console.log("response_validatePin", response_validatePin);
+      return { status: 200 }; // Return status for successful login
+    } else {
+      alert("Gagal validasi");
       return { status: 401 }; // Return status for failed login
     }
   } catch (error) {

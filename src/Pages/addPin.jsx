@@ -15,6 +15,8 @@ export default function AddPin() {
 
   // Fungsi untuk mengonversi string pin ke array
   const getPinArray = (pin) => {
+    // Pastikan pin adalah string
+    pin = pin || ""; // Menggunakan nilai default jika pin adalah null atau undefined
     return pin.split("").concat(new Array(6 - pin.length).fill(""));
   };
 

@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
+import { pinValidate } from "../redux/Action/actionLogin";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function confirmPin() {
   const [pin, setPin] = useState(new Array(6).fill(""));
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   function handleChange(e, index) {
     if (isNaN(e.target.value)) return false;
@@ -26,9 +31,37 @@ export default function confirmPin() {
     }
   }
 
-  function handleSubmit() {
-    const pinValue = pin.join("");
-    if (pinValue === "111111") {
+  // function handleSubmit() {
+  //   const pinValue = pin.join("");
+  //   if (pinValue === "222222") {
+  //     toast.success("PIN Terkonfirmasi", {
+  //       position: "bottom-center",
+  //       autoClose: 5000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "colored",
+  //     });
+  //   } else {
+  //     toast.error("PIN Salah", {
+  //       position: "bottom-center",
+  //       autoClose: 5000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "colored",
+  //     });
+  //   }
+  // }
+
+  const handleSubmit = async () => {
+    const response = await dispatch(pinValidate(pin)); // Kirim email dan password ke action creator login
+    console.log("response", response);
+    if (response.status === 200) {
       toast.success("PIN Terkonfirmasi", {
         position: "bottom-center",
         autoClose: 5000,
@@ -51,7 +84,7 @@ export default function confirmPin() {
         theme: "colored",
       });
     }
-  }
+  };
 
   return (
     <div className="bg-white flex justify-center h-screen items-center">
