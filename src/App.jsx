@@ -11,7 +11,6 @@ import ResultSearch from "./Pages/searchResult";
 import Notification from "./Pages/Notification";
 import History from "./Pages/History";
 import DetailTiket from "./Pages/DetailTiket";
-import Payment from "./Pages/Payment";
 import ConfirmPassword from "./Pages/confirmPassword";
 import ForgotPassword from "./Pages/forgotPassword";
 import Payment from "./Pages/Payment";
@@ -60,7 +59,7 @@ export default function App() {
       element: <DetailTiket />,
     },
     {
-      path: "/Payment",
+      path: "/payment",
       element: <Payment />,
     },
     {
