@@ -14,7 +14,7 @@ import Filter from "../assets/components/Modal/Filter";
 import { useDispatch, useSelector } from "react-redux";
 import { resetFilterHarga } from "../redux/Reducers/FilterHargaReducers";
 import TiketPesanan from "../assets/components/Modal/TiketPesanan";
-import { getTiketSearch } from "../redux/Action/TiketAction";
+import { getTiketSearch, GetDataBandara } from "../redux/Action/TiketAction";
 
 const ResultSearchFilm = () => {
   const dispatch = useDispatch();
@@ -160,12 +160,20 @@ const ResultSearchFilm = () => {
       [index]: prevRotasi[index] === "180" ? "0" : "180",
     }));
   };
+
   // Fetch DAta Tiket Pesawat
   const allPesawat = useSelector((state) => state);
   console.log("allpesawat",allPesawat)
   useEffect(() => {
     dispatch(getTiketSearch());
   }, []);
+
+    // Fetch DAta Tiket Pesawat
+    const allBnadar = useSelector((state) => state);
+ 
+    useEffect(() => {
+      dispatch(GetDataBandara());
+    }, []);
 
 
   return (

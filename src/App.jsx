@@ -11,10 +11,10 @@ import ResultSearch from "./Pages/searchResult";
 import Notification from "./Pages/Notification";
 import History from "./Pages/History";
 import DetailTiket from "./Pages/DetailTiket";
+import ConfirmPassword from "./Pages/confirmPassword";
+import ForgotPassword from "./Pages/forgotPassword";
 import Payment from "./Pages/Payment";
-import Glogin from "./Pages/gLogin2";
-import Slicing_1 from "./assets/components/SlicingHomePage/Slicing_1";
-import Slicing_2 from "./assets/components/SlicingHomePage/Slicing_2";
+import TravelDokumen from "./Pages/DokumenTravel";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -59,12 +59,20 @@ export default function App() {
       element: <DetailTiket />,
     },
     {
-      path: "/Payment",
+      path: "/payment",
       element: <Payment />,
     },
     {
-      path: "/g-login",
-      element: <Glogin />,
+      path: "/forgot",
+      element: <ForgotPassword />,
+    },
+    {
+      path: "/forgot/confirm-password",
+      element: <ConfirmPassword />,
+    },
+    {
+      path: "/travelDokumen",
+      element: <TravelDokumen />,
     },
   ]);
   return <RouterProvider router={router} />;

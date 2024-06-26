@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Slicing_1 from "../assets/components/SlicingHomePage/Slicing_1";
 import Navbar from "../assets/components/Navbar";
 import Slicing_2 from "../assets/components/SlicingHomePage/Slicing_2";
 import Slicing_3 from "../assets/components/SlicingHomePage/Slicing_3";
 import Footer from "../assets/components/Footer";
 import { profileUser } from "../redux/Action/actionLogin";
-import { useDispatch, useSelector } from "react-redux";
+import { getTokenFromCookie } from "../assets/utils/cookies"; // Ganti dengan path sesuai struktur proyek Anda
 import { reset } from "../redux/Reducers/TiketReducer";
 
 export default function HomePage() {
@@ -16,7 +18,7 @@ export default function HomePage() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(profileUser());
-  }, []);
+  }, [dispatch]);
   return (
     <div>
       <div className="fixed top-0 w-full bg-white z-50 ">
