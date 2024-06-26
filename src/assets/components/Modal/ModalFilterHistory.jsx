@@ -7,8 +7,7 @@ export default function ModalFilterKeberangkatan({
   setFilter,
 }) {
   const [selectedclass, setSelectedclass] = useState("");
-  const filter = ["Semua", "Issued", "Unpaid", "Cancelled"];
-  console.log("setFilter", setFilter);
+  const filter = ["Issued", "Unpaid", "Cancelled"];
   if (!visible) return null;
   return (
     <div className="absolute top-[40px] shadow-lg rounded-2xl">
@@ -31,6 +30,9 @@ export default function ModalFilterKeberangkatan({
               key={index}
               className=" hover:cursor-pointer"
               onClick={() => {
+                if (selectedclass !== "" && selectedclass === kelas) {
+                  return setSelectedclass(""), setFilter("");
+                }
                 setSelectedclass(kelas);
                 setFilter(kelas);
               }}
@@ -48,7 +50,7 @@ export default function ModalFilterKeberangkatan({
                   </div>
                 )
               ) : (
-                <div className="border-b py-3 px-2  items-center">{kelas}</div>
+                <div className="border-b py-3 px-2 items-center">{kelas}</div>
               )}
             </div>
           ))}

@@ -5,26 +5,24 @@ import { setToken } from "../Reducers/reducersLogin";
 export const login = (email, password, navigate) => async (dispatch) => {
   try {
     const response_login = await axios.post(
-        "/api/login",
-        {
-          email: email,
-          password: password,
-          expiresInMins: 0.1, // optional, defaults to 60
-        },
-        {
-            withCredentials: true
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
+      "/api/login",
+      {
+        email: email,
+        password: password,
+        expiresInMins: 0.1, // optional, defaults to 60
+      },
+      {
+        withCredentials: true,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
     );
 
     if (response_login?.status === 200) {
-      navigate("/");
-      console.log("Data", response_login.data);
-      const isiToken = response_login.data?.data?.token;
-      dispatch(setToken(isiToken));
+      console.log('response_login', response_login)
       alert("Berhasil login");
+      navigate("/");
       return { status: 200 }; // Return status for successful login
     } else {
       alert("password atau username salah");
@@ -85,8 +83,7 @@ export const profileUser = () => async (dispatch, getState) => {
     const isiData = response_profile?.data;
     dispatch(setToken(isiData));
     if (response_profile?.status === 200) {
-      console.log("Data", response_profile.data);
-      alert("Berhasil login");
+      // console.log("Data", response_profile.data);
       return { status: 200 }; // Return status for successful login
     } else {
       alert("password atau username salah");

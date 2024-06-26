@@ -6,11 +6,14 @@ import Slicing_3 from "../assets/components/SlicingHomePage/Slicing_3";
 import Footer from "../assets/components/Footer";
 import { profileUser } from "../redux/Action/actionLogin";
 import { useDispatch, useSelector } from "react-redux";
+import { reset } from "../redux/Reducers/TiketReducer";
 
 export default function HomePage() {
+  const dispact = useDispatch();
+  useEffect(() => {
+    dispatch(reset());
+  }, []);
   const dispatch = useDispatch();
-  const theState = useSelector((state) => state);
-  console.log("theState", theState);
   useEffect(() => {
     dispatch(profileUser());
   }, []);
@@ -21,7 +24,7 @@ export default function HomePage() {
           <Navbar />
         </div>
       </div>
-      <div className="pt-[85px]">
+      <div className="pt-[85px] max-xl:pt-5">
         <div></div>
         <Slicing_1 />
         <Slicing_2 />

@@ -13,6 +13,8 @@ import History from "./Pages/History";
 import DetailTiket from "./Pages/DetailTiket";
 import Payment from "./Pages/Payment";
 import Glogin from "./Pages/gLogin2";
+import Slicing_1 from "./assets/components/SlicingHomePage/Slicing_1";
+import Slicing_2 from "./assets/components/SlicingHomePage/Slicing_2";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -59,10 +61,6 @@ export default function App() {
     {
       path: "/Payment",
       element: <Payment />,
-    },
-    {
-      path: "/travelDokumen",
-      element: <TravelDokumen />,
     },
     {
       path: "/g-login",
