@@ -9,6 +9,8 @@ import {
   setFile,
   setMessage,
 } from "../Reducers/reducersLogin";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const login = (email, password, navigate) => async (dispatch) => {
   try {
@@ -26,14 +28,32 @@ export const login = (email, password, navigate) => async (dispatch) => {
     );
 
     if (response_login?.status === 200) {
+      toast.success("Berhasil login", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       navigate("/");
-      alert("Berhasil login");
       return { status: 200 }; // Return status for successful login
     } else if (response_login?.status === 401) {
       const pesan =
         response_login?.data?.message ||
         "Login gagal, periksa kembali email dan password Anda.";
-      alert(pesan); // Handle error jika login gagal
+      toast.error(pesan, {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return { status: 401 }; // Return status for failed login
     }
   } catch (error) {
@@ -41,11 +61,29 @@ export const login = (email, password, navigate) => async (dispatch) => {
       const pesan =
         error.response?.data?.message ||
         "Login gagal, periksa kembali email dan password Anda.";
-      alert(pesan); // Handle error jika login gagal
+      toast.error(pesan, {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return { status: 401 }; // Return status for failed login
     } else {
       console.error("Error:", error);
-      alert("Terjadi kesalahan pada server, silakan coba lagi nanti.");
+      toast.error("Terjadi kesalahan pada server, silakan coba lagi nanti.", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return { status: 500 }; // Return status for internal server error
     }
   }
@@ -74,14 +112,42 @@ export const register =
       if (response_register?.status === 200) {
         navigate("/add-pin");
         console.log("Data", response_register.data);
-        alert("Berhasil Register");
+        toast.success("Berhasil Register", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
         return { status: 200 }; // Return status for successful login
       } else {
-        alert("password atau username salah");
+        toast.error("Password atau username salah", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
         return { status: 401 }; // Return status for failed login
       }
     } catch (error) {
       console.error("Error:", error);
+      toast.error("Terjadi kesalahan pada server", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return { status: 500 }; // Return status for internal server error
     }
   };
@@ -97,7 +163,6 @@ export const profileUser = () => async (dispatch) => {
         headers: { "Content-Type": "application/json" },
       }
     );
-    console.log("asdasd");
     const isiAlamat = response_profile?.data?.data?.alamat;
     dispatch(setAlamat(isiAlamat));
 
@@ -118,10 +183,8 @@ export const profileUser = () => async (dispatch) => {
 
     if (response_profile?.status === 200) {
       console.log("Data", response_profile.data);
-      // alert("Berhasil login");
       return { status: 200 }; // Return status for successful login
     } else {
-      // alert("password atau username salah");
       return { status: 401 }; // Return status for failed login
     }
   } catch (error) {
@@ -139,23 +202,50 @@ export const createPin = (pin, navigate) => async (dispatch) => {
       },
       {
         withCredentials: true,
-      },
-      {
         headers: { "Content-Type": "application/json" },
       }
     );
+
     console.log("pin", pin);
 
     if (response_pin?.status === 200) {
+      toast.success("PIN Terkonfirmasi", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       navigate("/");
-      alert("Berhasil buat pin");
-      return { status: 200 }; // Return status for successful login
+      return { status: 200 }; // Return status for successful creation
     } else {
-      alert("password atau username salah");
-      return { status: 401 }; // Return status for failed login
+      toast.error("PIN Salah", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return { status: 401 }; // Return status for failed creation
     }
   } catch (error) {
     console.error("Error:", error);
+    toast.error("Terjadi kesalahan pada server", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
     return { status: 500 }; // Return status for internal server error
   }
 };
@@ -190,34 +280,89 @@ export const updateProfile =
 
       if (response_updateProfile?.status === 200) {
         console.log("Response", response_updateProfile);
-        alert("Berhasil Update");
+        toast.success("Berhasil Update", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
         return { status: 200 }; // Return status for successful login
       } else {
-        alert("Gagal Update");
+        toast.error("Gagal Update", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
         return { status: 401 }; // Return status for failed login
       }
     } catch (error) {
       console.error("Error:", error);
+      toast.error("Terjadi kesalahan pada server", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return { status: 500 }; // Return status for internal server error
     }
   };
 
 export const logout = () => async () => {
   try {
-    const response_login = await axios.post("/api/logout", {
+    const response_logout = await axios.post("/api/logout", {
       withCredentials: true,
     });
 
-    if (response_login?.status === 200) {
-      // navigate("/");
-      alert("Berhasil Logout");
+    if (response_logout?.status === 200) {
+      toast.success("Berhasil Logout", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return { status: 200 }; // Return status for successful login
     } else {
-      alert("Gagal Logout");
+      toast.error("Gagal Logout", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return { status: 401 }; // Return status for failed login
     }
   } catch (error) {
     console.error("Error:", error);
+    toast.error("Terjadi kesalahan pada server", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
     return { status: 500 }; // Return status for internal server error
   }
 };
@@ -238,13 +383,42 @@ export const forgotPassword = (email) => async (dispatch) => {
       const pesan = response_forgot?.data;
       dispatch(setMessage(pesan));
       console.log("response_forgot", response_forgot);
+      toast.success("Permintaan reset password berhasil dikirim", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return { status: 200 }; // Return status for successful login
     } else {
-      alert("Gagal Mengirim");
+      toast.error("Gagal Mengirim", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return { status: 401 }; // Return status for failed login
     }
   } catch (error) {
     console.error("Error:", error);
+    toast.error("Terjadi kesalahan pada server", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
     return { status: 500 }; // Return status for internal server error
   }
 };
@@ -265,13 +439,213 @@ export const pinValidate = (pin) => async (dispatch) => {
 
     if (response_validatePin?.status === 200) {
       console.log("response_validatePin", response_validatePin);
+      toast.success("PIN Validasi Berhasil", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return { status: 200 }; // Return status for successful login
     } else {
-      alert("Gagal validasi");
+      toast.error("Gagal validasi", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return { status: 401 }; // Return status for failed login
     }
   } catch (error) {
     console.error("Error:", error);
+    toast.error("Terjadi kesalahan pada server", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+    return { status: 500 }; // Return status for internal server error
+  }
+};
+
+export const changePassword =
+  (passwordLama, passwordBaru, konfirmasiPassword) => async (dispatch) => {
+    try {
+      const response_changePassword = await axios.put(
+        "/api/change-password",
+        {
+          oldPassword: passwordLama,
+          password: passwordBaru,
+          confirmPassword: konfirmasiPassword,
+        },
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (response_changePassword?.status === 200) {
+        console.log("response_changePassword", response_changePassword);
+        toast.success("PIN Validasi Berhasil", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        return { status: 200 }; // Return status for successful login
+      } else {
+        toast.error("Gagal validasi", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        return { status: 401 }; // Return status for failed login
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Terjadi kesalahan pada server", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return { status: 500 }; // Return status for internal server error
+    }
+  };
+
+export const changePin = (pinLama, pinBaru2, pinBaru3) => async (dispatch) => {
+  try {
+    const response_changePin = await axios.put(
+      "/api/change-pin",
+      {
+        oldPin: pinLama,
+        newPin: pinBaru2,
+        confirmPin: pinBaru3,
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    if (response_changePin?.status === 200) {
+      console.log("response_changePin", response_changePin);
+      toast.success("Berhasil Mengganti PIN", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return { status: 200 }; // Return status for successful login
+    } else {
+      toast.error("Gagal Mengganti PIN", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return { status: 401 }; // Return status for failed login
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    toast.error("Terjadi kesalahan pada server", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+    return { status: 500 }; // Return status for internal server error
+  }
+};
+
+export const forgotPin = (passwordForgotPin, pinBaru) => async (dispatch) => {
+  try {
+    const response_forgotPin = await axios.put(
+      "/api/forgot-pin",
+      {
+        pin: pinBaru,
+        password: passwordForgotPin,
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    if (response_forgotPin?.status === 201) {
+      console.log("response_forgotPin", response_forgotPin);
+      toast.success("Berhasil Mengganti PIN", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return { status: 200 }; // Return status for successful login
+    } else {
+      toast.error("Gagal Mengganti PIN", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return { status: 401 }; // Return status for failed login
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    toast.error("Terjadi kesalahan pada server", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
     return { status: 500 }; // Return status for internal server error
   }
 };

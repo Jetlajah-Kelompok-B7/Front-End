@@ -7,7 +7,7 @@ import { login } from "../redux/Action/actionLogin";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function confirmPassword() {
   const [isClicked1, setIsClicked1] = useState(false);
   const [passwordType1, setPasswordType1] = useState("password");
 

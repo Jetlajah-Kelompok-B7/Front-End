@@ -56,6 +56,9 @@ const login = createSlice({
     clearMessage(state) {
       state.message = "";
     },
+    clearPin(state) {
+      state.pin = "";
+    }
   },
 });
 
@@ -71,6 +74,7 @@ export const {
   setLogout,
   setMessage,
   clearMessage,
+  clearPin
 } = login.actions;
 
 export default login.reducer;

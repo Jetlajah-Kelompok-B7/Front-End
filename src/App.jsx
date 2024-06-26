@@ -1,5 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
@@ -10,6 +12,7 @@ import HomePage from "./Pages/HomePage";
 import ResultSearch from "./Pages/searchResult";
 import Notification from "./Pages/Notification";
 import History from "./Pages/History";
+import Payment from "./Pages/Payment";
 import DetailTiket from "./Pages/DetailTiket";
 import ConfirmPassword from "./Pages/confirmPassword";
 import ForgotPassword from "./Pages/forgotPassword";
@@ -74,5 +77,11 @@ export default function App() {
       element: <TravelDokumen />,
     },
   ]);
-  return <RouterProvider router={router} />;
+
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </>
+  );
 }

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPin } from "../redux/Reducers/reducersLogin";
+import { setPin, clearPin } from "../redux/Reducers/reducersLogin";
 import { createPin } from "../redux/Action/actionLogin";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
@@ -8,31 +8,31 @@ import "../App.css";
 export default function AddPin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const pin = useSelector((state) => state.login.pin);
+  const [pin, setPinState] = useState("");
   const theState = useSelector((state) => state);
-  const [loading, setLoading] = useState("");
+  const [loading, setLoading] = useState(false);
+  const pinRefs = useRef([]);
+
   console.log("theState", theState);
 
   // Fungsi untuk mengonversi string pin ke array
-  const getPinArray = (pin) => {
-    // Pastikan pin adalah string
-    pin = pin || ""; // Menggunakan nilai default jika pin adalah null atau undefined
-    return pin.split("").concat(new Array(6 - pin.length).fill(""));
+  const getPinArray = (c) => {
+    c = pin?.toString() || "";
+    return c.split("").concat(new Array(6 - c.length).fill(""));
   };
 
   function handleChange(e, index) {
     if (isNaN(e.target.value)) return false;
     const newPin = getPinArray(pin);
     newPin[index] = e.target.value;
-    dispatch(setPin(newPin.join("")));
+    setPinState(newPin.join(""));
 
     // Pindah fokus ke input berikutnya
-    if (e.target.value && e.target.nextSibling) {
-      e.target.nextSibling.focus();
+    if (e.target.value && index < pinRefs.current.length - 1) {
+      pinRefs.current[index + 1].focus();
     }
   }
 
-  // Handles key down events in PIN input
   function handleKeyDown(e, index) {
     if (e.key === "Backspace") {
       const newPin = getPinArray(pin);
@@ -41,41 +41,22 @@ export default function AddPin() {
         // Jika input saat ini kosong, pindah fokus ke input sebelumnya
         if (index > 0) {
           newPin[index - 1] = ""; // Kosongkan input sebelumnya
-          dispatch(setPin(newPin.join("")));
-          e.target.previousSibling.focus();
+          dispatch(clearPin());
+          pinRefs.current[index - 1].focus();
         }
       } else {
         // Hapus karakter di input saat ini
         newPin[index] = "";
-        dispatch(setPin(newPin.join("")));
       }
+      dispatch(setPin(newPin.join("")));
     }
   }
-
-  // useEffect(() => {
-  //   dispatch(createPin());
-  // }, [dispatch]);
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-
-  //   const response = await dispatch(createPin(pin, navigate));
-
-  //   if (response.status === 200) {
-  //     alert("Berhasil membuat PIN");
-  //     window.location.reload(); // Reloading the page after successful PIN creation
-  //     console.log("response", response);
-  //   } else {
-  //     alert("Gagal membuat PIN. Silakan coba lagi.");
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e?.preventDefault();
     setLoading(true);
-    const response = await dispatch(createPin(pin, navigate)); // Kirim email dan password ke action creator login
+    const response = await dispatch(createPin(pin, navigate)); // Kirim pin ke action creator createPin
     setLoading(false);
-
     console.log("Response", response);
   };
 
@@ -97,6 +78,7 @@ export default function AddPin() {
                 onKeyDown={(e) => handleKeyDown(e, i)}
                 maxLength={1}
                 className="input-pin"
+                ref={(el) => (pinRefs.current[i] = el)}
               />
             ))}
           </div>
