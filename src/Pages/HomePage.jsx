@@ -6,8 +6,7 @@ import Navbar from "../assets/components/Navbar";
 import Slicing_2 from "../assets/components/SlicingHomePage/Slicing_2";
 import Slicing_3 from "../assets/components/SlicingHomePage/Slicing_3";
 import Footer from "../assets/components/Footer";
-import { profileUser } from "../redux/Action/actionLogin";
-import { getTokenFromCookie } from "../assets/utils/cookies"; // Ganti dengan path sesuai struktur proyek Anda
+import { profileUser } from "../redux/Action/actionLogin"; // Ganti dengan path sesuai struktur proyek Anda
 import { reset } from "../redux/Reducers/TiketReducer";
 
 export default function HomePage() {
