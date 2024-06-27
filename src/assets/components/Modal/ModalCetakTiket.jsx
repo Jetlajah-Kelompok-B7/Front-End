@@ -1,31 +1,15 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 import { useReactToPrint } from "react-to-print";
+import { format, differenceInMinutes } from "date-fns";
 
-export default function ModalCetakTiket({ visible, onClose }) {
+export default function ModalCetakTiket({ visible, onClose, detail_tiket }) {
   const componentRef = useRef();
-  const customToPrint = useCallback((printWindow) => {
-    console.log(printWindow);
-    const printContent =
-      printWindow.contentDocument || printWindow.contentWindow?.document;
-    const printedScrollContainer =
-      printContent.querySelector("#TableContainer");
-
-    printedScrollContainer.style.maxHeight = "none";
-    printedScrollContainer.style.overflow = "visible !important";
-    printedScrollContainer.style.height = "fit-content !important";
-
-    printWindow.contentWindow.print();
-
-    // print must return a Promise
-    return Promise.resolve();
-  }, []);
-
+  const [first, setfirst] = useState(false);
   const reactToPrintContent = useCallback(() => {
     return componentRef.current;
   }, [componentRef.current]);
-
   const handlePrint = useReactToPrint({
     // content: () => componentRef.current,
     content: reactToPrintContent,
@@ -35,12 +19,44 @@ export default function ModalCetakTiket({ visible, onClose }) {
     if (e.target.id === "container") return onClose();
   };
 
-  if (!visible) return null;
+  const handleResize = () => {
+    // Check if the screen width is less than or equal to lg (1024px)
+    if (window.innerWidth <= 720) {
+      setfirst(true);
+    } else {
+      setfirst(false);
+    }
+  };
 
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    // Initial check
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  if (first === true) {
+    handlePrint();
+    onClose();
+  }
+
+  const Orders = detail_tiket?.data?.total_price?.checkout?.order?.Orders;
+  const ticket = detail_tiket?.data?.total_price?.checkout?.order?.ticket;
+  const flight =
+    detail_tiket?.data?.total_price?.checkout?.order?.ticket?.schedule?.flight;
+  const selisih = differenceInMinutes(
+    new Date(ticket?.schedule?.kedatangan),
+    new Date(ticket?.schedule?.keberangkatan)
+  );
+  const jam = Math.floor(selisih / 60);
+  const menit = selisih % 60;
+  const durasi = `${jam}j ${menit}m`;
+
+  if (!visible) return null;
   return (
     <div
       id="container"
-      className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-30"
+      className="absolute inset-0 flex flex-col   justify-center items-center bg-black bg-opacity-30"
       onClick={(e) => {
         handleClose(e);
       }}
@@ -48,11 +64,15 @@ export default function ModalCetakTiket({ visible, onClose }) {
       <style type="text/css" media="print">
         {
           "\
-   @page { size: 1077px 500px; border: 16px solid #176B87; border-radius: 16px; margin: 0px  }\
+   @page { size: 700px 375px; border: 16px solid #176B87; border-radius: 16px; margin: 0px  }\
 "
         }
       </style>
-      <div id="TableContainer" ref={componentRef} className=" bg-white relative">
+      <div
+        id="TableContainer"
+        ref={componentRef}
+        className=" bg-white relative"
+      >
         <div className="flex bg-[#176B87] pt-[30px] pb-[19px] px-[48px] justify-between">
           <div className="flex items-center gap-6">
             <img
@@ -63,42 +83,79 @@ export default function ModalCetakTiket({ visible, onClose }) {
             <p className="text-3xl font-bold text-white">E - Boarding Pass</p>
           </div>
         </div>
-        <div className="px-[61px] pt-[73px] pb-10">
-          <p className="text-start text-3xl font-semibold">Rozzi Recing</p>
-          {/* Bawah Recing */}
-          <div className="flex px-[74px] items-end gap-10 mt-[31px]">
-            <div className="text-start flex-1 text-sm text-gray-500">
-              <span className="font-semibold text-2xl text-black">
-                Jakartar <span className="text-[#176B87]">(CGK)</span>
-              </span>
-              <br /> Soekarno Hatta Internasional Airport Terminal 1A
+        <div className="bg-white p-4 flex w-[700px]  justify-center items-center">
+          {/* kiri */}
+          <div className="w-full text-start grid  grid-cols-2 gap-12 -mr-[250px] ml-2">
+            <div>
+              Nama Penumpang :
+              <ul className="list-disc pl-5 font-bold">
+                {Orders.map((order, i) => (
+                  <li key={i}>
+                    <div className="flex">
+                      {order.nama}{" "}
+                      <p className="font-normal">, seat: {order.no_kursi}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className="flex-1 self-start -mt-6">
-              <div className="flex flex-col justify-center items-center">
-                <img
-                  src="/images/IconPesawatBiru.png"
-                  alt=""
-                  className="w-10 -ml-[1px] mt-1"
-                />
-                <p className="text-gray-500 border-b py-3 w-full flex justify-center items-center">
-                  <AccessTimeIcon style={{ fontSize: 18 }} /> 1j 0m
-                </p>
-              </div>
-            </div>
-            <div className="text-start flex-1 text-sm text-gray-500">
-              <span className="font-semibold text-2xl text-black">
-                Jakartar <span className="text-[#176B87]">(CGK)</span>
+            <div className="flex flex-col mr-2.5">
+              Tanggal {" : "}
+              <span className="font-bold mb-1">
+                {format(
+                  new Date(ticket?.schedule?.keberangkatan),
+                  "d MMMM yyyy"
+                )}
               </span>
-              <br /> Soekarno Hatta Internasional Airport Terminal 1A
+              Boarding Time{" : "}
+              <span className="font-bold">
+                {ticket?.schedule?.keberangkatan.split("T")[1].split(":")[0]}:
+                {ticket?.schedule?.keberangkatan.split("T")[1].split(":")[1]}
+              </span>
+            </div>
+            <div>
+              <p>
+                Maskapai :{" "}
+                <span className="font-bold">
+                  {flight?.Plane?.Airline?.nama_maskapai}
+                </span>
+              </p>
+              <p>
+                Gerbang :{" "}
+                <span className="font-bold">
+                  {flight?.terminal_keberangkatan}
+                </span>
+              </p>
+            </div>
+            <div>
+              <p>
+                Dari :{" "}
+                <span className="font-bold">
+                  {flight?.bandara_keberangkatan?.lokasi?.split(",")[0]}
+                </span>
+              </p>
+              <p>
+                Ke :{" "}
+                <span className="font-bold">
+                  {flight?.bandara_kedatangan?.lokasi?.split(",")[0]}
+                </span>
+              </p>
             </div>
           </div>
-          <div className="flex items-center justify-center">
-            <div className="mt-4 text-xl font-semibold">Scan Code</div>
+          {/* Kanan */}
+          <div className="w-full items-center justify-end flex">
+            <div className="flex flex-col">
+              <p className="flex justify-center">Scan Code</p>
+              <img src="/images/download.png" alt="" className="" />
+            </div>
           </div>
         </div>
       </div>
-      <div className="absolute">
-        <button className=" bg-black inset-0" onClick={handlePrint}>
+      <div className=" bg-white w-[700px] -mt-1 flex items-center justify-center py-3">
+        <button
+          className="bg-[#176B87] px-10 rounded-xl py-3 text-white font-semi-bold"
+          onClick={handlePrint}
+        >
           Cetak tiket
         </button>
       </div>

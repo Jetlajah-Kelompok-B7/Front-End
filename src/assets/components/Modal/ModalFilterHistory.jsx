@@ -10,7 +10,7 @@ export default function ModalFilterKeberangkatan({
   const filter = ["Issued", "Unpaid", "Cancelled"];
   if (!visible) return null;
   return (
-    <div className="absolute top-[40px] shadow-lg rounded-2xl">
+    <div className="absolute top-[50px] shadow-lg rounded-2xl right-0">
       <div
         className="flex justify-end bg-[#176b87] text-base rounded-t-2xl px-2 py-2"
         onClick={() => {

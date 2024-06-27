@@ -38,3 +38,7 @@
   color: #fff;
 }
 
+.no-border-bottom {
+  border-bottom: none !important;
+}
+

@@ -279,9 +279,9 @@ export default function History() {
         <Navbar />
       </div>
       {/* Riwayat Pemesanan */}
-      <div className="shadow flex flex-col gap-3 pb-3 pt-[47px] px-[260px] ">
+      <div className="shadow flex flex-col gap-3 pb-3 pt-[47px] px-[260px] max-xl:px-5">
         <div className="w-full  text-xl font-bold">Riwayat Pemesanan</div>
-        <div className="flex mx-[16px] items-center mt-6 gap-4">
+        <div className="flex mx-[16px] items-cente mt-6 gap-4 max-xs:flex-col max-xs:mx-0">
           <button
             className="bg-[#176b87] py-3 rounded-xl text-start px-4  text-base text-white font-semibold flex-1"
             onClick={() => window.history.go(-1)}
@@ -290,7 +290,7 @@ export default function History() {
             Beranda
           </button>
           {/* Filer Button */}
-          <div className="flex items-center gap-4 relative">
+          <div className="flex items-center gap-4 relative max-xs:self-end">
             <div
               className="flex gap-1 text-[#176b87] rounded-2xl border border-[#176b87] py-1 px-2 hover:cursor-pointer"
               onClick={() => {
@@ -321,7 +321,7 @@ export default function History() {
             </div>
           </div>
         </div>
-        <div className="mx-4">
+        <div className="mx-4 max-xs:mx-0">
           <SearchHistoryModal
             onClose={() => setModal("")}
             visible={modal === "search"}
@@ -331,7 +331,7 @@ export default function History() {
       </div>
 
       {/* Data Riwayat */}
-      <div className="flex flex-col gap-1 mt-6 mx-[276px] border p-10 rounded-2xl">
+      <div className="flex flex-col gap-1 mt-6 mx-[276px] max-xl:mx-5 border p-10 rounded-2xl">
         {currentItems.map((e, i) => (
           <div
             key={i}
@@ -362,7 +362,7 @@ export default function History() {
                   alt=""
                   className="h-6 w-6 -ml-[1px]"
                 />
-                <p className="text-base font-semibold">
+                <p className="text-base font-semibold truncate">
                   {`${e?.bandara_keberangkatan?.lokasi.split(",")[0]} -> ${
                     e?.bandara_kedatangan?.lokasi.split(",")[0]
                   }`}
@@ -379,7 +379,7 @@ export default function History() {
                       .split(" ")
                       .slice(0, 2)
                       .join(" ")}
-                , Terminal {e?.terminal}
+                ,<br className="hidden max-xs:flex" /> Terminal {e?.terminal}
               </p>
               <p className="text-xs  font-medium">
                 {format(parseISO(e?.timestamp), "EEE, dd MMM yyyy - ", {

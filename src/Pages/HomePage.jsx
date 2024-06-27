@@ -20,7 +20,7 @@ export default function HomePage() {
   }, [dispatch]);
   return (
     <div>
-      <div className="fixed top-0 w-full bg-white z-50 ">
+      <div className="fixed top-0 w-full bg-white z-50 shadow">
         <div className="container mx-auto">
           <Navbar />
         </div>

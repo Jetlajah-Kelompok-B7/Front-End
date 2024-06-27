@@ -6,9 +6,11 @@ import ModalLokasi from "../Modal/ModalLokasiAwal";
 import PilihKelasPenerbangan from "../Modal/KelasPenerbangan";
 import { swapLokasi } from "../../../redux/Reducers/TiketReducer";
 import { GetTiket } from "../../../redux/Action/TiketAction";
+import { useNavigate } from "react-router-dom";
 
 export default function ModalPemesananTiket() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [id, setId] = useState(null);
   const [idTanggal, setIdTanggal] = useState(1);
   const list_Pilihan = ["Sekali Jalan", "Pergi - Pulang"];
@@ -24,6 +26,22 @@ export default function ModalPemesananTiket() {
     return state?.tiket?.lokasi;
   });
 
+  const handlePemesanan = () => {
+    if (
+      kotaAwal !== "" &&
+      destinasi !== "" &&
+      kelas_penerbangan !== "" &&
+      total_penumpang !== 0 &&
+      tanggalBerangkat !== "" &&
+      tanggalPulang !== ""
+    ) {
+      // navigate("/pemesanan");
+      alert("Pemesanan Berhasil");
+    } else {
+      alert("Harap Lengkapi Semua Formulir");
+    }
+  };
+
   const handleswap = () => {
     let temp = kotaAwal;
     setKotaAwal(destinasi);
@@ -36,8 +54,8 @@ export default function ModalPemesananTiket() {
   }, []);
 
   return (
-    <div className="w-screen container">
-      <div className="relative w-[80%] mx-auto">
+    <div className="w-[1060px] container">
+      <div className="relative mx-auto">
         <div className="bg-white pt-5  rounded-2xl border">
           <div className=" px-6">
             <p className="font-bold text-[20px] ml-[10px]">
@@ -277,7 +295,12 @@ export default function ModalPemesananTiket() {
               </div>
             </div>
           </div>
-          <button className="w-full text-center font-bold text-[16px] py-4 mt-7 text-white bg-[#176B87] rounded-b-2xl">
+          <button
+            className="w-full text-center font-bold text-[16px] py-4 mt-7 text-white bg-[#176B87] rounded-b-2xl"
+            onClick={() => {
+              handlePemesanan();
+            }}
+          >
             Cari Penerbangan
           </button>
         </div>

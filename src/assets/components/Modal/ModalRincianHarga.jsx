@@ -121,7 +121,7 @@ export default function ModalRincianHarga({ visible }) {
   };
   const Orders = detail_tiket?.data?.total_price?.checkout?.order?.Orders;
   const Harga = detail_tiket?.data?.total_price?.checkout?.order?.ticket?.harga;
-  const total = detail_tiket?.data?.total_price?.checkout?.total
+  const total = detail_tiket?.data?.total_price?.checkout?.total;
   useEffect(() => {
     let dewasaCount = 0;
     let bayiCount = 0;
@@ -138,9 +138,11 @@ export default function ModalRincianHarga({ visible }) {
     setBayi(bayiCount);
   }, []);
 
+  
+
   if (!visible) return null;
   return (
-    <div className="mx-[276px] mt-4 border shadow px-[72px] py-2 rounded-[4px]">
+    <div className="mx-[276px] max-xl:mx-24 max-lg:mx-10 max-sm:mx-0 max-xs:mx-2 max-sm:px-3 mt-4 border shadow px-[72px] py-2 rounded-[4px]">
       {/* Rincian Harga */}
       <div className="flex- flex-col gap-2">
         <p className=" font-bold">Rincian Harga</p>
@@ -148,7 +150,7 @@ export default function ModalRincianHarga({ visible }) {
           {dewasa > 0 && (
             <>
               <p>{dewasa} dewasa</p>
-              <p>IDR {Harga * dewasa.toLocaleString("id-ID")}</p>
+              <p>IDR {(Harga * dewasa).toLocaleString("id-ID")}</p>
             </>
           )}
         </div>
@@ -156,7 +158,7 @@ export default function ModalRincianHarga({ visible }) {
           {bayi > 0 && (
             <>
               <p>{bayi} dewasa</p>
-              <p>IDR {Harga * bayi.toLocaleString("id-ID")}</p>
+              <p>IDR {(Harga * bayi).toLocaleString("id-ID")}</p>
             </>
           )}
         </div>
@@ -168,7 +170,9 @@ export default function ModalRincianHarga({ visible }) {
       {/* total */}
       <div className="flex justify-between font-bold border-t py-4 items-center">
         <p className=" text-base">Total</p>
-        <p className=" text-lg text-[#176B87]">IDR {total.toLocaleString("id-ID")}</p>
+        <p className=" text-lg text-[#176B87]">
+          IDR {total.toLocaleString("id-ID")}
+        </p>
       </div>
     </div>
   );

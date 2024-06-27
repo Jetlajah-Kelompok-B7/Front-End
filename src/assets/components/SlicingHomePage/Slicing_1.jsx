@@ -23,7 +23,7 @@ export default function Slicing_1() {
   // });
 
   return (
-    <div className=" h-screen max-xl:h-[900px] bg-cover bg-center bg-[url('/images/bg1.png')] flex flex-col justify-center items-center gap-20 max-xl:gap-10 ">
+    <div className=" h-screen  max-xl:h-[900px] bg-cover bg-center bg-[url('/images/bg1.png')] flex flex-col justify-center items-center gap-20 max-xl:gap-10 ">
       <div className="text-white text-center">
         <h1 className="italic font-extrabold text-[70px] max-md:text-[45px]">Jetlajah.In</h1>
         <p className="text-[32px] max-md:text-[20px] max-md:-mt-2 -mt-4">Terbang Menjelajah Angkasa</p>

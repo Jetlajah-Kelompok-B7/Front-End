@@ -163,23 +163,20 @@ export default function DetailTiket() {
   const jam = Math.floor(selisih / 60);
   const menit = selisih % 60;
   const durasi = `${jam}j ${menit}m`;
-  const durasiFormatted = format(new Date(0, 0, 0, 0, selisih), "HH:mm");
 
   return (
-    <div className="bg-white h-screen overflow-y-auto">
-      <div className="shadow">
+    <div className=" h-screen overflow-y-auto ">
+      <div className="fixed top-0 w-full bg-white z-50 shadow">
         <div className="container mx-auto">
-          <div className="fixed top-0 w-full bg-white z-10">
-            <Navbar />
-          </div>
+          <Navbar />
         </div>
       </div>
       {/* Detail Penerbangan */}
       <div className=" shadow">
         <div className="container mx-auto">
-          <div className="mx-[260px] max-lg:mx-[20px] flex flex-col gap-3 pb-3 pt-[47px]">
+          <div className="mx-[260px] max-xl:mx-24 max-lg:mx-10 max-sm:mx-2 flex flex-col gap-3 pb-3 pt-[47px]">
             <div className=" text-xl font-bold">Detail Penerbangan</div>
-            <div className="flex ml-4 items-center mt-6 gap-4">
+            <div className="flex ml-4   items-center mt-6 gap-4">
               <button
                 className="bg-[#176b87] py-3 rounded-xl text-start px-4 text-base text-white font-semibold flex-1"
                 onClick={() => {
@@ -196,7 +193,7 @@ export default function DetailTiket() {
       {/* Detail Tiket */}
       <div className="container mx-auto">
         <div
-          className="flex items-start gap-[10px] mx-[276px] px-[69px] py-[31px] rounded-[4px] shadow border mt-[41px] hover:cursor-pointer "
+          className="flex items-start gap-[10px] mx-[276px] max-xl:mx-24 max-lg:mx-10 max-sm:mx-0 max-xs:mx-2 px-[69px] max-lg:px-6 max-xs:px-4 py-[31px] rounded-[4px] shadow border mt-[41px] hover:cursor-pointer max-sm:flex-col"
           onClick={() => {
             setModal(true);
             if (modal === true) {
@@ -210,8 +207,8 @@ export default function DetailTiket() {
             className="h-5 -ml-[1px] mt-1"
           />
           <div className="flex flex-col w-full ">
-            <div className="flex justify-between  pb-[13px] ">
-              <p className="text-2xl font-semibold">
+            <div className="flex justify-between  pb-[13px] max-sm:flex-col">
+              <p className="text-2xl font-semibold truncate max-sm:text-xl ">
                 {flight?.bandara_keberangkatan?.lokasi?.split(",")[0]}
                 {` -> `}
                 {flight?.bandara_kedatangan?.lokasi?.split(",")[0]}
@@ -239,11 +236,11 @@ export default function DetailTiket() {
         </div>
         <ModalRincianHarga onClose={() => setModal(false)} visible={modal} />
         {/* Detail Pemesanan */}
-        <div className="px-[69px] mt-4 py-3 border shadow mx-[276px] mb-7 rounded-[4px]">
+        <div className="px-[69px]  max-lg:px-6 max-xs:px-3 mt-4 py-3 border shadow mx-[276px] max-xl:mx-24 max-lg:mx-10 max-sm:mx-0 max-xs:mx-2 mb-7 rounded-[4px]">
           <div className="flex justify-between">
             <p className="w-full font-bold text-lg">Detail Pesanan</p>
             <p
-              className={`text-sm text-white flex rounded-2xl py-1 px-3 items-center ${
+              className={`text-sm max-sm:text-xs text-white flex rounded-2xl py-1 px-3 items-center ${
                 flight?.status === "Boarding" ? "bg-orange-500" : "bg-[#73CA5C]"
               } whitespace-nowrap`}
             >
@@ -258,8 +255,8 @@ export default function DetailTiket() {
           <div className=" text-sm">
             {/* Keberangkatan */}
             <div className="flex gap-[13px] items-center">
-              <p className="text-sm">
-                <span className="font-bold text-base">
+              <p className="text-sm max-sm:hidden">
+                <span className="font-bold text-base ">
                   {ticket?.schedule?.keberangkatan.split("T")[1].split(":")[0]}:
                   {ticket?.schedule?.keberangkatan.split("T")[1].split(":")[1]}
                 </span>
@@ -268,34 +265,51 @@ export default function DetailTiket() {
               </p>
               <div className="flex border-b justify-between flex-1 items-center">
                 <div className="flex gap-[39px]">
-                  <p className="font-medium">
+                  <p className="font-medium flex-col">
+                    <span className="font-bold text-base max-sm:flex hidden">
+                      {format(new Date(ticket?.schedule?.kedatangan), "d MMM")}{" "}
+                      {" - "}
+                      {
+                        ticket?.schedule?.keberangkatan
+                          .split("T")[1]
+                          .split(":")[0]
+                      }
+                      :
+                      {
+                        ticket?.schedule?.keberangkatan
+                          .split("T")[1]
+                          .split(":")[1]
+                      }
+                    </span>
                     {flight?.bandara_keberangkatan?.nama_bandara.includes("-")
-                      ? flight?.bandara_keberangkatan?.nama_bandara
-                          .split(" ")[0]
-                          .split("-")
-                          .join(" ")
+                      ? flight?.bandara_keberangkatan?.nama_bandara.split(
+                          " "
+                        )[0]
                       : flight?.bandara_keberangkatan?.nama_bandara
                           .split(" ")
                           .slice(0, 2)
                           .join(" ")}
                     <br />
-                    Terminal {flight?.terminal_keberangkatan} Domestik
+                    <span className="truncate">
+                      {" "}
+                      Terminal {flight?.terminal_keberangkatan} Domestik
+                    </span>
                   </p>
-                  <p className="self-start mt-1 ml-[23px]">
+                  <p className="self-start mt-1 ml-[23px] max-lg:hidden">
                     <AccessTimeIcon style={{ fontSize: 18 }} /> {durasi}
                   </p>
                 </div>
-                <p className=" text-xs text-[#64ccc5] font-bold">
+                <p className=" text-xs text-[#64ccc5] font-bold max-sm:self-start">
                   Keberangkatan
                 </p>
               </div>
             </div>
             {/* Jet Air */}
-            <div className="flex items-center gap-2  py-2 mb-3 mx-[60px]">
+            <div className="flex  items-center gap-2  py-2 mb-3 mx-[60px] max-sm:mx-0">
               <img
                 src={flight?.Plane?.Airline?.logo_maskapai}
                 alt=""
-                className="size-8"
+                className="size-8 "
               />
               <div className="flex flex-1 flex-col justify-between gap-5">
                 <p className=" text-sm font-bold">
@@ -340,7 +354,7 @@ export default function DetailTiket() {
             </div>
             {/* Kedatangan */}
             <div className="flex gap-[13px] items-center">
-              <p className="text-sm">
+              <p className="text-sm max-sm:hidden">
                 <span className="font-bold text-base">
                   {ticket?.schedule?.kedatangan.split("T")[1].split(":")[0]}:
                   {ticket?.schedule?.kedatangan.split("T")[1].split(":")[1]}
@@ -350,11 +364,23 @@ export default function DetailTiket() {
               </p>
               <div className="flex border-b border-t py-[13px] justify-between flex-1 items-center">
                 <p className="font-medium">
+                  <span className="font-bold text-base max-sm:flex hidden">
+                    {format(new Date(ticket?.schedule?.kedatangan), "d MMM")}{" "}
+                    {" - "}
+                    {
+                      ticket?.schedule?.keberangkatan
+                        .split("T")[1]
+                        .split(":")[0]
+                    }
+                    :
+                    {
+                      ticket?.schedule?.keberangkatan
+                        .split("T")[1]
+                        .split(":")[1]
+                    }
+                  </span>
                   {flight?.bandara_kedatangan?.nama_bandara.includes("-")
-                    ? flight?.bandara_kedatangan?.nama_bandara
-                        .split(" ")[0]
-                        .split("-")
-                        .join(" ")
+                    ? flight?.bandara_kedatangan?.nama_bandara.split(" ")[0]
                     : flight?.bandara_kedatangan?.nama_bandara
                         .split(" ")
                         .slice(0, 2)
@@ -362,7 +388,9 @@ export default function DetailTiket() {
                   <br />
                   Terminal {flight?.terminal_kedatangan} Domestik
                 </p>
-                <p className=" text-xs text-[#64ccc5] font-bold">Kedatangan</p>
+                <p className=" text-xs text-[#64ccc5] font-bold max-sm:self-start">
+                  Kedatangan
+                </p>
               </div>
             </div>
             {/* cetak tiket */}
@@ -378,6 +406,7 @@ export default function DetailTiket() {
               <ModalCetakTiket
                 onClose={() => setModalTiket(false)}
                 visible={modalTiket}
+                detail_tiket={detail_tiket}
               />
             </div>
           </div>

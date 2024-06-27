@@ -29,9 +29,9 @@ export default function ModalLokasi({
 
   if (!visible) return null;
   return (
-    <div className="absolute max-lg:fixe max-lg:top-0 z-50 max-lg:bg-black max-lg:bg-opacity-30 max-lg:h-screen max-lg:flex max-lg:justify-center max-lg:items-start  inset-0 top-[155px] BG-GRAY-500">
+    <div className="absolute max-lg:fixed max-lg:top-0 z-50 max-lg:bg-black max-lg:bg-opacity-30 max-lg:h-screen max-lg:flex max-lg:justify-center max-lg:items-start  inset-0 top-[155px]">
       <div className="flex justify-center items-center z-50  max-xl:w-screen max-xl:mx-3">
-        <div className="bg-gray-500 relative py-3 px-6 border-4 rounded-2xl max-lg:rounded-b-none border-[#176B87] w-[700px] max-xl:w-full  max-lg:w-screen max-lg:border-none max-lg:absolute max-lg:bottom-0 max-lg:h-[60vh]">
+        <div className="bg-white relative py-3 px-6 border-4 rounded-2xl max-lg:rounded-b-none border-[#176B87] w-[700px] max-xl:w-full  max-lg:w-screen max-lg:border-none max-lg:absolute max-lg:bottom-0 max-lg:h-[60vh]">
           <div className="flex justify-between">
             <p className=" text-lg font-bold text-[#176B87] ">
               {id === 1 ? (
@@ -67,8 +67,7 @@ export default function ModalLokasi({
               }}
             />
           </div>
-          <div className="bg-blue-500 absolute bottom-0 h-full w-full flex justify-center items-center top-20">a</div>
-          {/* <div className=" overflow-y-auto flex flex-col gap-3">
+          <div className="h-[45vh] max-lg:h-[40vh] overflow-y-auto flex flex-col gap-3">
             {filteredData.map((lokasi, index) => (
               <div
                 key={index}
@@ -104,7 +103,7 @@ export default function ModalLokasi({
                 )}
               </div>
             ))}
-          </div> */}
+          </div>
         </div>
       </div>
     </div>
