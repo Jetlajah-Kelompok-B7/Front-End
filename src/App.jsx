@@ -13,12 +13,23 @@ import History from "./Pages/History";
 import DetailTiket from "./Pages/DetailTiket";
 import Payment from "./Pages/Payment";
 import TravelDokumen from "./Pages/DokumenTravel";
+import ForgotPassword from "./Pages/forgotPassword";
+import ConfirmPassword from "./Pages/confirmPassword";
+
 
 export default function App() {
   const router = createBrowserRouter([
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/forgot",
+      element: <ForgotPassword />,
+    },
+    {
+      path: "/confirm-password",
+      element: <ConfirmPassword />,
     },
     {
       path: "/register",
