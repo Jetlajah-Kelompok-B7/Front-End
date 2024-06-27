@@ -6,31 +6,177 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import ModalRincianHarga from "../assets/components/Modal/ModalRincianHarga";
 import ModalCetakTiket from "../assets/components/Modal/ModalCetakTiket";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { GetTiket } from "../redux/Action/TiketAction";
+import { format, differenceInMinutes } from "date-fns";
+import axios from "axios";
 
 export default function DetailTiket() {
+  const location = useLocation();
+  const id = location?.state?.id || undefined;
+  // console.log("DetailTiket  id:", id);
   const [modal, setModal] = useState(false);
   const [modalTiket, setModalTiket] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`/api/history/${id}`, {
+          withCredentials: true,
+        });
+        setDataTiket(response.data);
+        console.log("first", response.data);
+      } catch (first) {
+        console.log("error", first);
+      }
+    };
+    fetchUserData();
+  }, [id]);
+
+  const detail_tiket = {
+    status: true,
+    message: "History Transaction retrieved successfully",
+    data: {
+      total_price: {
+        id: 4,
+        checkoutId: 6,
+        checkout: {
+          metode_pembayaran: "bni",
+          status: "Paid",
+          total: 3300000,
+          is_payment: true,
+          order: {
+            Orders: [
+              {
+                id: 25,
+                nama: "Selviani",
+                tanggal_lahir: "2003-05-10",
+                kewarganegaraan: "Indonesia",
+                ktp_pasport: "A12345678",
+                is_baby: false,
+                negara_penerbit: "Indonesia",
+                berlaku_sampai: "2030-01-01T00:00:00.000Z",
+                no_kursi: 16,
+                orderId: 9,
+              },
+              {
+                id: 26,
+                nama: "Sofyan",
+                tanggal_lahir: "2003-05-05",
+                kewarganegaraan: "Indonesia",
+                ktp_pasport: "B87654321",
+                is_baby: false,
+                negara_penerbit: "Indonesia",
+                berlaku_sampai: "2025-05-05T00:00:00.000Z",
+                no_kursi: 17,
+                orderId: 9,
+              },
+              {
+                id: 27,
+                nama: "Erwin",
+                tanggal_lahir: "2003-10-05",
+                kewarganegaraan: "Indonesia",
+                ktp_pasport: "C12345678",
+                is_baby: false,
+                negara_penerbit: "Indonesia",
+                berlaku_sampai: "2025-10-05T00:00:00.000Z",
+                no_kursi: 18,
+                orderId: 9,
+              },
+            ],
+            ticket: {
+              id: 1,
+              kelas: "Economy",
+              harga: 1000000,
+              bagasi: false,
+              makanan: false,
+              hiburan: false,
+              wifi: false,
+              usb: false,
+              jumlah: 32,
+              scheduleId: 1,
+              schedule: {
+                id: 1,
+                flightId: 1,
+                keberangkatan: "2024-07-02T16:39:30.171Z",
+                kedatangan: "2024-07-02T18:04:30.171Z",
+                flight: {
+                  id: 1,
+                  bandara_keberangkatan_id: 1,
+                  bandara_kedatangan_id: 2,
+                  terminal_keberangkatan: "3C",
+                  terminal_kedatangan: "2A",
+                  status: "Boarding",
+                  planeId: 1,
+                  Plane: {
+                    id: 1,
+                    kode_pesawat: "AK001",
+                    model_pesawat: "Airbus A320-200",
+                    bagasi_kabin: 7,
+                    bagasi: 20,
+                    jarak_kursi: 29,
+                    jumlah_kursi: 140,
+                    status: "Boarding",
+                    airlineId: 1,
+                    Airline: {
+                      id: 1,
+                      kode_maskapai: "AK",
+                      nama_maskapai: "Air Asia",
+                      logo_maskapai:
+                        "https://ik.imagekit.io/tvlk/image/imageResource/2022/09/05/1662367239331-9fca504de7049b772dd2386631705024.png?tr=q-75",
+                    },
+                  },
+                  bandara_keberangkatan: {
+                    id: 1,
+                    kode_bandara: "CGK",
+                    nama_bandara: "Soekarno-Hatta International Airport",
+                    lokasi: "Tangerang, Indonesia",
+                  },
+                  bandara_kedatangan: {
+                    id: 2,
+                    kode_bandara: "DPS",
+                    nama_bandara: "Ngurah Rai International Airport",
+                    lokasi: "Denpasar, Indonesia",
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      passenger_id: 1,
+      passenger_name: "admin",
+    },
+  };
+
+  const Orders = detail_tiket?.data?.total_price?.checkout?.order?.Orders;
+  const ticket = detail_tiket?.data?.total_price?.checkout?.order?.ticket;
+  const flight =
+    detail_tiket?.data?.total_price?.checkout?.order?.ticket?.schedule?.flight;
+  const selisih = differenceInMinutes(
+    new Date(ticket?.schedule?.kedatangan),
+    new Date(ticket?.schedule?.keberangkatan)
+  );
+  const jam = Math.floor(selisih / 60);
+  const menit = selisih % 60;
+  const durasi = `${jam}j ${menit}m`;
+
   return (
-    <div className="bg-white h-screen overflow-y-auto">
-      <div className="shadow">
+    <div className=" h-screen overflow-y-auto ">
+      <div className="fixed top-0 w-full bg-white z-50 shadow">
         <div className="container mx-auto">
-          <div className="fixed top-0 w-full bg-white z-10">
-            <Navbar />
-          </div>
+          <Navbar />
         </div>
       </div>
       {/* Detail Penerbangan */}
       <div className=" shadow">
         <div className="container mx-auto">
-          <div className="mx-[260px] max-lg:mx-[20px] flex flex-col gap-3 pb-3 pt-[47px]">
+          <div className="mx-[260px] max-xl:mx-24 max-lg:mx-10 max-sm:mx-2 flex flex-col gap-3 pb-3 pt-[47px]">
             <div className=" text-xl font-bold">Detail Penerbangan</div>
-            <div className="flex ml-4 items-center mt-6 gap-4">
+            <div className="flex ml-4   items-center mt-6 gap-4">
               <button
                 className="bg-[#176b87] py-3 rounded-xl text-start px-4 text-base text-white font-semibold flex-1"
                 onClick={() => {
@@ -47,7 +193,7 @@ export default function DetailTiket() {
       {/* Detail Tiket */}
       <div className="container mx-auto">
         <div
-          className="flex items-start gap-[10px] mx-[276px] px-[69px] py-[31px] rounded-[4px] shadow border mt-[41px] hover:cursor-pointer "
+          className="flex items-start gap-[10px] mx-[276px] max-xl:mx-24 max-lg:mx-10 max-sm:mx-0 max-xs:mx-2 px-[69px] max-lg:px-6 max-xs:px-4 py-[31px] rounded-[4px] shadow border mt-[41px] hover:cursor-pointer max-sm:flex-col"
           onClick={() => {
             setModal(true);
             if (modal === true) {
@@ -61,8 +207,12 @@ export default function DetailTiket() {
             className="h-5 -ml-[1px] mt-1"
           />
           <div className="flex flex-col w-full ">
-            <div className="flex justify-between  pb-[13px] ">
-              <p className="text-2xl font-semibold">Jakarta -&gt; Surabaya</p>
+            <div className="flex justify-between  pb-[13px] max-sm:flex-col">
+              <p className="text-2xl font-semibold truncate max-sm:text-xl ">
+                {flight?.bandara_keberangkatan?.lokasi?.split(",")[0]}
+                {` -> `}
+                {flight?.bandara_kedatangan?.lokasi?.split(",")[0]}
+              </p>
               <p className="text-lg">
                 Order ID :
                 <span className="font-bold text-[#176B87]">6723y2GHK</span>
@@ -71,7 +221,10 @@ export default function DetailTiket() {
             <div className="flex justify-between items-center py-[13px] border-t">
               <p className="text-base font-bold">Total</p>
               <p className="text-lg font-bold text-[#176B87] flex items-center transition-transform">
-                IDR 9.850.000
+                IDR
+                {detail_tiket?.data?.total_price?.checkout?.total.toLocaleString(
+                  "id-ID"
+                )}
                 <KeyboardArrowUpIcon
                   className={`h-5 w-5 text-gray-500 transform transition-transform duration-300 ${
                     modal ? "rotate-180" : ""
@@ -83,11 +236,15 @@ export default function DetailTiket() {
         </div>
         <ModalRincianHarga onClose={() => setModal(false)} visible={modal} />
         {/* Detail Pemesanan */}
-        <div className="px-[69px] mt-4 py-3 border shadow mx-[276px] mb-7 rounded-[4px]">
+        <div className="px-[69px]  max-lg:px-6 max-xs:px-3 mt-4 py-3 border shadow mx-[276px] max-xl:mx-24 max-lg:mx-10 max-sm:mx-0 max-xs:mx-2 mb-7 rounded-[4px]">
           <div className="flex justify-between">
             <p className="w-full font-bold text-lg">Detail Pesanan</p>
-            <p className="text-sm text-white flex rounded-2xl py-1 px-3 items-center bg-[#73CA5C] whitespace-nowrap">
-              Sudah di Terbitkan
+            <p
+              className={`text-sm max-sm:text-xs text-white flex rounded-2xl py-1 px-3 items-center ${
+                flight?.status === "Boarding" ? "bg-orange-500" : "bg-[#73CA5C]"
+              } whitespace-nowrap`}
+            >
+              {flight?.status}
             </p>
           </div>
 
@@ -98,65 +255,141 @@ export default function DetailTiket() {
           <div className=" text-sm">
             {/* Keberangkatan */}
             <div className="flex gap-[13px] items-center">
-              <p className="text-sm">
-                <span className="font-bold text-base"> 07:00 </span>
-                <br />3 Mar
+              <p className="text-sm max-sm:hidden">
+                <span className="font-bold text-base ">
+                  {ticket?.schedule?.keberangkatan.split("T")[1].split(":")[0]}:
+                  {ticket?.schedule?.keberangkatan.split("T")[1].split(":")[1]}
+                </span>
+                <br />
+                {format(new Date(ticket?.schedule?.keberangkatan), "d MMM")}
               </p>
               <div className="flex border-b justify-between flex-1 items-center">
                 <div className="flex gap-[39px]">
-                  <p className="font-medium">
-                    Soekarno Hatta <br />
-                    Terminal 1A Domestik
+                  <p className="font-medium flex-col">
+                    <span className="font-bold text-base max-sm:flex hidden">
+                      {format(new Date(ticket?.schedule?.kedatangan), "d MMM")}{" "}
+                      {" - "}
+                      {
+                        ticket?.schedule?.keberangkatan
+                          .split("T")[1]
+                          .split(":")[0]
+                      }
+                      :
+                      {
+                        ticket?.schedule?.keberangkatan
+                          .split("T")[1]
+                          .split(":")[1]
+                      }
+                    </span>
+                    {flight?.bandara_keberangkatan?.nama_bandara.includes("-")
+                      ? flight?.bandara_keberangkatan?.nama_bandara.split(
+                          " "
+                        )[0]
+                      : flight?.bandara_keberangkatan?.nama_bandara
+                          .split(" ")
+                          .slice(0, 2)
+                          .join(" ")}
+                    <br />
+                    <span className="truncate">
+                      {" "}
+                      Terminal {flight?.terminal_keberangkatan} Domestik
+                    </span>
                   </p>
-                  <p className="self-start mt-1 ml-[23px]">
-                    <AccessTimeIcon style={{ fontSize: 18 }} /> 1j 0m
+                  <p className="self-start mt-1 ml-[23px] max-lg:hidden">
+                    <AccessTimeIcon style={{ fontSize: 18 }} /> {durasi}
                   </p>
                 </div>
-                <p className=" text-xs text-[#64ccc5] font-bold">
+                <p className=" text-xs text-[#64ccc5] font-bold max-sm:self-start">
                   Keberangkatan
                 </p>
               </div>
             </div>
             {/* Jet Air */}
-            <div className="flex items-center gap-2  py-2 mb-3 mx-[60px]">
-              <img src="/images/logoPayment.png" alt="" className="h-6 w-6" />
+            <div className="flex  items-center gap-2  py-2 mb-3 mx-[60px] max-sm:mx-0">
+              <img
+                src={flight?.Plane?.Airline?.logo_maskapai}
+                alt=""
+                className="size-8 "
+              />
               <div className="flex flex-1 flex-col justify-between gap-5">
                 <p className=" text-sm font-bold">
-                  Jet Air - Economy <br />
-                  JT - 203
+                  {flight?.Plane?.Airline?.nama_maskapai} - {ticket?.kelas}
+                  <br />
+                  {flight?.Plane?.model_pesawat}
                 </p>
-                <p className="text-sm">
+                <div className="text-sm">
                   <span className="font-bold">Informasi:</span> <br />
                   <span className="text-[#64ccc5] font-medium">
-                    Penumpang 1: Mr. Harry Potter
+                    <div className="flex gap-2">
+                      <ul>
+                        {Orders.map((order, i) => (
+                          <li key={i}>
+                            penumpang {i + 1}: {order.nama}{" "}
+                          </li>
+                        ))}
+                      </ul>
+                      <ul>
+                        {Orders.map((order, i) => (
+                          <li key={i}>
+                            <span> Id: {order.id}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <ul className="text-black">
+                      <li className="flex gap-1">
+                        Kursi:
+                        <div className="flex gap-1 ">
+                          {Orders.map((order, i) => (
+                            <p key={i}>{order.no_kursi}</p>
+                          ))}
+                        </div>
+                      </li>
+                      <li>Kabin: {flight?.Plane?.bagasi_kabin} Kg</li>
+                      <li>Bagasi: {flight?.Plane?.bagasi} Kg</li>
+                    </ul>
                   </span>
-                  <br />
-                  ID: 1234567 <br />
-                  Kursi : QZ1345 |{" "}
-                  <span className="text-[#176B87] font-semibold">
-                    Ekonomi
-                  </span>{" "}
-                  <br />
-                  Kabin : 7 Kg <br />
-                  Bagasi : 20 Kg
-                </p>
+                </div>
               </div>
             </div>
             {/* Kedatangan */}
             <div className="flex gap-[13px] items-center">
-              <p className="text-sm">
-                <span className="font-bold text-base"> 07:00 </span>
-                <br />3 Mar
+              <p className="text-sm max-sm:hidden">
+                <span className="font-bold text-base">
+                  {ticket?.schedule?.kedatangan.split("T")[1].split(":")[0]}:
+                  {ticket?.schedule?.kedatangan.split("T")[1].split(":")[1]}
+                </span>
+                <br />
+                {format(new Date(ticket?.schedule?.kedatangan), "d MMM")}
               </p>
               <div className="flex border-b border-t py-[13px] justify-between flex-1 items-center">
-                <div className="flex gap-[39px]">
-                  <p className="font-medium">
-                    Soekarno Hatta <br />
-                    Terminal 1A Domestik
-                  </p>
-                </div>
-                <p className=" text-xs text-[#64ccc5] font-bold">
-                  Keberangkatan
+                <p className="font-medium">
+                  <span className="font-bold text-base max-sm:flex hidden">
+                    {format(new Date(ticket?.schedule?.kedatangan), "d MMM")}{" "}
+                    {" - "}
+                    {
+                      ticket?.schedule?.keberangkatan
+                        .split("T")[1]
+                        .split(":")[0]
+                    }
+                    :
+                    {
+                      ticket?.schedule?.keberangkatan
+                        .split("T")[1]
+                        .split(":")[1]
+                    }
+                  </span>
+                  {flight?.bandara_kedatangan?.nama_bandara.includes("-")
+                    ? flight?.bandara_kedatangan?.nama_bandara.split(" ")[0]
+                    : flight?.bandara_kedatangan?.nama_bandara
+                        .split(" ")
+                        .slice(0, 2)
+                        .join(" ")}
+                  <br />
+                  Terminal {flight?.terminal_kedatangan} Domestik
+                </p>
+                <p className=" text-xs text-[#64ccc5] font-bold max-sm:self-start">
+                  Kedatangan
                 </p>
               </div>
             </div>
@@ -173,6 +406,7 @@ export default function DetailTiket() {
               <ModalCetakTiket
                 onClose={() => setModalTiket(false)}
                 visible={modalTiket}
+                detail_tiket={detail_tiket}
               />
             </div>
           </div>

@@ -11,16 +11,25 @@ import ResultSearch from "./Pages/searchResult";
 import Notification from "./Pages/Notification";
 import History from "./Pages/History";
 import DetailTiket from "./Pages/DetailTiket";
-import ConfirmPassword from "./Pages/confirmPassword";
-import ForgotPassword from "./Pages/forgotPassword";
 import Payment from "./Pages/Payment";
 import TravelDokumen from "./Pages/DokumenTravel";
+import ForgotPassword from "./Pages/forgotPassword";
+import ConfirmPassword from "./Pages/confirmPassword";
+
 
 export default function App() {
   const router = createBrowserRouter([
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/forgot",
+      element: <ForgotPassword />,
+    },
+    {
+      path: "/confirm-password",
+      element: <ConfirmPassword />,
     },
     {
       path: "/register",
@@ -61,14 +70,6 @@ export default function App() {
     {
       path: "/payment",
       element: <Payment />,
-    },
-    {
-      path: "/forgot",
-      element: <ForgotPassword />,
-    },
-    {
-      path: "/forgot/confirm-password",
-      element: <ConfirmPassword />,
     },
     {
       path: "/travelDokumen",

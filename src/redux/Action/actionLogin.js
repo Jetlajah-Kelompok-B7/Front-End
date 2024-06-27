@@ -29,6 +29,7 @@ export const login = (email, password, navigate) => async (dispatch) => {
     if (response_login?.status === 200) {
       navigate("/");
       alert("Berhasil login");
+      navigate("/");
       return { status: 200 }; // Return status for successful login
     } else {
       alert("password atau username salah");

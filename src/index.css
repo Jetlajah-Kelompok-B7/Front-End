@@ -2,10 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
-.custom-slick .slick-arrow.slick-prev:before,
-.custom-slick .slick-arrow.slick-next:before {
-  color: #fe5d02; /* Replace with actual color value from Tailwind CSS */
-  border: px solid #fe5d02; /* Replace with actual color value from Tailwind CSS */
-  border-radius: 0.5rem; /* Adjust border radius as needed */
-  margin: 0 -200px;
+.custom-slick .slick-arrow {
+  border-color: #fe5d02;
+  font-size: 24px;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  z-index: 1;
+  opacity: 1;
 }
+
+.custom-slick .slick-prev {
+  transform: translateY(-50%) scale(1.7);
+}
+
+.custom-slick .slick-next {
+  transform: translateY(-50%) scale(1.7);
+}
+
+.custom-slick .slick-arrow:before {
+  color: #fe5d02;
+  border-radius: 50%;
+}
+.ant-drawer-close {
+  z-index: 50;
+}
+
+.ant-drawer-title {
+  color: #176b87;
+  z-index: 50;
+}
+
+.ant-drawer-body {
+  background-color: #176b87;
+  color: #fff;
+}
+
+.no-border-bottom {
+  border-bottom: none !important;
+}
+

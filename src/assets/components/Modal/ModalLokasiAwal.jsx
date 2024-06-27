@@ -14,17 +14,24 @@ export default function ModalLokasi({
 }) {
   const [selectedKota, setSelectedkota] = useState("");
   const [selectedDestinasi, setSelectedDestinasi] = useState("");
+  const [namaKota, setNamaKota] = useState("");
   const dispatch = useDispatch();
-  // const DataLokasi = useSelector((state) => {
-  //   return state?.tiket?.lokasi;
-  // });
-  const DataLokasi = ["bali", "surabaya"];
+  const Data = useSelector((state) => {
+    return state?.tiket?.lokasi;
+  });
+
+  //pengaman untuk Data jika undeifined
+  if (Data === undefined) return null;
+
+  const filteredData = Data.filter((lokasi) =>
+    lokasi.lokasi.toLowerCase().includes(namaKota.toLowerCase())
+  );
 
   if (!visible) return null;
   return (
-    <div className="absolute z-50 inset-0 flex items-center justify-center top-[170px]">
-      <div className="flex justify-center items-center z-50">
-        <div className="bg-white py-3 px-6 border-4 rounded-2xl border-[#176B87] w-[700px]">
+    <div className="absolute max-lg:fixed max-lg:top-0 z-50 max-lg:bg-black max-lg:bg-opacity-30 max-lg:h-screen max-lg:flex max-lg:justify-center max-lg:items-start  inset-0 top-[155px]">
+      <div className="flex justify-center items-center z-50  max-xl:w-screen max-xl:mx-3">
+        <div className="bg-white relative py-3 px-6 border-4 rounded-2xl max-lg:rounded-b-none border-[#176B87] w-[700px] max-xl:w-full  max-lg:w-screen max-lg:border-none max-lg:absolute max-lg:bottom-0 max-lg:h-[60vh]">
           <div className="flex justify-between">
             <p className=" text-lg font-bold text-[#176B87] ">
               {id === 1 ? (
@@ -45,36 +52,52 @@ export default function ModalLokasi({
               />
             </button>
           </div>
-          <div className="max-h-[262px] overflow-y-auto flex flex-col gap-2 ">
-            {DataLokasi.map((lokasi, index) => (
+          <div>
+            <input
+              type="text"
+              className="w-full mb-3 border rounded-md py-2 px-2 outline-none"
+              placeholder="Nama Kota ...."
+              value={namaKota.trimStart()}
+              pattern="[a-zA-Z ]*"
+              onChange={(e) => {
+                setNamaKota(e.target.value);
+              }}
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^a-zA-Z ]/g, "");
+              }}
+            />
+          </div>
+          <div className="h-[45vh] max-lg:h-[40vh] overflow-y-auto flex flex-col gap-3">
+            {filteredData.map((lokasi, index) => (
               <div
                 key={index}
                 className=" hover:cursor-pointer"
                 onClick={() => {
                   if (id === 1) {
-                    dispatch(setLokasiKeberangkatan(lokasi));
-                    setKotaAwal(lokasi);
-                    setSelectedkota(lokasi);
+                    dispatch(setLokasiKeberangkatan(lokasi.kode_bandara));
+                    setKotaAwal(lokasi.lokasi);
+                    setSelectedkota(lokasi.lokasi);
                   } else {
-                    setDestinasi(lokasi);
-                    dispatch(setDestinasiPesawat(lokasi));
-                    setSelectedDestinasi(lokasi);
+                    setDestinasi(lokasi.lokasi);
+                    dispatch(setDestinasiPesawat(lokasi.kode_bandara));
+                    setSelectedDestinasi(lokasi.lokasi);
                   }
                 }}
               >
-                {lokasi === (id === 1 ? selectedKota : selectedDestinasi) ? (
-                  <div className="border-b-2">
-                    {lokasi} <br />
+                {lokasi.lokasi ===
+                (id === 1 ? selectedKota : selectedDestinasi) ? (
+                  <div className="border-b-2 border-[#176B87]">
+                    {lokasi.lokasi} <br />
                     <span className="text-gray-500">
-                      {lokasi} - {lokasi}
+                      {lokasi.kode_bandara} - {lokasi.nama_bandara}
                     </span>
                   </div>
                 ) : (
                   <div className="border-b-2">
-                    {lokasi}
+                    {lokasi.lokasi}
                     <br />
                     <span className="text-gray-500">
-                      {lokasi} - {lokasi}
+                      {lokasi.kode_bandara} - {lokasi.nama_bandara}
                     </span>
                   </div>
                 )}
