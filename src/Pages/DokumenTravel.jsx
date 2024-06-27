@@ -13,6 +13,7 @@ const travelDokumen = () => {
   const [penumpangData, setPenumpangData] = useState([]);
   const [options, setOptions] = useState([]);
   const [date, setDate] = useState("");
+  const [param, setparams] = useState([]);
 
   const navigate = useNavigate();
 
@@ -125,12 +126,13 @@ const travelDokumen = () => {
     return `${day} ${month} ${year}`;
   };
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    const formattedDate = formatTanggal(value);
-    // console.log("tangale",formattedDate)
-    setDate(formattedDate);
-  };
+  // const handleChange = (e) => {
+  //   const value = e.target.value;
+  //   const formattedDate = formatTanggal(value);
+  //   // console.log("tangale",formattedDate)
+  //   setDate(formattedDate);
+  // };
+
   const formatTanggal = (value) => {
     const date = new Date(value);
     const year = date.getFullYear();
@@ -149,7 +151,7 @@ const travelDokumen = () => {
         title: "",
         fullName: "",
         birthDate: "",
-        nationality: "Indonesia",
+        nationality: "",
         idNumber: "",
         issuingCountry: "",
         expiryDate: "",
@@ -164,7 +166,7 @@ const travelDokumen = () => {
         title: "",
         fullName: "",
         birthDate: "",
-        nationality: "Indonesia",
+        nationality: "",
         idNumber: "",
         issuingCountry: "",
         expiryDate: "",
@@ -179,7 +181,7 @@ const travelDokumen = () => {
         title: "",
         fullName: "",
         birthDate: "",
-        nationality: "Indonesia",
+        nationality: "",
         idNumber: "",
         issuingCountry: "",
         expiryDate: "",
@@ -207,13 +209,40 @@ const travelDokumen = () => {
     );
   };
 
+  const handleSimpanDataPenumpang = () => {
+    let isValid = true;
+    penumpangData.forEach((penumpang) => {
+      if (
+        !penumpang.title ||
+        !penumpang.fullName ||
+        !penumpang.birthDate ||
+        !penumpang.nationality ||
+        !penumpang.idNumber ||
+        !penumpang.issuingCountry ||
+        !penumpang.expiryDate
+      ) {
+        isValid = false;
+      }
+    });
 
-  useEffect(() => {
-    // console.log("localStorage ", localStorage.getItem("token"));
-    if (localStorage.getItem("token") === null) {
-      navigate("/");
+    if (!isValid) {
+      alert("Semua form wajib diisi!");
+      return;
     }
-  }, []);
+    // Lakukan penyimpanan data di sini, misalnya mengirim ke server atau menyimpan di state global
+    console.log("Data penumpang berhasil disimpan:", penumpangData);
+  };
+
+  // useEffect(() => {
+  //   // console.log("localStorage ", localStorage.getItem("token"));
+  //   if (localStorage.getItem("token") === null) {
+  //     alert("Anda belum login, Silahkan login!");
+  //     navigate("/");
+  //   }
+  // }, []);
+
+  
+
   return (
     <>
       <Navbar />
@@ -306,7 +335,7 @@ const travelDokumen = () => {
                           )
                         }
                         className="border border-slate-300 w-[440px] p-2 my-2"
-                      >
+                      ><option value=""></option>
                         <option value="Mr">Tuan</option>
                         <option value="Mrs">Nyonya</option>
                         <option value="Ms">Nona</option>
@@ -348,8 +377,8 @@ const travelDokumen = () => {
                       </label>
                       <input
                         type="text"
-                        value={penumpang.nationality}
                         required
+                        value={penumpang.nationality}
                         onChange={(e) =>
                           handleInputChange(
                             penumpang.id,
@@ -424,7 +453,10 @@ const travelDokumen = () => {
                 ))}
               </div>
               <div className="flex justify-center">
-                <button className="bg-[#176B87] text-white text-xl text-center py-2 px-10 rounded-xl mt-5 w-[300px] mb-10">
+                <button
+                  className="bg-[#176B87] text-white text-xl text-center py-2 px-10 rounded-xl mt-5 w-[300px] mb-10"
+                  onClick={handleSimpanDataPenumpang}
+                >
                   Simpan
                 </button>
               </div>

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { setTiketPesawat } from "../Reducers/FilterHargaReducers";
 import { ColorizeSharp } from "@mui/icons-material";
-import { setLokasi } from "../Reducers/TiketReducer";
+import { setLokasi, setTiketPesawatPergi, setTiketPesawatPulang } from "../Reducers/TiketReducer";
 
 export const GetTiket = () => async (dispatch, getState) => {
   try {
@@ -19,26 +19,23 @@ export const GetTiket = () => async (dispatch, getState) => {
 // Fetch Data Bandara
 export const GetDataBandara = () => async (dispatch, getState) => {
   try {
-    const response = await axios.get(
-      "/api/airport"
-    );
+    const response = await axios.get("/api/airport");
     dispatch(setLokasi(response.data.data));
     //  console.log("CEK DATA BARU",response.data.data)
   } catch (error) {
     if (axios.isAxiosError(error)) {
       // alert(error.message);
-      console.log("error", error.message)
+      console.log("error", error.message);
       return;
     }
     // alert(error.message)
-    console.log("error", error.message)
+    console.log("error", error.message);
   }
 };
 
-//Fetch Data Tiket
+// Fetch Data Tiket
 export const getTiketSearch = (params) => async (dispatch) => {
-
-  console.log("data paarams", params)
+  console.log("data params", params);
   const {
     bandara_keberangkatan,
     bandara_kedatangan,
@@ -49,24 +46,24 @@ export const getTiketSearch = (params) => async (dispatch) => {
   } = params;
 
   try {
-    let apiEndpoint = `/api/ticket?bandara_kedatangan=${bandara_kedatangan}&bandara_keberangkatan=${bandara_keberangkatan}&tanggal_pergi=${tanggal_pergi}&tanggal_pulang=${ tanggal_pulang}&kelas=${kelas}&jumlah=${jumlah}`;
+    // Fetch data tiket pergi
+    let apiEndpoint1 = `/api/ticket?bandara_kedatangan=${bandara_kedatangan}&bandara_keberangkatan=${bandara_keberangkatan}&tanggal_pergi=${tanggal_pergi}&kelas=${kelas}&jumlah=${jumlah}`;
+    const response1 = await axios.get(apiEndpoint1);
+    dispatch(setTiketPesawatPergi(response1.data));
+    console.log("CEK DATA PERGI", response1.data);
 
-    if (tanggal_pulang) {
-      
-      // Jika tanggal_pulang ada (berarti mode pulang pergi)
-      apiEndpoint += `&tanggal_pulang=${tanggal_pulang}`;
+    // Fetch data tiket pulang jika tanggal_pulang ada
+    if (tanggal_pulang !== "") {
+      let apiEndpoint2 = `/api/ticket?bandara_keberangkatan=${bandara_kedatangan}&bandara_kedatangan=${bandara_keberangkatan}&tanggal_pergi=${tanggal_pulang}&kelas=${kelas}&jumlah=${jumlah}`;
+      const response2 = await axios.get(apiEndpoint2);
+      dispatch(setTiketPesawatPulang(response2.data));
+      console.log("CEK DATA PULANG", response2.data);
     }
-
-    const response = await axios.get(apiEndpoint);
-
-    dispatch(setTiketPesawat(response.data)); // Menyimpan data tiket ke Redux state
-    // console.log("CEK DATA", response.data);
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      alert(error.message);
+      console.log("error", error.message);
     } else {
-      alert(error.message);
+      console.log("error", error.message);
     }
   }
 };
-

@@ -18,7 +18,6 @@ export default function ModalPemesananTiket() {
   const [kotaAwal, setKotaAwal] = useState("");
   const [destinasi, setDestinasi] = useState("");
   const [tanggalBerangkat, setTanggalBerangkat] = useState("");
-
   const [tanggalPulang, setTanggalPulang] = useState("");
   const [total_penumpang, setTotal_penumpang] = useState(0);
   const [kelas_penerbangan, setKelas_penerbangan] = useState("");
@@ -56,11 +55,13 @@ export default function ModalPemesananTiket() {
       tanggal_pulang: pilihanUser === "Pergi - Pulang" ? tanggalPulang : "",
       kelas: kelas_penerbangan,
       jumlah: total_penumpang,
+      jenisPenerbangan:pilihanUser,
     };
    
     dispatch(getTiketSearch(params));
     navigate("/resultSearch");
     dispatch(setInputSearch(params));
+    
   };
 
   

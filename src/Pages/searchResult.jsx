@@ -16,7 +16,10 @@ import { resetFilterHarga } from "../redux/Reducers/FilterHargaReducers";
 import TiketPesanan from "../assets/components/Modal/TiketPesanan";
 import { getTiketSearch } from "../redux/Action/TiketAction";
 import { useNavigate } from "react-router-dom";
-import { setBookingTiket } from "../redux/Reducers/DataBooking";
+import {
+  setBookingTiketPergi,
+  setBookingTiketPulang,
+} from "../redux/Reducers/DataBooking";
 
 const ResultSearchFilm = () => {
   const [selectedButton, setSelectedButton] = useState(null);
@@ -26,13 +29,17 @@ const ResultSearchFilm = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [iconRotasi, setIconRotasi] = useState({});
   const [searchDate, setSearchDate] = useState(null); // State untuk tanggal pencarian
+  const [selectedPergi, setSelectedPergi] = useState(null);
+  const [selectedPulang, setSelectedPulang] = useState(null);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
   // Define params here
   const params = useSelector((state) => state.tiket.dataInputanSearch);
-  console.log("parm", params);
+  // console.log("parm", params);
+
+  const { bandara_keberangkatan, bandara_kedatangan, jumlah, kelas } = params;
 
   //Accoridon buka tutup
   const toggleAccordion = (index) => {
@@ -90,7 +97,6 @@ const ResultSearchFilm = () => {
   };
 
   // Modal Filter Harga
-
   const filterHargaUser = useSelector((state) => {
     return state.filter.filterHarga;
   });
@@ -111,6 +117,37 @@ const ResultSearchFilm = () => {
   // Fetch DAta Tiket Pesawat
   const tiketData = useSelector((state) => state.filter.tiketPesawat.data);
   // console.log("allPesawat", tiketData);
+
+  //Menapilkan tiket pergi
+  const tiketPergi = useSelector((state) => state.tiket.dataPesawatPergi.data);
+  console.log("tiket pergi", tiketPergi);
+
+  //Menampilkan tikel pulang
+  const tiketPulang = useSelector(
+    (state) => state.tiket.dataPesawatPulang.data
+  );
+  console.log("tiket pulang", tiketPulang);
+
+  const ambiltype = useSelector(
+    (state) => state.tiket.dataInputanSearch.jenisPenerbangan
+  );
+  console.log("TYPE", ambiltype);
+
+  const handleSelectPergi = (flight) => {
+    setSelectedPergi(flight);
+    dispatch(setBookingTiketPergi(flight));
+
+    if (ambiltype === "Sekali Jalan") {
+      // Jika tidak ada tiket pulang, langsung ke halaman isi data penumpang
+      navigate("/travelDokumen");
+    }
+  };
+
+  const handleSelectPulang = (flight) => {
+    setSelectedPulang(flight);
+    dispatch(setBookingTiketPulang(flight));
+    navigate("/travelDokumen");
+  };
 
   // function ubah waktu
   const formatTime = (isoString) => {
@@ -165,11 +202,13 @@ const ResultSearchFilm = () => {
     const updatedParams = {
       ...params,
       tanggal_pergi: selectedDate,
+      tanggal_pulang: selectedDate,
     };
 
     // Dispatch action untuk memperbarui pencarian berdasarkan tanggal baru
     dispatch(getTiketSearch(updatedParams));
   };
+  const buttonText = `${bandara_keberangkatan} - ${bandara_kedatangan} - ${jumlah} Penumpang - ${kelas}`;
 
   return (
     <div className="container mx-auto">
@@ -179,9 +218,12 @@ const ResultSearchFilm = () => {
         <div>
           <p className="text-2xl py-10 font-bold">Pilih Penerbangan</p>
           <div className="md:flex md:gap-2 gap-10">
-            <button className="flex items-center md:pl-5 md:gap-5 md:w-[860px] md:h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl">
+            <button
+              onClick={() => navigate("/")} // Navigasi ke root ("/")
+              className="flex items-center md:pl-5 md:gap-5 md:w-[860px] md:h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl"
+            >
               <ArrowLongLeftIcon className="text-sm h-12 w-12 text-slate-200 mr-1 pl-1 flex items-center" />
-              JKT - SUB - 1 Penumpang - Ekonomi
+              {buttonText}
             </button>
 
             <TiketPesanan
@@ -395,93 +437,87 @@ const ResultSearchFilm = () => {
 
           {/* Result Penerbangan */}
           <div className="ml-4 flex-grow">
+            <h2 className="text-2xl font-bold mb-4 mt-8">Pilih Tiket Pergi</h2>
             <div className="container mx-auto">
-              {tiketData.length > 0 ? (
-                tiketData.map((flight, index) => (
+              {" "}
+              {tiketPergi.length > 0 ? (
+                tiketPergi.map((flight, index) => (
                   <div
                     key={index}
-                    className="p-5 shadow-lg border-2 border-slate-100 rounded-xl"
+                    className="p-5 shadow-lg border-2 border-slate-100 rounded-xl mb-4"
                   >
                     <div>
-                      {/* List penerbangan */}
-                      <div>
-                        <div className="flex justify-between">
-                          <div className="flex gap-5">
-                            <img
-                              src={flight.plane.logo}
-                              alt={flight.plane.airline_name}
-                              className="h-10 w-10"
-                            />
-                            <div>
-                              <p className="font-semibold">
-                                {flight.plane.airline_name}
-                              </p>
-                              <p className="font-extralight">{flight.class}</p>
-                            </div>
-                          </div>
-                          <div
-                            className="flex flex-col items-end"
-                            onClick={() => toggleDetails(index)}
-                          >
-                            <ChevronDownIcon
-                              className={`h-6 w-6 text-[#176b87aa] text-bold  text-center rounded-full border-2 border-[#176b87aa]  p-1 flex items-center transform ${
-                                iconRotasi[index] ? "rotate-180" : ""
-                              }`}
-                            />
+                      <div className="flex justify-between">
+                        <div className="flex gap-5">
+                          <img
+                            src={flight.plane.logo}
+                            alt={flight.plane.airline_name}
+                            className="h-10 w-10"
+                          />
+                          <div>
+                            <p className="font-semibold">
+                              {flight.plane.airline_name}
+                            </p>
+                            <p className="font-extralight">{flight.class}</p>
                           </div>
                         </div>
-                        <div className="pl-16 mt-5 flex justify-between items-center">
-                          <div className="flex gap-20">
-                            <div className="flex flex-col items-center">
-                              <p className="font-bold">
-                                {formatTime(flight.schedule.takeoff.time)}
-                              </p>
-                              <p className="text-sm text-gray-500">
-                                {flight.schedule.takeoff.airport_code}
-                              </p>
-                            </div>
-                            <div>
-                              <div className="border-b-2 px-20 ">
-                                <p className="text-xs text-gray-500">
-                                  {calculateFlightDuration(
-                                    flight.schedule.takeoff.time,
-                                    flight.schedule.landing.time
-                                  )}
-                                </p>
-                              </div>
-                              <p className="text-xs  text-gray-500 text-center">
-                                {flight.transit}
-                              </p>
-                            </div>
-                            <div className="flex flex-col items-center">
-                              <p className="font-bold">
-                                {formatTime(flight.schedule.landing.time)}
-                              </p>
-                              <p className="text-sm text-gray-500">
-                                {flight.schedule.landing.airport_code}
-                              </p>
-                            </div>
+                        <div
+                          className="flex flex-col items-end"
+                          onClick={() => toggleDetails(index)}
+                        >
+                          <ChevronDownIcon
+                            className={`h-6 w-6 text-[#176b87aa] text-bold text-center rounded-full border-2 border-[#176b87aa] p-1 flex items-center transform ${
+                              openDropdown === index ? "rotate-180" : ""
+                            }`}
+                          />
+                        </div>
+                      </div>
+                      <div className="pl-16 mt-5 flex justify-between items-center">
+                        <div className="flex gap-20">
+                          <div className="flex flex-col items-center">
+                            <p className="font-bold">
+                              {formatTime(flight.schedule.takeoff.time)}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {flight.schedule.takeoff.airport_code}
+                            </p>
                           </div>
-                          <div className="flex gap-10 justify-end">
-                            <div className="flex flex-col justify-end">
-                              <p className="font-semibold text-red-600">
-                                Rp. {flight.price}/ Pax
+                          <div>
+                            <div className="border-b-2 px-20">
+                              <p className="text-xs text-gray-500">
+                                {calculateFlightDuration(
+                                  flight.schedule.takeoff.time,
+                                  flight.schedule.landing.time
+                                )}
                               </p>
-                              <button
-                                className="bg-[#176B87] rounded-lg py-2 px-5 text-white font-semibold"
-                                onClick={() => {
-                                  navigate("/travelDokumen")
-                                  dispatch(setBookingTiket(flight));
-                                }}
-                              >
-                                Pilih
-                              </button>
                             </div>
+                            <p className="text-xs text-gray-500 text-center">
+                              {flight.transit}
+                            </p>
+                          </div>
+                          <div className="flex flex-col items-center">
+                            <p className="font-bold">
+                              {formatTime(flight.schedule.landing.time)}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {flight.schedule.landing.airport_code}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex gap-10 justify-end">
+                          <div className="flex flex-col justify-end">
+                            <p className="font-semibold text-red-600">
+                              Rp. {flight.price}/ Pax
+                            </p>
+                            <button
+                              className="bg-[#176B87] rounded-lg py-2 px-5 text-white font-semibold"
+                              onClick={() => handleSelectPergi(flight)}
+                            >
+                              Pilih
+                            </button>
                           </div>
                         </div>
                       </div>
-
-                      {/* Dropdown Detail Penerbangan*/}
                       {openDropdown === index && (
                         <div className="mt-5 border-t-2">
                           <div className="px-5">
@@ -494,13 +530,12 @@ const ResultSearchFilm = () => {
                                   {formatTime(flight.schedule.takeoff.time)}
                                 </p>
                                 <p className="font-semibold text-[#64CCC5]">
-                                  Keberangakatan
+                                  Keberangkatan
                                 </p>
                               </div>
-
                               <p>{formatDate(flight.schedule.takeoff.time)}</p>
                               <p>
-                                {flight.schedule.takeoff.airport_name} -
+                                {flight.schedule.takeoff.airport_name} -{" "}
                                 {flight.terminalKeberangkatan}
                               </p>
                             </div>
@@ -517,13 +552,12 @@ const ResultSearchFilm = () => {
                                   <p>{flight.plane.airline_name}</p>
                                   <p>{flight.plane.model}</p>
                                 </div>
-                                <p className="font-bold">Informasi :</p>
+                                <p className="font-bold">Informasi:</p>
                                 <p>{flight.class}</p>
                                 <p>Bagasi {flight.plane.baggage} Kg</p>
                                 <p>
                                   Bagasi Kabin {flight.plane.cabin_baggage} Kg
                                 </p>
-                                {/* <p>Fasilitas {flight.Fasilitas}</p> */}
                               </div>
                             </div>
                             <div>
@@ -535,10 +569,9 @@ const ResultSearchFilm = () => {
                                   Kedatangan
                                 </p>
                               </div>
-
                               <p>{formatDate(flight.schedule.landing.time)}</p>
                               <p>
-                                {flight.schedule.landing.airport_name} -
+                                {flight.schedule.landing.airport_name} -{" "}
                                 {flight.terminalKedatangan}
                               </p>
                             </div>
@@ -549,7 +582,7 @@ const ResultSearchFilm = () => {
                   </div>
                 ))
               ) : (
-                <div className="flex  flex-col justify-center items-center text-center py-10">
+                <div className="flex flex-col justify-center items-center text-center py-10">
                   <img
                     src="/images/notFoundData.png"
                     alt=""
@@ -562,6 +595,168 @@ const ResultSearchFilm = () => {
                     Coba cari perjalanan lainnya!
                   </p>
                 </div>
+              )}
+              {ambiltype == "Pergi - Pulang" && (
+                <>
+                  {tiketPulang.length > 0 && (
+                    <>
+                      <h2 className="text-2xl font-bold mb-4 mt-8">
+                        Pilih Tiket Pulang
+                      </h2>
+                      {tiketPulang.map((flight, index) => (
+                        <div
+                          key={index}
+                          className="p-5 shadow-lg border-2 border-slate-100 rounded-xl mb-4"
+                        >
+                          <div>
+                            <div className="flex justify-between">
+                              <div className="flex gap-5">
+                                <img
+                                  src={flight.plane.logo}
+                                  alt={flight.plane.airline_name}
+                                  className="h-10 w-10"
+                                />
+                                <div>
+                                  <p className="font-semibold">
+                                    {flight.plane.airline_name}
+                                  </p>
+                                  <p className="font-extralight">
+                                    {flight.class}
+                                  </p>
+                                </div>
+                              </div>
+                              <div
+                                className="flex flex-col items-end"
+                                onClick={() => toggleDetails(index)}
+                              >
+                                <ChevronDownIcon
+                                  className={`h-6 w-6 text-[#176b87aa] text-bold text-center rounded-full border-2 border-[#176b87aa] p-1 flex items-center transform ${
+                                    openDropdown === index ? "rotate-180" : ""
+                                  }`}
+                                />
+                              </div>
+                            </div>
+                            <div className="pl-16 mt-5 flex justify-between items-center">
+                              <div className="flex gap-20">
+                                <div className="flex flex-col items-center">
+                                  <p className="font-bold">
+                                    {formatTime(flight.schedule.takeoff.time)}
+                                  </p>
+                                  <p className="text-sm text-gray-500">
+                                    {flight.schedule.takeoff.airport_code}
+                                  </p>
+                                </div>
+                                <div>
+                                  <div className="border-b-2 px-20">
+                                    <p className="text-xs text-gray-500">
+                                      {calculateFlightDuration(
+                                        flight.schedule.takeoff.time,
+                                        flight.schedule.landing.time
+                                      )}
+                                    </p>
+                                  </div>
+                                  <p className="text-xs text-gray-500 text-center">
+                                    {flight.transit}
+                                  </p>
+                                </div>
+                                <div className="flex flex-col items-center">
+                                  <p className="font-bold">
+                                    {formatTime(flight.schedule.landing.time)}
+                                  </p>
+                                  <p className="text-sm text-gray-500">
+                                    {flight.schedule.landing.airport_code}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex gap-10 justify-end">
+                                <div className="flex flex-col justify-end">
+                                  <p className="font-semibold text-red-600">
+                                    Rp. {flight.price}/ Pax
+                                  </p>
+                                  <button
+                                    className="bg-[#176B87] rounded-lg py-2 px-5 text-white font-semibold"
+                                    onClick={() => handleSelectPulang(flight)}
+                                  >
+                                    Pilih
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            {openDropdown === index && (
+                              <div className="mt-5 border-t-2">
+                                <div className="px-5">
+                                  <p className="font-bold text-[#176B87] pt-5 pb-3 text-xl">
+                                    Detail Penerbangan
+                                  </p>
+                                  <div>
+                                    <div className="flex justify-between">
+                                      <p className="font-bold text-xl">
+                                        {formatTime(
+                                          flight.schedule.takeoff.time
+                                        )}
+                                      </p>
+                                      <p className="font-semibold text-[#64CCC5]">
+                                        Keberangkatan
+                                      </p>
+                                    </div>
+                                    <p>
+                                      {formatDate(flight.schedule.takeoff.time)}
+                                    </p>
+                                    <p>
+                                      {flight.schedule.takeoff.airport_name} -{" "}
+                                      {flight.terminalKeberangkatan}
+                                    </p>
+                                  </div>
+                                  <div className="my-3 py-2 border-t-2 border-b-2 flex gap-3">
+                                    <div className="flex items-center">
+                                      <img
+                                        src={flight.plane.logo}
+                                        alt={flight.plane.airline_name}
+                                        className="h-6 w-6"
+                                      />
+                                    </div>
+                                    <div>
+                                      <div className="font-bold pb-3">
+                                        <p>{flight.plane.airline_name}</p>
+                                        <p>{flight.plane.model}</p>
+                                      </div>
+                                      <p className="font-bold">Informasi:</p>
+                                      <p>{flight.class}</p>
+                                      <p>Bagasi {flight.plane.baggage} Kg</p>
+                                      <p>
+                                        Bagasi Kabin{" "}
+                                        {flight.plane.cabin_baggage} Kg
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div className="flex justify-between">
+                                      <p className="font-bold text-xl">
+                                        {formatTime(
+                                          flight.schedule.landing.time
+                                        )}
+                                      </p>
+                                      <p className="font-semibold text-[#64CCC5]">
+                                        Kedatangan
+                                      </p>
+                                    </div>
+                                    <p>
+                                      {formatDate(flight.schedule.landing.time)}
+                                    </p>
+                                    <p>
+                                      {flight.schedule.landing.airport_name} -{" "}
+                                      {flight.terminalKedatangan}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </>
               )}
             </div>
           </div>

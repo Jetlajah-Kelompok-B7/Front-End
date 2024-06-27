@@ -1,21 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  bookingTiketPesawat: [],
+  bookingTiketPesawatPergi: [],
+  bookingTiketPesawatPulang: [],
 };
 
 const bookingSlicer = createSlice({
   name: "booking",
   initialState,
   reducers: {
-    setBookingTiket: (state, action) => {
-      state.bookingTiketPesawat = action.payload;
+    setBookingTiketPergi: (state, action) => {
+      state.bookingTiketPesawatPergi = action.payload;
+    },
+    setBookingTiketPulang: (state, action) => {
+      state.bookingTiketPesawatPulang = action.payload;
     },
    
   },
 });
 
-export const { setBookingTiket} =
+export const { setBookingTiketPergi, setBookingTiketPulang} =
   bookingSlicer.actions;
 
 export default bookingSlicer.reducer;
