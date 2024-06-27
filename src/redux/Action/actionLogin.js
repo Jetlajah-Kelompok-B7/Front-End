@@ -8,6 +8,7 @@ import {
   setAlamat,
   setFile,
 } from "../Reducers/reducersLogin";
+import { setLoginStatus } from "../Reducers/userConditionReducer";
 
 export const login = (email, password, navigate) => async (dispatch) => {
   try {
@@ -27,7 +28,7 @@ export const login = (email, password, navigate) => async (dispatch) => {
     );
 
     if (response_login?.status === 200) {
-      navigate("/");
+      dispatch(setLoginStatus(true)); 
       alert("Berhasil login");
       navigate("/");
       return { status: 200 }; // Return status for successful login
@@ -228,7 +229,7 @@ export const updateProfile =
     }
   };
 
-export const logout = () => async () => {
+export const logout = () => async (dispatch) => {
   try {
     const response_login = await axios.post("/api/logout", {
       withCredentials: true,
@@ -236,8 +237,10 @@ export const logout = () => async () => {
 
     if (response_login?.status === 200) {
       // navigate("/");
+      dispatch(setLoginStatus(false));
       alert("Berhasil Logout");
-      return { status: 200 }; // Return status for successful login
+      return { status: 200 };
+      // Return status for successful login
     } else {
       alert("Gagal Logout");
       return { status: 401 }; // Return status for failed login

@@ -12,6 +12,8 @@ import Stack from "@mui/material/Stack";
 import SearchHistoryModal from "../assets/components/Modal/SearchHistoryModal";
 import { format, parseISO } from "date-fns";
 import id from "date-fns/locale/id";
+import axios from "axios";
+
 
 export default function History() {
   const [modal, setModal] = useState("");
@@ -19,231 +21,23 @@ export default function History() {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(7);
+  const [dataTiket, setDataTiket] = useState([]);
   const navigate = useNavigate();
+  console.log("dataTiket", dataTiket);
 
-  // Data tiket sebagai contoh
-  const dataTiket = [
-    {
-      id: 1,
-      timestamp: "2024-06-26T13:27:26.885Z",
-      bandara_keberangkatan: {
-        id: 1,
-        kode_bandara: "CGK",
-        nama_bandara: "Soekarno-Hatta International Airport",
-        lokasi: "Tangerang, Indonesia",
-      },
-      bandara_kedatangan: {
-        id: 2,
-        kode_bandara: "DPS",
-        nama_bandara: "Ngurah Rai International Airport",
-        lokasi: "Denpasar, Indonesia",
-      },
-      terminal: "3C",
-      status: "Issued",
-      nama_maskapai: "Air Asia",
-      kode_maskapai: "AK",
-    },
-    {
-      id: 1,
-      timestamp: "2024-06-26T13:27:26.885Z",
-      bandara_keberangkatan: {
-        id: 1,
-        kode_bandara: "CGK",
-        nama_bandara: "Soekarno-Hatta International Airport",
-        lokasi: "Tangerang, Indonesia",
-      },
-      bandara_kedatangan: {
-        id: 2,
-        kode_bandara: "DPS",
-        nama_bandara: "Ngurah Rai International Airport",
-        lokasi: "Denpasar, Indonesia",
-      },
-      terminal: "3C",
-      status: "Issued",
-      nama_maskapai: "Air Asia",
-      kode_maskapai: "AK",
-    },
-    {
-      id: 1,
-      timestamp: "2024-06-26T13:27:26.885Z",
-      bandara_keberangkatan: {
-        id: 1,
-        kode_bandara: "CGK",
-        nama_bandara: "Soekarno-Hatta International Airport",
-        lokasi: "Tangerang, Indonesia",
-      },
-      bandara_kedatangan: {
-        id: 2,
-        kode_bandara: "DPS",
-        nama_bandara: "Ngurah Rai International Airport",
-        lokasi: "Denpasar, Indonesia",
-      },
-      terminal: "3C",
-      status: "Issued",
-      nama_maskapai: "Air Asia",
-      kode_maskapai: "AK",
-    },
-    {
-      id: 1,
-      timestamp: "2024-06-26T13:27:26.885Z",
-      bandara_keberangkatan: {
-        id: 1,
-        kode_bandara: "CGK",
-        nama_bandara: "Soekarno-Hatta International Airport",
-        lokasi: "Tangerang, Indonesia",
-      },
-      bandara_kedatangan: {
-        id: 2,
-        kode_bandara: "DPS",
-        nama_bandara: "Ngurah Rai International Airport",
-        lokasi: "Denpasar, Indonesia",
-      },
-      terminal: "3C",
-      status: "Issued",
-      nama_maskapai: "Air Asia",
-      kode_maskapai: "AK",
-    },
-    {
-      id: 1,
-      timestamp: "2024-06-26T13:27:26.885Z",
-      bandara_keberangkatan: {
-        id: 1,
-        kode_bandara: "CGK",
-        nama_bandara: "Soekarno-Hatta International Airport",
-        lokasi: "Tangerang, Indonesia",
-      },
-      bandara_kedatangan: {
-        id: 2,
-        kode_bandara: "DPS",
-        nama_bandara: "Ngurah Rai International Airport",
-        lokasi: "Denpasar, Indonesia",
-      },
-      terminal: "3C",
-      status: "Issued",
-      nama_maskapai: "Air Asia",
-      kode_maskapai: "AK",
-    },
-    {
-      id: 1,
-      timestamp: "2024-06-26T13:27:26.885Z",
-      bandara_keberangkatan: {
-        id: 1,
-        kode_bandara: "CGK",
-        nama_bandara: "Soekarno-Hatta International Airport",
-        lokasi: "Tangerang, Indonesia",
-      },
-      bandara_kedatangan: {
-        id: 2,
-        kode_bandara: "DPS",
-        nama_bandara: "Ngurah Rai International Airport",
-        lokasi: "Denpasar, Indonesia",
-      },
-      terminal: "3C",
-      status: "Issued",
-      nama_maskapai: "Air Asia",
-      kode_maskapai: "AK",
-    },
-    {
-      id: 2,
-      timestamp: "2024-06-26T13:32:21.015Z",
-      bandara_keberangkatan: {
-        id: 1,
-        kode_bandara: "CGK",
-        nama_bandara: "Soekarno-Hatta International Airport",
-        lokasi: "Tangerang, Indonesia",
-      },
-      bandara_kedatangan: {
-        id: 2,
-        kode_bandara: "DPS",
-        nama_bandara: "Ngurah Rai International Airport",
-        lokasi: "Denpasar, Indonesia",
-      },
-      terminal: "3C",
-      status: "Issued",
-      nama_maskapai: "Air Asia",
-      kode_maskapai: "AK",
-    },
-    {
-      id: 3,
-      timestamp: "2024-06-26T13:27:26.885Z",
-      bandara_keberangkatan: {
-        id: 1,
-        kode_bandara: "CGK",
-        nama_bandara: "Soekarno-Hatta International Airport",
-        lokasi: "Tangerang, Indonesia",
-      },
-      bandara_kedatangan: {
-        id: 2,
-        kode_bandara: "DPS",
-        nama_bandara: "Ngurah Rai International Airport",
-        lokasi: "Denpasar, Indonesia",
-      },
-      terminal: "3C",
-      status: "Issued",
-      nama_maskapai: "Air Asia",
-      kode_maskapai: "AK",
-    },
-    {
-      id: 4,
-      timestamp: "2024-06-26T13:32:21.015Z",
-      bandara_keberangkatan: {
-        id: 1,
-        kode_bandara: "CGK",
-        nama_bandara: "Soekarno-Hatta International Airport",
-        lokasi: "Tangerang, Indonesia",
-      },
-      bandara_kedatangan: {
-        id: 2,
-        kode_bandara: "DPS",
-        nama_bandara: "Ngurah Rai International Airport",
-        lokasi: "Denpasar, Indonesia",
-      },
-      terminal: "3C",
-      status: "Issued",
-      nama_maskapai: "Air Asia",
-      kode_maskapai: "AK",
-    },
-    {
-      id: 5,
-      timestamp: "2024-06-26T13:27:26.885Z",
-      bandara_keberangkatan: {
-        id: 1,
-        kode_bandara: "CGK",
-        nama_bandara: "Soekarno-Hatta International Airport",
-        lokasi: "Tangerang, Indonesia",
-      },
-      bandara_kedatangan: {
-        id: 2,
-        kode_bandara: "DPS",
-        nama_bandara: "Ngurah Rai International Airport",
-        lokasi: "Denpasar, Indonesia",
-      },
-      terminal: "3C",
-      status: "Issued",
-      nama_maskapai: "Air Asia",
-      kode_maskapai: "AK",
-    },
-    {
-      id: 6,
-      timestamp: "2024-06-26T13:32:21.015Z",
-      bandara_keberangkatan: {
-        id: 1,
-        kode_bandara: "CGK",
-        nama_bandara: "Soekarno-Hatta International Airport",
-        lokasi: "Tangerang, Indonesia",
-      },
-      bandara_kedatangan: {
-        id: 2,
-        kode_bandara: "DPS",
-        nama_bandara: "Ngurah Rai International Airport",
-        lokasi: "Denpasar, Indonesia",
-      },
-      terminal: "3C",
-      status: "Issued",
-      nama_maskapai: "Air Asia",
-      kode_maskapai: "AK",
-    },
-  ];
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`/api/history`, {
+          withCredentials: true,
+        });
+        setDataTiket(response.data.data);
+      } catch (error) {
+        console.log("fetchUserData  error:", error);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   // Filter data berdasarkan status dan pencarian
   const filteredData = dataTiket.filter((ticket) => {
@@ -345,7 +139,7 @@ export default function History() {
                 className={`rounded-2xl px-3 py-1 ${
                   e?.status === "Issued"
                     ? "bg-green-500"
-                    : e?.status === "Canceled"
+                    : e?.status === "Unpaid"
                     ? "bg-red-500"
                     : "bg-gray-300"
                 }`}
