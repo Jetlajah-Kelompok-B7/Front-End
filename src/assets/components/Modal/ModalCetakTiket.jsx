@@ -4,7 +4,7 @@ import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 import { useReactToPrint } from "react-to-print";
 import { format, differenceInMinutes } from "date-fns";
 
-export default function ModalCetakTiket({ visible, onClose, detail_tiket }) {
+export default function ModalCetakTiket({ visible, onClose, data_tiket, qr }) {
   const componentRef = useRef();
   const [first, setfirst] = useState(false);
   const reactToPrintContent = useCallback(() => {
@@ -40,14 +40,17 @@ export default function ModalCetakTiket({ visible, onClose, detail_tiket }) {
     onClose();
   }
 
-  const Orders = detail_tiket?.data?.total_price?.checkout?.order?.Orders;
-  const ticket = detail_tiket?.data?.total_price?.checkout?.order?.ticket;
-  const flight =
-    detail_tiket?.data?.total_price?.checkout?.order?.ticket?.schedule?.flight;
-  const selisih = differenceInMinutes(
-    new Date(ticket?.schedule?.kedatangan),
-    new Date(ticket?.schedule?.keberangkatan)
-  );
+  const Orders = data_tiket?.data?.checkout?.order?.Orders || [];
+  const ticket = data_tiket?.data?.checkout?.order?.ticket || {};
+  const flight = ticket?.schedule?.flight || {};
+
+  const selisih = ticket?.schedule?.kedatangan
+    ? differenceInMinutes(
+        new Date(ticket.schedule.kedatangan),
+        new Date(ticket.schedule.keberangkatan)
+      )
+    : 0;
+
   const jam = Math.floor(selisih / 60);
   const menit = selisih % 60;
   const durasi = `${jam}j ${menit}m`;
@@ -146,7 +149,7 @@ export default function ModalCetakTiket({ visible, onClose, detail_tiket }) {
           <div className="w-full items-center justify-end flex">
             <div className="flex flex-col">
               <p className="flex justify-center">Scan Code</p>
-              <img src="/images/download.png" alt="" className="" />
+              <img src={qr} alt="" className="" />
             </div>
           </div>
         </div>

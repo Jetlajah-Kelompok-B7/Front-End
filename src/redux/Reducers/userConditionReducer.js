@@ -10,7 +10,8 @@ const CSlicer = createSlice({
   reducers: {
     reset: () => initialState,
     setLoginStatus: (state, action) => {
-      state.isLoggedIn = action.payload;
+      state.isLoggin = action.payload;
+      console.log('first', action.payload)
     },
   },
 });

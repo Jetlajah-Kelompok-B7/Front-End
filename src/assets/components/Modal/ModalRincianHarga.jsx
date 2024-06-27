@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export default function ModalRincianHarga({ visible }) {
+export default function ModalRincianHarga({ visible, data_tiket }) {
   const [dewasa, setDewasa] = useState(0);
   const [bayi, setBayi] = useState(0);
 
@@ -119,9 +119,11 @@ export default function ModalRincianHarga({ visible }) {
       passenger_name: "admin",
     },
   };
-  const Orders = detail_tiket?.data?.total_price?.checkout?.order?.Orders;
-  const Harga = detail_tiket?.data?.total_price?.checkout?.order?.ticket?.harga;
-  const total = detail_tiket?.data?.total_price?.checkout?.total;
+  const Orders = data_tiket?.data?.checkout?.order?.Orders || [];
+  const Harga = data_tiket?.data?.checkout?.order?.ticket?.harga;
+  const total = data_tiket?.data?.price?.total;
+  const tax = data_tiket?.data?.price?.tax;
+
   useEffect(() => {
     let dewasaCount = 0;
     let bayiCount = 0;
@@ -137,8 +139,6 @@ export default function ModalRincianHarga({ visible }) {
     setDewasa(dewasaCount);
     setBayi(bayiCount);
   }, []);
-
-  
 
   if (!visible) return null;
   return (
@@ -164,7 +164,7 @@ export default function ModalRincianHarga({ visible }) {
         </div>
         <div className="flex justify-between">
           <p>Tax</p>
-          <p>IDR {Harga * bayi.toLocaleString("id-ID")}</p>
+          <p>IDR {tax.toLocaleString("id-ID")}</p>
         </div>
       </div>
       {/* total */}
