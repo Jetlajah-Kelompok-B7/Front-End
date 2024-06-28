@@ -40,7 +40,7 @@ export default function History() {
   }, []);
 
   // Filter data berdasarkan status dan pencarian
-  const filteredData = dataTiket.filter((ticket) => {
+  const filteredData = dataTiket?.filter((ticket) => {
     const matchesFilter =
       filter === "" ||
       ticket.status.toLowerCase().includes(filter.toLowerCase());
