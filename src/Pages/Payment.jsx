@@ -31,6 +31,8 @@ export default function Payment() {
   const [open, setOpen] = React.useState(0);
   const handleOpen = (value) => setOpen(open === value ? 0 : value);
 
+ 
+
   return (
     <div className="bg-white h-screen">
       {/* Isi data Pembayaran */}

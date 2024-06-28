@@ -14,6 +14,16 @@ export default function ForgotPassword() {
   const pesan = useSelector((state) => state.login?.message);
   const [isActivePage, setIsActivePage] = useState(true);
 
+ //pengaman agar jika user belum login
+ const Condition = useSelector((state) => {
+  return state.tiket.UserCondition;
+});
+useEffect(() => {
+  if (Condition !== true) {
+    navigate("/login");
+  }
+}, [dispatch]);
+
   const theState = useSelector((state) => state);
   console.log("theState", theState);
 
@@ -24,6 +34,7 @@ export default function ForgotPassword() {
   const handleForgot = async () => {
     await dispatch(forgotPassword(email)); // Kirim email dan password ke action creator login
   };
+  
 
   useEffect(() => {
     setIsActivePage(true); // Set the page as active on component mount

@@ -22,35 +22,57 @@ export default function ModalPemesananTiket() {
   const [tanggalPulang, setTanggalPulang] = useState("");
   const [total_penumpang, setTotal_penumpang] = useState(0);
   const [kelas_penerbangan, setKelas_penerbangan] = useState("");
-  const Data = useSelector((state) => {
-    return state?.tiket?.lokasi;
-  });
+
+  useEffect(() => {
+    dispatch(GetTiket());
+  }, [dispatch]);
 
   const handlePemesanan = () => {
-    if (
-      kotaAwal !== "" &&
-      destinasi !== "" &&
-      kelas_penerbangan !== "" &&
-      total_penumpang !== 0 &&
-      tanggalBerangkat !== "" &&
-      tanggalPulang !== ""
-    ) {
-      navigate("/pemesanan");
+    if (idTanggal === 1) {
+      if (
+        kotaAwal !== "" &&
+        destinasi !== "" &&
+        kelas_penerbangan !== "" &&
+        total_penumpang !== 0 &&
+        tanggalBerangkat !== ""
+      ) {
+        if (kotaAwal === destinasi) {
+          alert("Lokasi Awal dan Destinasi Tidak Boleh Sama");
+          return;
+        }
+        navigate("/resultSearch");
+        return;
+      } else {
+        alert("Harap Lengkapi Semua Formulir");
+        return;
+      }
     } else {
-      alert("Harap Lengkapi Semua Formulir");
+      if (
+        kotaAwal !== "" &&
+        destinasi !== "" &&
+        kelas_penerbangan !== "" &&
+        total_penumpang !== 0 &&
+        tanggalBerangkat !== "" &&
+        tanggalPulang !== ""
+      ) {
+        if (kotaAwal === destinasi) {
+          alert("Lokasi Awal dan Destinasi Tidak Boleh Sama");
+          return;
+        }
+        navigate("/pemesanan");
+        return;
+      } else {
+        alert("Harap Lengkapi Semua Formulir");
+        return;
+      }
     }
   };
-
   const handleswap = () => {
     let temp = kotaAwal;
     setKotaAwal(destinasi);
     setDestinasi(temp);
     dispatch(swapLokasi());
   };
-
-  useEffect(() => {
-    dispatch(GetTiket());
-  }, [dispatch]);
 
   return (
     <div className="w-[1060px] container">

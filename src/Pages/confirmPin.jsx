@@ -17,6 +17,16 @@ export default function AddPin() {
 
   console.log("theState", theState);
 
+  //pengaman agar jika user belum login
+  const Condition = useSelector((state) => {
+    return state.tiket.UserCondition;
+  });
+  useEffect(() => {
+    if (Condition !== true) {
+      navigate("/login");
+    }
+  }, [dispatch]);
+
   // Fungsi untuk mengonversi string pin ke array
   const getPinArray = (c) => {
     c = pin?.toString() || "";

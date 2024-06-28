@@ -13,6 +13,16 @@ export default function Notification() {
   const [selectedCategory, setSelectedCategory] = useState(""); // State untuk kategori yang dipilih
   const [isFiltered, setIsFiltered] = useState(false); // State untuk status filter
 
+  //pengaman agar jika user belum login
+  const Condition = useSelector((state) => {
+    return state.tiket.UserCondition;
+  });
+  useEffect(() => {
+    if (Condition !== true) {
+      navigate("/login");
+    }
+  }, [dispatch]);
+
   const theState = useSelector((state) => state);
   console.log("theState", theState);
   useEffect(() => {
