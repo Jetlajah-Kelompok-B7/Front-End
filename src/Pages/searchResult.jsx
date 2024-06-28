@@ -15,12 +15,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { resetFilterHarga } from "../redux/Reducers/FilterHargaReducers";
 import TiketPesanan from "../assets/components/Modal/TiketPesanan";
 import { getTiketSearch, GetDataBandara } from "../redux/Action/TiketAction";
-import { useNavigate } from "react-router-dom";
-import * as yup from "yup";
 
 const ResultSearchFilm = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  //Accoridon buka tutup
+  const [openAccordion, setOpenAccordion] = useState(null);
+  const toggleAccordion = (index) => {
+    if (openAccordion === index) {
+      setOpenAccordion(null);
+    } else {
+      setOpenAccordion(index);
+    }
+  };
+  const [selectedButton, setSelectedButton] = useState(null);
+  const handleButtonClick = (index) => {
+    setSelectedButton(index);
+  };
 
   //Pengaman jika data belum terisi
   const DataBaru = useSelector((state) => state.tiket);
@@ -63,20 +73,6 @@ const ResultSearchFilm = () => {
     }
   }, []);
   // --------------------------------
-
-  //Accoridon buka tutup
-  const [openAccordion, setOpenAccordion] = useState(null);
-  const toggleAccordion = (index) => {
-    if (openAccordion === index) {
-      setOpenAccordion(null);
-    } else {
-      setOpenAccordion(index);
-    }
-  };
-  const [selectedButton, setSelectedButton] = useState(null);
-  const handleButtonClick = (index) => {
-    setSelectedButton(index);
-  };
 
   const CurrentDate = (daysToIncrement = 0) => {
     const today = new Date();
