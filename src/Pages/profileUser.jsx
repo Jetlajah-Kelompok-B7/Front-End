@@ -125,6 +125,11 @@ export default function ProfileUser() {
     }
   };
 
+  useEffect(() => {
+    dispatch(profileUser());
+  }, [dispatch]);
+
+
   //-----------CHANGE PASSWORD FIELD------------------------------
   const [passwordLama, setPasswordLama] = useState("");
   const [passwordBaru, setPasswordBaru] = useState("");
