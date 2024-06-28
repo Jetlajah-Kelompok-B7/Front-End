@@ -34,7 +34,7 @@ export default function History() {
     }
   }, [dispatch]);
 
-  if (dataTiket === undefined || dataTiket === null) return null;
+  // if (dataTiket === undefined || dataTiket === null) return null;
   useEffect(() => {
     const fetchUserData = async () => {
       try {
