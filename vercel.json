@@ -1,8 +1,12 @@
 {
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "https://jetlajahin.up.railway.app"
-    }
-  ]
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "https://jetlajahin.up.railway.app"
+        }
+    ]
 }
