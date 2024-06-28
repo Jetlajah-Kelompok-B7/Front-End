@@ -13,7 +13,7 @@ import SearchHistoryModal from "../assets/components/Modal/SearchHistoryModal";
 import { format, parseISO } from "date-fns";
 import id from "date-fns/locale/id";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function History() {
   const [modal, setModal] = useState("");
