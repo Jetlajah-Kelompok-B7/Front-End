@@ -15,6 +15,8 @@ export default function AddPin() {
   const [loading, setLoading] = useState(false);
   const pinRefs = useRef([]);
 
+  console.log("theState", theState);
+
   //pengaman agar jika user belum login
   const Condition = useSelector((state) => {
     return state.tiket.UserCondition;
@@ -24,8 +26,6 @@ export default function AddPin() {
       navigate("/login");
     }
   }, [dispatch]);
-
-  console.log("theState", theState);
 
   // Fungsi untuk mengonversi string pin ke array
   const getPinArray = (c) => {
