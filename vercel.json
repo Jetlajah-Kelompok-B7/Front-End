@@ -3,10 +3,6 @@
     {
       "source": "/api/(.*)",
       "destination": "https://jetlajahin.up.railway.app/api"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/"
     }
   ]
 }
