@@ -21,7 +21,7 @@ export default function ModalLokasi({
   });
 
   //pengaman untuk Data jika undeifined
-  if (Data === undefined) return null;
+  if (Data === undefined || Data === "") return null;
 
   const filteredData = Data.filter((lokasi) =>
     lokasi.lokasi.toLowerCase().includes(namaKota.toLowerCase())

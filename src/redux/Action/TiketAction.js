@@ -1,7 +1,19 @@
 import axios from "axios";
 import { setTiketPesawat } from "../Reducers/FilterHargaReducers";
 import { ColorizeSharp } from "@mui/icons-material";
-import { setLokasi } from "../Reducers/TiketReducer";
+import { setLokasi, setUserCondition } from "../Reducers/TiketReducer";
+import { setLoginStatus } from "../Reducers/userConditionReducer";
+
+export const fetchUserData = () => async (dispatch) => {
+  try {
+    const response = await axios.get(`/api/user/profile`, {
+      withCredentials: true,
+    });
+    dispatch(setUserCondition(response.data.status)); // Dispatching the action
+  } catch (error) {
+    dispatch(setUserCondition(error.response.status)); // Dispatching the action
+  }
+};
 
 export const GetTiket = () => async (dispatch, getState) => {
   try {
@@ -17,17 +29,15 @@ export const GetTiket = () => async (dispatch, getState) => {
 
 export const GetDataBandara = () => async (dispatch, getState) => {
   try {
-    const response = await axios.get(
-      "/api/airport"
-    );
+    const response = await axios.get("/api/airport");
     dispatch(setLokasi(response.data));
-    console.log("CEK DATA BARU",response)
+    console.log("CEK DATA BARU", response);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       alert(error.message);
       return;
     }
-    alert(error.message)
+    alert(error.message);
   }
 };
 
@@ -43,8 +53,6 @@ export const getTiketSearch = () => async (dispatch, getState) => {
       alert(error.message);
       return;
     }
-    alert(error.message)
+    alert(error.message);
   }
 };
-
-

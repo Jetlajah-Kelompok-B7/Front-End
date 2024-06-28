@@ -19,23 +19,30 @@ export default function Navbar() {
   const [logout, setLogout] = useState(false);
   const [userCondition, setUserCondition] = useState(null);
   const [open, setOpen] = useState(false);
+  const [first, setFirst] = useState(true);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(`/api/user/profile`, {
-          withCredentials: true,
-        });
-        setUserCondition(response.data.status);
-      } catch (error) {
-        setUserCondition(error.response.status);
-      }
-    };
-    fetchUserData();
-  }, []);
+  const handleResize = () => {
+    if (window.innerWidth <= 1028) {
+      setFirst(true);
+    } else {
+      setFirst(false);
+      setOpen(false);
+    }
+  };
+
+  const Condition = useSelector((state) => {
+    return state.tiket.UserCondition;
+  });
+  // console.log("Condition  Condition:", Condition);
 
   useEffect(() => {
     setLogout(false);
+  }, []);
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const active = useSelector((state) => {
@@ -51,7 +58,9 @@ export default function Navbar() {
   };
 
   const showDrawer = () => {
-    setOpen(true);
+    if (first) {
+      setOpen(true);
+    }
   };
 
   const onClose = () => {
@@ -75,29 +84,22 @@ export default function Navbar() {
           >
             Beranda
           </button>
-          <button
-            className={active === "Tiket" ? "font-bold" : ""}
-            onClick={() => {
-              setLogout(false);
-              HandleClick("Tiket");
-              navigate("/history");
-            }}
-          >
-            Tiket
-          </button>
-          <button
-            className={active === "Promo" ? "font-bold" : ""}
-            onClick={() => {
-              setLogout(false);
-              HandleClick("Promo");
-            }}
-          >
-            Promo
-          </button>
+          {Condition === true ? (
+            <button
+              className={active === "Tiket" ? "font-bold" : ""}
+              onClick={() => {
+                setLogout(false);
+                HandleClick("Tiket");
+                navigate("/history");
+              }}
+            >
+              Tiket
+            </button>
+          ) : null}
         </div>
       </div>
       <div className="max-lg:hidden">
-        {userCondition === true ? (
+        {Condition === true ? (
           <div className="flex text-[#176B87] gap-6 items-center">
             <img
               src="/images/fi_list.png"
@@ -116,9 +118,7 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => {
-                  {
-                    logout === "logout" ? setLogout(false) : handleLogout();
-                  }
+                  logout === "logout" ? setLogout(false) : handleLogout();
                   HandleClick("logout");
                 }}
               >
@@ -142,80 +142,87 @@ export default function Navbar() {
       <div className="hidden max-lg:flex">
         <RiMenuFill onClick={showDrawer} />
       </div>
-      <Drawer title="Menu" onClose={onClose} open={open}>
-        <div className="flex flex-col items-start gap-1 text-lg ">
-          <button
-            className={`z-50${active === "Beranda" ? "font-bold z-50" : ""}`}
-            onClick={() => {
-              onClose();
-              setLogout(false);
-              HandleClick("Beranda");
-              navigate("/");
-            }}
-          >
-            Beranda
-          </button>
-          <button
-            className={`z-50${active === "Tiket" ? "font-bold z-50" : ""}`}
-            onClick={() => {
-              onClose();
-              setLogout(false);
-              HandleClick("Tiket");
-              navigate("/history");
-            }}
-          >
-            Tiket
-          </button>
-          <button
-            className={`z-50${active === "Promo" ? "font-bold z-50" : ""}`}
-            onClick={() => {
-              onClose();
-              setLogout(false);
-              HandleClick("Promo");
-            }}
-          >
-            Promo
-          </button>
-          {userCondition === true ? (
-            <div>
-              <button
-                onClick={() => {
-                  onClose();
-                  HandleClick("bell");
-                  setLogout(false);
-                }}
-              >
-                Notifications
-              </button>
-              <button
-                onClick={() => {
-                  onClose();
-                  handleLogout();
-                  HandleClick("logout");
-                }}
-              >
-                Logout
-              </button>
-            </div>
-          ) : (
+      {first && (
+        <Drawer title="Menu" onClose={onClose} open={open}>
+          <div className="flex flex-col items-start gap-1 text-lg ">
             <button
+              className={`z-50${active === "Beranda" ? "font-bold z-50" : ""}`}
               onClick={() => {
                 onClose();
-                navigate("/login");
+                setLogout(false);
+                HandleClick("Beranda");
+                navigate("/");
               }}
             >
-              Daftar / Masuk
+              Beranda
             </button>
-          )}
-          <div className="inset-0 z-20 absolute bottom-0  flex justify-center">
-            <img
-              src="/images/logoabu.png"
-              alt=""
-              className="absolute bottom-28 h-40"
-            />
+            {Condition === true ? (
+              <button
+                className={active === "Tiket" ? "font-bold" : ""}
+                onClick={() => {
+                  onClose();
+                  setLogout(false);
+                  HandleClick("Tiket");
+                  navigate("/history");
+                }}
+              >
+                Tiket
+              </button>
+            ) : null}
+            {Condition === true ? (
+              <button
+                className={active === "Profile" ? "font-bold" : ""}
+                onClick={() => {
+                  onClose();
+                  setLogout(false);
+                  HandleClick("Profile");
+                  navigate("/profileUser");
+                }}
+              >
+                Profile
+              </button>
+            ) : null}
+            {Condition === true ? (
+              <div>
+                <button
+                  onClick={() => {
+                    onClose();
+                    HandleClick("bell");
+                    setLogout(false);
+                  }}
+                >
+                  Notifications
+                </button>
+                <button
+                  onClick={() => {
+                    onClose();
+                    handleLogout();
+                    HandleClick("logout");
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  onClose();
+                  navigate("/login");
+                }}
+              >
+                Daftar / Masuk
+              </button>
+            )}
+            <div className="inset-0 z-20 absolute bottom-0 flex justify-center">
+              <img
+                src="/images/logoabu.png"
+                alt=""
+                className="absolute bottom-28 h-40"
+              />
+            </div>
           </div>
-        </div>
-      </Drawer>
+        </Drawer>
+      )}
     </nav>
   );
 }
