@@ -8,6 +8,7 @@ import {
   setAlamat,
   setFile,
   setMessage,
+  setDataNotif,
 } from "../Reducers/reducersLogin";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -646,6 +647,26 @@ export const forgotPin = (passwordForgotPin, pinBaru) => async (dispatch) => {
       progress: undefined,
       theme: "colored",
     });
+    return { status: 500 }; // Return status for internal server error
+  }
+};
+
+export const getNotification = () => async (dispatch) => {
+  try {
+    const response_getNotif = await axios.get("/api/user/notification", {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json" },
+    });
+    console.log("response_getNotif", response_getNotif);
+    const notifikasi = response_getNotif?.data?.data;
+    dispatch(setDataNotif(notifikasi));
+
+    if (response_getNotif?.status === 200) {
+      return { status: 200 }; // Return status for successful login
+    } else {
+      return { status: 401 }; // Return status for failed login
+    }
+  } catch (error) {
     return { status: 500 }; // Return status for internal server error
   }
 };
