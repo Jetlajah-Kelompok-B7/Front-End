@@ -9,18 +9,8 @@ import {
   setFile,
 } from "../Reducers/reducersLogin";
 import { setLoginStatus } from "../Reducers/userConditionReducer";
-import { setUserCondition } from "../Reducers/TiketReducer";
 
-// export const fetchUserData = async (dispacth) => {
-//   try {
-//     const response = await axios.get(`/api/user/profile`, {
-//       withCredentials: true,
-//     });
-//     dispacth(setUserCondition(response.data.status));
-//   } catch (error) {
-//     dispacth(setUserCondition(error.response.status));
-//   }
-// };
+
 
 export const login = (email, password, navigate) => async (dispatch) => {
   try {

@@ -35,8 +35,7 @@ export default function ModalPemesananTiket() {
       tanggalBerangkat !== "" &&
       tanggalPulang !== ""
     ) {
-      // navigate("/pemesanan");
-      alert("Pemesanan Berhasil");
+      navigate("/pemesanan");
     } else {
       alert("Harap Lengkapi Semua Formulir");
     }
@@ -51,7 +50,7 @@ export default function ModalPemesananTiket() {
 
   useEffect(() => {
     dispatch(GetTiket());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="w-[1060px] container">

@@ -6,14 +6,16 @@ import Navbar from "../assets/components/Navbar";
 import Slicing_2 from "../assets/components/SlicingHomePage/Slicing_2";
 import Slicing_3 from "../assets/components/SlicingHomePage/Slicing_3";
 import Footer from "../assets/components/Footer";
-import { profileUser } from "../redux/Action/actionLogin"; // Ganti dengan path sesuai struktur proyek Anda
+import {  profileUser } from "../redux/Action/actionLogin"; // Ganti dengan path sesuai struktur proyek Anda
 import { reset, setHalaman } from "../redux/Reducers/TiketReducer";
+import { fetchUserData } from "../redux/Action/TiketAction";
 
 export default function HomePage() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(reset());
     dispatch(setHalaman("Beranda"));
+    dispatch(fetchUserData());
   }, []);
   useEffect(() => {
     dispatch(profileUser());
@@ -26,7 +28,6 @@ export default function HomePage() {
         </div>
       </div>
       <div className="pt-[85px] max-xl:pt-5">
-        <div></div>
         <Slicing_1 />
         <Slicing_2 />
         <Slicing_3 />

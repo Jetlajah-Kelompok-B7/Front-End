@@ -30,19 +30,10 @@ export default function Navbar() {
     }
   };
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(`/api/user/profile`, {
-          withCredentials: true,
-        });
-        setUserCondition(response.data.status);
-      } catch (error) {
-        setUserCondition(error.response.status);
-      }
-    };
-    fetchUserData();
-  }, []);
+  const Condition = useSelector((state) => {
+    return state.tiket.UserCondition;
+  });
+  // console.log("Condition  Condition:", Condition);
 
   useEffect(() => {
     setLogout(false);
@@ -93,7 +84,7 @@ export default function Navbar() {
           >
             Beranda
           </button>
-          {userCondition === true ? (
+          {Condition === true ? (
             <button
               className={active === "Tiket" ? "font-bold" : ""}
               onClick={() => {
@@ -108,7 +99,7 @@ export default function Navbar() {
         </div>
       </div>
       <div className="max-lg:hidden">
-        {userCondition === true ? (
+        {Condition === true ? (
           <div className="flex text-[#176B87] gap-6 items-center">
             <img
               src="/images/fi_list.png"
@@ -165,7 +156,7 @@ export default function Navbar() {
             >
               Beranda
             </button>
-            {userCondition === true ? (
+            {Condition === true ? (
               <button
                 className={active === "Tiket" ? "font-bold" : ""}
                 onClick={() => {
@@ -178,7 +169,7 @@ export default function Navbar() {
                 Tiket
               </button>
             ) : null}
-            {userCondition === true ? (
+            {Condition === true ? (
               <button
                 className={active === "Profile" ? "font-bold" : ""}
                 onClick={() => {
@@ -191,7 +182,7 @@ export default function Navbar() {
                 Profile
               </button>
             ) : null}
-            {userCondition === true ? (
+            {Condition === true ? (
               <div>
                 <button
                   onClick={() => {

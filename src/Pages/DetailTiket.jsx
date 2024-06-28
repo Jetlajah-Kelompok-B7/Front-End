@@ -8,7 +8,6 @@ import ModalRincianHarga from "../assets/components/Modal/ModalRincianHarga";
 import ModalCetakTiket from "../assets/components/Modal/ModalCetakTiket";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { GetTiket } from "../redux/Action/TiketAction";
 import { format, differenceInMinutes } from "date-fns";
 import axios from "axios";
 

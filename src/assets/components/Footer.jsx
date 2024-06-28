@@ -4,9 +4,14 @@ import {
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
+import { useSelector } from "react-redux";
 
 export default function Footer() {
   const [open, setOpen] = React.useState(0);
+
+  const Condition = useSelector((state) => {
+    return state.tiket.UserCondition;
+  });
   const handleOpen = (value) => setOpen(open === value ? 0 : value);
   function Icon({ id, open }) {
     return (
@@ -67,18 +72,16 @@ export default function Footer() {
                         <li className="footer-link">
                           <a href="/">Home</a>
                         </li>
-                        <li className="footer-link">
-                          <a href="/">Destinasi Favorit</a>
-                        </li>
-                        <li className="footer-link">
-                          <a href="/">Riwayat Transaki</a>
-                        </li>
-                        <li className="footer-link">
-                          <a href="/">Notifikasi</a>
-                        </li>
-                        <li className="footer-link">
-                          <a href="/">Contact</a>
-                        </li>
+                        {Condition === true ? (
+                          <>
+                            <a href="/" className="footer-link">
+                              tiket
+                            </a>
+                            <a href="/notification" className="footer-link">
+                              Notifikasi
+                            </a>
+                          </>
+                        ) : null}
                       </ul>
                     </div>
                   </AccordionBody>
@@ -146,12 +149,16 @@ export default function Footer() {
                 <a href="/" className="footer-link">
                   Beranda
                 </a>
-                <a href="/" className="footer-link">
-                  tiket
-                </a>
-                <a href="/notification" className="footer-link">
-                  Notifikasi
-                </a>
+                {Condition === true ? (
+                  <>
+                    <a href="/" className="footer-link">
+                      tiket
+                    </a>
+                    <a href="/notification" className="footer-link">
+                      Notifikasi
+                    </a>
+                  </>
+                ) : null}
               </div>
             </div>
             <div className="flex flex-col max-lg:hidden  text-xs ">

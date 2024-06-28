@@ -14,17 +14,16 @@ import { format, parseISO } from "date-fns";
 import id from "date-fns/locale/id";
 import axios from "axios";
 
-
 export default function History() {
   const [modal, setModal] = useState("");
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
-  const [dataTiket, setDataTiket] = useState([]);
+  const [dataTiket, setDataTiket] = useState(null);
   const navigate = useNavigate();
-  console.log("dataTiket", dataTiket);
 
+  if (dataTiket === undefined || dataTiket === null) return null;
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -32,7 +31,7 @@ export default function History() {
           withCredentials: true,
         });
         setDataTiket(response.data.data);
-        console.log('first', response.data.data)
+        console.log("first", response.data.data);
       } catch (error) {
         console.log("fetchUserData  error:", error);
       }

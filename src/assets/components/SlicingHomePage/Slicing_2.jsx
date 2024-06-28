@@ -16,16 +16,17 @@ export default function Slicing_2() {
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
-    // Initial check
     handleResize();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
   const sliderSettings = {
     infinite: true,
     slidesToShow: n,
     speed: 1000,
     slidesToScroll: 1,
-    rtl: true,
+    autoplay: true,
+    autoplaySpeed: 2000,
   };
 
   const Image_Slider = [
@@ -39,7 +40,12 @@ export default function Slicing_2() {
         <img src="/images/iklan2.png" alt="" />
       </div>
     </div>,
-    <div key="3">
+    <div key="2">
+      <div className="px-1">
+        <img src="/images/iklan2.png" alt="" />
+      </div>
+    </div>,
+    <div key="2">
       <div className="px-1">
         <img src="/images/iklan2.png" alt="" />
       </div>
