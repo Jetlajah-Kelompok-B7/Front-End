@@ -75,25 +75,18 @@ export default function Navbar() {
           >
             Beranda
           </button>
-          <button
-            className={active === "Tiket" ? "font-bold" : ""}
-            onClick={() => {
-              setLogout(false);
-              HandleClick("Tiket");
-              navigate("/history");
-            }}
-          >
-            Tiket
-          </button>
-          <button
-            className={active === "Promo" ? "font-bold" : ""}
-            onClick={() => {
-              setLogout(false);
-              HandleClick("Promo");
-            }}
-          >
-            Promo
-          </button>
+          {userCondition === true ? (
+            <button
+              className={active === "Tiket" ? "font-bold" : ""}
+              onClick={() => {
+                setLogout(false);
+                HandleClick("Tiket");
+                navigate("/history");
+              }}
+            >
+              Tiket
+            </button>
+          ) : null}
         </div>
       </div>
       <div className="max-lg:hidden">
@@ -165,16 +158,6 @@ export default function Navbar() {
             }}
           >
             Tiket
-          </button>
-          <button
-            className={`z-50${active === "Promo" ? "font-bold z-50" : ""}`}
-            onClick={() => {
-              onClose();
-              setLogout(false);
-              HandleClick("Promo");
-            }}
-          >
-            Promo
           </button>
           {userCondition === true ? (
             <div>
