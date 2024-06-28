@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setDestinasiPesawat,
@@ -17,11 +17,9 @@ export default function ModalLokasi({
   const [namaKota, setNamaKota] = useState("");
   const dispatch = useDispatch();
   const Data = useSelector((state) => {
-    return state?.tiket?.lokasi;
+    return state?.tiket2.lokasi;
   });
 
-  //pengaman untuk Data jika undeifined
-  
   const filteredData = Data?.filter((lokasi) =>
     lokasi.lokasi.toLowerCase().includes(namaKota.toLowerCase())
   );
@@ -67,7 +65,7 @@ export default function ModalLokasi({
             />
           </div>
           <div className="h-[45vh] max-lg:h-[40vh] overflow-y-auto flex flex-col gap-3">
-            {filteredData.map((lokasi, index) => (
+            {filteredData?.map((lokasi, index) => (
               <div
                 key={index}
                 className=" hover:cursor-pointer"

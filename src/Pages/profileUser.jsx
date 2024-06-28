@@ -55,6 +55,16 @@ export default function ProfileUser() {
   const [open, setOpen] = React.useState(0);
   const [innerOpen, setInnerOpen] = React.useState(0);
 
+  //pengaman agar jika user belum login
+  const Condition = useSelector((state) => {
+    return state.tiket.UserCondition;
+  });
+  useEffect(() => {
+    if (Condition !== true) {
+      navigate("/login");
+    }
+  }, [dispatch]);
+
   const handleOpen = (value) => setOpen(open === value ? 0 : value);
   const handleInnerOpen = (innerValue) =>
     setInnerOpen(innerOpen === innerValue ? 0 : innerValue);
@@ -63,10 +73,6 @@ export default function ProfileUser() {
 
   const theState = useSelector((state) => state);
   console.log("theState", theState);
-
-  useEffect(() => {
-    dispatch(profileUser());
-  }, [dispatch]);
 
   const handleSubmitPin = () => {
     if (value === "111111") {

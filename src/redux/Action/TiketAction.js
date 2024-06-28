@@ -1,8 +1,8 @@
 import axios from "axios";
 import { setTiketPesawat } from "../Reducers/FilterHargaReducers";
 import { ColorizeSharp } from "@mui/icons-material";
-import { setLokasi, setUserCondition } from "../Reducers/TiketReducer";
-import { setLoginStatus } from "../Reducers/userConditionReducer";
+import { setUserCondition } from "../Reducers/TiketReducer";
+import { setPenerbangan } from "../Reducers/TiketReducerforSecure";
 
 export const fetchUserData = () => async (dispatch) => {
   try {
@@ -19,7 +19,7 @@ export const GetTiket = () => async (dispatch, getState) => {
   try {
     const response = await axios.get("/api/airport");
     if (response.status === 200) {
-      dispatch(setLokasi(response?.data?.data));
+      dispatch(setPenerbangan(response.data.data));
     }
     return response;
   } catch (error) {
@@ -37,7 +37,7 @@ export const GetDataBandara = () => async (dispatch, getState) => {
       alert(error.message);
       return;
     }
-    alert(error.message);
+    // alert(error.message);
   }
 };
 
@@ -53,6 +53,6 @@ export const getTiketSearch = () => async (dispatch, getState) => {
       alert(error.message);
       return;
     }
-    alert(error.message);
+    // alert(error.message);
   }
 };

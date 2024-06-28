@@ -2,20 +2,23 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isLoggin: false,
+  lokasi: [],
 };
 
-const CSlicer = createSlice({
+const TSlicer = createSlice({
   name: "condition",
   initialState,
   reducers: {
     reset: () => initialState,
     setLoginStatus: (state, action) => {
       state.isLoggin = action.payload;
-      console.log('first', action.payload)
+    },
+    setPenerbangan: (state, action) => {
+      state.lokasi = action.payload;
     },
   },
 });
 
-export const { setLoginStatus } = CSlicer.actions;
+export const { setLoginStatus, setPenerbangan } = TSlicer.actions;
 
-export default CSlicer.reducer;
+export default TSlicer.reducer;

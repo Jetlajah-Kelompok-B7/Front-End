@@ -5,7 +5,6 @@ export default function SearchHistoryModal({ visible, onClose, setSearch }) {
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (e) => {
-    
     setInputValue(e.target.value);
     setSearch(e.target.value);
   };
@@ -20,7 +19,7 @@ export default function SearchHistoryModal({ visible, onClose, setSearch }) {
         onChange={handleInputChange}
         pattern="^[a-zA-Z ]*$"
         onInput={(e) => {
-          e.target.value = e.target.value.replace(/[^a-zA-Z ]/g, '');
+          e.target.value = e.target.value.replace(/[^a-zA-Z ]/g, "");
         }}
         placeholder="Masukan Nama Lokasi yang dicari..."
         className="bg-white outline-none border w-full border-gray-300 rounded-xl py-2 px-4 mt-2"

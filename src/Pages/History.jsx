@@ -13,6 +13,7 @@ import SearchHistoryModal from "../assets/components/Modal/SearchHistoryModal";
 import { format, parseISO } from "date-fns";
 import id from "date-fns/locale/id";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 export default function History() {
   const [modal, setModal] = useState("");
@@ -22,6 +23,16 @@ export default function History() {
   const [itemsPerPage] = useState(10);
   const [dataTiket, setDataTiket] = useState(null);
   const navigate = useNavigate();
+
+  //pengaman agar jika user belum login
+  const Condition = useSelector((state) => {
+    return state.tiket.UserCondition;
+  });
+  useEffect(() => {
+    if (Condition !== true) {
+      navigate("/login");
+    }
+  }, [dispatch]);
 
   if (dataTiket === undefined || dataTiket === null) return null;
   useEffect(() => {
