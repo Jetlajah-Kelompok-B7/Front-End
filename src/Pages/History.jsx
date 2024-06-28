@@ -23,7 +23,7 @@ export default function History() {
   const [itemsPerPage] = useState(10);
   const [dataTiket, setDataTiket] = useState(null);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   //pengaman agar jika user belum login
   const Condition = useSelector((state) => {
     return state.tiket.UserCondition;
