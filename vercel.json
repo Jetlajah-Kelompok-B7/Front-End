@@ -1,6 +1,6 @@
 {
     "trailingSlash": true,
-    "cleanUrls": false"
+    "cleanUrls": false,
     "rewrites": [
         {
             "source": "/api/:path(.*)",
