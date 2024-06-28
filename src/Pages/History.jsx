@@ -72,7 +72,7 @@ export default function History() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData?.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredData?.length / itemsPerPage);
 
   const handleChange = (event, value) => {
     setCurrentPage(value);
@@ -198,7 +198,7 @@ export default function History() {
         ))}
         <div
           className={`${
-            filteredData.length > itemsPerPage ? "flex" : "hidden"
+            filteredData?.length > itemsPerPage ? "flex" : "hidden"
           } flex justify-center`}
         >
           <Stack spacing={2} className="flex justify-center items-center mt-10">
