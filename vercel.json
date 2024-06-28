@@ -1,12 +1,14 @@
 {
+    "trailingSlash": true,
+    "cleanUrls": false,
     "rewrites": [
         {
-            "source": "/(.*)",
-            "destination": "/"
+            "source": "/api/:path(.*)",
+            "destination": "https://jetlajahin.up.railway.app/api/:path"
         },
         {
             "source": "/(.*)",
-            "destination": "https://jetlajahin.up.railway.app"
+            "destination": "/"
         }
     ]
 }

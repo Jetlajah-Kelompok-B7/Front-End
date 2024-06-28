@@ -158,7 +158,7 @@ export default function Register() {
             onClick={handleRegister}
             className="hover:scroll-p-8 flex justify-center text-sm text-white py-3 bg-[#176B87] hover:bg-[#114B5E] rounded-full mt-5"
           >
-            Masuk
+            Daftar
           </button>
         </div>
         <div className="flex justify-center gap-2 mt-6">

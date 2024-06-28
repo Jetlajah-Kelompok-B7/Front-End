@@ -37,7 +37,7 @@ export default function Login() {
   };
 
   const handleOAuth = () => {
-    window.open(`api/auth/google`, "_self");
+    window.open(`https://jetlajahin.vercel.app/api/auth/google/`, "_self");
   };
 
   return (

@@ -13,8 +13,6 @@ import {
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
-
 export const login = (email, password, navigate) => async (dispatch) => {
   try {
     const response_login = await axios.post(
@@ -500,7 +498,7 @@ export const changePassword =
 
       if (response_changePassword?.status === 200) {
         console.log("response_changePassword", response_changePassword);
-        toast.success("PIN Validasi Berhasil", {
+        toast.success("Berhasil Mengganti Password", {
           position: "bottom-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -512,7 +510,7 @@ export const changePassword =
         });
         return { status: 200 }; // Return status for successful login
       } else {
-        toast.error("Gagal validasi", {
+        toast.error("Gagal Mengganti Password", {
           position: "bottom-center",
           autoClose: 5000,
           hideProgressBar: false,

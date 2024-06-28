@@ -241,13 +241,40 @@ export default function ProfileUser() {
       if (response.status === 200) {
         dispatch(setLogout()); // Dispatch the reset action
         navigate("/");
-        alert("Berhasil Logout");
+        toast.success("Berhasil Logout", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       } else {
-        alert("Gagal Logout");
+        toast.error("Gagal Logout", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Gagal Logout: Terjadi kesalahan pada server");
+      toast.error("Terjadi kesalahan pada server", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
   return (

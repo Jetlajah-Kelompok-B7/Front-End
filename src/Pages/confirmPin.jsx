@@ -67,32 +67,8 @@ export default function AddPin() {
   const handleSubmit = async (e) => {
     e?.preventDefault();
     setLoading(true);
-    const response = await dispatch(pinValidate(pin)); // Kirim pin ke action creator createPin
+    dispatch(pinValidate(pin)); // Kirim pin ke action creator createPin
     setLoading(false);
-    console.log("Response", response);
-    if (response.status === 200) {
-      toast.success("PIN Terkonfirmasi", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    } else {
-      toast.error("PIN Salah", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
   };
 
   return (
