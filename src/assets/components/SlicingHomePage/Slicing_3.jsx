@@ -3,9 +3,9 @@ import React from "react";
 export default function Slicing_3() {
   return (
     <div className="container mx-auto">
-      <div className=" mt-40 mx-[236px]">
+      <div className=" mt-40 w-[70%] mx-auto max-2xl:w-[85%] max-xl:w-[97%]">
         <div>
-          <h1 className=" text-[40px] font-bold mb-4">
+          <h1 className=" text-[40px] max-xs:text-[35px] font-bold mb-4 max-sm:ml-4">
             About<span className="text-[#FE5D02]">Jetlajah.In</span>
           </h1>
           <p className="ml-6 mt-[27px] mb-2 text-[20px]">
@@ -24,13 +24,13 @@ export default function Slicing_3() {
             </button>
           </div>
         </div>
-        <div>
-          <h1 className=" text-[40px] font-bold mb-4 mt-16 ">
+        <div className="">
+          <h1 className=" text-[40px] max-xs:text-[35px] font-bold mb-4 mt-16 max-sm:ml-4 ">
             Partner <span className="text-[#FE5D02]">Maskapai</span>
           </h1>
-          <div className="flex gap-16 ml-6  ">
+          <div className="flex gap-16 ml-6  max-sm:flex-col">
             <div className="flex-1 flex flex-col justify-between text-[20px] ">
-              <p className=" text-[#8A8A8A] ">
+              <p className=" text-[#8A8A8A] mb-4">
                 Partner Maskapai Penerbangan di Dalam & Luar Negeri
               </p>
               <p>

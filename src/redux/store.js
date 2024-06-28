@@ -6,11 +6,13 @@ import storage from "redux-persist/lib/storage";
 import TiketReducer from "./Reducers/TiketReducer";
 import FilterHargaReducers from "./Reducers/FilterHargaReducers";
 import reducersLogin from "./Reducers/reducersLogin";
+import userConditionReducer from "./Reducers/userConditionReducer";
 
 const rootReducers = combineReducers({
   tiket: TiketReducer,
   filter: FilterHargaReducers,
   login: reducersLogin,
+  conditon: userConditionReducer,
 });
 
 const persistConfig = { key: "root", storage };

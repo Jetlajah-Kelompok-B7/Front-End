@@ -10,6 +10,7 @@ import {
   setMessage,
   setDataNotif,
 } from "../Reducers/reducersLogin";
+import { setLoginStatus } from "../Reducers/userConditionReducer";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -39,6 +40,7 @@ export const login = (email, password, navigate) => async (dispatch) => {
         progress: undefined,
         theme: "colored",
       });
+      dispatch(setLoginStatus(true)); 
       navigate("/");
       return { status: 200 }; // Return status for successful login
     } else if (response_login?.status === 401) {
@@ -321,307 +323,18 @@ export const updateProfile =
     }
   };
 
-export const logout = () => async () => {
+export const logout = () => async (dispatch) => {
   try {
     const response_logout = await axios.post("/api/logout", {
       withCredentials: true,
     });
 
-    if (response_logout?.status === 200) {
-      toast.success("Berhasil Logout", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return { status: 200 }; // Return status for successful login
-    } else {
-      toast.error("Gagal Logout", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return { status: 401 }; // Return status for failed login
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    toast.error("Terjadi kesalahan pada server", {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-    return { status: 500 }; // Return status for internal server error
-  }
-};
-
-export const forgotPassword = (email) => async (dispatch) => {
-  try {
-    const response_forgot = await axios.post(
-      "/api/request-reset-password",
-      {
-        email: email,
-      },
-      {
-        withCredentials: true,
-      }
-    );
-
-    if (response_forgot?.status === 200) {
-      const pesan = response_forgot?.data;
-      dispatch(setMessage(pesan));
-      console.log("response_forgot", response_forgot);
-      toast.success("Permintaan reset password berhasil dikirim", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return { status: 200 }; // Return status for successful login
-    } else {
-      toast.error("Gagal Mengirim", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return { status: 401 }; // Return status for failed login
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    toast.error("Terjadi kesalahan pada server", {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-    return { status: 500 }; // Return status for internal server error
-  }
-};
-
-export const pinValidate = (pin) => async (dispatch) => {
-  try {
-    console.log("pin", pin);
-    const response_validatePin = await axios.post(
-      "/api/pin-validation",
-      {
-        pin: pin,
-      },
-      {
-        withCredentials: true,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-
-    if (response_validatePin?.status === 200) {
-      console.log("response_validatePin", response_validatePin);
-      toast.success("PIN Validasi Berhasil", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return { status: 200 }; // Return status for successful login
-    } else {
-      toast.error("Gagal validasi", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return { status: 401 }; // Return status for failed login
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    toast.error("Terjadi kesalahan pada server", {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-    return { status: 500 }; // Return status for internal server error
-  }
-};
-
-export const changePassword =
-  (passwordLama, passwordBaru, konfirmasiPassword) => async (dispatch) => {
-    try {
-      const response_changePassword = await axios.put(
-        "/api/change-password",
-        {
-          oldPassword: passwordLama,
-          password: passwordBaru,
-          confirmPassword: konfirmasiPassword,
-        },
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-
-      if (response_changePassword?.status === 200) {
-        console.log("response_changePassword", response_changePassword);
-        toast.success("PIN Validasi Berhasil", {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-        return { status: 200 }; // Return status for successful login
-      } else {
-        toast.error("Gagal validasi", {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-        return { status: 401 }; // Return status for failed login
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      toast.error("Terjadi kesalahan pada server", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return { status: 500 }; // Return status for internal server error
-    }
-  };
-
-export const changePin = (pinLama, pinBaru2, pinBaru3) => async (dispatch) => {
-  try {
-    const response_changePin = await axios.put(
-      "/api/change-pin",
-      {
-        oldPin: pinLama,
-        newPin: pinBaru2,
-        confirmPin: pinBaru3,
-      },
-      {
-        withCredentials: true,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-
-    if (response_changePin?.status === 200) {
-      console.log("response_changePin", response_changePin);
-      toast.success("Berhasil Mengganti PIN", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return { status: 200 }; // Return status for successful login
-    } else {
-      toast.error("Gagal Mengganti PIN", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return { status: 401 }; // Return status for failed login
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    toast.error("Terjadi kesalahan pada server", {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-    return { status: 500 }; // Return status for internal server error
-  }
-};
-
-export const forgotPin = (passwordForgotPin, pinBaru) => async (dispatch) => {
-  try {
-    const response_forgotPin = await axios.put(
-      "/api/forgot-pin",
-      {
-        pin: pinBaru,
-        password: passwordForgotPin,
-      },
-      {
-        withCredentials: true,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-
-    if (response_forgotPin?.status === 201) {
-      console.log("response_forgotPin", response_forgotPin);
-      toast.success("Berhasil Mengganti PIN", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return { status: 200 }; // Return status for successful login
+    if (response_login?.status === 200) {
+      // navigate("/");
+      dispatch(setLoginStatus(false));
+      alert("Berhasil Logout");
+      return { status: 200 };
+      // Return status for successful login
     } else {
       toast.error("Gagal Mengganti PIN", {
         position: "bottom-center",

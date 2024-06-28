@@ -1,77 +1,221 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import PersonIcon from "@mui/icons-material/Person";
-// import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import { PersonOutline, Person,Notifications,NotificationsNone, NotificationsActiveSharp } from "@mui/icons-material";
+import {
+  PersonOutline,
+  Person,
+  Notifications,
+  NotificationsNone,
+} from "@mui/icons-material";
+import ModalLogout from "./Modal/ModalLogout";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setHalaman } from "../../redux/Reducers/TiketReducer";
+import { RiMenuFill } from "react-icons/ri";
+import { Button, Drawer } from "antd";
 
 export default function Navbar() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [activeButton, setActiveButton] = useState("");
-  const handleClick = (buttonName) => {
-    setActiveButton(buttonName); // Mengubah state saat tombol diklik
+  const [logout, setLogout] = useState(false);
+  const [userCondition, setUserCondition] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`/api/user/profile`, {
+          withCredentials: true,
+        });
+        setUserCondition(response.data.status);
+      } catch (error) {
+        setUserCondition(error.response.status);
+      }
+    };
+    fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    setLogout(false);
+  }, []);
+
+  const active = useSelector((state) => {
+    return state.tiket.Halaman_Aktif;
+  });
+
+  const handleLogout = () => {
+    setLogout(true);
   };
-  const token = "awdawd";
-  // const token = null;
+
+  const HandleClick = (buttonName) => {
+    dispatch(setHalaman(buttonName));
+  };
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
 
   return (
-    <nav className="flex items-center justify-between py-[14px] pl-[75px] pr-[49px] text-[24px]">
+    <nav className="flex z-50 items-center justify-between py-[14px] pl-[75px] max-xl:pl-4 pr-[49px] max-lg:pr-2 max-sm:pr-10 max-xs:pr-2 text-[24px]">
       <div className="flex items-center">
-        <div className="mr-[78px]">
+        <div className="mr-[78px] max-lg:ml-1 ">
           <img src="/images/Logo.png" alt="" />
         </div>
-        <div className="flex text-[#176B87] gap-4">
+        <div className="flex max-lg:hidden text-[#176B87] gap-4">
           <button
-            className={activeButton === "Beranda" ? "font-bold" : ""}
+            className={active === "Beranda" ? "font-bold" : ""}
             onClick={() => {
-              handleClick("Beranda");
+              setLogout(false);
+              HandleClick("Beranda");
+              navigate("/");
             }}
           >
             Beranda
           </button>
           <button
-            className={activeButton === "Tiket" ? "font-bold" : ""}
+            className={active === "Tiket" ? "font-bold" : ""}
             onClick={() => {
-              handleClick("Tiket");
+              setLogout(false);
+              HandleClick("Tiket");
+              navigate("/history");
             }}
           >
             Tiket
           </button>
           <button
-            className={activeButton === "Promo" ? "font-bold" : ""}
+            className={active === "Promo" ? "font-bold" : ""}
             onClick={() => {
-              handleClick("Promo");
+              setLogout(false);
+              HandleClick("Promo");
             }}
           >
             Promo
           </button>
         </div>
       </div>
-      {token !== null ? (
-        <div className="flex text-[#176B87] gap-6 items-center">
-          <button onClick={() => {
-              handleClick("person");
-            }}>
-            {activeButton === "person" ? <Person /> : <PersonOutline />}
+      <div className="max-lg:hidden">
+        {userCondition === true ? (
+          <div className="flex text-[#176B87] gap-6 items-center">
+            <img
+              src="/images/fi_list.png"
+              alt=""
+              className="h-6 w-6 hover:cursor-pointer"
+              onClick={() => navigate("/")}
+            />
+            <button
+              onClick={() => {
+                HandleClick("bell");
+                setLogout(false);
+              }}
+            >
+              {active === "bell" ? <Notifications /> : <NotificationsNone />}
+            </button>
+            <div className="relative">
+              <button
+                onClick={() => {
+                  {
+                    logout === "logout" ? setLogout(false) : handleLogout();
+                  }
+                  HandleClick("logout");
+                }}
+              >
+                {active === "logout" ? <Person /> : <PersonOutline />}
+              </button>
+              <ModalLogout onClose={() => setLogout(false)} visible={logout} />
+            </div>
+          </div>
+        ) : (
+          <button
+            className="flex text-[#176B87] gap-4 items-center"
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            <img src="/images/User_Image.png" alt="" />
+            <p>Daftar / Masuk</p>
           </button>
-
-          <img
-            src="/images/fi_list.png"
-            alt=""
-            className="h-6 w-6 hover:cursor-pointer"
-            onClick={() => navigate("/")}
-          />
-          <button onClick={() => {
-              handleClick("bell");
-            }}>
-            {activeButton === "bell" ? <Notifications /> : <NotificationsNone />}
+        )}
+      </div>
+      <div className="hidden max-lg:flex">
+        <RiMenuFill onClick={showDrawer} />
+      </div>
+      <Drawer title="Menu" onClose={onClose} open={open}>
+        <div className="flex flex-col items-start gap-1 text-lg ">
+          <button
+            className={`z-50${active === "Beranda" ? "font-bold z-50" : ""}`}
+            onClick={() => {
+              onClose();
+              setLogout(false);
+              HandleClick("Beranda");
+              navigate("/");
+            }}
+          >
+            Beranda
           </button>
+          <button
+            className={`z-50${active === "Tiket" ? "font-bold z-50" : ""}`}
+            onClick={() => {
+              onClose();
+              setLogout(false);
+              HandleClick("Tiket");
+              navigate("/history");
+            }}
+          >
+            Tiket
+          </button>
+          <button
+            className={`z-50${active === "Promo" ? "font-bold z-50" : ""}`}
+            onClick={() => {
+              onClose();
+              setLogout(false);
+              HandleClick("Promo");
+            }}
+          >
+            Promo
+          </button>
+          {userCondition === true ? (
+            <div>
+              <button
+                onClick={() => {
+                  onClose();
+                  HandleClick("bell");
+                  setLogout(false);
+                }}
+              >
+                Notifications
+              </button>
+              <button
+                onClick={() => {
+                  onClose();
+                  handleLogout();
+                  HandleClick("logout");
+                }}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                onClose();
+                navigate("/login");
+              }}
+            >
+              Daftar / Masuk
+            </button>
+          )}
+          <div className="inset-0 z-20 absolute bottom-0  flex justify-center">
+            <img
+              src="/images/logoabu.png"
+              alt=""
+              className="absolute bottom-28 h-40"
+            />
+          </div>
         </div>
-      ) : (
-        <button className="flex text-[#176B87] gap-4 items-center">
-          <img src="/images/User_Image.png" alt="" />
-          <p>Daftar / Masuk</p>
-        </button>
-      )}
+      </Drawer>
     </nav>
   );
 }

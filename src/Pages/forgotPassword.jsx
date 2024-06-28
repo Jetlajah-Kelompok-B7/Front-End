@@ -7,7 +7,7 @@ import { forgotPassword } from "../redux/Action/actionLogin";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function ForgotPassword() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const email = useSelector((state) => state.login?.email);
