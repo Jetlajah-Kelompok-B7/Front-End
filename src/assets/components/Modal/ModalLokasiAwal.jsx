@@ -67,7 +67,7 @@ export default function ModalLokasi({
             />
           </div>
           <div className="h-[45vh] max-lg:h-[40vh] overflow-y-auto flex flex-col gap-3">
-            {filteredData.map((lokasi, index) => (
+            {filteredData && filteredData.map((lokasi, index) => (
               <div
                 key={index}
                 className=" hover:cursor-pointer"
