@@ -137,7 +137,7 @@ export default function History() {
 
       {/* Data Riwayat */}
       <div className="flex flex-col gap-1 mt-6 mx-[276px] max-xl:mx-5 border p-10 rounded-2xl">
-        {currentItems.map((e, i) => (
+        {currentItems?.map((e, i) => (
           <div
             key={i}
             className="flex flex-col bg-white py-3 px-4 border rounded-2xl hover:cursor-pointer"
