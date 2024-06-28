@@ -1,7 +1,13 @@
 import axios from "axios";
 import { setTiketPesawat } from "../Reducers/FilterHargaReducers";
 import { ColorizeSharp } from "@mui/icons-material";
-import { setLokasi, setTiketPesawatPergi, setTiketPesawatPulang } from "../Reducers/TiketReducer";
+import {
+  setLokasi,
+  setTiketPesawatPergi,
+  setTiketPesawatPulang,
+  setDestinasiPesawat,
+} from "../Reducers/TiketReducer";
+import { setDataChekoutBerangkat, setHasilPostDataPenumpang } from "../Reducers/DataBooking";
 
 export const GetTiket = () => async (dispatch, getState) => {
   try {
@@ -67,3 +73,48 @@ export const getTiketSearch = (params) => async (dispatch) => {
     }
   }
 };
+
+
+
+//post order data
+export const getPayment = (orderId, paramsData ,navigate) => async (dispatch) => {
+  try {
+    // Tampilkan paramsData sebelum permintaan POST
+    console.log("Data yang dikirim ke server:", paramsData.penumpang);
+
+    const response = await axios.post(`/api/order/${orderId}`, paramsData.penumpang);
+    
+    console.log("Response Payment:", response);
+    // Dispatch action Redux untuk meng-update status pengiriman data penumpang
+    alert('Data Berhasil Tersimpan');
+    
+    dispatch(setHasilPostDataPenumpang(response)); // Sesuaikan dengan action yang ada di Redux Anda
+    navigate("/payment");
+  } catch (error) {
+    console.error('Error:', error.response ? error.response.data : error.message);
+    alert('Kamu harus login dulu!');
+  }
+};
+
+
+//Get DEtail Cekout
+export const getDetailPesanan = (checkoutId) => async (dispatch) => {
+  // console.log("getstatesereis",checkoutId);
+  try {
+    console.log("getstatesereis",checkoutId);
+    const repsonse = await axios.get(
+      `/api/checkout/${checkoutId}`
+    );
+     
+    dispatch(setDataChekoutBerangkat(repsonse.data.data));
+    console.log("seriesssss", repsonse.data.data);
+  } catch (error) {
+    // console.log("error", error);
+    if (axios.isAxiosError(error)) {
+      alert(error.message);
+      return;
+    }
+    alert(error.message);
+  }
+};
+

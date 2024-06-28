@@ -5,9 +5,11 @@ import {
   ChevronRightIcon,
   ArrowLongLeftIcon,
 } from "@heroicons/react/24/outline";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getPayment } from "../redux/Action/TiketAction";
+import { setDokumenBooking } from "../redux/Reducers/DataBooking";
 
 const travelDokumen = () => {
   const [penumpangData, setPenumpangData] = useState([]);
@@ -16,6 +18,7 @@ const travelDokumen = () => {
   const [param, setparams] = useState([]);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // formatRupiah
   const formatRupiah = (price) => {
@@ -24,7 +27,9 @@ const travelDokumen = () => {
       .replace(/\,00$/, "");
   };
 
-  const DataBooking = useSelector((state) => state.booking.bookingTiketPesawat);
+  const DataBooking = useSelector(
+    (state) => state.booking.bookingTiketPesawatPergi
+  );
   // console.log("Data", DataBooking);
 
   const DataPenumpang = useSelector((state) => state.tiket);
@@ -141,6 +146,8 @@ const travelDokumen = () => {
     return `${year}-${month}-${day}`;
   };
 
+ 
+
   useEffect(() => {
     const initialPenumpangData = [];
     for (let i = 0; i < DataPenumpang.TotalPenumpang.Dewasa; i++) {
@@ -148,14 +155,14 @@ const travelDokumen = () => {
         ageGroup: "ADULT",
         id: `dewasa-${i}`,
         name: "Dewasa",
-        title: "",
-        fullName: "",
-        birthDate: "",
-        nationality: "",
-        idNumber: "",
-        issuingCountry: "",
-        expiryDate: "",
-        isBaby: false,
+        titel: "",
+        nama: "",
+        tanggal_lahir: "",
+        kewarganegaraan: "",
+        ktp_pasport: "",
+        negara_penerbit: "",
+        berlaku_sampai: "",
+        is_baby: false,
       });
     }
     for (let i = 0; i < DataPenumpang.TotalPenumpang.Anak; i++) {
@@ -163,14 +170,14 @@ const travelDokumen = () => {
         ageGroup: "CHILD",
         id: `anak-${i}`,
         name: "Anak",
-        title: "",
-        fullName: "",
-        birthDate: "",
-        nationality: "",
-        idNumber: "",
-        issuingCountry: "",
-        expiryDate: "",
-        isBaby: false,
+        titel: "",
+        nama: "",
+        tanggal_lahir: "",
+        kewarganegaraan: "",
+        ktp_pasport: "",
+        negara_penerbit: "",
+        berlaku_sampai: "",
+        is_baby: false,
       });
     }
     for (let i = 0; i < DataPenumpang.TotalPenumpang.Bayi; i++) {
@@ -178,14 +185,14 @@ const travelDokumen = () => {
         ageGroup: "BABY",
         id: `bayi-${i}`,
         name: "Bayi",
-        title: "",
-        fullName: "",
-        birthDate: "",
-        nationality: "",
-        idNumber: "",
-        issuingCountry: "",
-        expiryDate: "",
-        isBaby: true,
+        titel: "",
+        nama: "",
+        tanggal_lahir: "",
+        kewarganegaraan: "",
+        ktp_pasport: "",
+        negara_penerbit: "",
+        berlaku_sampai: "",
+        is_baby: true,
       });
     }
     setPenumpangData(initialPenumpangData);
@@ -203,43 +210,61 @@ const travelDokumen = () => {
     setPenumpangData((prevData) =>
       prevData.map((penumpang) =>
         penumpang.id === id
-          ? { ...penumpang, isBaby: !penumpang.isBaby }
+          ? { ...penumpang, is_baby: !penumpang.is_baby }
           : penumpang
       )
     );
   };
 
+  const dataInputPesanan = useSelector(
+    (state) => state.booking.bookingTiketPesawatPergi
+  );
+
+
   const handleSimpanDataPenumpang = () => {
-    let isValid = true;
-    penumpangData.forEach((penumpang) => {
-      if (
-        !penumpang.title ||
-        !penumpang.fullName ||
-        !penumpang.birthDate ||
-        !penumpang.nationality ||
-        !penumpang.idNumber ||
-        !penumpang.issuingCountry ||
-        !penumpang.expiryDate
-      ) {
-        isValid = false;
-      }
-    });
-
-    if (!isValid) {
+    const isValid = penumpangData.every((penumpang) => (
+      penumpang.titel &&
+      penumpang.nama &&
+      penumpang.tanggal_lahir &&
+      penumpang.kewarganegaraan &&
+      penumpang.ktp_pasport &&
+      penumpang.negara_penerbit &&
+      penumpang.berlaku_sampai
+    ));
+   
+    if (isValid) {
+      const dataToSave = penumpangData.map((penumpang) => ({
+        titel: penumpang.titel,
+        nama: penumpang.nama,
+        tanggal_lahir: penumpang.tanggal_lahir,
+        kewarganegaraan: penumpang.kewarganegaraan,
+        ktp_pasport: penumpang.ktp_pasport,
+        negara_penerbit: penumpang.negara_penerbit,
+        // Format tanggal berlaku
+        berlaku_sampai: new Date(penumpang.berlaku_sampai).toISOString(),
+        is_baby: penumpang.is_baby,
+      }));
+  
+      // Simpan dataToSave ke dalam state atau lakukan dispatch ke action lain sesuai kebutuhan
+      console.log("Data to save:", dataToSave);
+  
+      const paramsData = {
+        penumpang: dataToSave,
+      };
+  
+      dispatch(getPayment(dataInputPesanan.id, paramsData, navigate)); // Pastikan dataInputPesanan.id tersedia
+      dispatch(setDokumenBooking(paramsData));
+    } else {
       alert("Semua form wajib diisi!");
-      return;
     }
-    // Lakukan penyimpanan data di sini, misalnya mengirim ke server atau menyimpan di state global
-    console.log("Data penumpang berhasil disimpan:", penumpangData);
+    console.log("dataINPTAN", dataInputPesanan.id);
+  
   };
+  
 
-  // useEffect(() => {
-  //   // console.log("localStorage ", localStorage.getItem("token"));
-  //   if (localStorage.getItem("token") === null) {
-  //     alert("Anda belum login, Silahkan login!");
-  //     navigate("/");
-  //   }
-  // }, []);
+
+  const dataPemesan = useSelector((state) => state.login);
+  //  console.log("Data Pemesan user", dataPemesan);
 
   
 
@@ -285,25 +310,19 @@ const travelDokumen = () => {
                   <p className="bg-[#176B87] text-white rounded-t-md py-2 px-4">
                     Data Diri Pemesanan
                   </p>
-                  <form action="" className="py-3 "></form>
+                  {<form action="" className="py-3 "></form>}
                   <p className="text-[#176B87] font-semibold">Nama Lengkap</p>
-                  <input
-                    type="text"
-                    placeholder="Inputkan Nama"
-                    className=" border border-slate-300 w-[520px] p-2 my-2"
-                  />
+                  <p className="border border-slate-300 w-[520px] p-2 my-2">
+                    {dataPemesan.nama}
+                  </p>
                   <p className="text-[#176B87] font-semibold">Nomor Telepon</p>
-                  <input
-                    type="text"
-                    placeholder="Inputkan No Hp"
-                    className=" border border-slate-300 w-[520px] p-2 my-2"
-                  />
-                  <p className="text-[#176B87] font-semibold">Email</p>
-                  <input
-                    type="email"
-                    placeholder="Contoh : johndoe@gmail.com"
-                    className=" border border-slate-300 w-[520px] p-2 my-2"
-                  />
+                  <p className="border border-slate-300 w-[520px] p-2 my-2">
+                    {dataPemesan.no_telp}
+                  </p>
+                  <p className="text-[#176B87] font-semibold">Alamat</p>
+                  <p className="border border-slate-300 w-[520px] p-2 my-2">
+                    {dataPemesan.alamat}
+                  </p>
                 </div>
               </div>
 
@@ -323,34 +342,35 @@ const travelDokumen = () => {
                       </p>
                       <form action="" className="py-3"></form>
                       <label className="text-[#176B87] font-semibold">
-                        Title
+                        titel
                       </label>
                       <select
-                        value={penumpang.title}
+                        value={penumpang.titel}
                         onChange={(e) =>
                           handleInputChange(
                             penumpang.id,
-                            "title",
+                            "titel",
                             e.target.value
                           )
                         }
                         className="border border-slate-300 w-[440px] p-2 my-2"
-                      ><option value=""></option>
-                        <option value="Mr">Tuan</option>
-                        <option value="Mrs">Nyonya</option>
-                        <option value="Ms">Nona</option>
+                      >
+                        <option value=""></option>
+                        <option value="Tuan">Tuan</option>
+                        <option value="Nyonya">Nyonya</option>
+                        <option value="Nona">Nona</option>
                       </select>
                       <label className="text-[#176B87] font-semibold">
                         Nama Lengkap
                       </label>
                       <input
                         type="text"
-                        value={penumpang.fullName}
+                        value={penumpang.nama}
                         required
                         onChange={(e) =>
                           handleInputChange(
                             penumpang.id,
-                            "fullName",
+                            "nama",
                             e.target.value
                           )
                         }
@@ -361,12 +381,12 @@ const travelDokumen = () => {
                       </label>
                       <input
                         type="date"
-                        value={penumpang.birthDate}
+                        value={penumpang.tanggal_lahir}
                         required
                         onChange={(e) =>
                           handleInputChange(
                             penumpang.id,
-                            "birthDate",
+                            "tanggal_lahir",
                             e.target.value
                           )
                         }
@@ -375,30 +395,32 @@ const travelDokumen = () => {
                       <label className="text-[#176B87] font-semibold">
                         Kewarganegaraan
                       </label>
-                      <input
-                        type="text"
+                      <Select
                         required
-                        value={penumpang.nationality}
-                        onChange={(e) =>
+                        value={options.find(
+                          (option) => option.value === penumpang.kewarganegaraan
+                        )}
+                        onChange={(selectedOption) =>
                           handleInputChange(
                             penumpang.id,
-                            "nationality",
-                            e.target.value
+                            "kewarganegaraan",
+                            selectedOption.value
                           )
                         }
+                        options={options}
                         className="border border-slate-300 w-[440px] p-2 my-2"
                       />
                       <label className="text-[#176B87] font-semibold">
-                        KTP/Paspor
+                        No KTP/Paspor
                       </label>
                       <input
                         type="text"
-                        value={penumpang.idNumber}
+                        value={penumpang.ktp_pasport}
                         required
                         onChange={(e) =>
                           handleInputChange(
                             penumpang.id,
-                            "idNumber",
+                            "ktp_pasport",
                             e.target.value
                           )
                         }
@@ -410,12 +432,12 @@ const travelDokumen = () => {
                       <Select
                         required
                         value={options.find(
-                          (option) => option.value === penumpang.issuingCountry
+                          (option) => option.value === penumpang.negara_penerbit
                         )}
                         onChange={(selectedOption) =>
                           handleInputChange(
                             penumpang.id,
-                            "issuingCountry",
+                            "negara_penerbit",
                             selectedOption.value
                           )
                         }
@@ -427,12 +449,12 @@ const travelDokumen = () => {
                       </label>
                       <input
                         type="date"
-                        value={penumpang.expiryDate}
+                        value={penumpang.berlaku_sampai}
                         required
                         onChange={(e) =>
                           handleInputChange(
                             penumpang.id,
-                            "expiryDate",
+                            "berlaku_sampai",
                             e.target.value
                           )
                         }
@@ -443,7 +465,7 @@ const travelDokumen = () => {
                       </label>
                       <input
                         type="checkbox"
-                        checked={penumpang.isBaby}
+                        checked={penumpang.is_baby}
                         required
                         onChange={() => toggleBaby(penumpang.id)}
                         className=" mt-5 w-6 h-6 ml-5"
@@ -452,14 +474,14 @@ const travelDokumen = () => {
                   </div>
                 ))}
               </div>
-              <div className="flex justify-center">
+              {/* <div className="flex justify-center">
                 <button
                   className="bg-[#176B87] text-white text-xl text-center py-2 px-10 rounded-xl mt-5 w-[300px] mb-10"
-                  onClick={handleSimpanDataPenumpang}
+                 
                 >
                   Simpan
                 </button>
-              </div>
+              </div> */}
             </div>
 
             {/* Detail Penerbangan */}
@@ -563,7 +585,10 @@ const travelDokumen = () => {
                         </p>
                       </div>
                       <div className="py-5 border-t-2">
-                        <button className="bg-[#176B87] text-white text-xl font-semibold py-2 px-5 flex justify-center items-center rounded-xl w-[350px]">
+                        <button
+                          className="bg-[#176B87] text-white text-xl font-semibold py-2 px-5 flex justify-center items-center rounded-xl w-[350px]"
+                          onClick={handleSimpanDataPenumpang}
+                        >
                           Lanjut Bayar
                         </button>
                       </div>
