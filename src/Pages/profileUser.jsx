@@ -14,6 +14,9 @@ import {
   updateProfile,
   logout,
   profileUser,
+  changePassword,
+  changePin,
+  forgotPin,
 } from "../redux/Action/actionLogin.js";
 import {
   setNama,
@@ -57,7 +60,6 @@ export default function ProfileUser() {
     setInnerOpen(innerOpen === innerValue ? 0 : innerValue);
 
   const [value, setValue] = useState(`henry`);
-  const [innerValue, setInnerValue] = useState("");
 
   const theState = useSelector((state) => state);
   console.log("theState", theState);
@@ -117,6 +119,109 @@ export default function ProfileUser() {
     }
   };
 
+  //-----------CHANGE PASSWORD FIELD------------------------------
+  const [passwordLama, setPasswordLama] = useState("");
+  const [passwordBaru, setPasswordBaru] = useState("");
+  const [konfirmasiPassword, setKonfirmasiPassword] = useState("");
+  //Show Password Lama
+  const [isClicked, setIsClicked] = useState(false);
+  const [passwordType, setPasswordType] = useState("password");
+
+  const handleClick = () => {
+    setIsClicked(!isClicked);
+    setPasswordType(passwordType === "password" ? "text" : "password");
+  };
+
+  //Show Password Baru
+  const [isClicked2, setIsClicked2] = useState(false);
+  const [passwordType2, setPasswordType2] = useState("password");
+
+  const handleClick2 = () => {
+    setIsClicked2(!isClicked2);
+    setPasswordType2(passwordType2 === "password" ? "text" : "password");
+  };
+
+  //Show Konfirmasi Password
+  const [isClicked3, setIsClicked3] = useState(false);
+  const [passwordType3, setPasswordType3] = useState("password");
+
+  const handleClick3 = () => {
+    setIsClicked3(!isClicked3);
+    setPasswordType3(passwordType3 === "password" ? "text" : "password");
+  };
+
+  //HANDLE CHANGE PASSWORD
+  const handleChangePassword = async (event) => {
+    event.preventDefault();
+    dispatch(changePassword(passwordLama, passwordBaru, konfirmasiPassword));
+  };
+
+  //-----------FORGOT PIN FIELD------------------------------
+  const [passwordForgotPin, setPasswordForgotPin] = useState("");
+  const [pinBaru, setPinBaru] = useState("");
+
+  //Show Password
+  const [isClicked4, setIsClicked4] = useState(false);
+  const [passwordType4, setPasswordType4] = useState("password");
+
+  const handleClick4 = () => {
+    setIsClicked4(!isClicked4);
+    setPasswordType4(passwordType4 === "password" ? "text" : "password");
+  };
+
+  //Show PIN BARU
+  const [isClicked5, setIsClicked5] = useState(false);
+  const [passwordType5, setPasswordType5] = useState("password");
+
+  const handleClick5 = () => {
+    setIsClicked5(!isClicked5);
+    setPasswordType5(passwordType5 === "password" ? "text" : "password");
+  };
+
+  //HANDLE FORGOT PIN
+  const handleForgotPin = async (event) => {
+    event.preventDefault();
+    dispatch(forgotPin(passwordForgotPin, pinBaru));
+  };
+
+  //-----------CHANGE PIN FIELD------------------------------
+  const [pinLama, setPinLama] = useState("");
+  const [pinBaru2, setPinBaru2] = useState("");
+  const [pinBaru3, setPinBaru3] = useState("");
+
+  //Show PIN Lama
+  const [isClicked6, setIsClicked6] = useState(false);
+  const [passwordType6, setPasswordType6] = useState("password");
+
+  const handleClick6 = () => {
+    setIsClicked6(!isClicked6);
+    setPasswordType6(passwordType6 === "password" ? "text" : "password");
+  };
+
+  //Show PIN BARU
+  const [isClicked7, setIsClicked7] = useState(false);
+  const [passwordType7, setPasswordType7] = useState("password");
+
+  const handleClick7 = () => {
+    setIsClicked7(!isClicked7);
+    setPasswordType7(passwordType7 === "password" ? "text" : "password");
+  };
+
+  //Show BARU PIN
+  const [isClicked8, setIsClicked8] = useState(false);
+  const [passwordType8, setPasswordType8] = useState("password");
+
+  const handleClick8 = () => {
+    setIsClicked8(!isClicked8);
+    setPasswordType8(passwordType8 === "password" ? "text" : "password");
+  };
+  //HANDLE CHANGE PIN
+  const handleChangePin = async (event) => {
+    event.preventDefault();
+    dispatch(changePin(pinLama, pinBaru2, pinBaru3));
+  };
+
+  //------------------------Submit--------------------------
   const handleSubmit = async (event) => {
     event.preventDefault();
     dispatch(updateProfile(nama, no_telp, tanggal_lahir, alamat, file));
@@ -443,6 +548,7 @@ export default function ProfileUser() {
                           <h1 className="poppins-bold">Pengaturan Akun</h1>
                           <div className="flex flex-col mt-[16px] mx-5">
                             <div>
+                              {/* ----------------CHANGE PASSWORD------------- */}
                               <Accordion
                                 className="mt-[16px] px-2 border shadow-md rounded-md"
                                 open={innerOpen === 1}
@@ -457,28 +563,176 @@ export default function ProfileUser() {
                                   <div>{<Icon id={1} open={innerOpen} />}</div>
                                 </span>
                                 <AccordionBody>
-                                  <div className="flex flex-col">
-                                    <h3>Masukkan Password</h3>
-                                    <input
-                                      type="password"
-                                      value={innerValue}
-                                      onChange={(e) =>
-                                        setInnerValue(e.target.value)
-                                      }
-                                      className="block w-[100%] rounded-md border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6 mt-[10px]"
-                                      placeholder="Masukkan Password lama"
-                                    />
-                                    <span className="flex justify-end">
-                                      <button
-                                        onClick={() => navigate("/forgot")}
-                                        className="text-[12px] text-[#176B87] hover:text-[#1C88AC] hover:underline h-10 flex justify-end items-start"
-                                      >
-                                        Lupa Password?
-                                      </button>
-                                    </span>
+                                  <div className="flex flex-col gap-5">
+                                    {/* INPUT PASSWORD LAMA */}
+                                    <div>
+                                      <h3>Masukkan Password Lama</h3>
+                                      <div>
+                                        <div className="relative mt-2 rounded-md shadow-sm">
+                                          <input
+                                            type={passwordType}
+                                            className="block w-full rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
+                                            placeholder="Masukkan Password Lama"
+                                            value={passwordLama}
+                                            onChange={(e) =>
+                                              setPasswordLama(e.target.value)
+                                            }
+                                          />
+                                          <div className="absolute inset-y-0 right-0 flex items-center mr-3">
+                                            <button>
+                                              <svg
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                onClick={handleClick}
+                                              >
+                                                <path
+                                                  d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z"
+                                                  stroke={
+                                                    isClicked
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                                <path
+                                                  d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
+                                                  stroke={
+                                                    isClicked
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                              </svg>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <span className="flex justify-end">
+                                        <button
+                                          onClick={() => navigate("/forgot")}
+                                          className="text-[12px] text-[#176B87] hover:text-[#1C88AC] hover:underline h-10 flex justify-end items-start"
+                                        >
+                                          Lupa Password?
+                                        </button>
+                                      </span>
+                                    </div>
+                                    {/* INPUT PASSWORD BARU */}
+                                    <div>
+                                      <h3>Masukkan Password Baru</h3>
+                                      <div>
+                                        <div className="relative mt-2 rounded-md shadow-sm">
+                                          <input
+                                            type={passwordType2}
+                                            className="block w-full rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
+                                            placeholder="Masukkan password Baru"
+                                            value={passwordBaru}
+                                            onChange={(e) =>
+                                              setPasswordBaru(e.target.value)
+                                            }
+                                          />
+                                          <div className="absolute inset-y-0 right-0 flex items-center mr-3">
+                                            <button>
+                                              <svg
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                onClick={handleClick2}
+                                              >
+                                                <path
+                                                  d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z"
+                                                  stroke={
+                                                    isClicked2
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                                <path
+                                                  d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
+                                                  stroke={
+                                                    isClicked2
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                              </svg>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    {/* INPUT KONFIRMASI PASSWORD BARU */}
+                                    <div>
+                                      <h3>Konfirmasi Password Baru</h3>
+                                      <div>
+                                        <div className="relative mt-2 rounded-md shadow-sm">
+                                          <input
+                                            type={passwordType3}
+                                            className="block w-full rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
+                                            placeholder="Konfirmasi Password Baru"
+                                            value={konfirmasiPassword}
+                                            onChange={(e) =>
+                                              setKonfirmasiPassword(
+                                                e.target.value
+                                              )
+                                            }
+                                          />
+                                          <div className="absolute inset-y-0 right-0 flex items-center mr-3">
+                                            <button>
+                                              <svg
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                onClick={handleClick3}
+                                              >
+                                                <path
+                                                  d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z"
+                                                  stroke={
+                                                    isClicked3
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                                <path
+                                                  d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
+                                                  stroke={
+                                                    isClicked3
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                              </svg>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
                                     <div className="flex justify-center">
                                       <button
-                                        onClick={handleSubmitPin}
+                                        onClick={handleChangePassword}
                                         className="py-[8px] px-[23.5px] text-white bg-[#053B50] hover:bg-[#142a32] rounded-lg w-[100px] h-[32px] flex justify-center items-center"
                                       >
                                         Lanjutkan
@@ -487,6 +741,7 @@ export default function ProfileUser() {
                                   </div>
                                 </AccordionBody>
                               </Accordion>
+                              {/* -----------------CHANGE PIN----------------- */}
                               <Accordion
                                 className="mt-[16px] px-2 border shadow-md rounded-md"
                                 open={innerOpen === 2}
@@ -496,41 +751,331 @@ export default function ProfileUser() {
                                     className="poppins-medium text-md w-[100%]"
                                     onClick={() => handleInnerOpen(2)}
                                   >
-                                    Ubah PIN
+                                    Change PIN
                                   </AccordionHeader>
                                   <div>{<Icon id={2} open={innerOpen} />}</div>
                                 </span>
                                 <AccordionBody>
-                                  <div className="flex flex-col">
-                                    <h3>Masukkan PIN</h3>
-                                    <input
-                                      type="password"
-                                      value={value}
-                                      onChange={(e) => setValue(e.target.value)}
-                                      className="block w-[100%] rounded-md border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6 mt-[10px]"
-                                      placeholder="Masukkan PIN lama"
-                                      pattern="[0-9]*"
-                                      inputMode="numeric"
-                                      onInput={(e) => {
-                                        let value = e.target.value.replace(
-                                          /[^0-9]/g,
-                                          ""
-                                        ); // Hanya angka
-                                        if (value.length > 6) {
-                                          // Batas maksimum 6 angka
-                                          value = value.slice(0, 6);
-                                        }
-                                        e.target.value = value;
-                                      }}
-                                    />
-                                    <span className="flex justify-end">
-                                      <button className="text-[12px] text-[#176B87] hover:text-[#1C88AC] hover:underline h-10 flex justify-end items-start">
-                                        Lupa PIN?
-                                      </button>
-                                    </span>
+                                  <div className="flex flex-col gap-5">
+                                    {/* INPUT PIN LAMA */}
+                                    <div>
+                                      <h3>Masukkan PIN Lama</h3>
+                                      <div>
+                                        <div className="relative mt-2 rounded-md shadow-sm">
+                                          <input
+                                            type={passwordType6}
+                                            value={pinLama}
+                                            className="block w-full rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
+                                            placeholder="Masukkan password"
+                                            onChange={(e) => {
+                                              const value = e.target.value;
+                                              // Check if the value contains only numbers
+                                              if (/^\d*$/.test(value)) {
+                                                setPinLama(value);
+                                              }
+                                            }}
+                                          />
+
+                                          <div className="absolute inset-y-0 right-0 flex items-center mr-3">
+                                            <button>
+                                              <svg
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                onClick={handleClick6}
+                                              >
+                                                <path
+                                                  d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z"
+                                                  stroke={
+                                                    isClicked6
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                                <path
+                                                  d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
+                                                  stroke={
+                                                    isClicked6
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                              </svg>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    {/* INPUT PIN BARU */}
+                                    <div>
+                                      <h3>Masukkan PIN Baru</h3>
+                                      <div>
+                                        <div className="relative mt-2 rounded-md shadow-sm">
+                                          <input
+                                            type={passwordType7}
+                                            value={pinBaru2}
+                                            className="block w-full rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
+                                            placeholder="Masukkan password"
+                                            onChange={(e) => {
+                                              const value = e.target.value;
+                                              // Check if the value contains only numbers
+                                              if (/^\d*$/.test(value)) {
+                                                setPinBaru2(value);
+                                              }
+                                            }}
+                                          />
+
+                                          <div className="absolute inset-y-0 right-0 flex items-center mr-3">
+                                            <button>
+                                              <svg
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                onClick={handleClick7}
+                                              >
+                                                <path
+                                                  d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z"
+                                                  stroke={
+                                                    isClicked7
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                                <path
+                                                  d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
+                                                  stroke={
+                                                    isClicked7
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                              </svg>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    {/* KONFIRMASI PIN BARU */}
+                                    <div>
+                                      <h3>Masukkan PIN Baru</h3>
+                                      <div>
+                                        <div className="relative mt-2 rounded-md shadow-sm">
+                                          <input
+                                            type={passwordType8}
+                                            value={pinBaru3}
+                                            className="block w-full rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
+                                            placeholder="Masukkan password"
+                                            onChange={(e) => {
+                                              const value = e.target.value;
+                                              // Check if the value contains only numbers
+                                              if (/^\d*$/.test(value)) {
+                                                setPinBaru3(value);
+                                              }
+                                            }}
+                                          />
+                                          <div className="absolute inset-y-0 right-0 flex items-center mr-3">
+                                            <button>
+                                              <svg
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                onClick={handleClick8}
+                                              >
+                                                <path
+                                                  d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z"
+                                                  stroke={
+                                                    isClicked8
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                                <path
+                                                  d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
+                                                  stroke={
+                                                    isClicked8
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                              </svg>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
                                     <div className="flex justify-center">
                                       <button
-                                        onClick={handleSubmitPin}
+                                        onClick={handleChangePin}
+                                        className="py-[8px] px-[23.5px] text-white bg-[#053B50] hover:bg-[#142a32] rounded-lg w-[100px] h-[32px] flex justify-center items-center"
+                                      >
+                                        Lanjutkan
+                                      </button>
+                                    </div>
+                                  </div>
+                                </AccordionBody>
+                              </Accordion>
+                              {/* ------------------FORGOT PIN---------------- */}
+                              <Accordion
+                                className="mt-[16px] px-2 border shadow-md rounded-md"
+                                open={innerOpen === 3}
+                              >
+                                <span className="flex items-center w-[100%] poppins-regular text-sm justify-between">
+                                  <AccordionHeader
+                                    className="poppins-medium text-md w-[100%]"
+                                    onClick={() => handleInnerOpen(3)}
+                                  >
+                                    Forgot PIN
+                                  </AccordionHeader>
+                                  <div>{<Icon id={3} open={innerOpen} />}</div>
+                                </span>
+                                <AccordionBody>
+                                  <div className="flex flex-col gap-5">
+                                    {/* INPUT PASSWORD */}
+                                    <div>
+                                      <h3>Masukkan Password</h3>
+                                      <div>
+                                        <div className="relative mt-2 rounded-md shadow-sm">
+                                          <input
+                                            type={passwordType4}
+                                            value={passwordForgotPin}
+                                            className="block w-full rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
+                                            placeholder="Masukkan password"
+                                            onChange={(e) =>
+                                              setPasswordForgotPin(
+                                                e.target.value
+                                              )
+                                            }
+                                          />
+                                          <div className="absolute inset-y-0 right-0 flex items-center mr-3">
+                                            <button>
+                                              <svg
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                onClick={handleClick4}
+                                              >
+                                                <path
+                                                  d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z"
+                                                  stroke={
+                                                    isClicked4
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                                <path
+                                                  d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
+                                                  stroke={
+                                                    isClicked4
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                              </svg>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <span className="flex justify-end">
+                                        <button
+                                          onClick={() => navigate("/forgot")}
+                                          className="text-[12px] text-[#176B87] hover:text-[#1C88AC] hover:underline h-10 flex justify-end items-start"
+                                        >
+                                          Lupa Password?
+                                        </button>
+                                      </span>
+                                    </div>
+                                    {/* INPUT PIN BARU */}
+                                    <div>
+                                      <h3>Masukkan PIN Baru</h3>
+                                      <div>
+                                        <div className="relative mt-2 rounded-md shadow-sm">
+                                          <input
+                                            type={passwordType5}
+                                            value={pinBaru}
+                                            className="block w-full rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
+                                            placeholder="Masukkan password"
+                                            onChange={(e) => {
+                                              const value = e.target.value;
+                                              // Check if the value contains only numbers
+                                              if (/^\d*$/.test(value)) {
+                                                setPinBaru(value);
+                                              }
+                                            }}
+                                          />
+
+                                          <div className="absolute inset-y-0 right-0 flex items-center mr-3">
+                                            <button>
+                                              <svg
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                onClick={handleClick5}
+                                              >
+                                                <path
+                                                  d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z"
+                                                  stroke={
+                                                    isClicked5
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                                <path
+                                                  d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
+                                                  stroke={
+                                                    isClicked5
+                                                      ? "#176B87"
+                                                      : "#8A8A8A"
+                                                  }
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                />
+                                              </svg>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="flex justify-center">
+                                      <button
+                                        onClick={handleForgotPin}
                                         className="py-[8px] px-[23.5px] text-white bg-[#053B50] hover:bg-[#142a32] rounded-lg w-[100px] h-[32px] flex justify-center items-center"
                                       >
                                         Lanjutkan
