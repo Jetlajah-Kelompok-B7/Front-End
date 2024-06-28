@@ -19,6 +19,16 @@ export default function Navbar() {
   const [logout, setLogout] = useState(false);
   const [userCondition, setUserCondition] = useState(null);
   const [open, setOpen] = useState(false);
+  const [first, setFirst] = useState(true);
+
+  const handleResize = () => {
+    if (window.innerWidth <= 1028) {
+      setFirst(true);
+    } else {
+      setFirst(false);
+      setOpen(false);
+    }
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -38,6 +48,12 @@ export default function Navbar() {
     setLogout(false);
   }, []);
 
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const active = useSelector((state) => {
     return state.tiket.Halaman_Aktif;
   });
@@ -51,7 +67,9 @@ export default function Navbar() {
   };
 
   const showDrawer = () => {
-    setOpen(true);
+    if (first) {
+      setOpen(true);
+    }
   };
 
   const onClose = () => {
@@ -109,9 +127,7 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => {
-                  {
-                    logout === "logout" ? setLogout(false) : handleLogout();
-                  }
+                  logout === "logout" ? setLogout(false) : handleLogout();
                   HandleClick("logout");
                 }}
               >
@@ -135,70 +151,87 @@ export default function Navbar() {
       <div className="hidden max-lg:flex">
         <RiMenuFill onClick={showDrawer} />
       </div>
-      <Drawer title="Menu" onClose={onClose} open={open}>
-        <div className="flex flex-col items-start gap-1 text-lg ">
-          <button
-            className={`z-50${active === "Beranda" ? "font-bold z-50" : ""}`}
-            onClick={() => {
-              onClose();
-              setLogout(false);
-              HandleClick("Beranda");
-              navigate("/");
-            }}
-          >
-            Beranda
-          </button>
-          <button
-            className={`z-50${active === "Tiket" ? "font-bold z-50" : ""}`}
-            onClick={() => {
-              onClose();
-              setLogout(false);
-              HandleClick("Tiket");
-              navigate("/history");
-            }}
-          >
-            Tiket
-          </button>
-          {userCondition === true ? (
-            <div>
-              <button
-                onClick={() => {
-                  onClose();
-                  HandleClick("bell");
-                  setLogout(false);
-                }}
-              >
-                Notifications
-              </button>
-              <button
-                onClick={() => {
-                  onClose();
-                  handleLogout();
-                  HandleClick("logout");
-                }}
-              >
-                Logout
-              </button>
-            </div>
-          ) : (
+      {first && (
+        <Drawer title="Menu" onClose={onClose} open={open}>
+          <div className="flex flex-col items-start gap-1 text-lg ">
             <button
+              className={`z-50${active === "Beranda" ? "font-bold z-50" : ""}`}
               onClick={() => {
                 onClose();
-                navigate("/login");
+                setLogout(false);
+                HandleClick("Beranda");
+                navigate("/");
               }}
             >
-              Daftar / Masuk
+              Beranda
             </button>
-          )}
-          <div className="inset-0 z-20 absolute bottom-0  flex justify-center">
-            <img
-              src="/images/logoabu.png"
-              alt=""
-              className="absolute bottom-28 h-40"
-            />
+            {userCondition === true ? (
+              <button
+                className={active === "Tiket" ? "font-bold" : ""}
+                onClick={() => {
+                  onClose();
+                  setLogout(false);
+                  HandleClick("Tiket");
+                  navigate("/history");
+                }}
+              >
+                Tiket
+              </button>
+            ) : null}
+            {userCondition === true ? (
+              <button
+                className={active === "Profile" ? "font-bold" : ""}
+                onClick={() => {
+                  onClose();
+                  setLogout(false);
+                  HandleClick("Profile");
+                  navigate("/profileUser");
+                }}
+              >
+                Profile
+              </button>
+            ) : null}
+            {userCondition === true ? (
+              <div>
+                <button
+                  onClick={() => {
+                    onClose();
+                    HandleClick("bell");
+                    setLogout(false);
+                  }}
+                >
+                  Notifications
+                </button>
+                <button
+                  onClick={() => {
+                    onClose();
+                    handleLogout();
+                    HandleClick("logout");
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  onClose();
+                  navigate("/login");
+                }}
+              >
+                Daftar / Masuk
+              </button>
+            )}
+            <div className="inset-0 z-20 absolute bottom-0 flex justify-center">
+              <img
+                src="/images/logoabu.png"
+                alt=""
+                className="absolute bottom-28 h-40"
+              />
+            </div>
           </div>
-        </div>
-      </Drawer>
+        </Drawer>
+      )}
     </nav>
   );
 }

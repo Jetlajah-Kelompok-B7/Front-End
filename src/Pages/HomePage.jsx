@@ -7,18 +7,17 @@ import Slicing_2 from "../assets/components/SlicingHomePage/Slicing_2";
 import Slicing_3 from "../assets/components/SlicingHomePage/Slicing_3";
 import Footer from "../assets/components/Footer";
 import { profileUser } from "../redux/Action/actionLogin"; // Ganti dengan path sesuai struktur proyek Anda
-import { reset } from "../redux/Reducers/TiketReducer";
+import { reset, setHalaman } from "../redux/Reducers/TiketReducer";
 
 export default function HomePage() {
-  const dispact = useDispatch();
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(reset());
+    dispatch(setHalaman("Beranda"));
   }, []);
-  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(profileUser());
   }, [dispatch]);
-  const data = useSelector((state) => console.log('state', state.conditon));
   return (
     <div>
       <div className="fixed top-0 w-full bg-white z-50 shadow">

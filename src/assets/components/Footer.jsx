@@ -144,19 +144,13 @@ export default function Footer() {
               <p className="text-base font-semibold mb-2">Navigasi</p>
               <div className="flex flex-col gap-0.5">
                 <a href="/" className="footer-link">
-                  Home
+                  Beranda
                 </a>
                 <a href="/" className="footer-link">
-                  Destinasi Favorit
+                  tiket
                 </a>
-                <a href="/" className="footer-link">
-                  Riwayat Transaksi
-                </a>
-                <a href="/" className="footer-link">
+                <a href="/notification" className="footer-link">
                   Notifikasi
-                </a>
-                <a href="/" className="footer-link">
-                  Contact
                 </a>
               </div>
             </div>

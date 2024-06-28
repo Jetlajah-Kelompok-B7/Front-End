@@ -20,7 +20,7 @@ export default function History() {
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(7);
+  const [itemsPerPage] = useState(10);
   const [dataTiket, setDataTiket] = useState([]);
   const navigate = useNavigate();
   console.log("dataTiket", dataTiket);
@@ -32,6 +32,7 @@ export default function History() {
           withCredentials: true,
         });
         setDataTiket(response.data.data);
+        console.log('first', response.data.data)
       } catch (error) {
         console.log("fetchUserData  error:", error);
       }

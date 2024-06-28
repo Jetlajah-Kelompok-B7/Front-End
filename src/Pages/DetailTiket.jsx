@@ -44,6 +44,7 @@ export default function DetailTiket() {
   const flight = ticket?.schedule?.flight || {};
   const checkoutID = data_tiket?.data?.checkoutId;
   const pembayaran = data_tiket?.data?.checkout?.status || {};
+  console.log("DetailTiket  pembayaran:", pembayaran);
 
   useEffect(() => {
     const fetchPrint = async () => {
@@ -58,7 +59,7 @@ export default function DetailTiket() {
       }
     };
 
-    if (checkoutID && pembayaran === "paid") {
+    if (checkoutID && pembayaran === "Paid") {
       fetchPrint();
     } else {
       null;
@@ -349,7 +350,7 @@ export default function DetailTiket() {
                 <button
                   className=" text-white bg-[#176B87] text-sm px-[85px] py-3 rounded-lg"
                   onClick={() => {
-                    if (pembayaran === "Unpaid") {
+                    if (pembayaran !== "Paid") {
                       alert("Bayar order dulu");
                       return;
                     }
