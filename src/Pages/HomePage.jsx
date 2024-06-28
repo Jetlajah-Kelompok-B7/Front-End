@@ -18,7 +18,7 @@ export default function HomePage() {
   useEffect(() => {
     dispatch(profileUser());
   }, [dispatch]);
-  const data = useSelector((state) => console.log('state', state.conditon));
+  const data = useSelector((state) => console.log("state", state.conditon));
   return (
     <div>
       <div className="fixed top-0 w-full bg-white z-50 shadow">

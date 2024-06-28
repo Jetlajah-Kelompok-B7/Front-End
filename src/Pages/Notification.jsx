@@ -4,12 +4,8 @@ import Navbar from "../assets/components/Navbar.jsx";
 import { useNavigate } from "react-router-dom";
 import { getNotification } from "../redux/Action/actionLogin";
 import { useDispatch, useSelector } from "react-redux";
-
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  return date.toLocaleDateString("id-ID", options);
-}
+import { format, differenceInMinutes } from "date-fns";
+import { id } from "date-fns/locale"; // Import locale ID
 
 export default function Notification() {
   const navigate = useNavigate();
@@ -49,10 +45,10 @@ export default function Notification() {
       <div className="flex flex-col items-center justify-center mb-10">
         <div className="flex w-full h-auto mt-[15px]">
           <div className="w-full">
-            <div className="flex flex-col items-center justify-center w-full pb-5">
+            <div className="flex flex-col  justify-center w-[50%] mx-auto pb-5">
               <h1 className="poppins-bold ml-5 text-4xl">Notifikasi</h1>
               <div className=" mt-[22px]">
-                <div className="flex flex-col">
+                <div className="flex flex-col w-full">
                   {/* BUTTON BERANDA */}
                   <button onClick={() => navigate("/")} className="w-full">
                     <div className="flex items-center text-white text-left px-[16px] mx-5 w-auto h-[55px] bg-[#176B87] hover:bg-[#2b5b6b] rounded-xl gap-[8px]">
@@ -154,13 +150,14 @@ export default function Notification() {
                         ) : data.length === 0 ? (
                           <p>Belum ada notifikasi</p>
                         ) : (
-                          <div className="flex flex-col gap-4 w-[90%]">
+                          <div className="flex flex-col gap-4 w-full">
                             {filteredData.map((item, index) => (
                               <div
                                 key={index}
-                                className="flex flex-col sm:flex-row sm:gap-5 items-center sm:justify-between w-full sm:max-w-[95%] h-auto border-b-2 mt-3 py-3"
+                                className="flex flex-col sm:flex-row sm:gap-5 items-center sm:justify-between w-full h-auto border-b-2 mt-3 py-3"
                               >
-                                <div className="flex gap-5">
+                                <div className="flex flex-1 gap-5 ">
+                                  {/* LOGO LONCENG */}
                                   <div>
                                     <svg
                                       width="24"
@@ -176,22 +173,32 @@ export default function Notification() {
                                       />
                                     </svg>
                                   </div>
-                                  <div className="">
-                                    <h2 className="text-[#8A8A8A] text-sm poppins-regular">
+                                  <div className="flex-1 w-full">
+                                    {/* <h2 className="text-[#8A8A8A] text-sm poppins-regular w-full">
                                       {item.kategori}
-                                    </h2>
-                                    <h1 className="text-black text-xl">
+                                    </h2> */}
+                                    <h1 className="text-black text-xl w-full">
                                       {item.judul}
                                     </h1>
-                                    <h2 className="text-[#8A8A8A] text-sm poppins-regular">
+                                    <h2 className="text-[#8A8A8A] text-sm poppins-regular w-full">
                                       {item.deskripsi}
                                     </h2>
                                   </div>
                                 </div>
-                                <div className="flex justify-start items-start ">
-                                  <h2 className="text-[#8A8A8A] text-sm poppins-regular">
-                                    {item.tanggal_waktu}
+                                <div className="flex justify-start items-center gap-2 ">
+                                  <h2 className="text-[#8A8A8A] text-sm poppins-regular w-full">
+                                    {format(
+                                      new Date(item.tanggal_waktu),
+                                      "d MMMM, HH.MM",
+                                      { locale: id }
+                                    )}
                                   </h2>
+                                  {item.kategori === "WARNING" && (
+                                    <div className="size-2 rounded full bg-red-500"></div>
+                                  )}
+                                  {item.kategori === "INFO" && (
+                                    <div className="size-2 rounded full bg-green-500"></div>
+                                  )}
                                 </div>
                               </div>
                             ))}
