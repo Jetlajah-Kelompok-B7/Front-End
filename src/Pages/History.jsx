@@ -13,6 +13,7 @@ import SearchHistoryModal from "../assets/components/Modal/SearchHistoryModal";
 import { format, parseISO } from "date-fns";
 import id from "date-fns/locale/id";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function History() {
   const [modal, setModal] = useState("");
@@ -22,8 +23,18 @@ export default function History() {
   const [itemsPerPage] = useState(10);
   const [dataTiket, setDataTiket] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  //pengaman agar jika user belum login
+  const Condition = useSelector((state) => {
+    return state.tiket.UserCondition;
+  });
+  useEffect(() => {
+    if (Condition !== true) {
+      navigate("/login");
+    }
+  }, [dispatch]);
 
-  if (dataTiket === undefined || dataTiket === null) return null;
+  // if (dataTiket === undefined || dataTiket === null) return null;
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -60,8 +71,8 @@ export default function History() {
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const currentItems = filteredData?.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredData?.length / itemsPerPage);
 
   const handleChange = (event, value) => {
     setCurrentPage(value);
@@ -126,7 +137,7 @@ export default function History() {
 
       {/* Data Riwayat */}
       <div className="flex flex-col gap-1 mt-6 mx-[276px] max-xl:mx-5 border p-10 rounded-2xl">
-        {currentItems.map((e, i) => (
+        {currentItems?.map((e, i) => (
           <div
             key={i}
             className="flex flex-col bg-white py-3 px-4 border rounded-2xl hover:cursor-pointer"
@@ -187,7 +198,7 @@ export default function History() {
         ))}
         <div
           className={`${
-            filteredData.length > itemsPerPage ? "flex" : "hidden"
+            filteredData?.length > itemsPerPage ? "flex" : "hidden"
           } flex justify-center`}
         >
           <Stack spacing={2} className="flex justify-center items-center mt-10">

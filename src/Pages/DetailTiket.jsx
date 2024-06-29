@@ -21,6 +21,16 @@ export default function DetailTiket() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  //pengaman agar jika user belum login
+  const Condition = useSelector((state) => {
+    return state.tiket.UserCondition;
+  });
+  useEffect(() => {
+    if (Condition !== true) {
+      navigate("/login");
+    }
+  }, [dispatch]);
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {

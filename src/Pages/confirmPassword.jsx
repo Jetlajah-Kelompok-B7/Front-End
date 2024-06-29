@@ -33,6 +33,16 @@ export default function ConfirmPassword() {
   const theState = useSelector((state) => state);
   console.log("theState", theState);
 
+  //pengaman agar jika user belum login
+  const Condition = useSelector((state) => {
+    return state.tiket.UserCondition;
+  });
+  useEffect(() => {
+    if (Condition !== true) {
+      navigate("/login");
+    }
+  }, [dispatch]);
+
   const handleEmailChange = (event) => {
     dispatch(setEmail(event.target.value)); // Dispatch action untuk mengubah email di Redux state
   };

@@ -17,6 +17,48 @@ export default function ModalPemesananTiketMobile() {
   const [destinasi, setDestinasi] = useState("");
   const [tanggalBerangkat, setTanggalBerangkat] = useState("");
   const [tanggalPulang, setTanggalPulang] = useState("");
+  
+
+  const handlePemesanan = () => {
+    if (idTanggal === 1) {
+      if (
+        kotaAwal !== "" &&
+        destinasi !== "" &&
+        kelas_penerbangan !== "" &&
+        total_penumpang !== 0 &&
+        tanggalBerangkat !== ""
+      ) {
+        if (kotaAwal === destinasi) {
+          alert("Lokasi Awal dan Destinasi Tidak Boleh Sama");
+          return;
+        }
+        navigate("/pemesanan");
+        return;
+      } else {
+        alert("Harap Lengkapi Semua Formulir");
+        return;
+      }
+    } else {
+      if (
+        kotaAwal !== "" &&
+        destinasi !== "" &&
+        kelas_penerbangan !== "" &&
+        total_penumpang !== 0 &&
+        tanggalBerangkat !== "" &&
+        tanggalPulang !== ""
+      ) {
+        if (kotaAwal === destinasi) {
+          alert("Lokasi Awal dan Destinasi Tidak Boleh Sama");
+          return;
+        }
+        navigate("/resultSearch");
+        return;
+      } else {
+        alert("Harap Lengkapi Semua Formulir");
+        return;
+      }
+    }
+  };
 
   const handleswap = () => {
     let temp = kotaAwal;
@@ -97,7 +139,12 @@ export default function ModalPemesananTiketMobile() {
               </div>
             </div>
           </div>
-          <button className="w-full text-center font-bold text-[16px] py-4 mt-7 text-white bg-[#176B87] rounded-b-2xl">
+          <button
+            className="w-full text-center font-bold text-[16px] py-4 mt-7 text-white bg-[#176B87] rounded-b-2xl"
+            onClick={() => {
+              handlePemesanan();
+            }}
+          >
             Cari Penerbangan
           </button>
         </div>
@@ -316,7 +363,9 @@ function Inputpenumpang({ modal, setmodal }) {
 
           <div className="flex items-center flex-1">
             <div className="flex flex-col md:relative flex-1">
-              <p className="text-base text-gray-500 truncate">Kelas Penerbangan</p>
+              <p className="text-base text-gray-500 truncate">
+                Kelas Penerbangan
+              </p>
               <button
                 className="border-b font-medium text-[#176B87] text-[18px] text-start py-2"
                 onClick={() => {
