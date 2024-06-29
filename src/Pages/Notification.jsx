@@ -44,8 +44,8 @@ export default function Notification() {
       <Navbar />
       <div className="flex flex-col items-center justify-center mb-10">
         <div className="flex w-full h-auto mt-[15px]">
-          <div className="w-full">
-            <div className="flex flex-col  justify-center w-[50%] mx-auto pb-5">
+          <div className="w-full flex lg:mx-auto">
+            <div className="w-full flex flex-col justify-center mx-10 max-sm:mx-2 pb-5">
               <h1 className="poppins-bold ml-5 text-4xl">Notifikasi</h1>
               <div className=" mt-[22px]">
                 <div className="flex flex-col w-full">
@@ -79,11 +79,11 @@ export default function Notification() {
                   </button>
                   <div className="flex flex-col justify-center items-center">
                     {/* MAIN DATA */}
-                    <div className="flex flex-col mt-3 py-3">
+                    <div className="flex flex-col mt-3 py-3 w-full">
                       {/* FILTER */}
                       <div className="flex flex-col items-center gap-3">
                         <button
-                          className="flex items-center gap-1 border-2 px-2 border-[#053B50] rounded-full"
+                          className="flex items-center justify-center gap-1 border-2 px-2 border-[#053B50] rounded-full w-[20%] max-sm:w-[50%]"
                           onClick={() => setIsFiltered(!isFiltered)} // Toggle filter status
                         >
                           <div>
@@ -138,13 +138,13 @@ export default function Notification() {
                               onClick={handleUnfilter}
                               className="mt-2 px-2 py-1 border-2 border-[#053B50] rounded-full text-[#053B50]"
                             >
-                              Hapus Filter
+                              Tutup Filter
                             </button>
                           </div>
                         )}
                       </div>
                       {/* DATA NOTIFIKASI */}
-                      <div className="flex items-center justify-center w-[95%] max-w-[95%] h-auto border-b-2">
+                      <div className="flex items-center w-full h-auto border-b-2 px-10 max-sm:px-0">
                         {data === undefined ? (
                           <p>Loading...</p>
                         ) : data.length === 0 ? (
@@ -174,9 +174,6 @@ export default function Notification() {
                                     </svg>
                                   </div>
                                   <div className="flex-1 w-full">
-                                    {/* <h2 className="text-[#8A8A8A] text-sm poppins-regular w-full">
-                                      {item.kategori}
-                                    </h2> */}
                                     <h1 className="text-black text-xl w-full">
                                       {item.judul}
                                     </h1>
@@ -185,13 +182,21 @@ export default function Notification() {
                                     </h2>
                                   </div>
                                 </div>
-                                <div className="flex justify-start items-center gap-2 ">
+                                <div className="flex justify-start items-center gap-2 max-sm:mt-5 max-sm:w-full text-end">
                                   <h2 className="text-[#8A8A8A] text-sm poppins-regular w-full">
-                                    {format(
-                                      new Date(item.tanggal_waktu),
-                                      "d MMMM, HH.MM",
-                                      { locale: id }
-                                    )}
+                                    {new Intl.DateTimeFormat("id", {
+                                      dateStyle: "full",
+                                      timeStyle: "long",
+                                      timeZone: "Asia/Jakarta",
+                                    })
+                                      .format(
+                                        new Date(item.tanggal_waktu).getTime()
+                                      )
+                                      .split(" ")
+                                      .filter((_, index) =>
+                                        [1, 2, 5].includes(index)
+                                      )
+                                      .join(" ")}
                                   </h2>
                                   {item.kategori === "WARNING" && (
                                     <div className="size-2 rounded full bg-red-500"></div>

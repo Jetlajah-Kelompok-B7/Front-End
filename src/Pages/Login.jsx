@@ -44,12 +44,12 @@ export default function Login() {
     <div className="flex justify-between bg-[#FFFFFF] h-screen">
       <div
         style={{ backgroundImage: `url(${background})` }}
-        className="max-sm:hidden mx-auto bg-gradient-to-r from-cyan-500 to-black bg-cover bg-center w-[50%] h-auto flex justify-center items-center rounded-e-3xl relative "
+        className="flex-1 max-lg:hidden max-sm:hidden mx-auto bg-gradient-to-r from-cyan-500 to-black bg-cover bg-center w-[50%] h-auto flex justify-center items-center rounded-e-3xl relative "
       >
         <img src={jetlajah} alt="Logo Jetlajah" width="30%" />
       </div>
-      <div className="mx-auto w-[50%] h-[631px] flex justify-center items-center flex-col relative">
-        <div className="flex flex-col justify-center ">
+      <div className="flex-1 mx-auto w-full max-lg:w-full h-screen flex justify-center items-center flex-col relative">
+        <div className="flex flex-col justify-center mx-auto w-full my-5 px-10">
           <h1 className="flex justify-center text-[#176B87] poppins-bold text-3xl ">
             Masuk
           </h1>
@@ -62,7 +62,7 @@ export default function Login() {
               <div className="relative mt-2 rounded-md shadow-sm">
                 <input
                   type="text"
-                  className="block w-[400px] rounded-xl border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
+                  className="block w-full rounded-xl border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
                   placeholder="Example: john.doe@gmail.com"
                   onChange={handleEmailChange}
                 />
@@ -78,7 +78,7 @@ export default function Login() {
               <div className="relative mt-2 rounded-md shadow-sm">
                 <input
                   type={passwordType}
-                  className="block w-[400px] rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
+                  className="block w-full rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
                   placeholder="Masukkan password"
                   onChange={handlePasswordChange}
                 />
@@ -125,32 +125,10 @@ export default function Login() {
             Masuk
           </button>
         </div>
-        <div className="mt-[37px] flex justify-center items-center gap-5">
-          <div>
-            <svg
-              width="119"
-              height="1"
-              viewBox="0 0 119 1"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <line y1="0.5" x2="119" y2="0.5" stroke="#D0D0D0" />
-            </svg>
-          </div>
+        <div className="flex justify-center items-center">
           <p className="text-[#D0D0D0] text-sm">atau login/daftar dengan</p>
-          <div>
-            <svg
-              width="119"
-              height="1"
-              viewBox="0 0 119 1"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <line y1="0.5" x2="119" y2="0.5" stroke="#D0D0D0" />
-            </svg>
-          </div>
         </div>
-        <div className="flex flex-col mt-6">
+        <div className="flex flex-col mt-6 ">
           <button
             onClick={handleOAuth}
             className="flex items-center justify-center"
@@ -158,13 +136,10 @@ export default function Login() {
             <img
               src={logogoogle}
               alt="Logo Google"
-              width="15%"
-              height="auto"
-              className="border p-2 ring-1 ring-slate-100 rounded-lg hover:bg-slate-100"
+              className="size-10 border p-2 ring-1 ring-slate-100 rounded-lg hover:bg-slate-100"
             />
           </button>
-
-          <div className="flex justify-center gap-2 mt-6 max-sm:flex-col max-sm:items-center">
+          <div className="flex justify-center gap-2 mt-6 max-sm:flex-col max-sm:items-center max-sm:mb-5">
             <p>Belum punya akun?</p>
             <button
               onClick={() => navigate("/register")}
