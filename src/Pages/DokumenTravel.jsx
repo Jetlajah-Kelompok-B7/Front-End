@@ -30,14 +30,16 @@ const travelDokumen = () => {
   const DataBooking = useSelector(
     (state) => state.booking.bookingTiketPesawatPergi
   );
-  // console.log("Data", DataBooking);
+   console.log("DataWWW", DataBooking);
 
   const DataPenumpang = useSelector((state) => state.tiket);
-  // console.log("Data penum", DataPenumpang);
+   console.log("Data penumpangoONE", DataPenumpang);
 
   // fungsi Perhitungan Harga
+  
+  
   const totalHargaPenumpang =
-    DataPenumpang.totalSemuaPenumpang * DataBooking.price;
+    ((DataPenumpang.totalSemuaPenumpang)-(DataPenumpang.TotalPenumpang.Bayi)) * DataBooking.price;
   const pajak = totalHargaPenumpang * 0.1;
   const totalHargaDenganPajak = totalHargaPenumpang + pajak;
 
@@ -460,16 +462,7 @@ const travelDokumen = () => {
                         }
                         className="border border-slate-300 w-[440px] p-2 my-2"
                       />
-                      <label className="text-[#176B87] font-semibold flex-col items-end justify-end">
-                        Apakah Penumpang ini Bayi?
-                      </label>
-                      <input
-                        type="checkbox"
-                        checked={penumpang.is_baby}
-                        required
-                        onChange={() => toggleBaby(penumpang.id)}
-                        className=" mt-5 w-6 h-6 ml-5"
-                      />
+                     
                     </div>
                   </div>
                 ))}

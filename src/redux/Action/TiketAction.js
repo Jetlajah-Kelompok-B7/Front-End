@@ -7,7 +7,7 @@ import {
   setTiketPesawatPulang,
   setDestinasiPesawat,
 } from "../Reducers/TiketReducer";
-import { setDataChekoutBerangkat, setHasilPostDataPenumpang } from "../Reducers/DataBooking";
+import { setDataChekoutBerangkat, setHasilPostCeckout, setHasilPostDataPenumpang } from "../Reducers/DataBooking";
 
 export const GetTiket = () => async (dispatch, getState) => {
   try {
@@ -118,3 +118,29 @@ export const getDetailPesanan = (checkoutId) => async (dispatch) => {
   }
 };
 
+
+//post order data
+export const getPaymentCekout = (metode_pembayaran, checkoutId, navigate) => async (dispatch) => {
+  try {
+    // Tampilkan paramsData sebelum permintaan POST
+    console.log("Data yang Server:", metode_pembayaran);
+    const response = await axios.post(
+      `/api/checkout/${checkoutId}`,
+      {
+        metode_pembayaran,
+      },
+      {
+        withCredentials: true,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  } catch (error) {
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    alert("Kamu harus login dulu!");
+  }
+};

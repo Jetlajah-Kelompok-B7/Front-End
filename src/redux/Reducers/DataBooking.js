@@ -3,23 +3,31 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   bookingTiketPesawatPergi: [],
   bookingTiketPesawatPulang: [],
-  inputanDataPenumpang:[],
+  inputanDataPenumpang: [],
   metode_pembayaran: "",
+  checkoutId: "",
+  isValidated: false,
   dokumenBooking: [],
   dataCheckoutBerangkat: [],
-
+  dataPostCheckout: [],
 };
 
 const bookingSlicer = createSlice({
   name: "booking",
   initialState,
   reducers: {
+    
+    setIsValidated: (state, action) => {
+      state.isValidated = action.payload;
+    },
     setBookingTiketPergi: (state, action) => {
       state.bookingTiketPesawatPergi = action.payload;
     },
     setBookingTiketPulang: (state, action) => {
       state.bookingTiketPesawatPulang = action.payload;
     },
+
+    //hasil inutan post isi
     setHasilPostDataPenumpang: (state, action) => {
       state.inputanDataPenumpang = action.payload;
     },
@@ -33,10 +41,21 @@ const bookingSlicer = createSlice({
     setDataChekoutBerangkat: (state, action) => {
       state.dataCheckoutBerangkat = action.payload;
     },
+    setHasilPostCeckout: (state, action) => {
+      state.dataPostCheckout = action.payload;
+    },
   },
 });
 
-export const { setBookingTiketPergi, setBookingTiketPulang,setHasilPostDataPenumpang, setMetodePembayaran, setDokumenBooking, setDataChekoutBerangkat} =
-  bookingSlicer.actions;
+export const {
+  setIsValidated,
+  setBookingTiketPergi,
+  setBookingTiketPulang,
+  setHasilPostDataPenumpang,
+  setMetodePembayaran,
+  setDokumenBooking,
+  setDataChekoutBerangkat,
+  setHasilPostCeckout,
+} = bookingSlicer.actions;
 
 export default bookingSlicer.reducer;

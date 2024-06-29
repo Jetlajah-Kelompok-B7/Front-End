@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setMetodePembayaran } from "../redux/Reducers/DataBooking";
+import { setIsValidated, setMetodePembayaran } from "../redux/Reducers/DataBooking";
 import Navbar from "../assets/components/Navbar";
 import {
   Accordion,
   AccordionHeader,
   AccordionBody,
+  useSelect,
 } from "@material-tailwind/react";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
-import { getDetailPesanan } from "../redux/Action/TiketAction";
+import { getDetailPesanan, getPaymentCekout } from "../redux/Action/TiketAction";
 import {
   ArrowUpRightIcon,
   ArrowDownLeftIcon,
 } from "@heroicons/react/24/outline";
+import PaymentTimer from "./timerPage";
 
 function Icon({ id, open }) {
   return (
@@ -54,6 +56,10 @@ export default function Payment() {
     const { name, value } = e.target;
     setCreditCardInfo({ ...creditCardInfo, [name]: value });
   };
+  const checkoutId = useSelector((state) => state.booking.dataCheckoutBerangkat.id);
+  const isValidated = useSelector((state) => state.booking.isValidated);
+  console.log("Selected IIDID", checkoutId);
+  console.log("Selected isValidated", isValidated);
 
   const handleSubmit = () => {
     // if (selectedMethod === "creditCard") {
@@ -61,8 +67,17 @@ export default function Payment() {
     // } else {
     //   console.log("Selected Payment Method:", selectedMethod);
     // }
-    console.log("Selected Payment Method:", selectedMethod);
-    dispatch(setMetodePembayaran(selectedMethod));
+
+    // if (!isValidated) {
+      // navigate(`/confirm-pin?checkoutId=${checkoutId}&metode_pembayaran=${selectedMethod}`);
+    // }
+
+    navigate(`/confirm-pin?checkoutId=${checkoutId}&metode_pembayaran=${selectedMethod}`);
+
+    // console.log("Selected Payment Method:", selectedMethod);
+    // dispatch(setMetodePembayaran(selectedMethod, checkoutId));
+    // dispatch(getPaymentCekout(selectedMethod, checkoutId, navigate));
+    
   };
 
   //Mengambil data booking tiket hasil post
@@ -75,18 +90,77 @@ export default function Payment() {
   const userCkId = useSelector(
     (state) => state.booking.inputanDataPenumpang.data.data.checkoutId
   );
-  console.log("Data penumckout", userCkId);
+   console.log("ID CEKOUT UNTUK GET DATA CEKOUT", userCkId);
 
+  //use buat nyimpan ID ke Action
   useEffect(() => {
     if (userCkId) {
       dispatch(getDetailPesanan(userCkId));
     }
   }, [dispatch, userCkId]);
-
+  
+  //Fect DAta DEtail PEnumpang
   const DetailPenumpangCekout = useSelector(
-    (state) => state.booking.dataCheckoutBerangkat
+    (state) => state.booking.dataCheckoutBerangkat.data
   );
-  // console.log("detailckout", DetailPenumpangCekout);
+   console.log("detailckout", DetailPenumpangCekout);
+
+  const DataBooking = useSelector(
+    (state) => state.booking.bookingTiketPesawatPergi
+  );
+
+  //unutk perkalian data penumpang]
+  const [penumpangData, setPenumpangData] = useState([]);
+  const DataPenumpang = useSelector((state) => state.tiket);
+  // console.log("Data penum", DataPenumpang);
+
+ 
+
+  // Group passengers by type and count
+  const groupPenumpangData = penumpangData.reduce((acc, penumpang) => {
+    if (!acc[penumpang.name]) {
+      acc[penumpang.name] = { count: 0, ageGroup: penumpang.ageGroup };
+    }
+    acc[penumpang.name].count += 1;
+    return acc;
+  }, {});
+
+
+
+  // formatRupiah
+  const formatRupiah = (price) => {
+    return price
+      .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
+      .replace(/\,00$/, "");
+  };
+
+  
+
+  useEffect(() => {
+    const initialPenumpangData = [];
+    for (let i = 0; i < DataPenumpang.TotalPenumpang.Dewasa; i++) {
+      initialPenumpangData.push({
+        ageGroup: "ADULT",
+        id: `dewasa-${i}`,
+        name: "Dewasa",
+      });
+    }
+    for (let i = 0; i < DataPenumpang.TotalPenumpang.Anak; i++) {
+      initialPenumpangData.push({
+        ageGroup: "CHILD",
+        id: `anak-${i}`,
+        name: "Anak",
+      });
+    }
+    for (let i = 0; i < DataPenumpang.TotalPenumpang.Bayi; i++) {
+      initialPenumpangData.push({
+        ageGroup: "BABY",
+        id: `bayi-${i}`,
+        name: "Bayi",
+      });
+    }
+    setPenumpangData(initialPenumpangData);
+  }, [DataPenumpang?.TotalPenumpang]);
 
   return (
     <div className="bg-white ">
@@ -114,9 +188,9 @@ export default function Payment() {
             </div>
           </div>
           <div className="mr-20 pl-52 py-5">
-            <button className="items-center pl-5 py-4 gap-5 w-[800px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl">
-              Selesaikan Pembayaran Dalam
-            </button>
+            
+              <PaymentTimer/>
+           
           </div>
         </div>
 
@@ -291,16 +365,16 @@ export default function Payment() {
 
           {/* Booking Code */}
           <div className="py-8">
-            <p className="w-full font-bold text-lg pb-[10px]">
-              Booking Code :{" "}
-              <span className="text-[#176B87]">
-                {DetailPenumpangCekout.booking_code}
-              </span>
-            </p>
             <div className=" text-sm border-2 rounded-lg w-[300px]">
               {/* Keberangkatan */}
               <p className=" text-lg text-white font-bold border bg-[#176B87] py-1 text-center rounded-t-lg">
                 Pergi
+              </p>
+              <p className="font-bold text-lg border-b-2 px-2 py-2">
+                Booking Code :{" "}
+                <span className="text-[#176B87] ">
+                  {DetailPenumpangCekout.booking_code}
+                </span>
               </p>
               <div className="px-2">
                 <p className="text-base">
@@ -340,10 +414,9 @@ export default function Payment() {
                   </p>
                 </div>
               </div>
-              {/* DEtail Penerbangan */}
+              {/* DEtail */}
               <div className="flex justify-between border-b pb-4">
                 <p className="text-base">Detail Penerbangan</p>
-                
               </div>
               {/* Promo */}
               <div className="flex justify-between border-b border-t py-2 mb-2 ">
@@ -352,25 +425,38 @@ export default function Payment() {
                 </button>
               </div>
               {/* Rincian Harga */}
-              <div className="flex- flex-col gap-2">
-                <p className=" font-bold">Rincian Harga</p>
-                <div className="flex justify-between">
-                  <p>2 Adults</p>
-                  <p>IDR 9.550.000</p>
-                </div>
-                <div className="flex justify-between">
-                  <p>1 Baby</p>
-                  <p>IDR 0</p>
-                </div>
-                <div className="flex justify-between">
-                  <p>Tax</p>
-                  <p>IDR 300.000</p>
+              <div className="my-3 py-2 border-t-2 border-b-2">
+                <p className="font-bold text-xl">Rincian Harga</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {Object.entries(groupPenumpangData).map(
+                    ([name, { count, ageGroup }]) => (
+                      <div
+                        className="flex justify-between col-span-2"
+                        key={name}
+                      >
+                        <div className="flex gap-2">
+                          <p>{count}</p>
+                          <p>{name}</p>
+                        </div>
+                        <p className="">
+                          {ageGroup === "BABY"
+                            ? "0"
+                            : formatRupiah(DataPayment.ticket.harga * count)}
+                        </p>
+                      </div>
+                    )
+                  )}
+                  <div className="flex justify-between col-span-2">
+                    <p>Tax 10%</p>
+                    <p>{formatRupiah(DataPayment.price.tax)}</p>
+                  </div>
                 </div>
               </div>
-              {/* total */}
-              <div className="flex justify-between font-bold border-b border-t py-4 items-center">
-                <p className=" text-base">Total</p>
-                <p className=" text-lg text-[#176B87]">IDR 9.850.000</p>
+              <div className="flex justify-between">
+                <p className="font-bold text-xl">Total</p>
+                <p className="font-bold text-xl text-[#176B87]">
+                  {formatRupiah(DataPayment.price.price)}
+                </p>
               </div>
             </div>
           </div>

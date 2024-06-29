@@ -8,6 +8,9 @@ import {
   setAlamat,
   setFile,
 } from "../Reducers/reducersLogin";
+import { getPaymentCekout } from "./TiketAction";
+import { setHasilPostCeckout } from "../Reducers/DataBooking";
+
 
 export const login = (email, password, navigate) => async (dispatch) => {
   try {
@@ -149,42 +152,6 @@ export const createPin = (pin, navigate) => async (dispatch) => {
   }
 };
 
-// export const updateProfile =
-//   (nama, no_telp, tanggal_lahir, alamat, file) => async (dispatch) => {
-//     try {
-//       const response_updateProfile = await axios.put(
-//         "/api/user/profile",
-//         {
-//           nama,
-//           no_telp,
-//           tanggal_lahir,
-//           alamat,
-//           file,
-//         },
-//         {
-//           withCredentials: true,
-//         },
-//         {
-//           headers: {
-//             "content-type": "multipart/form-data",
-//           },
-//         }
-//       );
-
-//       if (response_updateProfile?.status === 200) {
-//         console.log("Response:", response_updateProfile);
-//         alert("Berhasil Update");
-//         return { status: 200 }; // Return status for successful login
-//       } else {
-//         alert("Gagal Update");
-//         return { status: 401 }; // Return status for failed login
-//       }
-//     } catch (error) {
-//       console.error("Error:", error);
-//       return { status: 500 }; // Return status for internal server error
-//     }
-//   };
-
 export const updateProfile =
   (nama, no_telp, tanggal_lahir, alamat, file) => async (dispatch) => {
     const data = new formData();
@@ -246,3 +213,45 @@ export const logout = () => async () => {
     return { status: 500 }; // Return status for internal server error
   }
 };
+
+
+export const pinValidate =
+  (pin, metode_pembayaran, checkoutId, navigate) => async (dispatch) => {
+    try {
+      console.log("pin", pin);
+      const response_validatePin = await axios.post(
+        "/api/pin-validation",
+        {
+          pin: pin,
+        },
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (response_validatePin?.status === 200) {
+        console.log("response_validatePin", response_validatePin);
+        alert("Berhasil")
+
+        // Call the getPaymentCekout function and handle the response
+        const paymentResponse = await dispatch(
+          getPaymentCekout(metode_pembayaran, checkoutId)
+        );
+
+        // Handle the payment response here
+        console.log("Payment Response", paymentResponse);
+        dispatch(setHasilPostCeckout(paymentResponse)); // Dispatch the action to update the Redux store
+        navigate("/bayar_berhasil");
+
+        return { status: 200 }; // Return status for successful login
+      } else {
+       alert("Gagal ")
+        return { status: 401 }; // Return status for failed login
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Gagal 2")
+      return { status: 500 }; // Return status for internal server error
+    }
+  };
