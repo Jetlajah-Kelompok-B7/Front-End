@@ -9,6 +9,7 @@ const initialState = {
   isValidated: false,
   dokumenBooking: [],
   dataCheckoutBerangkat: [],
+  dataCheckoutPulang: [],
   dataPostCheckout: [],
 };
 
@@ -41,6 +42,9 @@ const bookingSlicer = createSlice({
     setDataChekoutBerangkat: (state, action) => {
       state.dataCheckoutBerangkat = action.payload;
     },
+    setDataChekoutPulang: (state, action) => {
+      state.dataCheckoutPulang = action.payload;
+    },
     setHasilPostCeckout: (state, action) => {
       state.dataPostCheckout = action.payload;
     },
@@ -56,6 +60,7 @@ export const {
   setDokumenBooking,
   setDataChekoutBerangkat,
   setHasilPostCeckout,
+  setDataChekoutPulang,
 } = bookingSlicer.actions;
 
 export default bookingSlicer.reducer;

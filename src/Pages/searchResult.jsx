@@ -115,21 +115,21 @@ const ResultSearchFilm = () => {
   };
 
   // Fetch DAta Tiket Pesawat
-  const tiketData = useSelector((state) => state.filter.tiketPesawat.data);
+  const tiketData = useSelector((state) => state?.filter?.tiketPesawat?.data);
   // console.log("allPesawat", tiketData);
 
   //Menapilkan tiket pergi
-  const tiketPergi = useSelector((state) => state.tiket.dataPesawatPergi.data);
+  const tiketPergi = useSelector((state) => state?.tiket?.dataPesawatPergi?.data);
   console.log("tiket pergi", tiketPergi);
 
   //Menampilkan tikel pulang
   const tiketPulang = useSelector(
-    (state) => state.tiket.dataPesawatPulang.data
+    (state) => state?.tiket?.dataPesawatPulang?.data
   );
   console.log("tiket pulang", tiketPulang);
 
   const ambiltype = useSelector(
-    (state) => state.tiket.dataInputanSearch.jenisPenerbangan
+    (state) => state?.tiket?.dataInputanSearch?.jenisPenerbangan
   );
   console.log("TYPE", ambiltype);
 
@@ -444,7 +444,7 @@ const ResultSearchFilm = () => {
                 tiketPergi.map((flight, index) => (
                   <div
                     key={index}
-                    className="p-5 shadow-lg border-2 border-slate-100 rounded-xl mb-4"
+                    className="p-5 shadow-lg border-2 border-slate-100 rounded-xl mb-4 "
                   >
                     <div>
                       <div className="flex justify-between">
@@ -462,11 +462,11 @@ const ResultSearchFilm = () => {
                           </div>
                         </div>
                         <div
-                          className="flex flex-col items-end"
+                          className="flex flex-col items-end  "
                           onClick={() => toggleDetails(index)}
                         >
                           <ChevronDownIcon
-                            className={`h-6 w-6 text-[#176b87aa] text-bold text-center rounded-full border-2 border-[#176b87aa] p-1 flex items-center transform ${
+                            className={`absolute  h-6 w-6 text-[#176b87aa] text-bold text-center rounded-full border-2 border-[#176b87aa] p-1 flex items-center transform ${
                               openDropdown === index ? "rotate-180" : ""
                             }`}
                           />

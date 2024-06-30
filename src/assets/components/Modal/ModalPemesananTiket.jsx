@@ -48,7 +48,7 @@ export default function ModalPemesananTiket() {
 
   //handel search
   const handleSearch = () => {
-    const params = {
+    const params = {  
       bandara_keberangkatan: kotaAwal,
       bandara_kedatangan: destinasi,
       tanggal_pergi: tanggalBerangkat,

@@ -232,17 +232,18 @@ export const pinValidate =
 
       if (response_validatePin?.status === 200) {
         console.log("response_validatePin", response_validatePin);
-        alert("Berhasil")
-
-        // Call the getPaymentCekout function and handle the response
-        const paymentResponse = await dispatch(
+        dispatch(
           getPaymentCekout(metode_pembayaran, checkoutId)
         );
+        alert("Berhasil")
+
+        // // Call the getPaymentCekout function and handle the response
+        // const paymentResponse = await 
 
         // Handle the payment response here
-        console.log("Payment Response", paymentResponse);
-        dispatch(setHasilPostCeckout(paymentResponse)); // Dispatch the action to update the Redux store
-        navigate("/bayar_berhasil");
+        // console.log("Payment Response", paymentResponse);
+        // dispatch(setHasilPostCeckout(paymentResponse)); // Dispatch the action to update the Redux store
+        // navigate("/bayar_berhasil");
 
         return { status: 200 }; // Return status for successful login
       } else {

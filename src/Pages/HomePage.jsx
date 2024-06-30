@@ -11,7 +11,7 @@ import { getTokenFromCookie } from "../assets/utils/cookies"; // Ganti dengan pa
 
 export default function HomePage() {
   const dispatch = useDispatch();
-  const theState = useSelector((state) => state);
+  // const theState = useSelector((state) => state);
   // console.log("theState", theState);
   useEffect(() => {
     dispatch(profileUser());
