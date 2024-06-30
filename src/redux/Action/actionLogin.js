@@ -441,76 +441,21 @@ export const pinValidate = (pin) => async (dispatch) => {
       }
     );
 
-    if (response_validatePin?.status === 200) {
-      console.log("response_validatePin", response_validatePin);
-      toast.success("PIN Validasi Berhasil", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return { status: 200 }; // Return status for successful login
-    } else {
-      toast.error("Gagal validasi", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return { status: 401 }; // Return status for failed login
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    toast.error("Terjadi kesalahan pada server", {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-    return { status: 500 }; // Return status for internal server error
-  }
-};
+      if (response_validatePin?.status === 200) {
+        console.log("response_validatePin", response_validatePin);
+        dispatch(
+          getPaymentCekout(metode_pembayaran, checkoutId)
+        );
+        alert("Berhasil")
 
-export const changePassword =
-  (passwordLama, passwordBaru, konfirmasiPassword) => async (dispatch) => {
-    try {
-      const response_changePassword = await axios.put(
-        "/api/change-password",
-        {
-          oldPassword: passwordLama,
-          password: passwordBaru,
-          confirmPassword: konfirmasiPassword,
-        },
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+        // // Call the getPaymentCekout function and handle the response
+        // const paymentResponse = await 
 
-      if (response_changePassword?.status === 200) {
-        console.log("response_changePassword", response_changePassword);
-        toast.success("Berhasil Mengganti Password", {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        // Handle the payment response here
+        // console.log("Payment Response", paymentResponse);
+        // dispatch(setHasilPostCeckout(paymentResponse)); // Dispatch the action to update the Redux store
+        // navigate("/bayar_berhasil");
+
         return { status: 200 }; // Return status for successful login
       } else {
         toast.error("Gagal Mengganti Password", {

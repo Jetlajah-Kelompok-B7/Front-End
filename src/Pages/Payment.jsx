@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsValidated, setMetodePembayaran } from "../redux/Reducers/DataBooking";
+import {
+  setIsValidated,
+  setMetodePembayaran,
+} from "../redux/Reducers/DataBooking";
 import Navbar from "../assets/components/Navbar";
 import {
   Accordion,
@@ -10,7 +13,10 @@ import {
 } from "@material-tailwind/react";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
-import { getDetailPesanan, getPaymentCekout } from "../redux/Action/TiketAction";
+import {
+  getDetailPesanan,
+  getPaymentCekout,
+} from "../redux/Action/TiketAction";
 import {
   ArrowUpRightIcon,
   ArrowDownLeftIcon,
@@ -56,7 +62,19 @@ export default function Payment() {
     const { name, value } = e.target;
     setCreditCardInfo({ ...creditCardInfo, [name]: value });
   };
-  const checkoutId = useSelector((state) => state.booking.dataCheckoutBerangkat.id);
+
+  //ID CEKOUT PERGI
+  const checkoutId = useSelector(
+    (state) => state.booking.dataCheckoutBerangkat.id
+  );
+
+  //ID CEKOUT PULANG
+  const checkoutIdPulang = useSelector(
+    (state) => state.booking
+  );
+console.log("ID State", checkoutIdPulang)
+  // checkoutPulang
+
   const isValidated = useSelector((state) => state.booking.isValidated);
   console.log("Selected IIDID", checkoutId);
   console.log("Selected isValidated", isValidated);
@@ -69,42 +87,44 @@ export default function Payment() {
     // }
 
     // if (!isValidated) {
-      // navigate(`/confirm-pin?checkoutId=${checkoutId}&metode_pembayaran=${selectedMethod}`);
+    // navigate(`/confirm-pin?checkoutId=${checkoutId}&metode_pembayaran=${selectedMethod}`);
     // }
 
-    navigate(`/confirm-pin?checkoutId=${checkoutId}&metode_pembayaran=${selectedMethod}`);
+    navigate(
+      `/confirm-pin?checkoutId=${checkoutId}&metode_pembayaran=${selectedMethod}`
+    );
 
     // console.log("Selected Payment Method:", selectedMethod);
     // dispatch(setMetodePembayaran(selectedMethod, checkoutId));
     // dispatch(getPaymentCekout(selectedMethod, checkoutId, navigate));
-    
   };
 
   //Mengambil data booking tiket hasil post
   const DataPayment = useSelector(
-    (state) => state.booking.inputanDataPenumpang.data.data
+    (state) => state?.booking?.inputanDataPenumpang?.data?.data
   );
   console.log("Data penum", DataPayment);
 
   //Mengambil data ID User
   const userCkId = useSelector(
-    (state) => state.booking.inputanDataPenumpang.data.data.checkoutId
+    (state) => state?.booking?.inputanDataPenumpang?.data?.data?.checkoutId
   );
-   console.log("ID CEKOUT UNTUK GET ", userCkId);
+  console.log("ID CEKOUT UNTUK GET DATA CEKOUT", userCkId);
 
   //use buat nyimpan ID ke Action
   useEffect(() => {
-    if (userCkId) {
+    
+    
+      console.log("FDFAFrqwrq")
       dispatch(getDetailPesanan(userCkId));
-    }
-  }, [dispatch, userCkId]);
-  const [penumpangData, setPenumpangData] = useState([]);
-  
+    
+  }, [ ]);
+
   //Fect DAta DEtail PEnumpang
   const DetailPenumpangCekout = useSelector(
-    (state) => state.booking.dataCheckoutBerangkat
+    (state) => state?.booking?.dataCheckoutBerangkat
   );
-   console.log("detailckout", DetailPenumpangCekout);
+  console.log("DATA DETAIL CEKOUT", DetailPenumpangCekout);
 
   const DataBooking = useSelector(
     (state) => state.booking.bookingTiketPesawatPergi
@@ -113,8 +133,6 @@ export default function Payment() {
   //unutk perkalian data penumpang
   const DataPenumpang = useSelector((state) => state.tiket);
   // console.log("Data penum", DataPenumpang);
-
- 
 
   // Group passengers by type and count
   const groupPenumpangData = penumpangData.reduce((acc, penumpang) => {
@@ -125,16 +143,12 @@ export default function Payment() {
     return acc;
   }, {});
 
-
-
   // formatRupiah
   const formatRupiah = (price) => {
     return price
       .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
       .replace(/\,00$/, "");
   };
-
-  
 
   useEffect(() => {
     const initialPenumpangData = [];
@@ -190,9 +204,7 @@ export default function Payment() {
             </div>
           </div>
           <div className="mr-20 pl-52 py-5">
-            
-              <PaymentTimer/>
-           
+            <PaymentTimer />
           </div>
         </div>
 
@@ -367,15 +379,15 @@ export default function Payment() {
 
           {/* Booking Code */}
           <div className="py-8">
-            <div className=" text-sm border-2 rounded-lg w-[300px]">
+            <div className=" text-sm border-2 rounded-lg w-[400px]">
               {/* Keberangkatan */}
-              <p className=" text-lg text-white font-bold border bg-[#176B87] py-1 text-center rounded-t-lg">
+              <p className=" text-xl text-white font-bold border bg-[#176B87] py-2  text-center rounded-t-lg">
                 Pergi
               </p>
               <p className="font-bold text-lg border-b-2 px-2 py-2">
                 Booking Code :{" "}
                 <span className="text-[#176B87] ">
-                  {DetailPenumpangCekout.booking_code}
+                  {DetailPenumpangCekout?.booking_code}
                 </span>
               </p>
               <div className="px-2">
@@ -383,36 +395,149 @@ export default function Payment() {
                   <span className="font-semibold flex items-center gap-2">
                     {" "}
                     <ArrowUpRightIcon className="text-sm h-5 w-5 text-[#176B87] mr-1 pl-1 flex items-center" />{" "}
-                    {DetailPenumpangCekout.bandara_keberangkatan.lokasi}
+                    {DetailPenumpangCekout?.bandara_keberangkatan?.lokasi}
                   </span>
                 </p>
                 <p className="font-bold text-[#64ccc5]"> To</p>
 
                 <p className="text-base">
                   <span className="font-semibold flex items-center gap-2">
-                    {DetailPenumpangCekout.bandara_kedatangan.lokasi}
+                    {DetailPenumpangCekout?.bandara_kedatangan?.lokasi}
                     <ArrowDownLeftIcon className="text-sm h-5 w-5 text-[#176B87] mr-1 pl-1 flex items-center" />{" "}
                   </span>
                 </p>
               </div>
+                
 
-              {/* Jet Air */}
+
+              {/* PESAWAT PERGI */}
               <div className="flex items-start gap-2 border-b border-t py-2 mt-4 mb-3">
                 <img
-                  src={DetailPenumpangCekout.maskapai.logo_maskapai}
+                  src={DetailPenumpangCekout?.maskapai?.logo_maskapai}
                   alt=""
                   className="h-6 w-6"
                 />
                 <div className="flex flex-1 flex-col justify-between gap-2">
                   <p className=" text-sm font-bold ">
-                    {DetailPenumpangCekout.maskapai.nama_maskapai}
+                    {DetailPenumpangCekout?.maskapai?.nama_maskapai}
                   </p>
 
                   <p className="text-sm">
                     <span className="font-bold">Informasi :</span> <br />
-                    Baggage : {DetailPenumpangCekout.informasi.bagasi} kg <br />
+                    Baggage : {DetailPenumpangCekout?.informasi?.bagasi} kg <br />
                     Cabin baggage :{" "}
-                    {DetailPenumpangCekout.informasi.bagasi_kabin} kg <br />
+                    {DetailPenumpangCekout?.informasi?.bagasi_kabin} kg <br />
+                  </p>
+                </div>
+              </div>
+              {/* DEtail */}
+              <div className="flex justify-between border-b pb-4">
+              <Accordion open={open === 4}>
+              <AccordionHeader
+                onClick={() => handleOpen(4)}
+                className="bg-[#176B87] rounded-[4px]"
+              >
+                <div className="flex justify-between items-center w-full -mr-4 px-4 font-medium text-lg text-white">
+                  Detail Penerbangan <Icon id={4} open={open} />
+                </div>
+              </AccordionHeader>
+
+              <AccordionBody>
+                <div>
+                  <label
+                    className={`flex items-center border-2 rounded-md p-4 cursor-pointer ${
+                      selectedMethod === "bca"
+                        ? "bg-[#64CCC5] font-semibold border-[#176B87]"
+                        : "border-[#176B87] hover:border-[#64CCC5]"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="bca"
+                      onChange={() => setSelectedMethod("bca")}
+                    />
+                    <span className="ml-2">BCA Virtual Account</span>
+                  </label>
+                  <label
+                    className={`flex items-center border-2 rounded-md p-4 cursor-pointer mt-4 ${
+                      selectedMethod === "bni"
+                        ? "bg-[#64CCC5] font-semibold border-[#176B87]"
+                        : "border-[#176B87] hover:border-[#64CCC5]"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="bni"
+                      onChange={() => setSelectedMethod("bni")}
+                    />
+                    <span className="ml-2">BNI Virtual Account</span>
+                  </label>
+                  <label
+                    className={`flex items-center border-2 rounded-md p-4 cursor-pointer mt-4 ${
+                      selectedMethod === "bri"
+                        ? "bg-[#64CCC5] font-semibold border-[#176B87]"
+                        : "border-[#176B87] hover:border-[#64CCC5]"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="bri"
+                      onChange={() => setSelectedMethod("bri")}
+                    />
+                    <span className="ml-2">BRI Virtual Account</span>
+                  </label>
+                </div>
+              </AccordionBody>
+            </Accordion>
+              </div>
+
+              {/* Pulang */}
+              <p className=" text-xl text-white font-bold border bg-[#176B87] py-2  text-center rounded-t-lg">
+                Pulang
+              </p>
+              <p className="font-bold text-lg border-b-2 px-2 py-2">
+                Booking Code :{" "}
+                <span className="text-[#176B87] ">
+                  {DetailPenumpangCekout?.booking_code}
+                </span>
+              </p>
+              <div className="px-2">
+                <p className="text-base">
+                  <span className="font-semibold flex items-center gap-2">
+                    {" "}
+                    <ArrowUpRightIcon className="text-sm h-5 w-5 text-[#176B87] mr-1 pl-1 flex items-center" />{" "}
+                    {DetailPenumpangCekout?.bandara_keberangkatan?.lokasi}
+                  </span>
+                </p>
+                <p className="font-bold text-[#64ccc5]"> To</p>
+
+                <p className="text-base">
+                  <span className="font-semibold flex items-center gap-2">
+                    {DetailPenumpangCekout?.bandara_kedatangan?.lokasi}
+                    <ArrowDownLeftIcon className="text-sm h-5 w-5 text-[#176B87] mr-1 pl-1 flex items-center" />{" "}
+                  </span>
+                </p>
+              </div>
+               {/* DETAIL PULANG */}
+               <div className="flex items-start gap-2 border-b border-t py-2 mt-4 mb-3">
+                <img
+                  src={DetailPenumpangCekout?.maskapai?.logo_maskapai}
+                  alt=""
+                  className="h-6 w-6"
+                />
+                <div className="flex flex-1 flex-col justify-between gap-2">
+                  <p className=" text-sm font-bold ">
+                    {DetailPenumpangCekout?.maskapai?.nama_maskapai}
+                  </p>
+
+                  <p className="text-sm">
+                    <span className="font-bold">Informasi :</span> <br />
+                    Baggage : {DetailPenumpangCekout?.informasi?.bagasi} kg <br />
+                    Cabin baggage :{" "}
+                    {DetailPenumpangCekout?.informasi?.bagasi_kabin} kg <br />
                   </p>
                 </div>
               </div>
@@ -420,12 +545,7 @@ export default function Payment() {
               <div className="flex justify-between border-b pb-4">
                 <p className="text-base">Detail Penerbangan</p>
               </div>
-              {/* Promo */}
-              <div className="flex justify-between border-b border-t py-2 mb-2 ">
-                <button className="text-[#FE5D02] font-bold text-sm">
-                  Add Promo
-                </button>
-              </div>
+             
               {/* Rincian Harga */}
               <div className="my-3 py-2 border-t-2 border-b-2">
                 <p className="font-bold text-xl">Rincian Harga</p>

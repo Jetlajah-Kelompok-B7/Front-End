@@ -98,28 +98,42 @@ export const getTiketSearch = () => async (dispatch, getState) => {
 
 //post order data
 export const getPayment =
-  (orderId, paramsData, navigate) => async (dispatch) => {
+  (orderId, paramsData, navigate) => async (dispatch, getState) => {
+    const tipePenumpang = getState().tiket.dataInputanSearch.jenisPenerbangan;
+    console.log("Data ID PERGI", orderId);
     try {
-      // Tampilkan paramsData sebelum permintaan POST
-      console.log("Data yang dikirim ke server:", paramsData.penumpang);
-
-      const response = await axios.post(
-        `/api/order/${orderId}`,
-
-        paramsData.penumpang,
-        {
-          withCredentials: true,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
+      if (orderId?.length === 2 && typeof orderId[1] === "number") {
+        for (let i = 0; i < orderId.length; i++) {
+          if (tipePenumpang === "Pergi - Pulang") {
+            const response2 = await axios.post(
+              `/api/order/${orderId[i]}`,
+              paramsData.penumpang
+            );
+            dispatch(setHasilPostDataPenumpang(response2));
+            console.log("Response Payment Pulang Pergi:", response2);
+          }
         }
+
+        // Dispatch action Redux untuk meng-update status pengiriman data penumpang
+        alert("Data Berhasil Tersimpan");
+
+        // Sesuaikan dengan action yang ada di Redux Anda
+        return navigate("/payment");
+      }
+      // Tampilkan paramsData sebelum permintaan POST
+      console.log("Data yang dikirim ke server:", paramsData);
+
+      const response1 = await axios.post(
+        `/api/order/${orderId[0]}`,
+        paramsData.penumpang
       );
 
-      console.log("Response Payment:", response);
+      console.log("Response Payment Sekali Jalan:", response1);
+      dispatch(setHasilPostDataPenumpang(response1));
       // Dispatch action Redux untuk meng-update status pengiriman data penumpang
       alert("Data Berhasil Tersimpan");
 
-      dispatch(setHasilPostDataPenumpang(response)); // Sesuaikan dengan action yang ada di Redux Anda
+      // Sesuaikan dengan action yang ada di Redux Anda
       navigate("/payment");
     } catch (error) {
       console.error(
@@ -132,7 +146,7 @@ export const getPayment =
 
 //Get DEtail Cekout
 export const getDetailPesanan = (checkoutId) => async (dispatch) => {
-  // console.log("getstatesereis",checkoutId);
+  console.log("GET ID CEKOUT",checkoutId);
   try {
     console.log("getstatesereis", checkoutId);
     const repsonse = await axios.get(`/api/checkout/${checkoutId}`);
@@ -148,12 +162,13 @@ export const getDetailPesanan = (checkoutId) => async (dispatch) => {
     // alert(error.message);
   }
 };
+
 //post order data
 export const getPaymentCekout =
   (metode_pembayaran, checkoutId, navigate) => async (dispatch) => {
     try {
       // Tampilkan paramsData sebelum permintaan POST
-      console.log("Data yang Server:", metode_pembayaran);
+     
       const response = await axios.post(
         `/api/checkout/${checkoutId}`,
         {
@@ -165,7 +180,11 @@ export const getPaymentCekout =
         {
           headers: { "Content-Type": "application/json" },
         }
+        
       );
+
+      console.log("REPOSN BAYAR",response)
+       console.log("Data yang Server:", metode_pembayaran);
     } catch (error) {
       console.error(
         "Error:",

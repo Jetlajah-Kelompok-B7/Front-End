@@ -27,21 +27,54 @@ const travelDokumen = () => {
       .replace(/\,00$/, "");
   };
 
-  const DataBooking = useSelector(
-    (state) => state.booking.bookingTiketPesawatPergi
+  //AMBIL TYPE PESAWAT
+  const ambiltype = useSelector(
+    (state) => state.tiket.dataInputanSearch.jenisPenerbangan
   );
-   console.log("DataWWW", DataBooking);
+  console.log("TYPE", ambiltype);
+
+
+
+  //MENAMPILKAN DATA TIKET PERGI
+  const DataBooking = useSelector(
+    (state) => state?.booking?.bookingTiketPesawatPergi
+  );
+  console.log("DATA PERGI", DataBooking);
+
+  //MENAMPILKAN DATA TIKET PULANG
+  const DataBookingPulang = useSelector(
+    (state) => state.booking.bookingTiketPesawatPulang
+  );
+  console.log("DATA PULANG", DataBookingPulang);
 
   const DataPenumpang = useSelector((state) => state.tiket);
-   console.log("Data penumpangoONE", DataPenumpang);
+  console.log("Data penumpangoONE", DataPenumpang);
 
   // fungsi Perhitungan Harga
-  
-  
+
   const totalHargaPenumpang =
-    ((DataPenumpang.totalSemuaPenumpang)-(DataPenumpang.TotalPenumpang.Bayi)) * DataBooking.price;
-  const pajak = totalHargaPenumpang * 0.1;
-  const totalHargaDenganPajak = totalHargaPenumpang + pajak;
+    (DataPenumpang.totalSemuaPenumpang - DataPenumpang.TotalPenumpang.Bayi) *
+    DataBooking.price;
+  let pajak = totalHargaPenumpang * 0.1;
+  let totalHargaDenganPajak = totalHargaPenumpang + pajak;
+
+  let totalHargaSemua = totalHargaDenganPajak;
+
+  if (ambiltype === "Pergi - Pulang") {
+    const totalHargaPulang =
+      (DataPenumpang.totalSemuaPenumpang - DataPenumpang.TotalPenumpang.Bayi) *
+        DataBookingPulang.price +
+      (DataPenumpang.totalSemuaPenumpang - DataPenumpang.TotalPenumpang.Bayi) *
+        DataBooking.price;
+    const pajakPulang = totalHargaPulang * 0.1;
+    const totalHargaDenganPajakPulang = totalHargaPulang + pajakPulang;
+
+    pajak = +pajakPulang;
+    totalHargaDenganPajak = +totalHargaDenganPajakPulang;
+    totalHargaSemua = +totalHargaDenganPajakPulang;
+    console.log("HARGA PErgi", totalHargaPenumpang);
+    console.log("HARGA PULANG", totalHargaPulang);
+  }
 
   //Fungsi Option Negara
 
@@ -148,8 +181,6 @@ const travelDokumen = () => {
     return `${year}-${month}-${day}`;
   };
 
- 
-
   useEffect(() => {
     const initialPenumpangData = [];
     for (let i = 0; i < DataPenumpang.TotalPenumpang.Dewasa; i++) {
@@ -218,24 +249,32 @@ const travelDokumen = () => {
     );
   };
 
+
+  // AMBIL ID PERGI
   const dataInputPesanan = useSelector(
     (state) => state.booking.bookingTiketPesawatPergi
   );
 
+  // AMBIL ID PULANG
+  const dataInputanPesananPulang = useSelector(
+    (state) => state.booking.bookingTiketPesawatPulang
+  );
+ 
 
   const handleSimpanDataPenumpang = () => {
-    const isValid = penumpangData.every((penumpang) => (
-      penumpang.titel &&
-      penumpang.nama &&
-      penumpang.tanggal_lahir &&
-      penumpang.kewarganegaraan &&
-      penumpang.ktp_pasport &&
-      penumpang.negara_penerbit &&
-      penumpang.berlaku_sampai
-    ));
-   
+    const isValid = penumpangData.every(
+      (penumpang) =>
+        penumpang.titel &&
+        penumpang.nama &&
+        penumpang.tanggal_lahir &&
+        penumpang.kewarganegaraan &&
+        penumpang.ktp_pasport &&
+        penumpang.negara_penerbit &&
+        penumpang.berlaku_sampai
+    );
+
     if (isValid) {
-      const dataToSave = penumpangData.map((penumpang) => ({
+      const dataToSave = penumpangData.map((penumpang, tipePenumpang) => ({
         titel: penumpang.titel,
         nama: penumpang.nama,
         tanggal_lahir: penumpang.tanggal_lahir,
@@ -246,29 +285,26 @@ const travelDokumen = () => {
         berlaku_sampai: new Date(penumpang.berlaku_sampai).toISOString(),
         is_baby: penumpang.is_baby,
       }));
-  
+
       // Simpan dataToSave ke dalam state atau lakukan dispatch ke action lain sesuai kebutuhan
       console.log("Data to save:", dataToSave);
-  
+
       const paramsData = {
         penumpang: dataToSave,
+        tipePenumpang: ambiltype,
       };
-  
-      dispatch(getPayment(dataInputPesanan.id, paramsData, navigate)); // Pastikan dataInputPesanan.id tersedia
+
+      dispatch(getPayment([dataInputPesanan.id, dataInputanPesananPulang.id], paramsData, navigate)); // Pastikan dataInputPesanan.id tersedia
       dispatch(setDokumenBooking(paramsData));
     } else {
       alert("Semua form wajib diisi!");
     }
-    console.log("dataINPTAN", dataInputPesanan.id);
-  
+    console.log("data Inputan Pergi", dataInputPesanan.id);
+    console.log("data Inputan Pulang", dataInputanPesananPulang.id);
   };
-  
-
 
   const dataPemesan = useSelector((state) => state.login);
   //  console.log("Data Pemesan user", dataPemesan);
-
-  
 
   return (
     <>
@@ -294,7 +330,10 @@ const travelDokumen = () => {
               </div>
             </div>
             <div className="  mx-20 p-3">
-              <button className="flex items-center pl-5 gap-5 w-[800px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl">
+              <button
+                className="flex items-center pl-5 gap-5 w-[800px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl"
+                onClick={() => navigate("/resultSearch")}
+              >
                 <ArrowLongLeftIcon className="h-12 w-12 text-slate-200 mr-1 pl-1 flex items-center" />
                 Kembali
               </button>
@@ -462,7 +501,6 @@ const travelDokumen = () => {
                         }
                         className="border border-slate-300 w-[440px] p-2 my-2"
                       />
-                     
                     </div>
                   </div>
                 ))}
@@ -483,62 +521,171 @@ const travelDokumen = () => {
                 <div>
                   <div className="mt-5">
                     <div className="px-5">
-                      <p className="font-bold text-[#176B87] pt-5 pb-3 text-xl">
-                        Detail Penerbangan
-                      </p>
+                      {/* TIKET PERGI */}
                       <div>
-                        <div className="flex justify-between">
-                          <p className="font-bold text-xl">
-                            {formatTime(DataBooking.schedule.takeoff.time)}
-                          </p>
-                          <p className="font-semibold text-[#64CCC5]">
-                            Keberangkatan
+                        <p className="font-bold text-[#176B87] pt-5 pb-3 text-xl">
+                          Detail Penerbangan Pergi
+                        </p>
+                        <div>
+                          <div className="flex justify-between">
+                            <p className="font-bold text-xl">
+                              {formatTime(DataBooking.schedule.takeoff.time)}
+                            </p>
+                            <p className="font-semibold text-[#64CCC5]">
+                              Keberangkatan
+                            </p>
+                          </div>
+
+                          <p>{formatDate(DataBooking.schedule.takeoff.time)}</p>
+                          <p>{DataBooking.schedule.takeoff.airport_name}</p>
+                          <p>
+                            Terminal {DataBooking.schedule.takeoff.terminal}
                           </p>
                         </div>
-
-                        <p>{formatDate(DataBooking.schedule.takeoff.time)}</p>
-                        <p>{DataBooking.schedule.takeoff.airport_name}</p>
-                        <p>Terminal {DataBooking.schedule.takeoff.terminal}</p>
-                      </div>
-                      <div className="my-3 py-2 border-t-2 border-b-2 flex gap-3">
-                        <div className="flex items-center">
-                          <img
-                            src={DataBooking.plane.logo}
-                            alt={DataBooking.plane.airline_name}
-                            className="h-6 w-6"
-                          />
+                        <div className="my-3 py-2 border-t-2 border-b-2 flex gap-3">
+                          <div className="flex items-center">
+                            <img
+                              src={DataBooking.plane.logo}
+                              alt={DataBooking.plane.airline_name}
+                              className="h-6 w-6"
+                            />
+                          </div>
+                          <div>
+                            <div className="font-bold pb-3">
+                              <p>{DataBooking.plane.airline_name}</p>
+                              <p>{DataBooking.plane.model}</p>
+                            </div>
+                            <p className="font-bold">Informasi :</p>
+                            <p>{DataBooking.class}</p>
+                            <p>Bagasi {DataBooking.plane.baggage} Kg</p>
+                            <p>
+                              Bagasi Kabin {DataBooking.plane.cabin_baggage} Kg
+                            </p>
+                            {/* <p>Fasilitas {DataBooking.Fasilitas}</p> */}
+                          </div>
                         </div>
                         <div>
-                          <div className="font-bold pb-3">
-                            <p>{DataBooking.plane.airline_name}</p>
-                            <p>{DataBooking.plane.model}</p>
+                          <div className="flex justify-between">
+                            <p className="font-bold text-xl">
+                              {formatTime(DataBooking.schedule.landing.time)}
+                            </p>
+                            <p className="font-semibold text-[#64CCC5]">
+                              Kedatangan
+                            </p>
                           </div>
-                          <p className="font-bold">Informasi :</p>
-                          <p>{DataBooking.class}</p>
-                          <p>Bagasi {DataBooking.plane.baggage} Kg</p>
-                          <p>
-                            Bagasi Kabin {DataBooking.plane.cabin_baggage} Kg
-                          </p>
-                          {/* <p>Fasilitas {DataBooking.Fasilitas}</p> */}
-                        </div>
-                      </div>
-                      <div>
-                        <div className="flex justify-between">
-                          <p className="font-bold text-xl">
-                            {formatTime(DataBooking.schedule.landing.time)}
-                          </p>
-                          <p className="font-semibold text-[#64CCC5]">
-                            Kedatangan
-                          </p>
-                        </div>
 
-                        <p>{formatDate(DataBooking.schedule.landing.time)}</p>
-                        <p>{DataBooking.schedule.landing.airport_name}</p>
-                        <p>Terminal {DataBooking.schedule.landing.terminal}</p>
+                          <p>{formatDate(DataBooking.schedule.landing.time)}</p>
+                          <p>{DataBooking.schedule.landing.airport_name}</p>
+                          <p>
+                            Terminal {DataBooking.schedule.landing.terminal}
+                          </p>
+                        </div>
                       </div>
+
+                      {/* TIKET PULANG */}
+                      {ambiltype == "Pergi - Pulang" && (
+                        <>
+                          {DataBookingPulang.schedule.takeoff.time && (
+                            <div className="mt-5 border-t-4 border-[#FE5D02]">
+                              <div className="">
+                                <p className="font-bold text-[#176B87] pt-5 pb-3 text-xl">
+                                  Detail Penerbangan Pulang
+                                </p>
+                                <div>
+                                  <div className="flex justify-between">
+                                    <p className="font-bold text-xl">
+                                      {formatTime(
+                                        DataBookingPulang.schedule.takeoff.time
+                                      )}
+                                    </p>
+                                    <p className="font-semibold text-[#64CCC5]">
+                                      Keberangkatan
+                                    </p>
+                                  </div>
+                                  <p>
+                                    {formatDate(
+                                      DataBookingPulang.schedule.takeoff.time
+                                    )}
+                                  </p>
+                                  <p>
+                                    {
+                                      DataBookingPulang.schedule.takeoff
+                                        .airport_name
+                                    }
+                                  </p>
+                                  <p>
+                                    Terminal{" "}
+                                    {
+                                      DataBookingPulang.schedule.takeoff
+                                        .terminal
+                                    }
+                                  </p>
+                                </div>
+                                <div className="my-3 py-2 border-t-2 border-b-2 flex gap-3">
+                                  <div className="flex items-center">
+                                    <img
+                                      src={DataBookingPulang.plane.logo}
+                                      alt={DataBookingPulang.plane.airline_name}
+                                      className="h-6 w-6"
+                                    />
+                                  </div>
+                                  <div>
+                                    <div className="font-bold pb-3">
+                                      <p>
+                                        {DataBookingPulang.plane.airline_name}
+                                      </p>
+                                      <p>{DataBookingPulang.plane.model}</p>
+                                    </div>
+                                    <p className="font-bold">Informasi :</p>
+                                    <p>{DataBookingPulang.class}</p>
+                                    <p>
+                                      Bagasi {DataBookingPulang.plane.baggage}{" "}
+                                      Kg
+                                    </p>
+                                    <p>
+                                      Bagasi Kabin{" "}
+                                      {DataBookingPulang.plane.cabin_baggage} Kg
+                                    </p>
+                                  </div>
+                                </div>
+                                <div>
+                                  <div className="flex justify-between">
+                                    <p className="font-bold text-xl">
+                                      {formatTime(
+                                        DataBookingPulang.schedule.landing.time
+                                      )}
+                                    </p>
+                                    <p className="font-semibold text-[#64CCC5]">
+                                      Kedatangan
+                                    </p>
+                                  </div>
+                                  <p>
+                                    {formatDate(
+                                      DataBookingPulang.schedule.landing.time
+                                    )}
+                                  </p>
+                                  <p>
+                                    {
+                                      DataBookingPulang.schedule.landing
+                                        .airport_name
+                                    }
+                                  </p>
+                                  <p>
+                                    Terminal{" "}
+                                    {
+                                      DataBookingPulang.schedule.landing
+                                        .terminal
+                                    }
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      )}
 
                       {/* Rincian Bayar */}
-                      <div className="my-3 py-2 border-t-2 border-b-2">
+                      <div className="my-3 py-2 border-t-4 border-b-4 border-[#FE5D02]">
                         <p className="font-bold text-xl">Rincian Harga</p>
                         <div className="grid grid-cols-2 gap-2">
                           {Object.entries(groupPenumpangData).map(
@@ -554,20 +701,23 @@ const travelDokumen = () => {
                                 <p className="">
                                   {ageGroup === "BABY"
                                     ? "0"
+                                    : ambiltype === "Pergi - Pulang"
+                                    ? formatRupiah(
+                                        (DataBooking.price +
+                                          DataBookingPulang.price) *
+                                          count
+                                      )
                                     : formatRupiah(DataBooking.price * count)}
                                 </p>
                               </div>
                             )
                           )}
+
                           <div className="flex justify-between col-span-2">
-                            <p>Tax 10%</p>
-                            <p>{formatRupiah(pajak)}</p>
-                          </div>
-                          <div className="flex justify-between col-span-2 font-bold text-xl">
-                            <p>Total</p>
-                            <p className="text-[#176B87]">
-                              {formatRupiah(totalHargaDenganPajak)}
+                            <p className="text-sm flex items-center">
+                              Pajak + Donasi Palestina 10%
                             </p>
+                            <p>{formatRupiah(pajak)}</p>
                           </div>
                         </div>
                       </div>
