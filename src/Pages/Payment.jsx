@@ -162,6 +162,8 @@ export default function Payment() {
     setPenumpangData(initialPenumpangData);
   }, [DataPenumpang?.TotalPenumpang]);
 
+ 
+
   return (
     <div className="bg-white ">
       <Navbar />

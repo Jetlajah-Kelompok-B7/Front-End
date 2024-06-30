@@ -33,7 +33,7 @@ export default function Navbar() {
   const Condition = useSelector((state) => {
     return state.tiket.UserCondition;
   });
-  // console.log("Condition  Condition:", Condition);
+  console.log("Condition  Condition:", Condition);
 
   useEffect(() => {
     setLogout(false);

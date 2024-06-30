@@ -45,7 +45,7 @@ export default function MyModal({
       tanggalPulang("");
       setSelectedDate(pass_tanggal_berangkat);
       setSelectedDatePulang("");
-      dispatch(setKepulangan(""));
+     
     };
   }, [idTanggal]);
   // console.log("kondisi", user_Click);

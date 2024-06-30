@@ -20,6 +20,7 @@ import {
   setBookingTiketPergi,
   setBookingTiketPulang,
 } from "../redux/Reducers/DataBooking";
+import { setKeberangaktan, setKepulangan } from "../redux/Reducers/TiketReducer";
 
 const ResultSearchFilm = () => {
   const [selectedButton, setSelectedButton] = useState(null);
@@ -35,11 +36,7 @@ const ResultSearchFilm = () => {
 
   const dispatch = useDispatch();
 
-  // Define params here
-  const params = useSelector((state) => state.tiket.dataInputanSearch);
-  // console.log("parm", params);
-
-  const { bandara_keberangkatan, bandara_kedatangan, jumlah, kelas } = params;
+  
 
   //Accoridon buka tutup
   const toggleAccordion = (index) => {
@@ -54,6 +51,51 @@ const ResultSearchFilm = () => {
   //   setSelectedButton(index);
   //   setCurrentPage(Math.floor(index / datesPerPage));
   // };
+
+  //Pengaman jika data belum terisi
+  const DataBaru = useSelector((state) => state?.tiket);
+  const {
+    KelasPenerbangan,
+    LokasiKeberangkatan,
+    TanggalKeberangkatan,
+    TanggalKepulangan,
+    lokasiTujuan,
+    totalSemuaPenumpang,
+    idTiket,
+    typePenerbanngan,
+    
+  } = DataBaru || {};
+
+  console.log("TYPE PENERBANGAN", typePenerbanngan)
+  useEffect(() => {
+    if (idTiket === 1) {
+      if (
+        lokasiTujuan === "" ||
+        LokasiKeberangkatan === "" ||
+        TanggalKeberangkatan === "" ||
+        totalSemuaPenumpang <= 0 ||
+        KelasPenerbangan === ""
+      ) {
+        alert("Harap Lengkapi Semua Data Tiket");
+        navigate("/");
+        return;
+      }
+    } else {
+      if (
+        lokasiTujuan === "" ||
+        LokasiKeberangkatan === "" ||
+        TanggalKeberangkatan === "" ||
+        TanggalKepulangan === "" ||
+        totalSemuaPenumpang <= 0 ||
+        KelasPenerbangan === ""
+      ) {
+        alert("Harap Lengkapi Semua Data Tiket");
+        navigate("/");
+        return;
+      }
+    }
+  }, []);
+  // --------------------------------
 
   const CurrentDate = (daysToIncrement = 0) => {
     const today = new Date();
@@ -81,7 +123,7 @@ const ResultSearchFilm = () => {
 
   // Constants for pagination
   const datesPerPage = 8;
-  const totalPages = Math.ceil(dates.length / datesPerPage);
+  const totalPages = Math.ceil(dates?.length / datesPerPage);
 
   // Calculate the start and end indices for the current page
   const startIndex = currentPage * datesPerPage;
@@ -121,25 +163,22 @@ const ResultSearchFilm = () => {
   // console.log("allPesawat", tiketData);
 
   //Menapilkan tiket pergi
-  const tiketPergi = useSelector((state) => state.tiket.dataPesawatPergi.data);
+  const tiketPergi = useSelector((state) => state?.tiket?.dataPesawatPergi.data);
   console.log("tiket pergi", tiketPergi);
 
   //Menampilkan tikel pulang
   const tiketPulang = useSelector(
-    (state) => state.tiket.dataPesawatPulang.data
+    (state) => state?.tiket?.dataPesawatPulang.data
   );
   console.log("tiket pulang", tiketPulang);
 
-  const ambiltype = useSelector(
-    (state) => state.tiket.dataInputanSearch.jenisPenerbangan
-  );
-  console.log("TYPE", ambiltype);
+
 
   const handleSelectPergi = (flight) => {
     setSelectedPergi(flight);
     dispatch(setBookingTiketPergi(flight));
 
-    if (ambiltype === "Sekali Jalan") {
+    if (typePenerbanngan === "Sekali Jalan") {
       // Jika tidak ada tiket pulang, langsung ke halaman isi data penumpang
       navigate("/travelDokumen");
     }
@@ -199,18 +238,17 @@ const ResultSearchFilm = () => {
   const handleDateSelect = (selectedDate) => {
     // Perbarui state searchDate
     setSearchDate(selectedDate);
+    console.log("SELCK", selectedDate)
 
     // Perbarui params dengan tanggal_pergi yang baru
-    const updatedParams = {
-      ...params,
-      tanggal_pergi: selectedDate,
-      tanggal_pulang: selectedDate,
-    };
 
     // Dispatch action untuk memperbarui pencarian berdasarkan tanggal baru
-    dispatch(getTiketSearch(updatedParams));
+
+    dispatch(setKeberangaktan(selectedDate));
+    dispatch(setKepulangan(selectedDate));
+    dispatch(getTiketSearch())
   };
-  const buttonText = `${bandara_keberangkatan} - ${bandara_kedatangan} - ${jumlah} Penumpang - ${kelas}`;
+  const buttonText = `${LokasiKeberangkatan} - ${lokasiTujuan} `;
 
   return (
     <div className="container mx-auto">
@@ -442,8 +480,8 @@ const ResultSearchFilm = () => {
             <h2 className="text-2xl font-bold mb-4 mt-8">Pilih Tiket Pergi</h2>
             <div className="container mx-auto">
               {" "}
-              {tiketPergi.length > 0 ? (
-                tiketPergi.map((flight, index) => (
+              {tiketPergi?.length > 0 ? (
+                tiketPergi?.map((flight, index) => (
                   <div
                     key={index}
                     className="p-5 shadow-lg border-2 border-slate-100 rounded-xl mb-4"
@@ -598,14 +636,14 @@ const ResultSearchFilm = () => {
                   </p>
                 </div>
               )}
-              {ambiltype == "Pergi - Pulang" && (
+              {typePenerbanngan === "Pergi - Pulang" && (
                 <>
-                  {tiketPulang.length > 0 && (
+                  {tiketPulang?.length > 0 && (
                     <>
                       <h2 className="text-2xl font-bold mb-4 mt-8">
                         Pilih Tiket Pulang
                       </h2>
-                      {tiketPulang.map((flight, index) => (
+                      {tiketPulang?.map((flight, index) => (
                         <div
                           key={index}
                           className="p-5 shadow-lg border-2 border-slate-100 rounded-xl mb-4"

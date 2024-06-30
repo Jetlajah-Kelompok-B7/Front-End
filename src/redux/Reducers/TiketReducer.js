@@ -9,6 +9,7 @@ const initialState = {
   KelasPenerbangan: "",
   TanggalKeberangkatan: "",
   TanggalKepulangan: "",
+  typePenerbanngan: "Sekali Jalan",
   TotalPenumpang: { Dewasa: 0, Anak: 0, Bayi: 0 },
   totalSemuaPenumpang: 0,
   dataPesawatPergi: [],
@@ -21,9 +22,12 @@ const tiketSlicer = createSlice({
   name: "tiket",
   initialState,
   reducers: {
-
-    setLokasi: (state, action) => {
-      state.lokasi = action.payload;
+    reset: () => initialState,
+    setUserCondition: (state, action) => {
+      state.UserCondition = action.payload;
+    },
+    setHalaman: (state, action) => {
+      state.Halaman_Aktif = action.payload;
     },
     reset: () => initialState,
     setUserCondition: (state, action) => {
@@ -83,6 +87,9 @@ const tiketSlicer = createSlice({
     setInputSearch: (state, action) => {
       state.dataInputanSearch = action.payload;
     },
+    setTypePenerbangan: (state, action) => {
+      state.typePenerbanngan = action.payload;
+    },
   },
 });
 
@@ -99,12 +106,12 @@ export const {
   setDestinasiPesawat,
   setkelas,
   hitungsemuapenumpang,
-  reset,
-  setHalaman,
   setTiketPesawatPergi,
   setTiketPesawatPulang,
   setInputSearch,
-  setLokasi,
+  reset,
+  setHalaman,
+  setTypePenerbangan,
 } = tiketSlicer.actions;
 
 export default tiketSlicer.reducer;

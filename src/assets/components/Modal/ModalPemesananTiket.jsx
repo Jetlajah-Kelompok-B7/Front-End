@@ -4,7 +4,7 @@ import Dropdown from "../Modal/ModalJumlahPenumpang";
 import { useDispatch, useSelector } from "react-redux";
 import ModalLokasi from "../Modal/ModalLokasiAwal";
 import PilihKelasPenerbangan from "../Modal/KelasPenerbangan";
-import { setInputSearch, swapLokasi } from "../../../redux/Reducers/TiketReducer";
+import { setInputSearch, setTypePenerbangan, swapLokasi } from "../../../redux/Reducers/TiketReducer";
 import { GetTiket, getTiketSearch } from "../../../redux/Action/TiketAction";
 import { useNavigate } from "react-router-dom";
 
@@ -23,6 +23,54 @@ export default function ModalPemesananTiket() {
   const [total_penumpang, setTotal_penumpang] = useState(0);
   const [kelas_penerbangan, setKelas_penerbangan] = useState("");
 
+  useEffect(() => {
+    dispatch(GetTiket());
+  }, [dispatch]);
+
+  const handlePemesanan = () => {
+    if (idTanggal === 1) {
+      if (
+        kotaAwal !== "" &&
+        destinasi !== "" &&
+        kelas_penerbangan !== "" &&
+        total_penumpang !== 0 &&
+        tanggalBerangkat !== ""
+      ) {
+        if (kotaAwal === destinasi) {
+          alert("Lokasi Awal dan Destinasi Tidak Boleh Sama");
+          return;
+        }
+        dispatch(getTiketSearch())  
+        dispatch(setTypePenerbangan(pilihanUser))
+        navigate("/resultSearch");
+        return;
+      } else {
+        alert("Harap Lengkapi Semua Formulir");
+        return;
+      }
+    } else {
+      if (
+        kotaAwal !== "" &&
+        destinasi !== "" &&
+        kelas_penerbangan !== "" &&
+        total_penumpang !== 0 &&
+        tanggalBerangkat !== "" &&
+        tanggalPulang !== ""
+      ) {
+        if (kotaAwal === destinasi) {
+          alert("Lokasi Awal dan Destinasi Tidak Boleh Sama");
+          return;
+        }
+        dispatch(getTiketSearch()) 
+        dispatch(setTypePenerbangan(pilihanUser)) 
+        navigate("/resultSearch");
+        return;
+      } else {
+        alert("Harap Lengkapi Semua Formulir");
+        return;
+      }
+    }
+  };
   const handleswap = () => {
     let temp = kotaAwal;
     setKotaAwal(destinasi);
@@ -46,23 +94,14 @@ export default function ModalPemesananTiket() {
     idTiket,
   } = DataBaru || {};
 
-  //handel search
-  const handleSearch = () => {
-    const params = {
-      bandara_keberangkatan: LokasiKeberangkatan,
-      bandara_kedatangan: lokasiTujuan,
-      tanggal_pergi: TanggalKeberangkatan,
-      tanggal_pulang: pilihanUser === "Pergi - Pulang" ? TanggalKepulangan : "",
-      kelas: KelasPenerbangan,
-      jumlah: totalSemuaPenumpang,
-      jenisPenerbangan:pilihanUser,
-    };
-   
-    dispatch(getTiketSearch(params));
-    navigate("/resultSearch");
-    dispatch(setInputSearch(params));
+  
+
+  useEffect(() => {
+
+    dispatch(getTiketSearch());
     
-  };
+  }, [dispatch]);
+ 
 
   
   
@@ -84,6 +123,7 @@ export default function ModalPemesananTiket() {
                   onClick={() => {
                     setPilihanUser(e);
                     setIdTanggal(i + 1);
+                    dispatch(setTypePenerbangan(e))
                   }}
                 >
                   {e === pilihanUser ? (
@@ -312,7 +352,7 @@ export default function ModalPemesananTiket() {
           <button
             className="w-full text-center font-bold text-[16px] py-4 mt-7 text-white bg-[#176B87] rounded-b-2xl"
             onClick={() => {
-              handleSearch();
+              handlePemesanan();
             }}
           >
             Cari Penerbangan

@@ -18,6 +18,16 @@ export default function AddPin() {
 
   console.log("theState", theState);
 
+  //pengaman agar jika user belum login
+  const Condition = useSelector((state) => {
+    return state.tiket.UserCondition;
+  });
+  useEffect(() => {
+    if (Condition !== true) {
+      navigate("/login");
+    }
+  }, [dispatch]);
+
   // Fungsi untuk mengonversi string pin ke array
   const getPinArray = (c) => {
     c = pin?.toString() || "";
@@ -55,30 +65,17 @@ export default function AddPin() {
     }
   }
 
-  const [metode_pembayaran, setMetodePembayaran] = useState("");
-  const [checkoutId, setCheckoutId] = useState("");
-
   const handleSubmit = async (e) => {
     e?.preventDefault();
     setLoading(true);
-    let params = new URLSearchParams(document.location.search);
-    let checkoutId = params.get("checkoutId");
-    let metode_pembayaran = params.get("metode_pembayaran");
-    const response = await dispatch(
-      pinValidate(pin, metode_pembayaran, checkoutId, navigate)
-    ); // Kirim pin ke action creator createPin
-    console.log("RESPON", response);
-    if (response.status === 200) {
-      // dispatch(setIsValidated(true))
-      navigate("/payment");
-    }
+    dispatch(pinValidate(pin)); // Kirim pin ke action creator createPin
     setLoading(false);
   };
 
   return (
-    <div className="bg-white flex justify-center h-screen items-center">
-      <div className="w-[737px] h-[482px] max-sm:w-[100px] max-sm:h-auto flex flex-col border-[2px] rounded-3xl shadow-lg shadow-[#64CCC5]/20">
-        <h1 className="text-[24px] poppins-bold items-start ml-[84px] mt-[69px]">
+    <div className="bg-white flex justify-center h-screen items-center w-[70%] max-sm:w-full mx-auto max-sm:px-2">
+      <div className="w-full h-[482px]  max-sm:h-auto flex flex-col border-[2px] rounded-3xl shadow-lg shadow-[#64CCC5]/20">
+        <h1 className="text-[24px] poppins-bold items-start ml-[84px] mt-[69px] max-sm:text-center max-sm:ml-0">
           Konfirmasi PIN
         </h1>
         <div className="flex flex-col justify-center place-items-center mt-[40px]">
@@ -100,9 +97,9 @@ export default function AddPin() {
           <button
             disabled={loading}
             onClick={handleSubmit}
-            className="flex mt-[81px] w-[568px] h-[48px] bg-[#176B87] hover:bg-[#114B5E] text-sm text-white rounded-2xl justify-center items-center"
+            className="max-sm:w-[70%] w-[40%] h-[48px] max-sm:mb-5 flex mt-[81px] bg-[#176B87] hover:bg-[#114B5E] text-sm text-white rounded-2xl justify-center items-center"
           >
-            {loading ? "Loading" : "Buat"}
+            {loading ? "Loading" : "Konfirmasi"}
           </button>
         </div>
       </div>

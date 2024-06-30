@@ -57,6 +57,13 @@ const login = createSlice({
       state.tanggal_lahir = "";
       state.alamat = "";
       state.file = "";
+      state.dataNotif = "";
+    },
+    clearMessage(state) {
+      state.message = "";
+    },
+    clearPin(state) {
+      state.pin = "";
     },
     clearMessage(state) {
       state.message = "";
