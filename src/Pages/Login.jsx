@@ -33,16 +33,11 @@ export default function Login() {
   };
 
   const handleLogin = async () => {
-    const response = await dispatch(login(email, password, navigate)); // Kirim email dan password ke action creator login
-    if (response.status === 200) {
-      window.location.reload();
-    } else {
-      alert("Gagal login. Silakan coba lagi."); // Handle error jika login gagal
-    }
+    dispatch(login(email, password, navigate)); // Kirim email dan password ke action creator login
   };
 
   const handleOAuth = () => {
-    window.open(`api/auth/google`, "_self");
+    window.open(`https://jetlajahin.vercel.app/api/auth/google/`, "_self");
   };
 
   return (
@@ -62,7 +57,7 @@ export default function Login() {
             <div>
               {/* Email */}
               <label className="block poppins-bold text-sm font-medium leading-6 text-[#176B87]">
-                Email/ No. Telpon
+                Email
               </label>
               <div className="relative mt-2 rounded-md shadow-sm">
                 <input

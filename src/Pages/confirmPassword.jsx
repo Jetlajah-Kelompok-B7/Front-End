@@ -3,11 +3,10 @@ import "../App.css";
 import background from "../assets/images/bglogin.png";
 import jetlajah from "../assets/images/logojetlajah.png";
 import { setEmail, setPassword } from "../redux/Reducers/reducersLogin";
-import { login } from "../redux/Action/actionLogin";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function ConfirmPassword() {
   const [isClicked1, setIsClicked1] = useState(false);
   const [passwordType1, setPasswordType1] = useState("password");
 
@@ -34,6 +33,16 @@ export default function Login() {
   const theState = useSelector((state) => state);
   console.log("theState", theState);
 
+  //pengaman agar jika user belum login
+  const Condition = useSelector((state) => {
+    return state.tiket.UserCondition;
+  });
+  useEffect(() => {
+    if (Condition !== true) {
+      navigate("/login");
+    }
+  }, [dispatch]);
+
   const handleEmailChange = (event) => {
     dispatch(setEmail(event.target.value)); // Dispatch action untuk mengubah email di Redux state
   };
@@ -46,7 +55,7 @@ export default function Login() {
     setConfirmPassword(event.target.value);
   };
 
-  const handleLogin = async () => {
+  const handleChange = async () => {
     if (newPassword !== confirmPassword) {
       alert("Password Baru dan Konfirmasi Password Baru tidak sama.");
       return;
@@ -54,16 +63,6 @@ export default function Login() {
 
     dispatch(setPassword(newPassword)); // Perbarui password di state Redux
 
-    // Untuk sementara, kita matikan fungsi response login
-    // const response = await dispatch(login(email, newPassword, navigate)); // Kirim email dan password ke action creator login
-    // if (response.status === 200) {
-    //   alert("Berhasil");
-    //   window.location.reload();
-    // } else {
-    //   alert("Gagal login. Silakan coba lagi."); // Handle error jika login gagal
-    // }
-
-    // Placeholder untuk menampilkan pesan berhasil
     alert("Berhasil");
   };
 
@@ -168,7 +167,7 @@ export default function Login() {
           </div>
 
           <button
-            onClick={handleLogin}
+            onClick={handleChange}
             className="hover:scroll-p-8 flex justify-center text-sm text-white py-3 bg-[#176B87] hover:bg-[#114B5E] rounded-full mt-5"
           >
             Ganti

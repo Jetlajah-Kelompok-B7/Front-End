@@ -1,18 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../App.css";
 import background from "../assets/images/bglogin.png";
 import jetlajah from "../assets/images/logojetlajah.png";
-import logogoogle from "../assets/images/logo-google.png";
-import { setEmail, setPassword } from "../redux/Reducers/reducersLogin";
-import { login } from "../redux/Action/actionLogin";
+import { setEmail, clearMessage } from "../redux/Reducers/reducersLogin";
+import { forgotPassword } from "../redux/Action/actionLogin";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function ForgotPassword() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const email = useSelector((state) => state.login?.email);
-  const password = useSelector((state) => state.login?.password);
+  const pesan = useSelector((state) => state.login?.message);
+  const [isActivePage, setIsActivePage] = useState(true);
+
+ //pengaman agar jika user belum login
+ const Condition = useSelector((state) => {
+  return state.tiket.UserCondition;
+});
+useEffect(() => {
+  if (Condition !== true) {
+    navigate("/login");
+  }
+}, [dispatch]);
+
   const theState = useSelector((state) => state);
   console.log("theState", theState);
 
@@ -20,14 +31,27 @@ export default function Login() {
     dispatch(setEmail(event.target.value)); // Dispatch action untuk mengubah email di Redux state
   };
 
-  const handleLogin = async () => {
-    const response = await dispatch(login(email, password, navigate)); // Kirim email dan password ke action creator login
-    if (response.status === 200) {
-      window.location.reload();
-    } else {
-      alert("Gagal login. Silakan coba lagi."); // Handle error jika login gagal
-    }
+  const handleForgot = async () => {
+    await dispatch(forgotPassword(email)); // Kirim email dan password ke action creator login
   };
+  
+
+  useEffect(() => {
+    setIsActivePage(true); // Set the page as active on component mount
+    return () => setIsActivePage(false); // Set the page as inactive on component unmount
+  }, []);
+
+  useEffect(() => {
+    if (pesan && isActivePage) {
+      const timer = setTimeout(() => {
+        if (isActivePage) {
+          dispatch(clearMessage());
+        }
+      }, 10000); // Clear message after 5 min
+
+      return () => clearTimeout(timer); // Cleanup the timer if the component unmounts
+    }
+  }, [pesan, dispatch, isActivePage]);
 
   return (
     <div className="flex justify-between bg-[#FFFFFF] h-screen">
@@ -38,7 +62,7 @@ export default function Login() {
         <img src={jetlajah} alt="Logo Jetlajah" width="30%" />
       </div>
       <div className="mx-auto w-[50%] h-[631px] flex justify-center items-center flex-col relative">
-        <div className="flex flex-col justify-center ">
+        <div className="flex flex-col justify-center p-10">
           <h1 className="flex justify-center text-[#176B87] poppins-bold text-3xl ">
             Lupa Password
           </h1>
@@ -46,7 +70,7 @@ export default function Login() {
             <div>
               {/* Email */}
               <label className="block poppins-bold text-sm font-medium leading-6 text-[#176B87]">
-                Email/ No. Telpon
+                Email
               </label>
               <div className="relative mt-2 rounded-md shadow-sm">
                 <input
@@ -60,11 +84,15 @@ export default function Login() {
           </div>
 
           <button
-            onClick={handleLogin}
+            onClick={handleForgot}
             className="hover:scroll-p-8 flex justify-center text-sm text-white py-3 bg-[#176B87] hover:bg-[#114B5E] rounded-full mt-5"
           >
-            Masuk
+            Reset Password
           </button>
+
+          {pesan && (
+            <p className="mt-4 text-[#176B87] text-center ">{pesan.message}</p>
+          )}
         </div>
       </div>
     </div>

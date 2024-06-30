@@ -3,18 +3,32 @@ import { setTiketPesawat } from "../Reducers/FilterHargaReducers";
 import { ColorizeSharp } from "@mui/icons-material";
 import {
   setLokasi,
-  setTiketPesawatPergi,
-  setTiketPesawatPulang,
-  setDestinasiPesawat,
-} from "../Reducers/TiketReducer";
+  setUserCondition } from "../Reducers/TiketReducer";
+import { setPenerbangan,
+ 
+
+} from "../Reducers/TiketReducerforSecure";
+
+import { setDestinasiPesawat, setTiketPesawatPergi,
+  setTiketPesawatPulang, } from "../Reducers/TiketReducer";
+
+export const fetchUserData = () => async (dispatch) => {
+  try {
+    const response = await axios.get(`/api/user/profile`, {
+      withCredentials: true,
+    });
+    dispatch(setUserCondition(response.data.status)); // Dispatching the action
+  } catch (error) {
+    dispatch(setUserCondition(error.response.status)); // Dispatching the action
+  }
+};
 import { setDataChekoutBerangkat, setHasilPostCeckout, setHasilPostDataPenumpang } from "../Reducers/DataBooking";
 
 export const GetTiket = () => async (dispatch, getState) => {
   try {
-    const response = await axios.get("/api/ticket?page=1&page_size=10");
+    const response = await axios.get("/api/airport");
     if (response.status === 200) {
-      dispatch(setLokasi(response?.data?.data));
-      // console.log("semuaAPI", response?.data?.data);
+      dispatch(setDestinasiPesawat(response.data.data));
     }
     return response;
   } catch (error) {
@@ -56,7 +70,7 @@ export const getTiketSearch = (params) => async (dispatch) => {
     let apiEndpoint1 = `/api/ticket?bandara_kedatangan=${bandara_kedatangan}&bandara_keberangkatan=${bandara_keberangkatan}&tanggal_pergi=${tanggal_pergi}&kelas=${kelas}&jumlah=${jumlah}`;
     const response1 = await axios.get(apiEndpoint1);
     dispatch(setTiketPesawatPergi(response1.data));
-    console.log("CEK DATA PERGI", response1.data);
+    console.log("CEK DATA PERGI", response1);   
 
     // Fetch data tiket pulang jika tanggal_pulang ada
     if (tanggal_pulang !== "") {

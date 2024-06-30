@@ -10,6 +10,7 @@ const initialState = {
   alamat: "",
   file: "",
   message: "",
+  dataNotif: "",
 };
 
 const login = createSlice({
@@ -43,6 +44,10 @@ const login = createSlice({
     setMessage: (state, action) => {
       state.message = action.payload;
     },
+    //------
+    setDataNotif: (state, action) => {
+      state.dataNotif = action.payload;
+    },
     setLogout: (state) => {
       state.nama = "";
       state.email = "";
@@ -74,7 +79,8 @@ export const {
   setLogout,
   setMessage,
   clearMessage,
-  clearPin
+  clearPin,
+  setDataNotif,
 } = login.actions;
 
 export default login.reducer;

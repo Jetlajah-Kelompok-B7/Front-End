@@ -27,7 +27,7 @@ const bookingSlicer = createSlice({
       state.bookingTiketPesawatPulang = action.payload;
     },
 
-    //hasil inutan post isi
+    //hasil inutan post isi data penumpang
     setHasilPostDataPenumpang: (state, action) => {
       state.inputanDataPenumpang = action.payload;
     },

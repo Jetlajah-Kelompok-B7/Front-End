@@ -27,13 +27,13 @@ export default function MyModal({
   tanggalPulang,
   tanggalBerangkat,
   pass_tanggal_berangkat,
+  pass_tanggal_pulang,
 }) {
   const dispatch = useDispatch();
   const [currentMonth, setCurrentMonth] = useState(startOfMonth(new Date()));
   const [nextMonth, setNextMonth] = useState(addMonths(currentMonth, 1));
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedDatePulang, setSelectedDatePulang] = useState("");
-  const [user_Click, setUser_Click] = useState(false);
 
   useEffect(() => {
     setNextMonth(addMonths(currentMonth, 1));
@@ -46,10 +46,8 @@ export default function MyModal({
       setSelectedDate(pass_tanggal_berangkat);
       setSelectedDatePulang("");
       dispatch(setKepulangan(""));
-      // setUser_Click(false);
     };
-  }, []);
-  // console.log("id", idTanggal);
+  }, [idTanggal]);
   // console.log("kondisi", user_Click);
   // console.log("selectedDate", selectedDate);
   const daysOfWeek = ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"]; // Custom Indonesian days of week
@@ -80,8 +78,8 @@ export default function MyModal({
       end: endOfMonth(month),
     });
   };
-
-  // console.log(selectedDate === selectedDatePulang);
+  const currentMonthDays = getDaysInMonth(currentMonth);
+  const nextMonthDays = getDaysInMonth(nextMonth);
 
   const colStartClasses = [
     "",
@@ -92,21 +90,24 @@ export default function MyModal({
     "col-start-6",
     "col-start-7",
   ];
-
+  // logika input tanggal
   const handleDateClick = (date) => {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-
     if (isBefore(date, yesterday)) {
       return null; // Tidak melakukan apa-apa jika tanggal yang dipilih lebih awal dari hari sebelumnya
     }
     if (idTanggal === 1) {
-      dispatch(setKeberangaktan(format(date, "yyyy MM d ", { locale: id })));
+      dispatch(setKeberangaktan(format(date, "yyyy MM d", { locale: id })));
       setSelectedDate(date);
-      tanggalBerangkat(format(date, "yyyy MM d", { locale: id }));
+      tanggalBerangkat(format(date, "d MMMM yyyy", { locale: id }));
+      onClose();
     } else {
-      if (!user_Click) {
-        // if (selectedDate !== "") return setUser_Click(true);
+      if (pass_tanggal_berangkat === "") {
+        dispatch(setKeberangaktan(format(date, "yyyy MM d", { locale: id })));
+        setSelectedDate(date);
+        tanggalBerangkat(format(date, "d MMMM yyyy", { locale: id }));
+      } else if (pass_tanggal_berangkat !== "" && pass_tanggal_pulang !== "") {
         setSelectedDatePulang("");
         setSelectedDate("");
         dispatch(setKeberangaktan(""));
@@ -115,34 +116,27 @@ export default function MyModal({
         tanggalPulang("");
         dispatch(setKeberangaktan(format(date, "yyyy MM d", { locale: id })));
         setSelectedDate(date);
-        tanggalBerangkat(format(date, "yyyy MM d", { locale: id }));
-        setUser_Click(true);
+        tanggalBerangkat(format(date, "d MMMM yyyy", { locale: id }));
       } else {
         if (isSameDay(date, selectedDate)) {
           dispatch(setKepulangan(format(date, "yyyy MM d", { locale: id })));
           setSelectedDatePulang(date);
-          tanggalPulang(format(date, "yyyy MM d", { locale: id }));
-          setUser_Click(false);
+          tanggalPulang(format(date, "d MMMM yyyy", { locale: id }));
+        } else if (isBefore(date, selectedDate)) {
+          dispatch(
+            setKeberangaktan(format(date, "d MMMM yyyy", { locale: id }))
+          );
+          setSelectedDate(date);
+          tanggalBerangkat(format(date, "d MMMM yyyy", { locale: id }));
         } else if (isAfter(date, selectedDate)) {
           dispatch(setKepulangan(format(date, "yyyy MM d", { locale: id })));
           setSelectedDatePulang(date);
-          tanggalPulang(format(date, "yyyy MM d", { locale: id }));
-          setUser_Click(false);
-        } else {
-          setSelectedDatePulang("");
-          setSelectedDate("");
-          dispatch(setKeberangaktan(""));
-          dispatch(setKepulangan(""));
-          tanggalBerangkat("");
-          tanggalPulang("");
-          setUser_Click(false);
+          tanggalPulang(format(date, "d MMMM yyyy", { locale: id }));
+          onClose();
         }
       }
     }
   };
-
-  const currentMonthDays = getDaysInMonth(currentMonth);
-  const nextMonthDays = getDaysInMonth(nextMonth);
 
   const handleClose = (e) => {
     if (e.target.id === "container") return onClose();
@@ -150,6 +144,7 @@ export default function MyModal({
 
   if (!visible) return null;
 
+  //Logika styling tanggal
   const getDateClass = (day, month) => {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1); // Hari ini dikurangi 1 hari
@@ -164,17 +159,15 @@ export default function MyModal({
       isBefore(day, selectedDatePulang) &&
       isAfter(day, selectedDate)
     ) {
-      return "bg-[#64CCC5]"; // Jika day di antara selectedDate dan selectedDateBerangkat
+      return "bg-[#64CCC5] bg-opacity-30 rounded-xl"; // Jika day di antara selectedDate dan selectedDateBerangkat
     }
 
     if (isSameMonth(day, month)) {
-      if (isSameDay(day, selectedDate)) {
-        return `bg-[#176B87] text-white ${
-          idTanggal === 1 ? "rounded-xl" : "rounded-l-xl"
-        }`; // Jika day sama dengan selectedDate atau selectedDateBerangkat
+      if (isSameDay(day, pass_tanggal_berangkat)) {
+        return "bg-[#176B87] text-white rounded-xl "; // Jika day sama dengan selectedDate atau selectedDateBerangkat
       }
-      if (isSameDay(day, selectedDatePulang)) {
-        return "bg-[#176B87] text-white rounded-r-xl"; // Jika day sama dengan selectedDate atau selectedDateBerangkat
+      if (isSameDay(day, pass_tanggal_pulang)) {
+        return "bg-[#176B87] text-white rounded-xl"; // Jika day sama dengan selectedDate atau selectedDateBerangkat
       }
       if (isSunday(day)) {
         return "text-red-500";
@@ -191,16 +184,16 @@ export default function MyModal({
   return (
     <div
       id="container"
-      className="fixed inset-0 bg-white bg-opacity-30 backdrop-blur-sm z-50 flex justify-center items-center"
+      className="absolute max-lg:fixed inset-0 max-lg:items-end max-lg:top-0 top-[250px] z-50 flex max-lg:h-screen  justify-center items-start max-lg:bg-black max-lg:bg-opacity-30"
       onClick={(e) => {
         handleClose(e);
       }}
     >
-      <div className="bg-white rounded-md px-10 py-4 border-4 border-[#176B87]">
-        <div className="flex flex-col gap-4">
+      <div className="bg-white rounded-md px-10 max-lg:w-full py-4 border-4 border-[#176B87] max-lg:border-none">
+        <div className="flex flex-col gap-4 -mx-4">
           <div className="flex gap-16">
             {/* Current Month */}
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-4 max-lg:w-full">
               <div className="flex w-full">
                 <button onClick={handlePrevMonth} className="text-gray-400">
                   <img
@@ -209,11 +202,21 @@ export default function MyModal({
                     className="w-1.5 transform scale-x-[-1]"
                   />
                 </button>
-                <div className="flex-1 flex justify-center">
-                  {format(currentMonth, "MM - yyyy", { locale: id })}
+                <div className="flex-1 flex justify-center ">
+                  {format(currentMonth, "MMMM - yyyy", { locale: id })}
                 </div>
+                <button
+                  onClick={handleNextMonth}
+                  className="text-gray-400 hidden max-lg:flex "
+                >
+                  <img
+                    src="/images/Arrow.png"
+                    alt=""
+                    className="w-1.5 transform"
+                  />
+                </button>
               </div>
-              <div className="grid grid-cols-7">
+              <div className="grid grid-cols-7 max-lg:w-full ">
                 {daysOfWeek.map((day, index) => (
                   <div key={index} className="text-center text-gray-400">
                     {day}
@@ -222,7 +225,7 @@ export default function MyModal({
                 {currentMonthDays.map((day, index) => (
                   <div
                     key={day.getTime()} // Using getTime() as a unique key for Date objects
-                    className={`my-1 px-3 py-4 text-center hover:cursor-pointer ${
+                    className={`my-2 mx-0.5 px-3 py-4 text-center hover:cursor-pointer ${
                       index === 0 && colStartClasses[getDay(day)]
                     } ${getDateClass(day, currentMonth)}`}
                     onClick={() => handleDateClick(day)}
@@ -242,7 +245,7 @@ export default function MyModal({
               </div>
             </div>
             {/* Next Month */}
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-4 max-lg:hidden">
               <div className="flex w-full">
                 <div className="flex-1 flex justify-center">
                   {format(nextMonth, "MM - yyyy", { locale: id })}
@@ -264,7 +267,7 @@ export default function MyModal({
                 {nextMonthDays.map((day, index) => (
                   <div
                     key={day.getTime()}
-                    className={`my-1 px-3 py-4 text-center hover:cursor-pointer ${
+                    className={`my-2 mx-0.5 px-3 py-4 text-center hover:cursor-pointer ${
                       index === 0 && colStartClasses[getDay(day)]
                     } ${getDateClass(day, nextMonth)}`}
                     onClick={() => handleDateClick(day)}

@@ -90,7 +90,7 @@ export default function Payment() {
   const userCkId = useSelector(
     (state) => state.booking.inputanDataPenumpang.data.data.checkoutId
   );
-   console.log("ID CEKOUT UNTUK GET DATA CEKOUT", userCkId);
+   console.log("ID CEKOUT UNTUK GET ", userCkId);
 
   //use buat nyimpan ID ke Action
   useEffect(() => {
@@ -98,10 +98,11 @@ export default function Payment() {
       dispatch(getDetailPesanan(userCkId));
     }
   }, [dispatch, userCkId]);
+  const [penumpangData, setPenumpangData] = useState([]);
   
   //Fect DAta DEtail PEnumpang
   const DetailPenumpangCekout = useSelector(
-    (state) => state.booking.dataCheckoutBerangkat.data
+    (state) => state.booking.dataCheckoutBerangkat
   );
    console.log("detailckout", DetailPenumpangCekout);
 
@@ -109,8 +110,7 @@ export default function Payment() {
     (state) => state.booking.bookingTiketPesawatPergi
   );
 
-  //unutk perkalian data penumpang]
-  const [penumpangData, setPenumpangData] = useState([]);
+  //unutk perkalian data penumpang
   const DataPenumpang = useSelector((state) => state.tiket);
   // console.log("Data penum", DataPenumpang);
 
