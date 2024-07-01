@@ -161,7 +161,7 @@ export default function Footer() {
                 </a>
                 {Condition === true ? (
                   <>
-                    <a onClick={() => navigate("/tiket")}>tiket</a>
+                    <a onClick={() => navigate("/History")}>tiket</a>
                     <a onClick={() => navigate("/notification")}>Notifikasi</a>
                   </>
                 ) : (

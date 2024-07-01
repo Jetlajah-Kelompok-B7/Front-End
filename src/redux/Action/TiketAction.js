@@ -1,7 +1,6 @@
 import axios from "axios";
 import { setTiketPesawat } from "../Reducers/FilterHargaReducers";
 import { ColorizeSharp } from "@mui/icons-material";
-import { setUserCondition } from "../Reducers/TiketReducer";
 import { setHistroy, setLoginStatus, setPenerbangan } from "../Reducers/TiketReducerforSecure";
 
 export const tikethistory = () => async (dispatch) => {

@@ -73,7 +73,7 @@ export default function Navbar() {
     <nav className="flex z-50 items-center justify-between py-[14px] pl-[75px] max-xl:pl-4 pr-[49px] max-lg:pr-2 max-sm:pr-10 max-xs:pr-2 text-[24px]">
       <div className="flex items-center">
         <div className="mr-[78px] max-lg:ml-1 ">
-          <img src="/images/Logo.png" alt="" />
+          <img src="/images/Logo.png" alt=""/>
         </div>
         <div className="flex max-lg:hidden text-[#176B87] gap-4">
           <button

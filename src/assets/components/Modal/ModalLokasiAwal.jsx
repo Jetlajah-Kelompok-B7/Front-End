@@ -85,16 +85,16 @@ export default function ModalLokasi({
                   {lokasi.lokasi ===
                   (id === 1 ? selectedKota : selectedDestinasi) ? (
                     <div className="border-b-2 border-[#176B87]">
-                      {lokasi.lokasi} <br />
-                      <span className="text-gray-500">
+                      {lokasi.lokasi.split(",")[0]} <br />
+                      <span className="text-gray-500 text-sm">
                         {lokasi.kode_bandara} - {lokasi.nama_bandara}
                       </span>
                     </div>
                   ) : (
                     <div className="border-b-2">
-                      {lokasi.lokasi}
+                      {lokasi.lokasi.split(",")[0]}
                       <br />
-                      <span className="text-gray-500">
+                      <span className="text-gray-500 text-sm">
                         {lokasi.kode_bandara} - {lokasi.nama_bandara}
                       </span>
                     </div>

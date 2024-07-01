@@ -14,6 +14,7 @@ export default function ModalPemesananTiket() {
   const navigate = useNavigate();
   const [id, setId] = useState(null);
   const [idTanggal, setIdTanggal] = useState(1);
+  console.log("ModalPemesananTiket  idTanggal:", idTanggal);
   const list_Pilihan = ["Sekali Jalan", "Pergi - Pulang"];
   const [pilihanUser, setPilihanUser] = useState("Sekali Jalan");
   const [modalNama, setModalNama] = useState("");
@@ -254,12 +255,12 @@ export default function ModalPemesananTiket() {
                   <div className="flex items-center flex-1">
                     <div className="flex gap-2 flex-1">
                       {pilihanUser === "Pergi - Pulang" ? (
-                        <div className="flex flex-col">
+                        <div className="flex flex-col flex-1">
                           <p className="text-base text-gray-500 truncate">
                             Tanggal Pulang
                           </p>
                           <button
-                            className=" border-b font-medium text-[#176B87] text-[18px] text-start py-2"
+                            className=" border-b truncate font-medium text-[#176B87] text-[18px] text-start py-2"
                             onClick={() => {
                               setModalNama("tanggal");
                             }}

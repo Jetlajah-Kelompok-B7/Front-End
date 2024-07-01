@@ -62,7 +62,6 @@ export const {
   setLokasiKeberangkatan,
   setLokasiTujuan,
   swapLokasi,
-  setUserCondition,
   setSemua,
   setKelasPenerbangan,
   setKeberangaktan,

@@ -62,10 +62,10 @@ export default function Team() {
     {
       name: "Hanafi Ulin Nuha",
       position: "Backend Developer",
-      image: "/images/hacker.jpg",
+      image: "/images/hanafi.png",
       social: {
-        instagram: "",
-        Linkedin: "",
+        instagram: "https://www.instagram.com/envystfu/",
+        Linkedin: "https://www.linkedin.com/in/hanhanafi/",
         github: "https://github.com/yokunoshita",
       },
     },
@@ -74,7 +74,7 @@ export default function Team() {
       position: "Backend Developer",
       image: "/images/balya.jpg",
       social: {
-        instagram: "",
+        instagram: "https://www.instagram.com/balyar.r/",
         Linkedin: "https://www.linkedin.com/in/balya-aqila-rizqi-rabbi/",
         github: "https://github.com/rizqi-r",
       },
