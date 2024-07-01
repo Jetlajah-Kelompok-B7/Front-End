@@ -20,7 +20,7 @@ const FilterHarga = ({ visible, onClose }) => {
   if (!visible) return null;
 
   return (
-    <div className="absolute top-20 shadow-lg rounded-2xl bg-white w-[400px]">
+    <div className="absolute inset-0 z-50 top-20 shadow-lg rounded-2xl bg-white w-[400px] max-sm:w-full">
       <div className="py-3 pr-3 flex justify-end border-b bg-white text-base rounded-t-2xl">
         <XMarkIcon
           className="h-6 w-6 text-black hover:cursor-pointer"
@@ -28,7 +28,7 @@ const FilterHarga = ({ visible, onClose }) => {
         />
       </div>
       <div>
-        <div className="mx-2 font-medium text-sm">
+        <div className="z-50 mx-2 font-medium text-sm">
           {dataFilterHarga.map((filterHarga, index) => (
             <div
               className="hover:cursor-pointer"
@@ -44,7 +44,7 @@ const FilterHarga = ({ visible, onClose }) => {
                 </div>
               ) : (
                 <div>
-                  <div className="border-b py-3 mx-4 items-center">
+                  <div className="z-50 border-b py-3 mx-4 items-center">
                     {filterHarga}
                   </div>
                 </div>

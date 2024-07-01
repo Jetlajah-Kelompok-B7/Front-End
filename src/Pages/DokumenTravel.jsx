@@ -14,9 +14,6 @@ import { setDokumenBooking } from "../redux/Reducers/DataBooking";
 const travelDokumen = () => {
   const [penumpangData, setPenumpangData] = useState([]);
   const [options, setOptions] = useState([]);
-  const [date, setDate] = useState("");
-  const [param, setparams] = useState([]);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -26,14 +23,6 @@ const travelDokumen = () => {
       .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
       .replace(/\,00$/, "");
   };
-
-  //AMBIL TYPE PESAWAT
-  const ambiltype = useSelector(
-    (state) => state.tiket.dataInputanSearch.jenisPenerbangan
-  );
-  console.log("TYPE", ambiltype);
-
-
 
   //MENAMPILKAN DATA TIKET PERGI
   const DataBooking = useSelector(
@@ -45,13 +34,18 @@ const travelDokumen = () => {
   const DataBookingPulang = useSelector(
     (state) => state.booking.bookingTiketPesawatPulang
   );
-  console.log("DATA PULANG", DataBookingPulang);
+  // console.log("DATA PULANG", DataBookingPulang);
 
   const DataPenumpang = useSelector((state) => state.tiket);
-  console.log("Data penumpangoONE", DataPenumpang);
+  // console.log("Data penumpangoONE", DataPenumpang);
+
+  // const DataBaru = useSelector((state) => state?.tiket);
+  const typePenerbanngan = useSelector(
+    (state) => state?.tiket?.typePenerbanngan
+  );
+  // console.log("TYPE PENERBANGAN", typePenerbanngan);
 
   // fungsi Perhitungan Harga
-
   const totalHargaPenumpang =
     (DataPenumpang.totalSemuaPenumpang - DataPenumpang.TotalPenumpang.Bayi) *
     DataBooking.price;
@@ -60,7 +54,7 @@ const travelDokumen = () => {
 
   let totalHargaSemua = totalHargaDenganPajak;
 
-  if (ambiltype === "Pergi - Pulang") {
+  if (typePenerbanngan === "Pergi - Pulang") {
     const totalHargaPulang =
       (DataPenumpang.totalSemuaPenumpang - DataPenumpang.TotalPenumpang.Bayi) *
         DataBookingPulang.price +
@@ -76,8 +70,7 @@ const travelDokumen = () => {
     console.log("HARGA PULANG", totalHargaPulang);
   }
 
-  //Fungsi Option Negara
-
+  //Fungsi  FETHING API Option Negara
   useEffect(() => {
     // Fetch data dari API dan update options
     axios
@@ -166,21 +159,7 @@ const travelDokumen = () => {
     return `${day} ${month} ${year}`;
   };
 
-  // const handleChange = (e) => {
-  //   const value = e.target.value;
-  //   const formattedDate = formatTanggal(value);
-  //   // console.log("tangale",formattedDate)
-  //   setDate(formattedDate);
-  // };
-
-  const formatTanggal = (value) => {
-    const date = new Date(value);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
+  // FOM DATA LOOPING
   useEffect(() => {
     const initialPenumpangData = [];
     for (let i = 0; i < DataPenumpang.TotalPenumpang.Dewasa; i++) {
@@ -239,17 +218,6 @@ const travelDokumen = () => {
     );
   };
 
-  const toggleBaby = (id) => {
-    setPenumpangData((prevData) =>
-      prevData.map((penumpang) =>
-        penumpang.id === id
-          ? { ...penumpang, is_baby: !penumpang.is_baby }
-          : penumpang
-      )
-    );
-  };
-
-
   // AMBIL ID PERGI
   const dataInputPesanan = useSelector(
     (state) => state.booking.bookingTiketPesawatPergi
@@ -259,7 +227,7 @@ const travelDokumen = () => {
   const dataInputanPesananPulang = useSelector(
     (state) => state.booking.bookingTiketPesawatPulang
   );
- 
+  // console.log("DATA PULANG DARI ORDER", dataInputanPesananPulang);
 
   const handleSimpanDataPenumpang = () => {
     const isValid = penumpangData.every(
@@ -291,16 +259,22 @@ const travelDokumen = () => {
 
       const paramsData = {
         penumpang: dataToSave,
-        tipePenumpang: ambiltype,
+        tipePenumpang: typePenerbanngan,
       };
 
-      dispatch(getPayment([dataInputPesanan.id, dataInputanPesananPulang.id], paramsData, navigate)); // Pastikan dataInputPesanan.id tersedia
+      dispatch(
+        getPayment(
+          [dataInputPesanan.id, dataInputanPesananPulang.id],
+          paramsData,
+          navigate
+        )
+      ); // Pastikan dataInputPesanan.id tersedia
       dispatch(setDokumenBooking(paramsData));
     } else {
       alert("Semua form wajib diisi!");
     }
-    console.log("data Inputan Pergi", dataInputPesanan.id);
-    console.log("data Inputan Pulang", dataInputanPesananPulang.id);
+    // console.log("data Inputan Pergi", dataInputPesanan.id);
+    // console.log("data Inputan Pulang", dataInputanPesananPulang.id);
   };
 
   const dataPemesan = useSelector((state) => state.login);
@@ -312,8 +286,8 @@ const travelDokumen = () => {
       <div className="container mx-auto">
         <div className="">
           {/* Header Atas */}
-          <div className="bg-white shadow-md  w-full px-36">
-            <div className="mx-20  pt-5 ">
+          <div className="bg-white shadow-md  w-full max-sm:px-0 px-36 max-sm:w-full">
+            <div className="mx-4 sm:mx-20  pt-5 ">
               <div className="flex">
                 <button className="flex items-center ml-4 text-lg font-bold text-[#176B87] ">
                   Isi Data diri
@@ -329,9 +303,9 @@ const travelDokumen = () => {
                 </button>
               </div>
             </div>
-            <div className="  mx-20 p-3">
+            <div className=" mx-4 sm:mx-auto sm:max-w-none sm:mr-0 sm:pl-2  md:mr-20 md:pl-52 py-5 text-center">
               <button
-                className="flex items-center pl-5 gap-5 w-[800px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl"
+                className=" max-sm:w-full flex items-center pl-5 gap-5 w-[800px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl"
                 onClick={() => navigate("/resultSearch")}
               >
                 <ArrowLongLeftIcon className="h-12 w-12 text-slate-200 mr-1 pl-1 flex items-center" />
@@ -339,43 +313,42 @@ const travelDokumen = () => {
               </button>
             </div>
           </div>
-
-          <div className="flex justify-center gap-10 mx-10 px-20">
+          <div  className="max-sm:w-full max-sm:flex-col flex justify-center gap-10 mx-10 px-20 max-sm:px-0 max-sm:mx-0">
             <div>
-              {/* Data Pemesanan */}
-              <div className="mt-10 border rounded-xl border-slate-300 p-10 w-[600px] text-xl">
+                  {/* Data Pemesanan */}
+                  <div className="max-sm:w-full mt-10 border rounded-xl border-slate-300 p-10 w-[600px] text-xl">
                 <p className="text-[#176B87] font-semibold pb-5">
                   Isi Data Pemesanan
                 </p>
                 <div>
-                  <p className="bg-[#176B87] text-white rounded-t-md py-2 px-4">
+                  <p className="bg-[#176B87] text-white rounded-t-md py-2 px-4 max-sm:w-full">
                     Data Diri Pemesanan
                   </p>
                   {<form action="" className="py-3 "></form>}
                   <p className="text-[#176B87] font-semibold">Nama Lengkap</p>
-                  <p className="border border-slate-300 w-[520px] p-2 my-2">
+                  <p className="border border-slate-300 w-[520px] p-2 my-2 max-sm:w-full">
                     {dataPemesan.nama}
                   </p>
                   <p className="text-[#176B87] font-semibold">Nomor Telepon</p>
-                  <p className="border border-slate-300 w-[520px] p-2 my-2">
+                  <p className="border border-slate-300 w-[520px] p-2 my-2 max-sm:w-full">
                     {dataPemesan.no_telp}
                   </p>
                   <p className="text-[#176B87] font-semibold">Alamat</p>
-                  <p className="border border-slate-300 w-[520px] p-2 my-2">
+                  <p className="border border-slate-300 w-[520px] p-2 my-2 max-sm:w-full">
                     {dataPemesan.alamat}
                   </p>
                 </div>
               </div>
 
               {/* Isi Data Penumpang */}
-              <div className="mt-10 border rounded-xl border-slate-300 p-10 w-[600px] text-xl">
-                <p className="text-[#176B87] font-semibold pb-5">
+              <div className="mt-10 border rounded-xl border-slate-300 p-10 w-[600px] text-xl max-sm:w-full max-sm:p-5 ">
+                <p className="text-[#176B87] font-semibold pb-5 " >
                   Isi Data Penumpang
                 </p>
                 {penumpangData.map((penumpang, index) => (
                   <div
                     key={penumpang.id}
-                    className="mt-5 border rounded-xl border-slate-300 p-10 w-[520px] text-xl"
+                    className="mt-5 border rounded-xl border-slate-300 p-10 w-[520px] text-xl max-sm:w-full max-sm:p-5"
                   >
                     <div>
                       <p className="bg-[#176B87] text-white rounded-t-md py-2 px-4">
@@ -394,7 +367,7 @@ const travelDokumen = () => {
                             e.target.value
                           )
                         }
-                        className="border border-slate-300 w-[440px] p-2 my-2"
+                        className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full    "
                       >
                         <option value=""></option>
                         <option value="Tuan">Tuan</option>
@@ -415,7 +388,7 @@ const travelDokumen = () => {
                             e.target.value
                           )
                         }
-                        className="border border-slate-300 w-[440px] p-2 my-2"
+                        className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full"
                       />
                       <label className="text-[#176B87] font-semibold">
                         Tanggal Lahir
@@ -431,7 +404,7 @@ const travelDokumen = () => {
                             e.target.value
                           )
                         }
-                        className="border border-slate-300 w-[440px] p-2 my-2"
+                        className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full"
                       />
                       <label className="text-[#176B87] font-semibold">
                         Kewarganegaraan
@@ -449,7 +422,7 @@ const travelDokumen = () => {
                           )
                         }
                         options={options}
-                        className="border border-slate-300 w-[440px] p-2 my-2"
+                        className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full"
                       />
                       <label className="text-[#176B87] font-semibold">
                         No KTP/Paspor
@@ -465,7 +438,7 @@ const travelDokumen = () => {
                             e.target.value
                           )
                         }
-                        className="border border-slate-300 w-[440px] p-2 my-2"
+                        className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full"
                       />
                       <label className="text-[#176B87] font-semibold">
                         Negara Penerbit
@@ -483,7 +456,7 @@ const travelDokumen = () => {
                           )
                         }
                         options={options}
-                        className="border border-slate-300 w-[440px] p-2 my-2"
+                        className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full"
                       />
                       <label className="text-[#176B87] font-semibold">
                         Berlaku Sampai
@@ -499,7 +472,7 @@ const travelDokumen = () => {
                             e.target.value
                           )
                         }
-                        className="border border-slate-300 w-[440px] p-2 my-2"
+                        className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full"
                       />
                     </div>
                   </div>
@@ -516,7 +489,7 @@ const travelDokumen = () => {
             </div>
 
             {/* Detail Penerbangan */}
-            <div className="w-[400px] mt-10">
+            <div className="w-[400px] mt-10 max-sm:w-full">
               <div className="p-5 border-2 border-slate-200 rounded-xl">
                 <div>
                   <div className="mt-5">
@@ -583,7 +556,7 @@ const travelDokumen = () => {
                       </div>
 
                       {/* TIKET PULANG */}
-                      {ambiltype == "Pergi - Pulang" && (
+                      {typePenerbanngan == "Pergi - Pulang" && (
                         <>
                           {DataBookingPulang.schedule.takeoff.time && (
                             <div className="mt-5 border-t-4 border-[#FE5D02]">
@@ -701,7 +674,7 @@ const travelDokumen = () => {
                                 <p className="">
                                   {ageGroup === "BABY"
                                     ? "0"
-                                    : ambiltype === "Pergi - Pulang"
+                                    : typePenerbanngan === "Pergi - Pulang"
                                     ? formatRupiah(
                                         (DataBooking.price +
                                           DataBookingPulang.price) *
@@ -729,7 +702,7 @@ const travelDokumen = () => {
                       </div>
                       <div className="py-5 border-t-2">
                         <button
-                          className="bg-[#176B87] text-white text-xl font-semibold py-2 px-5 flex justify-center items-center rounded-xl w-[350px]"
+                          className="bg-[#176B87] text-white text-xl font-semibold py-2 px-5 flex justify-center items-center rounded-xl w-[350px] max-sm:w-full"
                           onClick={handleSimpanDataPenumpang}
                         >
                           Lanjut Bayar

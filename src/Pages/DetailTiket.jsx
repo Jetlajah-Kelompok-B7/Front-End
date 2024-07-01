@@ -25,6 +25,9 @@ export default function DetailTiket() {
   const Condition = useSelector((state) => {
     return state.tiket.UserCondition;
   });
+
+
+  console.log("ID DETAIL",id)
   useEffect(() => {
     if (Condition !== true) {
       navigate("/login");

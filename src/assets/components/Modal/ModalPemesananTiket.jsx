@@ -101,11 +101,7 @@ export default function ModalPemesananTiket() {
     dispatch(getTiketSearch());
     
   }, [dispatch]);
- 
 
-  
-  
-  
   return (
     <div className="w-[1060px] container">
       <div className="relative mx-auto">

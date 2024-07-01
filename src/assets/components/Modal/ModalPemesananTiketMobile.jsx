@@ -28,8 +28,6 @@ export default function ModalPemesananTiketMobile() {
       if (
         kotaAwal !== "" &&
         destinasi !== "" &&
-        kelas_penerbangan !== "" &&
-        total_penumpang !== 0 &&
         tanggalBerangkat !== ""
       ) {
         if (kotaAwal === destinasi) {
@@ -48,8 +46,6 @@ export default function ModalPemesananTiketMobile() {
       if (
         kotaAwal !== "" &&
         destinasi !== "" &&
-        kelas_penerbangan !== "" &&
-        total_penumpang !== 0 &&
         tanggalBerangkat !== "" &&
         tanggalPulang !== ""
       ) {

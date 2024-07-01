@@ -11,13 +11,16 @@ const initialState = {
   dataCheckoutBerangkat: [],
   dataCheckoutPulang: [],
   dataPostCheckout: [],
+  dataHasilCheckout: null,
+  orderId: [],
+  orderIdPergi:[],
+  orderIdPulang:[]
 };
 
 const bookingSlicer = createSlice({
   name: "booking",
   initialState,
   reducers: {
-    
     setIsValidated: (state, action) => {
       state.isValidated = action.payload;
     },
@@ -48,6 +51,18 @@ const bookingSlicer = createSlice({
     setHasilPostCeckout: (state, action) => {
       state.dataPostCheckout = action.payload;
     },
+    setDataHasilCheckot: (state, action) => {
+      state.dataHasilCheckout = action.payload;
+    },
+    setOrderId: (state, action) => {
+      state.orderId = action.payload;
+    },
+    setHasilPostDataPenumpangPergi: (state, action) => {
+      state.orderIdPergi = action.payload;
+    },
+    setHasilPostDataPenumpangPulang: (state, action) => {
+      state.orderIdPulang = action.payload;
+    },
   },
 });
 
@@ -61,6 +76,11 @@ export const {
   setDataChekoutBerangkat,
   setHasilPostCeckout,
   setDataChekoutPulang,
+  setDataHasilCheckot,
+  setOrderId,
+  setHasilPostDataPenumpangPergi,
+  setHasilPostDataPenumpangPulang,
+  
 } = bookingSlicer.actions;
 
 export default bookingSlicer.reducer;

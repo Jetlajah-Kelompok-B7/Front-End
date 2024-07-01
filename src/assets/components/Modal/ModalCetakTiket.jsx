@@ -149,7 +149,7 @@ export default function ModalCetakTiket({ visible, onClose, data_tiket, qr }) {
           <div className="w-full items-center justify-end flex">
             <div className="flex flex-col">
               <p className="flex justify-center">Scan Code</p>
-              <img src={qr} alt="" className="" />
+              {qr ? <img src={qr} alt="" className="" /> : <div>a</div>}
             </div>
           </div>
         </div>

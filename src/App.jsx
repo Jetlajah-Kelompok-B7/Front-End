@@ -17,7 +17,7 @@ import DetailTiket from "./Pages/DetailTiket";
 import TravelDokumen from "./Pages/DokumenTravel";
 import ForgotPassword from "./Pages/forgotPassword";
 import ConfirmPassword from "./Pages/confirmPassword";
-
+import Berhasil_bayar from "./Pages/Berhasil_bayar";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -70,12 +70,16 @@ export default function App() {
       element: <DetailTiket />,
     },
     {
-      path: "/payment",
+      path: "/Payment",
       element: <Payment />,
     },
     {
       path: "/travelDokumen",
       element: <TravelDokumen />,
+    },
+    {
+      path: "/bayar_berhasil",
+      element: <Berhasil_bayar />,
     },
   ]);
 

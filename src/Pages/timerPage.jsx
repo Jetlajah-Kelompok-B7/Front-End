@@ -51,7 +51,7 @@ const PaymentTimer = () => {
   }, [navigate]);
 
   return (
-    <div className="items-center  text-center pl-5 py-4 gap-5 w-[800px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl">
+    <div className="items-center  text-center pl-5 py-4 gap-5 w-[800px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl max-sm:w-full max-sm:text-sm max-sm:flex max-sm:justify-start">
       Selesaikan Pembayaran Dalam
       <span className="ml-2 text-[#FE5D02] font-bold">
         {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s

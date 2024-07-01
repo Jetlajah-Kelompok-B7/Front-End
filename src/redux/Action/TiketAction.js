@@ -11,9 +11,13 @@ import {
 } from "../Reducers/TiketReducer";
 import {
   setDataChekoutBerangkat,
+  setDataHasilCheckot,
   setHasilPostCeckout,
   setHasilPostDataPenumpang,
+  setHasilPostDataPenumpangPergi,
+  setHasilPostDataPenumpangPulang,
 } from "../Reducers/DataBooking";
+import { setOrderId } from "../Reducers/DataBooking";
 
 export const fetchUserData = () => async (dispatch) => {
   try {
@@ -26,6 +30,7 @@ export const fetchUserData = () => async (dispatch) => {
   }
 };
 
+//data BAndara
 export const GetTiket = () => async (dispatch, getState) => {
   try {
     const response = await axios.get("/api/airport");
@@ -66,13 +71,6 @@ export const getTiketSearch = () => async (dispatch, getState) => {
     totalSemuaPenumpang,
   } = getState().tiket;
 
-  // console.log("KELAS PENERBNGAN", KelasPenerbangan)
-  // console.log("KELAS PENERBNGAN", LokasiKeberangkatan)
-  // console.log("KELAS PENERBNGAN", TanggalKeberangkatan)
-  // console.log("KELAS PENERBNGAN", TanggalKepulangan)
-  // console.log("KELAS PENERBNGAN", lokasiTujuan)
-  // console.log("KELAS PENERBNGAN", totalSemuaPenumpang)
-
   try {
     // Fetch data tiket pergi
     let apiEndpoint1 = `/api/ticket?bandara_keberangkatan=${LokasiKeberangkatan}&bandara_kedatangan=${lokasiTujuan}&tanggal_pergi=${TanggalKeberangkatan}&kelas=${KelasPenerbangan}&jumlah=${totalSemuaPenumpang}`;
@@ -97,52 +95,36 @@ export const getTiketSearch = () => async (dispatch, getState) => {
 };
 
 //post order data
-export const getPayment =
-  (orderId, paramsData, navigate) => async (dispatch, getState) => {
-    const tipePenumpang = getState().tiket.dataInputanSearch.jenisPenerbangan;
-    console.log("Data ID PERGI", orderId);
-    try {
-      if (orderId?.length === 2 && typeof orderId[1] === "number") {
-        for (let i = 0; i < orderId.length; i++) {
-          if (tipePenumpang === "Pergi - Pulang") {
-            const response2 = await axios.post(
-              `/api/order/${orderId[i]}`,
-              paramsData.penumpang
-            );
-            dispatch(setHasilPostDataPenumpang(response2));
-            console.log("Response Payment Pulang Pergi:", response2);
-          }
-        }
+export const getPayment = (orderId, paramsData, navigate) => async (dispatch, getState) => {
+  const tipePenumpang = getState().tiket?.typePenerbanngan;
+  console.log("Data ID PERGI", orderId);
+  try {
+    // Tampilkan paramsData sebelum permintaan POST
+    console.log("Data yang dikirim ke server:", paramsData);
 
-        // Dispatch action Redux untuk meng-update status pengiriman data penumpang
-        alert("Data Berhasil Tersimpan");
+    // Proses untuk penerbangan pertama (pergi)
+    const response1 = await axios.post(`/api/order/${orderId[0]}`, paramsData.penumpang);
+    console.log("Response Payment Sekali Jalan:", response1);
+    dispatch(setHasilPostDataPenumpang(response1.data));  // Pastikan payload benar
 
-        // Sesuaikan dengan action yang ada di Redux Anda
-        return navigate("/payment");
-      }
-      // Tampilkan paramsData sebelum permintaan POST
-      console.log("Data yang dikirim ke server:", paramsData);
-
-      const response1 = await axios.post(
-        `/api/order/${orderId[0]}`,
-        paramsData.penumpang
-      );
-
-      console.log("Response Payment Sekali Jalan:", response1);
-      dispatch(setHasilPostDataPenumpang(response1));
-      // Dispatch action Redux untuk meng-update status pengiriman data penumpang
-      alert("Data Berhasil Tersimpan");
-
-      // Sesuaikan dengan action yang ada di Redux Anda
-      navigate("/payment");
-    } catch (error) {
-      console.error(
-        "Error:",
-        error.response ? error.response.data : error.message
-      );
-      alert("Kamu harus login dulu!");
+    // Jika tipe penumpang adalah "Pergi - Pulang" dan ada ID untuk penerbangan pulang
+    if (tipePenumpang === "Pergi - Pulang" && orderId.length === 2 && typeof orderId[1] === "number") {
+      const response2 = await axios.post(`/api/order/${orderId[1]}`, paramsData.penumpang);
+      console.log("Response Payment Pulang Pergi:", response2);
+      dispatch(setHasilPostDataPenumpang(response2.data));  // Pastikan payload benar
     }
-  };
+
+    // Dispatch action Redux untuk meng-update status pengiriman data penumpang
+    alert("Data Berhasil Tersimpan");
+
+    // Navigasi ke halaman pembayaran
+    navigate("/payment");
+  } catch (error) {
+    console.error("Error:", error.response ? error.response.data : error.message);
+    alert("Kamu harus login dulu!");
+  }
+};
+
 
 //Get DEtail Cekout
 export const getDetailPesanan = (checkoutId) => async (dispatch) => {
@@ -159,16 +141,19 @@ export const getDetailPesanan = (checkoutId) => async (dispatch) => {
       alert(error.message);
       return;
     }
-    // alert(error.message);
+    alert(error.message);
   }
 };
+
 
 //post order data
 export const getPaymentCekout =
   (metode_pembayaran, checkoutId, navigate) => async (dispatch) => {
+    console.log("ckoitu IDD", checkoutId);
+    console.log("Data yang Server:", metode_pembayaran);
     try {
       // Tampilkan paramsData sebelum permintaan POST
-     
+
       const response = await axios.post(
         `/api/checkout/${checkoutId}`,
         {
@@ -180,11 +165,15 @@ export const getPaymentCekout =
         {
           headers: { "Content-Type": "application/json" },
         }
-        
       );
-
-      console.log("REPOSN BAYAR",response)
-       console.log("Data yang Server:", metode_pembayaran);
+      console.log(
+        "RESPON HSITORY",
+        response?.data?.data?.History_Transaction?.id
+      );
+      dispatch(
+        setDataHasilCheckot(response?.data?.data?.History_Transaction?.id)
+      );
+      return response.status;
     } catch (error) {
       console.error(
         "Error:",
