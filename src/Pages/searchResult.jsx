@@ -112,7 +112,7 @@ const ResultSearchFilm = () => {
       }
     }
   }, []);
-  
+
   // --------------------------------
 
   const CurrentDate = (daysToIncrement = 0) => {
@@ -158,7 +158,7 @@ const ResultSearchFilm = () => {
 
   // Modal Filter Harga
   const filterHargaUser = useSelector((state) => {
-    return state.filter.filterHarga;
+    return state?.filter?.filterHarga;
   });
 
   useEffect(() => {
@@ -200,18 +200,17 @@ const ResultSearchFilm = () => {
     }
   };
 
-  const handleSelectPulang = (flight) => {
-    setSelectedPulang(flight);
-    dispatch(setBookingTiketPulang(flight));
-    navigate("/travelDokumen");
-  };
+  // const handleSelectPulang = (flight) => {
+  //   setSelectedPulang(flight);
+  //   dispatch(setBookingTiketPulang(flight));
+  //   navigate("/travelDokumen");
+  // };
 
   // function ubah waktu
   const formatTime = (isoString) => {
     const date = new Date(isoString);
     const hours = String(date?.getUTCHours()).padStart(2, "0");
     const minutes = String(date?.getUTCMinutes()).padStart(2, "0");
-
     return `${hours}:${minutes}`;
   };
 
@@ -219,11 +218,9 @@ const ResultSearchFilm = () => {
   const calculateFlightDuration = (takeoffTime, landingTime) => {
     const takeoffDate = new Date(takeoffTime);
     const landingDate = new Date(landingTime);
-
     const durationInMinutes = (landingDate - takeoffDate) / (1000 * 60);
     const hours = Math.floor(durationInMinutes / 60);
     const minutes = durationInMinutes % 60;
-
     return `${hours}j${minutes}m`;
   };
 
@@ -301,7 +298,7 @@ const ResultSearchFilm = () => {
             <div className="flex w-full gap-1">
               {dates.slice(startIndex, endIndex).map((date, index) => {
                 const isSelected = selectedButton === index + startIndex;
-                const isSearchDate = searchDate === date.tanggal;
+                const isSearchDate = searchDate === date?.tanggal;
 
                 return (
                   <button
@@ -311,10 +308,10 @@ const ResultSearchFilm = () => {
                         ? "bg-[#176B87] text-white"
                         : "hover:bg-[#77dad3] duration-200"
                     }`}
-                    onClick={() => handleDateSelect(date.tanggal)}
+                    onClick={() => handleDateSelect(date?.tanggal)}
                   >
-                    <p className="font-bold">{date.hari}</p>
-                    <p>{date.tanggal}</p>
+                    <p className="font-bold">{date?.hari}</p>
+                    <p>{date?.tanggal}</p>
                   </button>
                 );
               })}
@@ -359,11 +356,13 @@ const ResultSearchFilm = () => {
 
           {/* HASIL PENCARIAN PENERBANGAN */}
           <div className="ml-4 flex-grow max-sm:w-full max-sm:ml-0">
-            <h2 className="text-2xl font-bold mb-4 mt-8">Pilih Tiket Pesawat</h2>
+            <h2 className="text-2xl font-bold mb-4 mt-8">
+              Pilih Tiket Pesawat
+            </h2>
             <div className="container mx-auto">
               {" "}
-              {tiketPergi.length > 0 ? (
-                tiketPergi.map((flight, index) => (
+              {tiketPergi?.length > 0 ? (
+                tiketPergi?.map((flight, index) => (
                   <div
                     key={index}
                     className="p-5 shadow-lg border-2 border-slate-100 rounded-xl mb-4 "
@@ -372,15 +371,15 @@ const ResultSearchFilm = () => {
                       <div className="flex justify-between">
                         <div className="flex gap-5">
                           <img
-                            src={flight.plane.logo}
-                            alt={flight.plane.airline_name}
+                            src={flight?.plane?.logo}
+                            alt={flight?.plane?.airline_name}
                             className="h-10 w-10"
                           />
                           <div>
                             <p className="font-semibold">
-                              {flight.plane.airline_name}
+                              {flight?.plane?.airline_name}
                             </p>
-                            <p className="font-extralight">{flight.class}</p>
+                            <p className="font-extralight">{flight?.class}</p>
                           </div>
                         </div>
                         <div
@@ -398,18 +397,18 @@ const ResultSearchFilm = () => {
                         <div className="max-sm:w-full  flex max-sm:gap-10 gap-20 max-sm:pb-5 ">
                           <div className="flex flex-col items-center ">
                             <p className="font-bold">
-                              {formatTime(flight.schedule.takeoff.time)}
+                              {formatTime(flight?.schedule?.takeoff?.time)}
                             </p>
                             <p className="text-sm text-gray-500">
-                              {flight.schedule.takeoff.airport_code}
+                              {flight?.schedule?.takeoff?.airport_code}
                             </p>
                           </div>
                           <div>
                             <div className="border-b-2 max-sm:px-14 px-38">
                               <p className="text-xs text-gray-500">
                                 {calculateFlightDuration(
-                                  flight.schedule.takeoff.time,
-                                  flight.schedule.landing.time
+                                  flight?.schedule?.takeoff?.time,
+                                  flight?.schedule?.landing?.time
                                 )}
                               </p>
                             </div>
@@ -419,17 +418,17 @@ const ResultSearchFilm = () => {
                           </div>
                           <div className="flex flex-col items-center">
                             <p className="font-bold">
-                              {formatTime(flight.schedule.landing.time)}
+                              {formatTime(flight?.schedule?.landing?.time)}
                             </p>
                             <p className="text-sm text-gray-500">
-                              {flight.schedule.landing.airport_code}
+                              {flight?.schedule?.landing?.airport_code}
                             </p>
                           </div>
                         </div>
                         <div className="max-sm:w-full flex gap-10 justify-end">
                           <div className="flex flex-col justify-end">
                             <p className="font-semibold text-red-600">
-                              Rp. {flight.price}/ Pax
+                              Rp. {flight?.price}/ Pax
                             </p>
                             <button
                               className="bg-[#176B87] rounded-lg py-2 px-5 text-white font-semibold"
@@ -449,52 +448,56 @@ const ResultSearchFilm = () => {
                             <div className="">
                               <div className="flex justify-between ">
                                 <p className="font-bold text-xl">
-                                  {formatTime(flight.schedule.takeoff.time)}
+                                  {formatTime(flight?.schedule?.takeoff?.time)}
                                 </p>
                                 <p className="font-semibold text-[#64CCC5]">
                                   Keberangkatan
                                 </p>
                               </div>
-                              <p>{formatDate(flight.schedule.takeoff.time)}</p>
                               <p>
-                                {flight.schedule.takeoff.airport_name} -{" "}
-                                {flight.schedule.takeoff.terminal}
+                                {formatDate(flight?.schedule?.takeoff?.time)}
+                              </p>
+                              <p>
+                                {flight?.schedule?.takeoff?.airport_name} -{" "}
+                                {flight?.schedule?.takeoff?.terminal}
                               </p>
                             </div>
                             <div className="my-3 py-2 border-t-2 border-b-2 flex gap-3">
                               <div className="flex items-center">
                                 <img
-                                  src={flight.plane.logo}
-                                  alt={flight.plane.airline_name}
+                                  src={flight?.plane?.logo}
+                                  alt={flight?.plane?.airline_name}
                                   className="h-6 w-6"
                                 />
                               </div>
                               <div>
                                 <div className="font-bold pb-3">
-                                  <p>{flight.plane.airline_name}</p>
-                                  <p>{flight.plane.model}</p>
+                                  <p>{flight?.plane?.airline_name}</p>
+                                  <p>{flight?.plane?.model}</p>
                                 </div>
                                 <p className="font-bold">Informasi:</p>
-                                <p>{flight.class}</p>
-                                <p>Bagasi {flight.plane.baggage} Kg</p>
+                                <p>{flight?.class}</p>
+                                <p>Bagasi {flight?.plane?.baggage} Kg</p>
                                 <p>
-                                  Bagasi Kabin {flight.plane.cabin_baggage} Kg
+                                  Bagasi Kabin {flight?.plane?.cabin_baggage} Kg
                                 </p>
                               </div>
                             </div>
                             <div>
                               <div className="flex justify-between">
                                 <p className="font-bold text-xl">
-                                  {formatTime(flight.schedule.landing.time)}
+                                  {formatTime(flight?.schedule?.landing?.time)}
                                 </p>
                                 <p className="font-semibold text-[#64CCC5]">
                                   Kedatangan
                                 </p>
                               </div>
-                              <p>{formatDate(flight.schedule.landing.time)}</p>
                               <p>
-                                {flight.schedule.landing.airport_name} -{" "}
-                                {flight.schedule.landing.terminal}
+                                {formatDate(flight?.schedule?.landing?.time)}
+                              </p>
+                              <p>
+                                {flight?.schedule?.landing?.airport_name} -{" "}
+                                {flight?.schedule?.landing?.terminal}
                               </p>
                             </div>
                           </div>
@@ -534,16 +537,16 @@ const ResultSearchFilm = () => {
                             <div className="flex justify-between">
                               <div className="flex gap-5">
                                 <img
-                                  src={flight.plane.logo}
-                                  alt={flight.plane.airline_name}
+                                  src={flight?.plane?.logo}
+                                  alt={flight?.plane?.airline_name}
                                   className="h-10 w-10"
                                 />
                                 <div>
                                   <p className="font-semibold">
-                                    {flight.plane.airline_name}
+                                    {flight?.plane?.airline_name}
                                   </p>
                                   <p className="font-extralight">
-                                    {flight.class}
+                                    {flight?.class}
                                   </p>
                                 </div>
                               </div>
@@ -562,18 +565,18 @@ const ResultSearchFilm = () => {
                               <div className="max-sm:w-full  flex max-sm:gap-10 gap-20 max-sm:pb-5 ">
                                 <div className="flex flex-col items-center ">
                                   <p className="font-bold">
-                                    {formatTime(flight.schedule.takeoff.time)}
+                                    {formatTime(flight?.schedule?.takeoff?.time)}
                                   </p>
                                   <p className="text-sm text-gray-500">
-                                    {flight.schedule.takeoff.airport_code}
+                                    {flight?.schedule?.takeoff?.airport_code}
                                   </p>
                                 </div>
                                 <div>
                                   <div className="border-b-2 max-sm:px-14 px-40">
                                     <p className="text-xs text-gray-500">
                                       {calculateFlightDuration(
-                                        flight.schedule.takeoff.time,
-                                        flight.schedule.landing.time
+                                        flight?.schedule?.takeoff?.time,
+                                        flight?.schedule?.landing?.time
                                       )}
                                     </p>
                                   </div>
@@ -583,17 +586,17 @@ const ResultSearchFilm = () => {
                                 </div>
                                 <div className="flex flex-col items-center">
                                   <p className="font-bold">
-                                    {formatTime(flight.schedule.landing.time)}
+                                    {formatTime(flight?.schedule?.landing?.time)}
                                   </p>
                                   <p className="text-sm text-gray-500">
-                                    {flight.schedule.landing.airport_code}
+                                    {flight?.schedule?.landing?.airport_code}
                                   </p>
                                 </div>
                               </div>
                               <div className="max-sm:w-full flex gap-10 justify-end">
                                 <div className="flex flex-col justify-end">
                                   <p className="font-semibold text-red-600">
-                                    Rp. {flight.price}/ Pax
+                                    Rp. {flight?.price}/ Pax
                                   </p>
                                   <button
                                     className="bg-[#176B87] rounded-lg py-2 px-5 text-white font-semibold"
@@ -614,7 +617,7 @@ const ResultSearchFilm = () => {
                                     <div className="flex justify-between ">
                                       <p className="font-bold text-xl">
                                         {formatTime(
-                                          flight.schedule.takeoff.time
+                                          flight?.schedule?.takeoff?.time
                                         )}
                                       </p>
                                       <p className="font-semibold text-[#64CCC5]">
@@ -622,32 +625,32 @@ const ResultSearchFilm = () => {
                                       </p>
                                     </div>
                                     <p>
-                                      {formatDate(flight.schedule.takeoff.time)}
+                                      {formatDate(flight?.schedule?.takeoff?.time)}
                                     </p>
                                     <p>
-                                      {flight.schedule.takeoff.airport_name} -{" "}
-                                      {flight.schedule.takeoff.terminal}
+                                      {flight?.schedule?.takeoff?.airport_name} -{" "}
+                                      {flight?.schedule?.takeoff?.terminal}
                                     </p>
                                   </div>
                                   <div className="my-3 py-2 border-t-2 border-b-2 flex gap-3">
                                     <div className="flex items-center">
                                       <img
-                                        src={flight.plane.logo}
-                                        alt={flight.plane.airline_name}
+                                        src={flight?.plane?.logo}
+                                        alt={flight?.plane?.airline_name}
                                         className="h-6 w-6"
                                       />
                                     </div>
                                     <div>
                                       <div className="font-bold pb-3">
-                                        <p>{flight.plane.airline_name}</p>
-                                        <p>{flight.plane.model}</p>
+                                        <p>{flight?.plane?.airline_name}</p>
+                                        <p>{flight?.plane?.model}</p>
                                       </div>
                                       <p className="font-bold">Informasi:</p>
                                       <p>{flight.class}</p>
-                                      <p>Bagasi {flight.plane.baggage} Kg</p>
+                                      <p>Bagasi {flight?.plane?.baggage} Kg</p>
                                       <p>
                                         Bagasi Kabin{" "}
-                                        {flight.plane.cabin_baggage} Kg
+                                        {flight?.plane?.cabin_baggage} Kg
                                       </p>
                                     </div>
                                   </div>
@@ -655,7 +658,7 @@ const ResultSearchFilm = () => {
                                     <div className="flex justify-between">
                                       <p className="font-bold text-xl">
                                         {formatTime(
-                                          flight.schedule.landing.time
+                                          flight?.schedule?.landing?.time
                                         )}
                                       </p>
                                       <p className="font-semibold text-[#64CCC5]">
@@ -663,11 +666,11 @@ const ResultSearchFilm = () => {
                                       </p>
                                     </div>
                                     <p>
-                                      {formatDate(flight.schedule.landing.time)}
+                                      {formatDate(flight?.schedule?.landing?.time)}
                                     </p>
                                     <p>
-                                      {flight.schedule.landing.airport_name} -{" "}
-                                      {flight.schedule.landing.terminal}
+                                      {flight?.schedule?.landing?.airport_name} -{" "}
+                                      {flight?.schedule?.landing?.terminal}
                                     </p>
                                   </div>
                                 </div>

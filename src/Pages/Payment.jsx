@@ -66,16 +66,16 @@ export default function Payment() {
 
   //ID CEKOUT PERGI
   const checkoutId = useSelector(
-    (state) => state.booking.dataCheckoutBerangkat.id
+    (state) => state?.booking?.dataCheckoutBerangkat?.id
   );
 
   // console.log("ID State", checkoutIdPulang);
   //ID CEKOUT PULANG
-  // const checkoutIdPulang = useSelector((state) => state.booking);
+  // const checkoutIdPulang = useSelector((state) => state?.booking?);
   // // console.log("DATA CEKOUT ", checkoutIdPulang);
   // checkoutPulang
 
-  const isValidated = useSelector((state) => state.booking.isValidated);
+  const isValidated = useSelector((state) => state?.booking?.isValidated);
   // console.log("Selected IIDID", checkoutId);
   // console.log("Selected isValidated", isValidated);
 
@@ -148,9 +148,9 @@ export default function Payment() {
   );
   console.log("DATA DETAIL CEKOUT", DetailPenumpangCekout);
 
-  const DataBooking = useSelector(
-    (state) => state.booking.bookingTiketPesawatPergi
-  );
+  // const DataBooking = useSelector(
+  //   (state) => state?.booking?.bookingTiketPesawatPergi
+  // );
 
   //unutk perkalian data penumpang]
   const [penumpangData, setPenumpangData] = useState([]);
@@ -662,7 +662,7 @@ export default function Payment() {
                         <p className="">
                           {ageGroup === "BABY"
                             ? "0"
-                            : formatRupiah(DataPayment?.ticket.harga * count)}
+                            : formatRupiah(DataPayment?.ticket?.harga * count)}
                         </p>
                       </div>
                     )

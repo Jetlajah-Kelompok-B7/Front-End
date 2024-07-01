@@ -277,7 +277,7 @@ const travelDokumen = () => {
     // console.log("data Inputan Pulang", dataInputanPesananPulang.id);
   };
 
-  const dataPemesan = useSelector((state) => state.login);
+  const dataPemesan = useSelector((state) => state?.login);
   //  console.log("Data Pemesan user", dataPemesan);
 
   return (
@@ -327,15 +327,15 @@ const travelDokumen = () => {
                   {<form action="" className="py-3 "></form>}
                   <p className="text-[#176B87] font-semibold">Nama Lengkap</p>
                   <p className="border border-slate-300 w-[520px] p-2 my-2 max-sm:w-full">
-                    {dataPemesan.nama}
+                    {dataPemesan?.nama}
                   </p>
                   <p className="text-[#176B87] font-semibold">Nomor Telepon</p>
                   <p className="border border-slate-300 w-[520px] p-2 my-2 max-sm:w-full">
-                    {dataPemesan.no_telp}
+                    {dataPemesan?.no_telp}
                   </p>
                   <p className="text-[#176B87] font-semibold">Alamat</p>
                   <p className="border border-slate-300 w-[520px] p-2 my-2 max-sm:w-full">
-                    {dataPemesan.alamat}
+                    {dataPemesan?.alamat}
                   </p>
                 </div>
               </div>
@@ -347,24 +347,24 @@ const travelDokumen = () => {
                 </p>
                 {penumpangData.map((penumpang, index) => (
                   <div
-                    key={penumpang.id}
+                    key={penumpang?.id}
                     className="mt-5 border rounded-xl border-slate-300 p-10 w-[520px] text-xl max-sm:w-full max-sm:p-5"
                   >
                     <div>
                       <p className="bg-[#176B87] text-white rounded-t-md py-2 px-4">
-                        Data Diri Penumpang {index + 1} - {penumpang.name}
+                        Data Diri Penumpang {index + 1} - {penumpang?.name}
                       </p>
                       <form action="" className="py-3"></form>
                       <label className="text-[#176B87] font-semibold">
                         titel
                       </label>
                       <select
-                        value={penumpang.titel}
+                        value={penumpang?.titel}
                         onChange={(e) =>
                           handleInputChange(
-                            penumpang.id,
+                            penumpang?.id,
                             "titel",
-                            e.target.value
+                            e?.target?.value
                           )
                         }
                         className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full    "
@@ -379,11 +379,11 @@ const travelDokumen = () => {
                       </label>
                       <input
                         type="text"
-                        value={penumpang.nama}
+                        value={penumpang?.nama}
                         required
                         onChange={(e) =>
                           handleInputChange(
-                            penumpang.id,
+                            penumpang?.id,
                             "nama",
                             e.target.value
                           )
@@ -395,11 +395,11 @@ const travelDokumen = () => {
                       </label>
                       <input
                         type="date"
-                        value={penumpang.tanggal_lahir}
+                        value={penumpang?.tanggal_lahir}
                         required
                         onChange={(e) =>
                           handleInputChange(
-                            penumpang.id,
+                            penumpang?.id,
                             "tanggal_lahir",
                             e.target.value
                           )
@@ -412,13 +412,13 @@ const travelDokumen = () => {
                       <Select
                         required
                         value={options.find(
-                          (option) => option.value === penumpang.kewarganegaraan
+                          (option) => option.value === penumpang?.kewarganegaraan
                         )}
                         onChange={(selectedOption) =>
                           handleInputChange(
-                            penumpang.id,
+                            penumpang?.id,
                             "kewarganegaraan",
-                            selectedOption.value
+                            selectedOption?.value
                           )
                         }
                         options={options}
@@ -429,13 +429,13 @@ const travelDokumen = () => {
                       </label>
                       <input
                         type="text"
-                        value={penumpang.ktp_pasport}
+                        value={penumpang?.ktp_pasport}
                         required
                         onChange={(e) =>
                           handleInputChange(
-                            penumpang.id,
+                            penumpang?.id,
                             "ktp_pasport",
-                            e.target.value
+                            e?.target?.value
                           )
                         }
                         className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full"
@@ -446,13 +446,13 @@ const travelDokumen = () => {
                       <Select
                         required
                         value={options.find(
-                          (option) => option.value === penumpang.negara_penerbit
+                          (option) => option?.value === penumpang?.negara_penerbit
                         )}
                         onChange={(selectedOption) =>
                           handleInputChange(
                             penumpang.id,
                             "negara_penerbit",
-                            selectedOption.value
+                            selectedOption?.value
                           )
                         }
                         options={options}
@@ -463,13 +463,13 @@ const travelDokumen = () => {
                       </label>
                       <input
                         type="date"
-                        value={penumpang.berlaku_sampai}
+                        value={penumpang?.berlaku_sampai}
                         required
                         onChange={(e) =>
                           handleInputChange(
-                            penumpang.id,
+                            penumpang?.id,
                             "berlaku_sampai",
-                            e.target.value
+                            e?.target?.value
                           )
                         }
                         className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full"
@@ -502,37 +502,37 @@ const travelDokumen = () => {
                         <div>
                           <div className="flex justify-between">
                             <p className="font-bold text-xl">
-                              {formatTime(DataBooking.schedule.takeoff.time)}
+                              {formatTime(DataBooking?.schedule?.takeoff?.time)}
                             </p>
                             <p className="font-semibold text-[#64CCC5]">
                               Keberangkatan
                             </p>
                           </div>
 
-                          <p>{formatDate(DataBooking.schedule.takeoff.time)}</p>
-                          <p>{DataBooking.schedule.takeoff.airport_name}</p>
+                          <p>{formatDate(DataBooking?.schedule?.takeoff?.time)}</p>
+                          <p>{DataBooking?.schedule?.takeoff?.airport_name}</p>
                           <p>
-                            Terminal {DataBooking.schedule.takeoff.terminal}
+                            Terminal {DataBooking?.schedule?.takeoff?.terminal}
                           </p>
                         </div>
                         <div className="my-3 py-2 border-t-2 border-b-2 flex gap-3">
                           <div className="flex items-center">
                             <img
-                              src={DataBooking.plane.logo}
-                              alt={DataBooking.plane.airline_name}
+                              src={DataBooking?.plane?.logo}
+                              alt={DataBooking?.plane?.airline_name}
                               className="h-6 w-6"
                             />
                           </div>
                           <div>
                             <div className="font-bold pb-3">
-                              <p>{DataBooking.plane.airline_name}</p>
-                              <p>{DataBooking.plane.model}</p>
+                              <p>{DataBooking?.plane?.airline_name}</p>
+                              <p>{DataBooking?.plane?.model}</p>
                             </div>
                             <p className="font-bold">Informasi :</p>
-                            <p>{DataBooking.class}</p>
-                            <p>Bagasi {DataBooking.plane.baggage} Kg</p>
+                            <p>{DataBooking?.class}</p>
+                            <p>Bagasi {DataBooking?.plane?.baggage} Kg</p>
                             <p>
-                              Bagasi Kabin {DataBooking.plane.cabin_baggage} Kg
+                              Bagasi Kabin {DataBooking?.plane?.cabin_baggage} Kg
                             </p>
                             {/* <p>Fasilitas {DataBooking.Fasilitas}</p> */}
                           </div>
@@ -540,17 +540,17 @@ const travelDokumen = () => {
                         <div>
                           <div className="flex justify-between">
                             <p className="font-bold text-xl">
-                              {formatTime(DataBooking.schedule.landing.time)}
+                              {formatTime(DataBooking?.schedule?.landing?.time)}
                             </p>
                             <p className="font-semibold text-[#64CCC5]">
                               Kedatangan
                             </p>
                           </div>
 
-                          <p>{formatDate(DataBooking.schedule.landing.time)}</p>
-                          <p>{DataBooking.schedule.landing.airport_name}</p>
+                          <p>{formatDate(DataBooking?.schedule?.landing?.time)}</p>
+                          <p>{DataBooking?.schedule?.landing?.airport_name}</p>
                           <p>
-                            Terminal {DataBooking.schedule.landing.terminal}
+                            Terminal {DataBooking?.schedule?.landing?.terminal}
                           </p>
                         </div>
                       </div>
@@ -558,7 +558,7 @@ const travelDokumen = () => {
                       {/* TIKET PULANG */}
                       {typePenerbanngan == "Pergi - Pulang" && (
                         <>
-                          {DataBookingPulang.schedule.takeoff.time && (
+                          {DataBookingPulang?.schedule?.takeoff?.time && (
                             <div className="mt-5 border-t-4 border-[#FE5D02]">
                               <div className="">
                                 <p className="font-bold text-[#176B87] pt-5 pb-3 text-xl">
@@ -568,7 +568,7 @@ const travelDokumen = () => {
                                   <div className="flex justify-between">
                                     <p className="font-bold text-xl">
                                       {formatTime(
-                                        DataBookingPulang.schedule.takeoff.time
+                                        DataBookingPulang?.schedule?.takeoff?.time
                                       )}
                                     </p>
                                     <p className="font-semibold text-[#64CCC5]">
@@ -577,47 +577,46 @@ const travelDokumen = () => {
                                   </div>
                                   <p>
                                     {formatDate(
-                                      DataBookingPulang.schedule.takeoff.time
+                                      DataBookingPulang?.schedule?.takeoff?.time
                                     )}
                                   </p>
                                   <p>
                                     {
-                                      DataBookingPulang.schedule.takeoff
-                                        .airport_name
+                                      DataBookingPulang.schedule?.takeoff?.airport_name
                                     }
                                   </p>
                                   <p>
                                     Terminal{" "}
                                     {
-                                      DataBookingPulang.schedule.takeoff
-                                        .terminal
+                                      DataBookingPulang?.schedule?.takeoff
+                                        ?.terminal
                                     }
                                   </p>
                                 </div>
                                 <div className="my-3 py-2 border-t-2 border-b-2 flex gap-3">
                                   <div className="flex items-center">
                                     <img
-                                      src={DataBookingPulang.plane.logo}
-                                      alt={DataBookingPulang.plane.airline_name}
+                                      src={DataBookingPulang?.plane?.logo}
+                                      alt={DataBookingPulang?.plane?.airline_name}
                                       className="h-6 w-6"
                                     />
                                   </div>
                                   <div>
                                     <div className="font-bold pb-3">
                                       <p>
-                                        {DataBookingPulang.plane.airline_name}
+                                        {DataBookingPulang?.plane?.airline_name}
                                       </p>
-                                      <p>{DataBookingPulang.plane.model}</p>
+                                      <p>{DataBookingPulang?.plane?.model}</p>
                                     </div>
                                     <p className="font-bold">Informasi :</p>
-                                    <p>{DataBookingPulang.class}</p>
+                                    <p>{DataBookingPulang?.class}</p>
                                     <p>
-                                      Bagasi {DataBookingPulang.plane.baggage}{" "}
+                                      Bagasi {DataBookingPulang?.plane?.baggage}{" "}
                                       Kg
                                     </p>
                                     <p>
                                       Bagasi Kabin{" "}
-                                      {DataBookingPulang.plane.cabin_baggage} Kg
+                                      {DataBookingPulang?.plane?.cabin_baggage} Kg
                                     </p>
                                   </div>
                                 </div>
@@ -625,7 +624,7 @@ const travelDokumen = () => {
                                   <div className="flex justify-between">
                                     <p className="font-bold text-xl">
                                       {formatTime(
-                                        DataBookingPulang.schedule.landing.time
+                                        DataBookingPulang?.schedule?.landing?.time
                                       )}
                                     </p>
                                     <p className="font-semibold text-[#64CCC5]">
@@ -634,20 +633,20 @@ const travelDokumen = () => {
                                   </div>
                                   <p>
                                     {formatDate(
-                                      DataBookingPulang.schedule.landing.time
+                                      DataBookingPulang?.schedule?.landing?.time
                                     )}
                                   </p>
                                   <p>
                                     {
-                                      DataBookingPulang.schedule.landing
-                                        .airport_name
+                                      DataBookingPulang?.schedule?.landing
+                                        ?.airport_name
                                     }
                                   </p>
                                   <p>
                                     Terminal{" "}
                                     {
-                                      DataBookingPulang.schedule.landing
-                                        .terminal
+                                      DataBookingPulang?.schedule?.landing
+                                        ?.terminal
                                     }
                                   </p>
                                 </div>
@@ -676,11 +675,11 @@ const travelDokumen = () => {
                                     ? "0"
                                     : typePenerbanngan === "Pergi - Pulang"
                                     ? formatRupiah(
-                                        (DataBooking.price +
-                                          DataBookingPulang.price) *
+                                        (DataBooking?.price +
+                                          DataBookingPulang?.price) *
                                           count
                                       )
-                                    : formatRupiah(DataBooking.price * count)}
+                                    : formatRupiah(DataBooking?.price * count)}
                                 </p>
                               </div>
                             )
