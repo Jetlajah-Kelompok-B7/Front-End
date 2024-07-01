@@ -55,7 +55,7 @@ export default function ProfileUser() {
   const [open, setOpen] = React.useState(0);
   const [innerOpen, setInnerOpen] = React.useState(0);
 
-  //pengaman agar jika user belum login
+  // pengaman agar jika user belum login
   const Condition = useSelector((state) => {
     return state.tiket.UserCondition;
   });

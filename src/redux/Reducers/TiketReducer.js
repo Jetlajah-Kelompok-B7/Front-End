@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   idTiket: 1,
-  Halaman_Aktif: "",
   UserCondition: null,
   lokasiTujuan: "",
   LokasiKeberangkatan: "",
@@ -20,9 +19,6 @@ const tiketSlicer = createSlice({
     reset: () => initialState,
     setUserCondition: (state, action) => {
       state.UserCondition = action.payload;
-    },
-    setHalaman: (state, action) => {
-      state.Halaman_Aktif = action.payload;
     },
     setkelas: (state, action) => {
       state.kelas = action.payload;
@@ -80,7 +76,6 @@ export const {
   setkelas,
   hitungsemuapenumpang,
   reset,
-  setHalaman,
 } = tiketSlicer.actions;
 
 export default tiketSlicer.reducer;

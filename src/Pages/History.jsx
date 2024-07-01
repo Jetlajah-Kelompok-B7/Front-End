@@ -14,6 +14,8 @@ import { format, parseISO } from "date-fns";
 import id from "date-fns/locale/id";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { setHistroy } from "../redux/Reducers/TiketReducerforSecure";
+import { tikethistory } from "../redux/Action/TiketAction";
 
 export default function History() {
   const [modal, setModal] = useState("");
@@ -21,7 +23,7 @@ export default function History() {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
-  const [dataTiket, setDataTiket] = useState(null);
+  const [dataTiket, setDataTiket] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -29,30 +31,22 @@ export default function History() {
   const Condition = useSelector((state) => {
     return state.tiket.UserCondition;
   });
-  useEffect(() => {
-    if (Condition !== true) {
-      navigate("/login");
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   if (Condition !== true) {
+  //     navigate("/login");
+  //   }
+  // }, [dispatch]);
 
-  if (dataTiket === undefined || dataTiket === null) return null;
+  const historyData = useSelector((state) => state?.tiket2?.history);
+  const Data = [...historyData]?.reverse();
+  console.log("Data", Data);
+
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(`/api/history`, {
-          withCredentials: true,
-        });
-        setDataTiket(response.data.data);
-        console.log("first", response.data.data);
-      } catch (error) {
-        console.log("fetchUserData  error:", error);
-      }
-    };
-    fetchUserData();
-  }, []);
+    dispatch(tikethistory());
+  }, [Condition]);
 
   // Filter data berdasarkan status dan pencarian
-  const filteredData = dataTiket?.filter((ticket) => {
+  const filteredData = Data?.filter((ticket) => {
     const matchesFilter =
       filter === "" ||
       ticket.status.toLowerCase().includes(filter.toLowerCase());
@@ -72,8 +66,8 @@ export default function History() {
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const currentItems = filteredData?.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredData?.length / itemsPerPage);
 
   const handleChange = (event, value) => {
     setCurrentPage(value);
@@ -138,68 +132,74 @@ export default function History() {
 
       {/* Data Riwayat */}
       <div className="flex flex-col gap-1 mt-6 mx-[276px] max-xl:mx-5 border p-10 rounded-2xl">
-        {currentItems.map((e, i) => (
-          <div
-            key={i}
-            className="flex flex-col bg-white py-3 px-4 border rounded-2xl hover:cursor-pointer"
-            onClick={() => {
-              navigate("/DetailTiket", { state: { id: e.id } });
-            }}
-          >
-            <div className=" flex justify-between text-white px-1">
-              <div
-                className={`rounded-2xl px-3 py-1 ${
-                  e?.status === "Issued"
-                    ? "bg-green-500"
-                    : e?.status === "Unpaid"
-                    ? "bg-red-500"
-                    : "bg-gray-300"
-                }`}
-              >
-                {e?.status}
-              </div>
-              <KeyboardArrowRightIcon className="text-gray-500" />
-            </div>
-            {/* Bawah Filter */}
-            <div className="flex flex-col gap-2 mt-2">
-              <div className="flex gap-2">
-                <img
-                  src="/images/IconPesawat.png"
-                  alt=""
-                  className="h-6 w-6 -ml-[1px]"
-                />
-                <p className="text-base font-semibold truncate">
-                  {`${e?.bandara_keberangkatan?.lokasi.split(",")[0]} -> ${
-                    e?.bandara_kedatangan?.lokasi.split(",")[0]
+        {currentItems?.length > 0 ? (
+          currentItems.map((e, i) => (
+            <div
+              key={i}
+              className="flex flex-col bg-white py-3 px-4 border rounded-2xl hover:cursor-pointer"
+              onClick={() => {
+                navigate("/DetailTiket", { state: { id: e.id } });
+              }}
+            >
+              <div className=" flex justify-between text-white px-1">
+                <div
+                  className={`rounded-2xl px-3 py-1 ${
+                    e?.status === "Issued"
+                      ? "bg-green-500"
+                      : e?.status === "Unpaid"
+                      ? "bg-red-500"
+                      : "bg-gray-300"
                   }`}
+                >
+                  {e?.status}
+                </div>
+                <KeyboardArrowRightIcon className="text-gray-500" />
+              </div>
+              {/* Bawah Filter */}
+              <div className="flex flex-col gap-2 mt-2">
+                <div className="flex gap-2">
+                  <img
+                    src="/images/IconPesawat.png"
+                    alt=""
+                    className="h-6 w-6 -ml-[1px]"
+                  />
+                  <p className="text-base font-semibold truncate">
+                    {`${e?.bandara_keberangkatan?.lokasi.split(",")[0]} -> ${
+                      e?.bandara_kedatangan?.lokasi.split(",")[0]
+                    }`}
+                  </p>
+                </div>
+                <p className="text-xs text-[#176b87] font-bold">
+                  {e?.nama_maskapai} -{" "}
+                  {e?.bandara_keberangkatan?.nama_bandara.includes("-")
+                    ? e?.bandara_keberangkatan?.nama_bandara
+                        .split(" ")[0]
+                        .split("-")
+                        .join(" ")
+                    : e?.bandara_keberangkatan?.nama_bandara
+                        .split(" ")
+                        .slice(0, 2)
+                        .join(" ")}
+                  ,<br className="hidden max-xs:flex" /> Terminal {e?.terminal}
+                </p>
+                <p className="text-xs  font-medium">
+                  {format(parseISO(e?.timestamp), "EEE, dd MMM yyyy - HH:mm ", {
+                    locale: id,
+                  })} WIB
                 </p>
               </div>
-              <p className="text-xs text-[#176b87] font-bold">
-                {e?.nama_maskapai} -{" "}
-                {e?.bandara_keberangkatan?.nama_bandara.includes("-")
-                  ? e?.bandara_keberangkatan?.nama_bandara
-                      .split(" ")[0]
-                      .split("-")
-                      .join(" ")
-                  : e?.bandara_keberangkatan?.nama_bandara
-                      .split(" ")
-                      .slice(0, 2)
-                      .join(" ")}
-                ,<br className="hidden max-xs:flex" /> Terminal {e?.terminal}
-              </p>
-              <p className="text-xs  font-medium">
-                {format(parseISO(e?.timestamp), "EEE, dd MMM yyyy - ", {
-                  locale: id,
-                })}
-                {e?.timestamp.split("T")[1].split(":")[0]}:
-                {e?.timestamp.split("T")[1].split(":")[1]}
-              </p>
             </div>
+          ))
+        ) : (
+          <div className="flex justify-center items-center h-full">
+            <p className="text-base text-wrap">
+              Nampaknya anda masih belum melakukan transaksi apapun
+            </p>
           </div>
-        ))}
+        )}
         <div
           className={`${
-            filteredData.length > itemsPerPage ? "flex" : "hidden"
+            filteredData?.length > itemsPerPage ? "flex" : "hidden"
           } flex justify-center`}
         >
           <Stack spacing={2} className="flex justify-center items-center mt-10">

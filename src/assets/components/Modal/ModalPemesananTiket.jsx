@@ -59,7 +59,7 @@ export default function ModalPemesananTiket() {
           alert("Lokasi Awal dan Destinasi Tidak Boleh Sama");
           return;
         }
-        navigate("/pemesanan");
+        navigate("/resultSearch");
         return;
       } else {
         alert("Harap Lengkapi Semua Formulir");
@@ -76,7 +76,7 @@ export default function ModalPemesananTiket() {
 
   return (
     <div className="w-[1060px] container">
-      <div className="relative mx-auto">
+      <div className="relative mx-auto max-xl:mx-5">
         <div className="bg-white pt-5  rounded-2xl border">
           <div className=" px-6">
             <p className="font-bold text-[20px] ml-[10px]">

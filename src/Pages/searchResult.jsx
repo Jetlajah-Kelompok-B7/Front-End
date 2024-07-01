@@ -72,6 +72,7 @@ const ResultSearchFilm = () => {
       }
     }
   }, []);
+  
   // --------------------------------
 
   const CurrentDate = (daysToIncrement = 0) => {
