@@ -19,7 +19,7 @@ export default function Team() {
 
   const teamMembers = [
     {
-      name: "Hilzi Maulana Concquero",
+      name: "Hilzi Maulana Conquero",
       position: "Frontend Developer",
       image: "/images/hlzi.jpeg",
       social: {
