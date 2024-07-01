@@ -6,9 +6,12 @@ import ModalLokasi from "../Modal/ModalLokasiAwal";
 import PilihKelasPenerbangan from "../Modal/KelasPenerbangan";
 import { swapLokasi } from "../../../redux/Reducers/TiketReducer";
 import { GetTiket } from "../../../redux/Action/TiketAction";
+import { useNavigate } from "react-router-dom";
+
 export default function ModalPemesananTiketMobile() {
   const dispatch = useDispatch();
-  const [id, setId] = useState(1);
+  const navigate = useNavigate();
+  const [id, setId] = useState(null);
   const [idTanggal, setIdTanggal] = useState(1);
   const list_Pilihan = ["Sekali Jalan", "Pergi - Pulang"];
   const [pilihanUser, setPilihanUser] = useState("Sekali Jalan");
@@ -17,7 +20,8 @@ export default function ModalPemesananTiketMobile() {
   const [destinasi, setDestinasi] = useState("");
   const [tanggalBerangkat, setTanggalBerangkat] = useState("");
   const [tanggalPulang, setTanggalPulang] = useState("");
-  
+  const [total_penumpang, setTotal_penumpang] = useState(0);
+  const [kelas_penerbangan, setKelas_penerbangan] = useState("");
 
   const handlePemesanan = () => {
     if (idTanggal === 1) {
@@ -32,7 +36,7 @@ export default function ModalPemesananTiketMobile() {
           alert("Lokasi Awal dan Destinasi Tidak Boleh Sama");
           return;
         }
-        navigate("/pemesanan");
+        navigate("/resultSearch");
         return;
       } else {
         alert("Harap Lengkapi Semua Formulir");
@@ -73,7 +77,7 @@ export default function ModalPemesananTiketMobile() {
   return (
     <div className="relative">
       <div className=" w-screen">
-        <div className="bg-white mx-3 rounded-2xl border">
+        <div className="bg-white mx-3 max-xs:mx-1 rounded-2xl border">
           <div className=" px-6 py-2">
             <div className="flex items-center flex-col">
               {/* lokasi */}
@@ -165,11 +169,11 @@ function PilihanUser({ pilihan, setPilihan, list, setId }) {
           }}
         >
           {e === pilihan ? (
-            <button className="py-1.5 w-full border-2 border-[#176B87] bg-[#64CCC5] px-6 rounded-full">
+            <button className="py-1 w-full border-2 border-[#176B87] bg-[#64CCC5] px-6 rounded-full">
               {e}
             </button>
           ) : (
-            <button className="py-1.5 w-full border-2 border-[#176B87] px-6 rounded-full">
+            <button className="py-1 w-full border-2 border-[#176B87] px-6 rounded-full">
               {e}
             </button>
           )}

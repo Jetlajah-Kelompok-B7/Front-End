@@ -2,13 +2,30 @@ import axios from "axios";
 import { setTiketPesawat } from "../Reducers/FilterHargaReducers";
 import { ColorizeSharp } from "@mui/icons-material";
 import { setUserCondition } from "../Reducers/TiketReducer";
-import { setPenerbangan } from "../Reducers/TiketReducerforSecure";
+import { setHistroy, setPenerbangan } from "../Reducers/TiketReducerforSecure";
+
+export const tikethistory = () => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      `/api/history`,
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    dispatch(setHistroy(response.data.data));
+  } catch (error) {}
+};
 
 export const fetchUserData = () => async (dispatch) => {
   try {
-    const response = await axios.get(`/api/user/profile`, {
-      withCredentials: true,
-    });
+    const response = await axios.get(
+      `/api/user/profile`,
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
     dispatch(setUserCondition(response.data.status)); // Dispatching the action
   } catch (error) {
     dispatch(setUserCondition(error.response.status)); // Dispatching the action
