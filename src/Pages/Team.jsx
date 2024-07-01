@@ -42,7 +42,7 @@ export default function Team() {
     {
       name: "Syaiful Rizal Sidiq",
       position: "Frontend Developer",
-      image: "/images/rizal.jpg",
+      image: "/images/rizal2baru.jpg",
       social: {
         instagram: "https://www.instagram.com/syaifulrizal504/?hl=en",
         Linkedin: "https://www.linkedin.com/in/syaiful-rizal-sidiq/",
