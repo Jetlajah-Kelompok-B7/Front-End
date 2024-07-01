@@ -50,7 +50,7 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
   if (!visible) return null;
 
   return (
-    <div className="absolute max-lg:fixed max-lg:bg-black max-lg:bg-opacity-30 flex item-end max-lg:justify-center max-lg:inset-0 z-50 max-lg:h-screen top-20">
+    <div className="absolute max-lg:fixed right-0 max-lg:bg-black max-lg:bg-opacity-30 flex item-end max-lg:justify-center max-lg:inset-0 z-50 max-lg:h-screen top-20">
       <div className="max-lg:absolute  w-full max-lg:bottom-0">
         <div
           className="flex justify-end border-b bg-white text-base rounded-t-2xl"

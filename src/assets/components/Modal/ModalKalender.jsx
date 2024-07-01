@@ -48,8 +48,6 @@ export default function MyModal({
       dispatch(setKepulangan(""));
     };
   }, [idTanggal]);
-  // console.log("kondisi", user_Click);
-  // console.log("selectedDate", selectedDate);
   const daysOfWeek = ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"]; // Custom Indonesian days of week
 
   const handlePrevMonth = () => {

@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   idTiket: 1,
-  UserCondition: null,
   lokasiTujuan: "",
   LokasiKeberangkatan: "",
   KelasPenerbangan: "",
@@ -17,9 +16,6 @@ const tiketSlicer = createSlice({
   initialState,
   reducers: {
     reset: () => initialState,
-    setUserCondition: (state, action) => {
-      state.UserCondition = action.payload;
-    },
     setkelas: (state, action) => {
       state.kelas = action.payload;
     },

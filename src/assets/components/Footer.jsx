@@ -14,11 +14,12 @@ export default function Footer() {
   const dispatch = useDispatch();
 
   const Condition = useSelector((state) => {
-    return state.tiket.UserCondition;
+    return state.tiket2.isLoggin;
   });
   useEffect(() => {
     dispatch(fetchUserData());
   }, []);
+
   const handleOpen = (value) => setOpen(open === value ? 0 : value);
   function Icon({ id, open }) {
     return (

@@ -9,7 +9,6 @@ export default function ModalLogout({ visible, onClose }) {
   const dispatch = useDispatch();
 
   const HandleClick = (buttonName) => {
-    console.log(buttonName);
     dispatch(setHalaman(buttonName));
   };
   if (!visible) return null;

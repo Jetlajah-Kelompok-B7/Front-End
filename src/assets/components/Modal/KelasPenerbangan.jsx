@@ -14,7 +14,7 @@ export default function PilihKelasPenerbangan({
 
   if (!visible) return null;
   return (
-    <div className="absolute max-lg:fixed max-lg:inset-0 top-20 max-lg:top-0 max-lg:bg-black shadow-lg max-lg:bg-opacity-30 max-lg:h-screen max-lg:w-screen flex max-lg:items-end ">
+    <div className="absolute z-50 right-0 max-lg:fixed max-lg:inset-0 top-20 max-lg:top-0 max-lg:bg-black shadow-lg max-lg:bg-opacity-30 max-lg:h-screen max-lg:w-screen flex max-lg:items-end ">
       <div className="w-full">
         <div
           className="flex justify-end items-center border-b bg-white text-base rounded-t-2xl"

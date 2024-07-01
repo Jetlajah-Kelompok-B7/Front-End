@@ -2,7 +2,7 @@ import axios from "axios";
 import { setTiketPesawat } from "../Reducers/FilterHargaReducers";
 import { ColorizeSharp } from "@mui/icons-material";
 import { setUserCondition } from "../Reducers/TiketReducer";
-import { setHistroy, setPenerbangan } from "../Reducers/TiketReducerforSecure";
+import { setHistroy, setLoginStatus, setPenerbangan } from "../Reducers/TiketReducerforSecure";
 
 export const tikethistory = () => async (dispatch) => {
   try {
@@ -26,9 +26,9 @@ export const fetchUserData = () => async (dispatch) => {
         headers: { "Content-Type": "application/json" },
       }
     );
-    dispatch(setUserCondition(response.data.status)); // Dispatching the action
+    dispatch(setLoginStatus(response.data.status));
   } catch (error) {
-    dispatch(setUserCondition(error.response.status)); // Dispatching the action
+    dispatch(setLoginStatus(error.response.status)); 
   }
 };
 
