@@ -41,7 +41,7 @@ export default function Team() {
     },
     {
       name: "Syaiful Rizal Sidiq",
-      position: "Backend Developer",
+      position: "Frontend Developer",
       image: "/images/rizal.jpg",
       social: {
         instagram: "https://www.instagram.com/syaifulrizal504/?hl=en",
@@ -71,7 +71,7 @@ export default function Team() {
     },
     {
       name: "Balya Aqila Rizqi Rabbi",
-      position: "Frontend Developer",
+      position: "Backend Developer",
       image: "/images/balya.jpg",
       social: {
         instagram: "",
