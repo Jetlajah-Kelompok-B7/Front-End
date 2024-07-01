@@ -55,7 +55,7 @@ export default function Team() {
       image: "/images/zabil.jpeg",
       social: {
         instagram: "https://www.instagram.com/zabilsabri",
-        Linkedin: "https://www.linkedin.com/in/hilzi-maulana-conquero/",
+        Linkedin: "www.linkedin.com/in/zabil-sabri-muhammad-37694a233",
         github: "https://github.com/zabilsabri",
       },
     },
