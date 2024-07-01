@@ -13,7 +13,7 @@ import SearchHistoryModal from "../assets/components/Modal/SearchHistoryModal";
 import { format, parseISO } from "date-fns";
 import id from "date-fns/locale/id";
 import axios from "axios";
-import { useDispatch, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setHistroy } from "../redux/Reducers/TiketReducerforSecure";
 import { tikethistory } from "../redux/Action/TiketAction";
 
@@ -181,7 +181,8 @@ export default function History() {
                 <p className="text-xs  font-medium">
                   {format(parseISO(e?.timestamp), "EEE, dd MMM yyyy - HH:mm ", {
                     locale: id,
-                  })} WIB
+                  })}{" "}
+                  WIB
                 </p>
               </div>
             </div>
