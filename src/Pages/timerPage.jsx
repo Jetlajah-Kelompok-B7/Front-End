@@ -6,7 +6,7 @@ const PaymentTimer = () => {
   const DetailPenumpangCekout = useSelector(
     (state) => state?.booking?.dataCheckoutBerangkat
   );
-//   console.log("DetailPEnumpangCK", DetailPenumpangCekout);
+  console.log("DetailPEnumpangCK", DetailPenumpangCekout);
   const { tanggal_waktu, berlaku_sampai } = DetailPenumpangCekout;
   const navigate = useNavigate();
 
@@ -48,7 +48,7 @@ const PaymentTimer = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [navigate]);
+  }, [timeLeft]);
 
   return (
     <div className="items-center  text-center pl-5 py-4 gap-5 w-[800px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl max-sm:w-full max-sm:text-sm max-sm:flex max-sm:justify-start">
