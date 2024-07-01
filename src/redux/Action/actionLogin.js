@@ -428,10 +428,10 @@ export const forgotPassword = (email) => async (dispatch) => {
 
 export const pinValidate =
   (pin, metode_pembayaran, checkoutId, navigate) => async (dispatch) => {
-    console.log("ckoitu IDD PIN", checkoutId)
-    console.log("Data yang Server: PIN", metode_pembayaran);
+    // console.log("ckoitu IDD PIN", checkoutId)
+    // console.log("Data yang Server: PIN", metode_pembayaran);
     try {
-      console.log("pin", pin);
+      // console.log("pin", pin);
       const response_validatePin = await axios.post(
         "/api/pin-validation",
         {
@@ -444,7 +444,7 @@ export const pinValidate =
       );
 
       if (response_validatePin?.status === 200) {
-        console.log("response_validatePin", response_validatePin);
+        // console.log("response_validatePin", response_validatePin);
         alert("Berhasil")
         navigate("/bayar_berhasil");
 
@@ -453,7 +453,7 @@ export const pinValidate =
         );
 
         // Handle the payment response here
-        console.log("Payment Response", paymentResponse);
+        // console.log("Payment Response", paymentResponse);
         dispatch(setHasilPostCeckout(paymentResponse)); // Dispatch the action to update the Redux store
        
 

@@ -50,7 +50,7 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
   if (!visible) return null;
 
   return (
-    <div className="absolute max-lg:fixed max-lg:bg-black max-lg:bg-opacity-30 flex item-end max-lg:justify-center max-lg:inset-0 z-50 max-lg:h-screen top-20">
+    <div className="absolute max-lg:fixed right-0 max-lg:bg-black max-lg:bg-opacity-30 flex item-end max-lg:justify-center max-lg:inset-0 z-50 max-lg:h-screen top-20">
       <div className="max-lg:absolute  w-full max-lg:bottom-0">
         <div
           className="flex justify-end border-b bg-white text-base rounded-t-2xl"
@@ -69,11 +69,7 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
             {/* dewasa */}
             <div className="flex justify-between gap-14 border-b pb-2">
               <div className="flex items-start gap-2 w-60">
-                <img
-                  src="/images/VectorDewasa.png"
-                  alt=""
-                  className=" h-5"
-                />
+                <img src="/images/VectorDewasa.png" alt="" className=" h-5" />
                 <div className="flex flex-col gap-1">
                   <p className="leading-none font-bold">Dewasa</p>
                   <p className=" text-sm text-gray-400 whitespace-nowrap">
@@ -102,11 +98,7 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
             {/* Anak */}
             <div className="flex justify-between gap-14 border-b pb-2">
               <div className="flex items-start gap-2 w-60">
-                <img
-                  src="/images/VectorAnak.png"
-                  alt=""
-                  className=" h-5"
-                />
+                <img src="/images/VectorAnak.png" alt="" className=" h-5" />
                 <div className="flex flex-col gap-1">
                   <p className="leading-none font-bold">Anak</p>
                   <p className=" text-sm text-gray-400 whitespace-nowrap">
@@ -133,11 +125,7 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
             {/* Bayi */}
             <div className="flex justify-between gap-14 border-b pb-2">
               <div className="flex items-start gap-2 w-60">
-                <img
-                  src="/images/VectorLaki.png"
-                  alt=""
-                  className="h-5"
-                />
+                <img src="/images/VectorLaki.png" alt="" className="h-5" />
                 <div className="flex flex-col gap-1">
                   <p className="leading-none font-bold">Bayi</p>
                   <p className=" text-sm text-gray-400 whitespace-nowrap">

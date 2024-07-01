@@ -28,7 +28,7 @@ const travelDokumen = () => {
   const DataBooking = useSelector(
     (state) => state?.booking?.bookingTiketPesawatPergi
   );
-  console.log("DATA PERGI", DataBooking);
+  // console.log("DATA PERGI", DataBooking);
 
   //MENAMPILKAN DATA TIKET PULANG
   const DataBookingPulang = useSelector(
@@ -66,8 +66,8 @@ const travelDokumen = () => {
     pajak = +pajakPulang;
     totalHargaDenganPajak = +totalHargaDenganPajakPulang;
     totalHargaSemua = +totalHargaDenganPajakPulang;
-    console.log("HARGA PErgi", totalHargaPenumpang);
-    console.log("HARGA PULANG", totalHargaPulang);
+    // console.log("HARGA PErgi", totalHargaPenumpang);
+    // console.log("HARGA PULANG", totalHargaPulang);
   }
 
   //Fungsi  FETHING API Option Negara
@@ -255,7 +255,7 @@ const travelDokumen = () => {
       }));
 
       // Simpan dataToSave ke dalam state atau lakukan dispatch ke action lain sesuai kebutuhan
-      console.log("Data to save:", dataToSave);
+      // console.log("Data to save:", dataToSave);
 
       const paramsData = {
         penumpang: dataToSave,

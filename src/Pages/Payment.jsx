@@ -56,8 +56,8 @@ export default function Payment() {
   const handleOpen = (value) => setOpen(open === value ? 0 : value);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const theState = useSelector((state) => state);
-  console.log("theState", theState);
+  // const theState = useSelector((state) => state);
+  // // console.log("theState", theState);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -71,13 +71,13 @@ export default function Payment() {
 
   // console.log("ID State", checkoutIdPulang);
   //ID CEKOUT PULANG
-  const checkoutIdPulang = useSelector((state) => state.booking);
-  console.log("DATA CEKOUT ", checkoutIdPulang);
+  // const checkoutIdPulang = useSelector((state) => state.booking);
+  // // console.log("DATA CEKOUT ", checkoutIdPulang);
   // checkoutPulang
 
   const isValidated = useSelector((state) => state.booking.isValidated);
-  console.log("Selected IIDID", checkoutId);
-  console.log("Selected isValidated", isValidated);
+  // console.log("Selected IIDID", checkoutId);
+  // console.log("Selected isValidated", isValidated);
 
   const handleSubmit = () => {
     // if (selectedMethod === "creditCard") {
@@ -126,7 +126,7 @@ export default function Payment() {
   const userCkIdPergi = useSelector(
     (state) => state?.booking?.inputanDataPenumpang?.data?.checkoutId
   );
-  console.log("ID CEKOUT UNTUK GET DATA CEKOUT", userCkIdPergi);
+  // console.log("ID CEKOUT UNTUK GET DATA CEKOUT", userCkIdPergi);
 
   //Mengambil data ID User
   const userCkId = useSelector(
@@ -202,7 +202,7 @@ export default function Payment() {
   const typePenerbanngan = useSelector(
     (state) => state?.tiket?.typePenerbanngan
   );
-  console.log("TYPE PENERBANGAN", typePenerbanngan);
+  // console.log("TYPE PENERBANGAN", typePenerbanngan);
 
   return (
     <div className="bg-white ">

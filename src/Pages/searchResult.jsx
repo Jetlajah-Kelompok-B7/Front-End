@@ -83,7 +83,7 @@ const ResultSearchFilm = () => {
     typePenerbanngan,
   } = DataBaru || {};
 
-  console.log("TYPE PENERBANGAN", typePenerbanngan);
+  // console.log("TYPE PENERBANGAN", typePenerbanngan);
   useEffect(() => {
     if (idTiket === 1) {
       if (
@@ -112,6 +112,7 @@ const ResultSearchFilm = () => {
       }
     }
   }, []);
+  
   // --------------------------------
 
   const CurrentDate = (daysToIncrement = 0) => {
@@ -181,13 +182,13 @@ const ResultSearchFilm = () => {
   const tiketPergi = useSelector(
     (state) => state?.tiket?.dataPesawatPergi?.data
   );
-  console.log("tiket pergi", tiketPergi);
+  // console.log("tiket pergi", tiketPergi);
 
   //Menampilkan tikel pulang
   const tiketPulang = useSelector(
     (state) => state?.tiket?.dataPesawatPulang?.data
   );
-  console.log("tiket pulang", tiketPulang);
+  // console.log("tiket pulang", tiketPulang);
 
   const handleSelectPergi = (flight) => {
     setSelectedPergi(flight);
@@ -253,7 +254,7 @@ const ResultSearchFilm = () => {
   const handleDateSelect = (selectedDate) => {
     // Perbarui state searchDate
     setSearchDate(selectedDate);
-    console.log("SELCK", selectedDate);
+    // console.log("SELCK", selectedDate);
 
     // Dispatch action untuk memperbarui pencarian berdasarkan tanggal baru
     dispatch(setKeberangaktan(selectedDate));
@@ -332,7 +333,7 @@ const ResultSearchFilm = () => {
         </div>
 
         {/* TOMBOL FILTER ATAS */}
-        <div className="z-50 py-5 flex justify-end relative  ">
+        {/* <div className="z-50 py-5 flex justify-end relative  ">
           <button
             className="p-2 h-[40px] border border-[#176B87] rounded-full py-2 flex items-center justify-center"
             onClick={() => setFilterHargaVisible(true)}
@@ -350,7 +351,7 @@ const ResultSearchFilm = () => {
             visible={filterHargaVisible}
             onClose={() => setFilterHargaVisible(false)}
           />
-        </div>
+        </div> */}
 
         {/* CONTEN BAWAH*/}
         <div className="">
@@ -358,7 +359,7 @@ const ResultSearchFilm = () => {
 
           {/* HASIL PENCARIAN PENERBANGAN */}
           <div className="ml-4 flex-grow max-sm:w-full max-sm:ml-0">
-            <h2 className="text-2xl font-bold mb-4 mt-8">Pilih Tiket Pergi</h2>
+            <h2 className="text-2xl font-bold mb-4 mt-8">Pilih Tiket Pesawat</h2>
             <div className="container mx-auto">
               {" "}
               {tiketPergi.length > 0 ? (
@@ -404,7 +405,7 @@ const ResultSearchFilm = () => {
                             </p>
                           </div>
                           <div>
-                            <div className="border-b-2 max-sm:px-14 px-40">
+                            <div className="border-b-2 max-sm:px-14 px-38">
                               <p className="text-xs text-gray-500">
                                 {calculateFlightDuration(
                                   flight.schedule.takeoff.time,

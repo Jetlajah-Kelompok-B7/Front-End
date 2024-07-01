@@ -41,4 +41,7 @@
 .no-border-bottom {
   border-bottom: none !important;
 }
-
+.Toastify__toast--custom {
+  background-color: #ff0000;
+  color: #ffffff; /* White text for contrast */
+}

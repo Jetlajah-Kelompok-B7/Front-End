@@ -149,7 +149,7 @@ export default function ModalRincianHarga({ visible, data_tiket }) {
         <div className="flex justify-between">
           {dewasa > 0 && (
             <>
-              <p>{dewasa} dewasa</p>
+              <p>{dewasa} Dewasa</p>
               <p>IDR {(Harga * dewasa).toLocaleString("id-ID")}</p>
             </>
           )}
@@ -157,8 +157,8 @@ export default function ModalRincianHarga({ visible, data_tiket }) {
         <div className="flex justify-between">
           {bayi > 0 && (
             <>
-              <p>{bayi} dewasa</p>
-              <p>IDR {(Harga * bayi).toLocaleString("id-ID")}</p>
+              <p>{bayi} Bayi</p>
+              <p>IDR 0</p>
             </>
           )}
         </div>

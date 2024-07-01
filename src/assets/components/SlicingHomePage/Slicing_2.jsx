@@ -53,14 +53,14 @@ export default function Slicing_2() {
   ];
 
   return (
-    <div className="container  mx-auto">
+    <div className="container  mx-auto z-10">
       <div className="w-[70%] mx-auto max-2xl:w-[85%] max-xl:w-[97%] mt-[87px]">
         <div className="mt-20">
           <h1 className=" text-[40px] font-bold mb-4 max-sm:ml-4 max-xs:text-[35px]">
             Promo Menarik <span className="text-[#FE5D02]">Tiket Pesawat</span>
           </h1>
           <div>
-            <div className="slider-container px-9 custom-slick ">
+            <div className="slider-container px-9 custom-slick z-10">
               <Slider {...sliderSettings}>{Image_Slider}</Slider>
             </div>
           </div>

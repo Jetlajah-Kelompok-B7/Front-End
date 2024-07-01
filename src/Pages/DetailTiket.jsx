@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Navbar from "../assets/components/Navbar";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import ModalRincianHarga from "../assets/components/Modal/ModalRincianHarga";
 import ModalCetakTiket from "../assets/components/Modal/ModalCetakTiket";
@@ -10,6 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { format, differenceInMinutes } from "date-fns";
 import axios from "axios";
+import { setHalaman } from "../redux/Reducers/TiketReducerforSecure";
 
 export default function DetailTiket() {
   const location = useLocation();
@@ -17,22 +17,24 @@ export default function DetailTiket() {
   const [modal, setModal] = useState(false);
   const [modalTiket, setModalTiket] = useState(false);
   const [qr, setQr] = useState("");
-  const [data_tiket, setData_tiket] = useState({});
+  const [data_tiket, setData_tiket] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  //pengaman agar jika user belum login
-  const Condition = useSelector((state) => {
-    return state.tiket.UserCondition;
-  });
 
-
-  console.log("ID DETAIL",id)
   useEffect(() => {
-    if (Condition !== true) {
-      navigate("/login");
-    }
-  }, [dispatch]);
+    dispatch(setHalaman("Tiket"));
+  }, []);
+
+  //pengaman agar jika user belum login
+  // const Condition = useSelector((state) => {
+  //   return state.tiket2.isLoggin;
+  // });
+  // useEffect(() => {
+  //   if (Condition !== true) {
+  //     navigate("/login");
+  //   }
+  // }, [dispatch]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -41,7 +43,6 @@ export default function DetailTiket() {
           withCredentials: true,
         });
         setData_tiket(response.data);
-        console.log("fetchUserData  response.data:", response.data);
       } catch (error) {}
     };
     if (id) {
@@ -56,7 +57,14 @@ export default function DetailTiket() {
   const flight = ticket?.schedule?.flight || {};
   const checkoutID = data_tiket?.data?.checkoutId;
   const pembayaran = data_tiket?.data?.checkout?.status || {};
-  console.log("DetailTiket  pembayaran:", pembayaran);
+  // console.log("DetailTiket  pembayaran:", data_tiket?.data);
+
+  //mengirim ke checkout
+  // useEffect(() => {
+  //   console.log("FDFAFrqwrq");
+  //   dispatch(getDetailPesanan(userCkId));
+  //   navigate("/payment");
+  // }, []);
 
   useEffect(() => {
     const fetchPrint = async () => {
@@ -64,7 +72,6 @@ export default function DetailTiket() {
         const response = await axios.get(`/api/checkout/${checkoutID}/print`, {
           withCredentials: true,
         });
-        console.log("fetchUserData response:", response.data.data.qr_code_url);
         setQr(response.data.data.qr_code_url);
       } catch (error) {
         console.error("Error fetching print data:", error);
@@ -90,7 +97,7 @@ export default function DetailTiket() {
   const durasi = `${jam}j ${menit}m`;
 
   return (
-    <div className="h-screen overflow-y-auto">
+    <div className="h-screen overflow-y-auto bg-white">
       <div className="fixed top-0 w-full bg-white z-50 shadow">
         <div className="container mx-auto">
           <Navbar />
@@ -117,10 +124,10 @@ export default function DetailTiket() {
       </div>
       {/* Detail Tiket */}
       <div className="container mx-auto">
-        {data_tiket?.data && (
+        {data_tiket?.data ? (
           <>
             <div
-              className="flex items-start gap-[10px] mx-[276px] max-xl:mx-24 max-lg:mx-10 max-sm:mx-0 max-xs:mx-2 px-[69px] max-lg:px-6 max-xs:px-4 py-[31px] rounded-[4px] shadow border mt-[41px] hover:cursor-pointer max-sm:flex-col"
+              className="flex items-start gap-[10px] mx-[276px] max-xl:mx-24 max-lg:mx-10 max-sm:mx-0 max-xs:mx-2 px-[69px] max-lg:px-6 max-xs:px-4 py-[31px] rounded-[4px] shadow border mt-[26px] hover:cursor-pointer max-sm:flex-col"
               onClick={() => setModal(!modal)}
             >
               <img
@@ -188,17 +195,7 @@ export default function DetailTiket() {
                 <div className="flex gap-[13px] items-center">
                   <p className="text-sm max-sm:hidden">
                     <span className="font-bold text-base">
-                      {
-                        ticket?.schedule?.keberangkatan
-                          ?.split("T")[1]
-                          ?.split(":")[0]
-                      }
-                      :
-                      {
-                        ticket?.schedule?.keberangkatan
-                          ?.split("T")[1]
-                          ?.split(":")[1]
-                      }
+                      {format(new Date(ticket?.schedule?.keberangkatan), "HH:mm")}
                     </span>
                     <br />
                     {format(new Date(ticket?.schedule?.keberangkatan), "d MMM")}
@@ -208,21 +205,14 @@ export default function DetailTiket() {
                       <p className="font-medium flex-col">
                         <span className="font-bold text-base max-sm:flex hidden">
                           {format(
-                            new Date(ticket?.schedule?.kedatangan),
+                            new Date(ticket?.schedule?.keberangkatan),
                             "d MMM"
                           )}{" "}
                           {" - "}
-                          {
-                            ticket?.schedule?.keberangkatan
-                              ?.split("T")[1]
-                              ?.split(":")[0]
-                          }
-                          :
-                          {
-                            ticket?.schedule?.keberangkatan
-                              ?.split("T")[1]
-                              ?.split(":")[1]
-                          }
+                          {format(
+                            new Date(ticket?.schedule?.keberangkatan),
+                            "HH:mm"
+                          )}
                         </span>
                         {flight?.bandara_keberangkatan?.nama_bandara?.includes(
                           "-"
@@ -239,7 +229,7 @@ export default function DetailTiket() {
                           Terminal {flight?.terminal_keberangkatan} Domestik
                         </span>
                       </p>
-                      <p className="self-start mt-1 ml-[23px] max-lg:hidden">
+                      <p className="self-start mt-1 ml-[23px] max-md:hidden">
                         <AccessTimeIcon style={{ fontSize: 18 }} /> {durasi}
                       </p>
                     </div>
@@ -300,17 +290,7 @@ export default function DetailTiket() {
                 <div className="flex gap-[13px] items-center">
                   <p className="text-sm max-sm:hidden">
                     <span className="font-bold text-base">
-                      {
-                        ticket?.schedule?.kedatangan
-                          ?.split("T")[1]
-                          ?.split(":")[0]
-                      }
-                      :
-                      {
-                        ticket?.schedule?.kedatangan
-                          ?.split("T")[1]
-                          ?.split(":")[1]
-                      }
+                      {format(new Date(ticket?.schedule?.kedatangan), "HH:mm")}
                     </span>
                     <br />
                     {format(new Date(ticket?.schedule?.kedatangan), "d MMM")}
@@ -324,17 +304,10 @@ export default function DetailTiket() {
                             "d MMM"
                           )}{" "}
                           {" - "}
-                          {
-                            ticket?.schedule?.kedatangan
-                              ?.split("T")[1]
-                              ?.split(":")[0]
-                          }
-                          :
-                          {
-                            ticket?.schedule?.kedatangan
-                              ?.split("T")[1]
-                              ?.split(":")[1]
-                          }
+                          {format(
+                            new Date(ticket?.schedule?.kedatangan),
+                            "HH:mm"
+                          )}
                         </span>
                         {flight?.bandara_kedatangan?.nama_bandara?.includes("-")
                           ? flight?.bandara_kedatangan?.nama_bandara?.split(
@@ -381,6 +354,23 @@ export default function DetailTiket() {
               </div>
             </div>
           </>
+        ) : (
+          <div>
+            <div className="animate-pulse bg-gray-100 px-[69px] h-[20vh] max-lg:px-6 max-xs:px-3 mt-[26px] py-3 border shadow mx-[276px] max-xl:mx-24 max-lg:mx-10 max-sm:mx-0 max-xs:mx-2 mb-7 rounded-[4px] flex justify-center items-center">
+              <div className="flex flex-row gap-2">
+                <div className="size-2 rounded-full bg-gray-500 animate-bounce"></div>
+                <div className="size-2 rounded-full bg-gray-500 animate-bounce [animation-delay:-.3s]"></div>
+                <div className="size-2 rounded-full bg-gray-500 animate-bounce [animation-delay:-.5s]"></div>
+              </div>
+            </div>
+            <div className="animate-pulse bg-gray-100 px-[69px] h-[50vh] max-lg:px-6 max-xs:px-3 mt-4 py-3 border shadow mx-[276px] max-xl:mx-24 max-lg:mx-10 max-sm:mx-0 max-xs:mx-2 mb-7 rounded-[4px] flex justify-center items-center">
+              <div className="flex flex-row gap-2">
+                <div className="size-2 rounded-full bg-gray-500 animate-bounce"></div>
+                <div className="size-2 rounded-full bg-gray-500 animate-bounce [animation-delay:-.3s]"></div>
+                <div className="size-2 rounded-full bg-gray-500 animate-bounce [animation-delay:-.5s]"></div>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>

@@ -149,7 +149,17 @@ export default function ModalCetakTiket({ visible, onClose, data_tiket, qr }) {
           <div className="w-full items-center justify-end flex">
             <div className="flex flex-col">
               <p className="flex justify-center">Scan Code</p>
-              {qr ? <img src={qr} alt="" className="" /> : <div>a</div>}
+              {qr ? (
+                <img src={qr} alt="" className="" />
+              ) : (
+                <div className="bg-gray-200 animate-pulse flex items-center justify-center size-[205px]">
+                  <div className="flex flex-row gap-2">
+                    <div className="size-2 rounded-full bg-gray-500 animate-bounce"></div>
+                    <div className="size-2 rounded-full bg-gray-500 animate-bounce [animation-delay:-.3s]"></div>
+                    <div className="size-2 rounded-full bg-gray-500 animate-bounce [animation-delay:-.5s]"></div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

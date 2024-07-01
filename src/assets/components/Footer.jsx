@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Accordion,
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { fetchUserData } from "../../redux/Action/TiketAction";
 
 export default function Footer() {
   const [open, setOpen] = React.useState(0);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const Condition = useSelector((state) => {
-    return state.tiket.UserCondition;
+    return state.tiket2.isLoggin;
   });
+  useEffect(() => {
+    dispatch(fetchUserData());
+  }, []);
+
   const handleOpen = (value) => setOpen(open === value ? 0 : value);
   function Icon({ id, open }) {
     return (
@@ -74,14 +82,16 @@ export default function Footer() {
                         </li>
                         {Condition === true ? (
                           <>
-                            <a href="/" className="footer-link">
-                              tiket
-                            </a>
-                            <a href="/notification" className="footer-link">
+                            <li onClick={() => navigate("/tiket")}>tiket</li>
+                            <li onClick={() => navigate("/notification")}>
                               Notifikasi
-                            </a>
+                            </li>
                           </>
-                        ) : null}
+                        ) : (
+                          <li onClick={() => navigate("/login")}>
+                            Login/Register
+                          </li>
+                        )}
                       </ul>
                     </div>
                   </AccordionBody>
@@ -132,8 +142,8 @@ export default function Footer() {
                         <li className="footer-link">
                           <a href="/">Tentang Jetlajah.In</a>
                         </li>
-                        <li className="footer-link">
-                          <a href="/">Member Kami</a>
+                        <li onClick={() => navigate("/team")}>
+                          <a>Team Kami</a>
                         </li>
                       </ul>
                     </div>
@@ -151,14 +161,14 @@ export default function Footer() {
                 </a>
                 {Condition === true ? (
                   <>
-                    <a href="/" className="footer-link">
-                      tiket
-                    </a>
-                    <a href="/notification" className="footer-link">
-                      Notifikasi
-                    </a>
+                    <a onClick={() => navigate("/tiket")}>tiket</a>
+                    <a onClick={() => navigate("/notification")}>Notifikasi</a>
                   </>
-                ) : null}
+                ) : (
+                  <a onClick={() => navigate("/login")}>
+                    Login/Register
+                  </a>
+                )}
               </div>
             </div>
             <div className="flex flex-col max-lg:hidden  text-xs ">
@@ -185,11 +195,11 @@ export default function Footer() {
               <div className="flex flex-col  text-xs">
                 <p className="text-base font-semibold mb-2">Tentang Kami</p>
                 <div className="flex flex-col gap-0.5">
-                  <a href="/" className="footer-link">
+                  <button href="/" className="footer-link">
                     Tentang Jetlajah.In
-                  </a>
-                  <a href="/" className="footer-link">
-                    Member Kami
+                  </button>
+                  <a onClick={() => navigate("/team")}>
+                    <button>Team Kami</button>
                   </a>
                 </div>
               </div>

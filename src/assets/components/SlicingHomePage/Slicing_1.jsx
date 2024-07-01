@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetTiket } from "../../../redux/Action/TiketAction";
 import ModalPemesananTiket from "../Modal/ModalPemesananTiket";
 import ModalPemesananTiketMobile from "../Modal/ModalPemesananTiketMobile";
-import { setHalaman } from "../../../redux/Reducers/TiketReducer";
 
 export default function Slicing_1() {
   const dispatch = useDispatch();
@@ -21,10 +20,10 @@ export default function Slicing_1() {
         </p>
       </div>
       {/* Container tiket */}
-      <div className="max-xl:hidden">
+      <div className="max-lg:hidden">
         <ModalPemesananTiket />
       </div>
-      <div className="hidden max-xl:flex z-40 ">
+      <div className="hidden max-lg:flex z-40 ">
         <ModalPemesananTiketMobile />
       </div>
     </div>

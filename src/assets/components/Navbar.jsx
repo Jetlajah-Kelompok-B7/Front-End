@@ -9,17 +9,24 @@ import {
 import ModalLogout from "./Modal/ModalLogout";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setHalaman } from "../../redux/Reducers/TiketReducer";
 import { RiMenuFill } from "react-icons/ri";
 import { Button, Drawer } from "antd";
+import { setHalaman } from "../../redux/Reducers/TiketReducerforSecure";
+import { fetchUserData } from "../../redux/Action/TiketAction";
 
 export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [logout, setLogout] = useState(false);
-  const [userCondition, setUserCondition] = useState(null);
   const [open, setOpen] = useState(false);
   const [first, setFirst] = useState(true);
+
+  const Condition = useSelector((state) => {
+    return state.tiket2.isLoggin;
+  });
+  useEffect(() => {
+    dispatch(fetchUserData());
+  }, []);
 
   const handleResize = () => {
     if (window.innerWidth <= 1028) {
@@ -30,10 +37,6 @@ export default function Navbar() {
     }
   };
 
-  const Condition = useSelector((state) => {
-    return state.tiket.UserCondition;
-  });
-  console.log("Condition  Condition:", Condition);
 
   useEffect(() => {
     setLogout(false);
@@ -45,14 +48,13 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const active = useSelector((state) => {
-    return state.tiket.Halaman_Aktif;
-  });
-
   const handleLogout = () => {
     setLogout(true);
   };
 
+  const active = useSelector((state) => {
+    return state.tiket2.Halaman_Aktif;
+  });
   const HandleClick = (buttonName) => {
     dispatch(setHalaman(buttonName));
   };
@@ -101,16 +103,11 @@ export default function Navbar() {
       <div className="max-lg:hidden">
         {Condition === true ? (
           <div className="flex text-[#176B87] gap-6 items-center">
-            <img
-              src="/images/fi_list.png"
-              alt=""
-              className="h-6 w-6 hover:cursor-pointer"
-              onClick={() => navigate("/")}
-            />
             <button
               onClick={() => {
                 HandleClick("bell");
                 setLogout(false);
+                navigate("/notification");
               }}
             >
               {active === "bell" ? <Notifications /> : <NotificationsNone />}
@@ -118,11 +115,10 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => {
-                  logout === "logout" ? setLogout(false) : handleLogout();
-                  HandleClick("logout");
+                  logout === true ? setLogout(false) : setLogout(true);
                 }}
               >
-                {active === "logout" ? <Person /> : <PersonOutline />}
+                {active === "profileUser" ? <Person /> : <PersonOutline />}
               </button>
               <ModalLogout onClose={() => setLogout(false)} visible={logout} />
             </div>
