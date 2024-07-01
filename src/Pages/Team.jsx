@@ -63,7 +63,7 @@ export default function Team() {
     {
       name: "Hanafi Ulin Nuha",
       position: "Frontend Developer",
-      image: "/images/masrangga.jpg",
+      image: "/images/hacker.jpg",
       social: {
         instagram: "",
         Linkedin: "",
@@ -73,7 +73,7 @@ export default function Team() {
     {
       name: "Balya Aqila Rizqi Rabbi",
       position: "Frontend Developer",
-      image: "/images/masrangga.jpg",
+      image: "/images/balya.jpg",
       social: {
         instagram: "",
         Linkedin: "https://www.linkedin.com/in/balya-aqila-rizqi-rabbi/",
