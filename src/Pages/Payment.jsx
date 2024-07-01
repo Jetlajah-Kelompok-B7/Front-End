@@ -114,6 +114,10 @@ export default function Payment() {
   const DataPayment = useSelector(
     (state) => state?.booking?.inputanDataPenumpang?.data
   );
+  const DetailPenumpangCekout = useSelector(
+    (state) => state?.booking?.dataCheckoutBerangkat
+  );
+  console.log("Data PENUMPANG", DetailPenumpangCekout);
 
 
   // //Mengambil data booking tiket hasil post
@@ -130,9 +134,9 @@ export default function Payment() {
 
   //Mengambil data ID User
   const userCkId = useSelector(
-    (state) => state?.booking?.inputanDataPenumpang?.data?.checkoutId
+    (state) => state?.booking?.inputanDataPenumpang
   );
-  console.log("ID CEKOUT UNTUK GET DATA CEKOUT");
+    console.log("Payment  userCkId:", userCkId);
 
   //use buat nyimpan ID ke Action
   useEffect(() => {
@@ -143,12 +147,10 @@ export default function Payment() {
   console.log("data Inputan Pulang", userCkId);
 
   //Fect DAta DEtail PEnumpang Berangkat (DATANYA)
-  const DetailPenumpangCekout = useSelector(
-    (state) => state?.booking?.dataCheckoutBerangkat
-  );
-  console.log("DATA DETAIL CEKOUT", DetailPenumpangCekout);
+
 
   // const DataBooking = useSelector(
+
   //   (state) => state?.booking?.bookingTiketPesawatPergi
   // );
 
@@ -168,6 +170,7 @@ export default function Payment() {
 
   // formatRupiah
   const formatRupiah = (price) => {
+    console.log("formatRupiah  price:", price);
     return price
       .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
       .replace(/\,00$/, "");

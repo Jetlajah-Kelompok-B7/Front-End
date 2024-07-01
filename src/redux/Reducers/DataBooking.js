@@ -41,7 +41,6 @@ const bookingSlicer = createSlice({
     setDokumenBooking: (state, action) => {
       state.dokumenBooking = action.payload;
     },
-
     setDataChekoutBerangkat: (state, action) => {
       state.dataCheckoutBerangkat = action.payload;
     },

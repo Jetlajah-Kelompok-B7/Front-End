@@ -16,6 +16,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setHistroy } from "../redux/Reducers/TiketReducerforSecure";
 import { tikethistory } from "../redux/Action/TiketAction";
+import { createSelector } from "reselect";
 
 export default function History() {
   const [modal, setModal] = useState("");
@@ -29,12 +30,15 @@ export default function History() {
 
   //pengaman agar jika user belum login
   const Condition = useSelector((state) => {
-    return state.tiket2.isLoggin;
+    return state?.tiket2?.isLoggin;
   });
 
-  const Data = useSelector((state) => {
-    return state?.tiket2?.history;
-  });
+  const selectHistory = createSelector(
+    (state) => state?.tiket2?.history,
+    (history) => (history ? [...history]?.reverse() : [])
+  );
+
+  const Data = useSelector(selectHistory);
   useEffect(() => {
     if (Condition !== true) {
       navigate("/login");
@@ -84,7 +88,7 @@ export default function History() {
         <div className="flex mx-[16px] items-cente mt-6 gap-4 max-xs:flex-col max-xs:mx-0">
           <button
             className="bg-[#176b87] py-3 rounded-xl text-start px-4  text-base text-white font-semibold flex-1"
-            onClick={() => window.history.go(-1)}
+            onClick={() => navigate("/")}
           >
             <ArrowBackIcon className="font-bold mr-3" />
             Beranda
