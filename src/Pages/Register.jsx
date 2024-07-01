@@ -58,16 +58,16 @@ export default function Register() {
     <div className="flex justify-between bg-[#FFFFFF] relative h-screen w-screen">
       <div
         style={{ backgroundImage: `url(${background})` }}
-        className="max-sm:hidden mx-auto bg-gradient-to-r from-cyan-500 to-black bg-cover bg-center w-[50%] h-auto flex justify-center items-center rounded-e-3xl relative "
+        className="flex-1 max-lg:hidden max-sm:hidden mx-auto bg-gradient-to-r from-cyan-500 to-black bg-cover bg-center w-[50%] h-auto flex justify-center items-center rounded-e-3xl relative "
       >
         <img src={jetlajah} alt="Logo Jetlajah" width="30%" />
       </div>
-      <div className="mx-auto w-[50%] h-[631px] flex justify-center items-center flex-col relative max-sm:p-auto">
-        <div className="flex flex-col justify-center ">
+      <div className="flex-1 mx-auto w-full flex justify-center items-center flex-col relative max-sm:p-auto max-sm:py-5">
+        <div className="flex flex-col justify-center mx-auto w-full my-5 px-5">
           <h1 className="flex justify-center text-[#176B87] poppins-bold text-3xl ">
             Daftar
           </h1>
-          <div className="flex flex-col justify-center mt-7">
+          <div className="flex flex-col justify-center">
             <div>
               {/* Input Nama */}
               <label className="block poppins-bold text-sm font-medium leading-6 text-[#176B87]">
@@ -76,7 +76,7 @@ export default function Register() {
               <div className="relative mt-2 rounded-md shadow-sm">
                 <input
                   type="text"
-                  className="block w-[400px] rounded-xl border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
+                  className="block w-full rounded-xl border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
                   placeholder="Example: John Doe"
                   onChange={handleNamaChange}
                 />
@@ -90,7 +90,7 @@ export default function Register() {
               <div className="relative mt-2 rounded-md shadow-sm">
                 <input
                   type="text"
-                  className="block w-[400px] rounded-xl border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
+                  className="block w-full rounded-xl border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
                   placeholder="Example: john.doe@gmail.com"
                   onChange={handleEmailChange}
                 />
@@ -104,7 +104,7 @@ export default function Register() {
               <div className="relative mt-2 rounded-md shadow-sm">
                 <input
                   type="text"
-                  className="block w-[400px] rounded-xl border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
+                  className="block w-full rounded-xl border-0 py-1.5 pl-4 pr-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
                   placeholder="Example: +621234567890"
                   onChange={handleNo_telpChange}
                 />
@@ -120,7 +120,7 @@ export default function Register() {
               <div className="relative mt-2 rounded-md shadow-sm">
                 <input
                   type={passwordType}
-                  className="block w-[400px] rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
+                  className="block w-full rounded-xl border-0 py-1.5 pl-4 pr-16 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#64CCC5] sm:text-sm sm:leading-6"
                   placeholder="Masukkan password"
                   onChange={handlePasswordChange}
                 />
@@ -161,7 +161,7 @@ export default function Register() {
             Daftar
           </button>
         </div>
-        <div className="flex justify-center gap-2 mt-6">
+        <div className="flex justify-center gap-2">
           <p>Sudah punya akun?</p>
           <button
             onClick={() => {

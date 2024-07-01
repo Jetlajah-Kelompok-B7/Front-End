@@ -13,7 +13,7 @@ import SearchHistoryModal from "../assets/components/Modal/SearchHistoryModal";
 import { format, parseISO } from "date-fns";
 import id from "date-fns/locale/id";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useDispatch, useSelector } from "react-redux";
 import { setHistroy } from "../redux/Reducers/TiketReducerforSecure";
 import { tikethistory } from "../redux/Action/TiketAction";
 
@@ -31,15 +31,11 @@ export default function History() {
   const Condition = useSelector((state) => {
     return state.tiket.UserCondition;
   });
-  // useEffect(() => {
-  //   if (Condition !== true) {
-  //     navigate("/login");
-  //   }
-  // }, [dispatch]);
-
-  const historyData = useSelector((state) => state?.tiket2?.history);
-  const Data = [...historyData]?.reverse();
-  console.log("Data", Data);
+  useEffect(() => {
+    if (Condition !== true) {
+      navigate("/login");
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(tikethistory());

@@ -285,8 +285,8 @@ export default function ProfileUser() {
   return (
     <div>
       <Navbar />
-      <div className="flex flex-col items-center justify-center mb-10">
-        <div className="flex flex-col w-[1000px] h-auto p-5 border-[2px] rounded-3xl shadow-lg shadow-[#64CCC5]/20 mt-[15px]">
+      <div className="flex flex-col items-center justify-center mb-10 w-screen px-2">
+        <div className="flex flex-col w-[70%] max-lg:w-full h-auto py-5 border-[2px] rounded-3xl shadow-lg shadow-[#64CCC5]/20 mt-[15px]">
           <h1 className="poppins-bold ml-5">Akun</h1>
           {/* Button Beranda */}
           <button onClick={() => navigate("/")}>
@@ -317,22 +317,22 @@ export default function ProfileUser() {
             </div>
           </button>
           <div className="flex mx-5 gap-5">
-            <div className="flex flex-col my-5 ">
-              <div className="w-full">
-                <div>
+            <div className="flex flex-col my-5 w-full">
+              <div className="w-full flex flex-col">
+                <div className="flex flex-col items-start w-full">
                   {/* Ubah Profile */}
-                  <div>
+                  <div className="flex items-start w-full">
                     <Accordion
-                      className="w-full px-2 flex justify-center"
+                      className="w-full px-2 flex flex-col justify-center"
                       open={open === 3}
                     >
-                      <span className="poppins-regular text-sm">
+                      <span className="poppins-regular text-sm w-full">
                         <AccordionHeader
                           className="poppins-medium text-md w-[100%]"
                           onClick={() => handleOpen(3)}
                         >
-                          <span>
-                            <ul className="flex items-center gap-2 bg-[#176B87] bg-opacity-30 active:bg-opacity-60 hover:bg-opacity-40 hover:border-2 overflow-hidden rounded-md px-2 py-4 w-[328px] h-[50px] mt-2">
+                          <span className="w-full">
+                            <ul className="flex items-center gap-2 bg-[#176B87] bg-opacity-30 active:bg-opacity-60 hover:bg-opacity-40 hover:border-2 overflow-hidden rounded-md px-2 py-4 mt-2">
                               <li>
                                 <svg
                                   width="24"
@@ -363,9 +363,9 @@ export default function ProfileUser() {
                         </AccordionHeader>
                       </span>
                       <AccordionBody>
-                        <div className="ml-10 mt-3 border shadow-lg w-[518px] h-auto py-[10px] px-[16px]">
+                        <div className="border shadow-lg h-auto py-[10px] px-[16px]">
                           <h1 className="poppins-bold">Ubah Data Profil</h1>
-                          <div className="flex flex-col mt-[16px] mx-5">
+                          <div className="flex flex-col mt-[16px]">
                             <div className="flex flex-col">
                               <div className="flex flex-col">
                                 <h1 className="bg-[#176B87] w-full h-[40px] flex items-center px-[16px] rounded-t-xl text-white">
@@ -529,9 +529,9 @@ export default function ProfileUser() {
                     </Accordion>
                   </div>
                   {/* Pengaturan Akun */}
-                  <div>
+                  <div className="flex items-start w-full">
                     <Accordion
-                      className="w-full mt-[16px] px-2 flex justify-center"
+                      className="w-full px-2 flex flex-col justify-center"
                       open={open === 4}
                     >
                       <span className="poppins-regular text-sm">
@@ -539,8 +539,8 @@ export default function ProfileUser() {
                           className="poppins-medium text-md w-[100%]"
                           onClick={() => handleOpen(4)}
                         >
-                          <span>
-                            <ul className="flex items-center gap-2 border shadow-lg  bg-[#176B87] bg-opacity-30 active:bg-opacity-60 hover:bg-opacity-40 overflow-hidden rounded-md px-2 py-4 w-[328px] h-[50px] mt-2">
+                          <span className="w-full">
+                            <ul className="flex items-center gap-2 shadow-lg bg-[#176B87] bg-opacity-30 active:bg-opacity-60 hover:bg-opacity-40 overflow-hidden rounded-md px-2 py-4 mt-2 ">
                               <li>
                                 <svg
                                   width="24"
@@ -582,9 +582,9 @@ export default function ProfileUser() {
                         </AccordionHeader>
                       </span>
                       <AccordionBody>
-                        <div className="ml-10 mt-3 border shadow-lg w-[518px] h-auto py-[10px] px-[16px]">
+                        <div className="border shadow-lg h-auto py-[10px] px-[16px]">
                           <h1 className="poppins-bold">Pengaturan Akun</h1>
-                          <div className="flex flex-col mt-[16px] mx-5">
+                          <div className="flex flex-col">
                             <div>
                               {/* ----------------CHANGE PASSWORD------------- */}
                               <Accordion
@@ -1132,7 +1132,7 @@ export default function ProfileUser() {
                 {/* Keluar */}
                 <div className="flex justify-center mt-5">
                   <button onClick={handleLogout}>
-                    <ul className="flex items-center justify-center gap-2 border shadow-lg bg-red-500 active:bg-red-700 hover:bg-red-600  overflow-hidden rounded-md px-2 py-4 w-[328px] h-[50px] mt-2">
+                    <ul className="flex items-center justify-center gap-2 border shadow-lg bg-red-500 active:bg-red-700 hover:bg-red-600 overflow-hidden rounded-md px-52 py-4 max-lg:px-20 mt-2">
                       <li>
                         <svg
                           width="24"
