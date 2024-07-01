@@ -53,7 +53,7 @@ export const GetTiket = () => async (dispatch, getState) => {
     }
     return response;
   } catch (error) {
-    console.log("error", error);
+    return error;
   }
 };
 

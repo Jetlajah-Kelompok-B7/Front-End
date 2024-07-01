@@ -87,7 +87,7 @@ const tiketSlicer = createSlice({
 export const {
   setLokasiKeberangkatan,
   setLokasiTujuan,
-  swapLokasi, 
+  swapLokasi,
   setSemua,
   setKelasPenerbangan,
   setKeberangaktan,

@@ -10,31 +10,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { format, differenceInMinutes } from "date-fns";
 import axios from "axios";
 import { setHalaman } from "../redux/Reducers/TiketReducerforSecure";
+import ModalBelumBayar from "../assets/components/Modal/ModalBelumBayar";
 
 export default function DetailTiket() {
   const location = useLocation();
   const id = location?.state?.id || undefined;
   const [modal, setModal] = useState(false);
+  const [modalBayar, setModalBayar] = useState(false);
   const [modalTiket, setModalTiket] = useState(false);
   const [qr, setQr] = useState("");
   const [data_tiket, setData_tiket] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
   useEffect(() => {
     dispatch(setHalaman("Tiket"));
   }, []);
 
   //pengaman agar jika user belum login
-  // const Condition = useSelector((state) => {
-  //   return state.tiket2.isLoggin;
-  // });
-  // useEffect(() => {
-  //   if (Condition !== true) {
-  //     navigate("/login");
-  //   }
-  // }, [dispatch]);
+  const Condition = useSelector((state) => {
+    return state.tiket2.isLoggin;
+  });
+  useEffect(() => {
+    if (Condition !== true) {
+      navigate("/login");
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -57,7 +58,6 @@ export default function DetailTiket() {
   const flight = ticket?.schedule?.flight || {};
   const checkoutID = data_tiket?.data?.checkoutId;
   const pembayaran = data_tiket?.data?.checkout?.status || {};
-  // console.log("DetailTiket  pembayaran:", data_tiket?.data);
 
   //mengirim ke checkout
   // useEffect(() => {
@@ -97,7 +97,7 @@ export default function DetailTiket() {
   const durasi = `${jam}j ${menit}m`;
 
   return (
-    <div className="h-screen overflow-y-auto bg-white">
+    <div className="h-screen overflow-y-auto bg-white ">
       <div className="fixed top-0 w-full bg-white z-50 shadow">
         <div className="container mx-auto">
           <Navbar />
@@ -123,7 +123,7 @@ export default function DetailTiket() {
         </div>
       </div>
       {/* Detail Tiket */}
-      <div className="container mx-auto">
+      <div className="container mx-auto ">
         {data_tiket?.data ? (
           <>
             <div
@@ -170,8 +170,8 @@ export default function DetailTiket() {
               data_tiket={data_tiket}
             />
             {/* Detail Pemesanan */}
-            <div className="px-[69px] max-lg:px-6 max-xs:px-3 mt-4 py-3 border shadow mx-[276px] max-xl:mx-24 max-lg:mx-10 max-sm:mx-0 max-xs:mx-2 mb-7 rounded-[4px]">
-              <div className="flex justify-between">
+            <div className=" px-[69px] max-lg:px-6 max-xs:px-3 mt-4 py-3 border shadow mx-[276px] max-xl:mx-24 max-lg:mx-10 max-sm:mx-0 max-xs:mx-2 mb-7 rounded-[4px]">
+              <div className="flex justify-between ">
                 <p className="w-full font-bold text-lg">Detail Pesanan</p>
                 <p
                   className={`text-sm max-sm:text-xs text-white flex rounded-2xl py-1 px-3 items-center ${
@@ -195,7 +195,10 @@ export default function DetailTiket() {
                 <div className="flex gap-[13px] items-center">
                   <p className="text-sm max-sm:hidden">
                     <span className="font-bold text-base">
-                      {format(new Date(ticket?.schedule?.keberangkatan), "HH:mm")}
+                      {format(
+                        new Date(ticket?.schedule?.keberangkatan),
+                        "HH:mm"
+                      )}
                     </span>
                     <br />
                     {format(new Date(ticket?.schedule?.keberangkatan), "d MMM")}
@@ -336,7 +339,7 @@ export default function DetailTiket() {
                   className=" text-white bg-[#176B87] text-sm px-[85px] py-3 rounded-lg"
                   onClick={() => {
                     if (pembayaran !== "Paid") {
-                      alert("Bayar order dulu");
+                      setModalBayar(true);
                       return;
                     }
                     setModalTiket(true);
@@ -352,6 +355,10 @@ export default function DetailTiket() {
                   pembayaran={pembayaran}
                 />
               </div>
+              <ModalBelumBayar
+                onClose={() => setModalBayar(false)}
+                visible={modalBayar}
+              />
             </div>
           </>
         ) : (
