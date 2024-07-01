@@ -20,6 +20,7 @@ export default function DetailTiket() {
   const [modalTiket, setModalTiket] = useState(false);
   const [qr, setQr] = useState("");
   const [data_tiket, setData_tiket] = useState([]);
+  console.log("yang dikirim", data_tiket?.data?.checkoutId);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -358,6 +359,7 @@ export default function DetailTiket() {
               <ModalBelumBayar
                 onClose={() => setModalBayar(false)}
                 visible={modalBayar}
+                idcheckout={data_tiket?.data?.checkoutId}
               />
             </div>
           </>

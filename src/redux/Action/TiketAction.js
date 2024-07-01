@@ -157,8 +157,10 @@ export const getPayment =
 export const getDetailPesanan = (checkoutId) => async (dispatch) => {
   try {
     const repsonse = await axios.get(`/api/checkout/${checkoutId}`);
+    // console.log("checkoutId", checkoutId);
     dispatch(setDataChekoutBerangkat(repsonse.data.data));
-    // console.log("seriesssss", repsonse.data.data);
+    // console.log("seriesssss", repsonse);
+    return repsonse;
   } catch (error) {
     // console.log("error", error);
     if (axios.isAxiosError(error)) {

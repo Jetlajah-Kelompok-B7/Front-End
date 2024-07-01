@@ -43,7 +43,7 @@ const PaymentTimer = () => {
         updatedTimeLeft.seconds === 0
       ) {
         clearInterval(timer);
-        navigate("/");
+        // navigate("/");
       }
     }, 1000);
 

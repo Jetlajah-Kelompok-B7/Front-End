@@ -16,6 +16,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setHistroy } from "../redux/Reducers/TiketReducerforSecure";
 import { tikethistory } from "../redux/Action/TiketAction";
+import { createSelector } from "reselect";
 
 export default function History() {
   const [modal, setModal] = useState("");
@@ -32,11 +33,12 @@ export default function History() {
     return state?.tiket2?.isLoggin;
   });
 
-  const Data = useSelector((state) => {
-    const history = state?.tiket2?.history;
-    return history ? [...history].reverse() : [];
-  });
+  const selectHistory = createSelector(
+    (state) => state?.tiket2?.history,
+    (history) => (history ? [...history]?.reverse() : [])
+  );
 
+  const Data = useSelector(selectHistory);
   useEffect(() => {
     if (Condition !== true) {
       navigate("/login");

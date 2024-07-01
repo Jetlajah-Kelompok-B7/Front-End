@@ -27,6 +27,7 @@ export default function ModalPemesananTiket() {
   useEffect(() => {
     dispatch(GetTiket());
   }, [dispatch]);
+  
 
   const totalperpenumpang = useSelector(
     (state) => state?.tiket?.TotalPenumpang
@@ -151,23 +152,12 @@ export default function ModalPemesananTiket() {
   }, [dispatch]);
 
 
-  const DataBaru = useSelector((state) => state.tiket);
-  const {
-    KelasPenerbangan,
-    LokasiKeberangkatan,
-    TanggalKeberangkatan,
-    TanggalKepulangan,
-    lokasiTujuan,
-    totalSemuaPenumpang,
-    idTiket,
-  } = DataBaru || {};
+
 
   
 
   useEffect(() => {
-
     dispatch(getTiketSearch());
-    
   }, [dispatch]);
 
   return (
@@ -191,7 +181,7 @@ export default function ModalPemesananTiket() {
                   }}
                 >
                   {e === pilihanUser ? (
-                    <button className="rounded-full border-2 border-[#176B87] bg-[#64CCC5] px-6">
+                    <button className="rounded-full text-white border-2 border-[#176B87] bg-[#64CCC5] px-6">
                       {e}
                     </button>
                   ) : (

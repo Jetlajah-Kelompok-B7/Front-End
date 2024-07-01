@@ -2,11 +2,16 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import {
+  setDataChekoutBerangkat,
+  setHasilPostDataPenumpang,
+} from "../../../redux/Reducers/DataBooking";
+import { getDetailPesanan } from "../../../redux/Action/TiketAction";
 
-export default function ModalBelumBayar({ visible, onClose }) {
+export default function ModalBelumBayar({ visible, onClose, idcheckout }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  console.log("idcheckout", idcheckout);
   const handleContainerClick = (e) => {
     if (e.target.id === "container") {
       onClose();
@@ -24,9 +29,16 @@ export default function ModalBelumBayar({ visible, onClose }) {
         <div className="flex text-center mt-4 gap-1">
           <button
             className="flex-1 bg-[#176B87] font-semibold text-white py-2 px-6 rounded-xl"
-            onClick={() => {
-              // dispatch(setHalaman("payment"));
-              navigate("/payment");
+            onClick={async () => {
+              try {
+                const response = await dispatch(getDetailPesanan(idcheckout));
+                if (response.status === 200) {
+                  // Ensure the response status is 200 before navigating
+                  navigate("/payment");
+                }
+              } catch (error) {
+                console.log("Failed to fetch details:", error);
+              }
             }}
           >
             Bayar Sekarang
