@@ -1,37 +1,50 @@
 import axios from "axios";
 import { setTiketPesawat } from "../Reducers/FilterHargaReducers";
 import { ColorizeSharp } from "@mui/icons-material";
-import { setUserCondition } from "../Reducers/TiketReducer";
-import { setHistroy, setLoginStatus, setPenerbangan } from "../Reducers/TiketReducerforSecure";
+import {
+  setHistroy,
+  setLoginStatus,
+  setPenerbangan,
+} from "../Reducers/TiketReducerforSecure";
 
 export const tikethistory = () => async (dispatch) => {
   try {
-    const response = await axios.get(
-      `/api/history`,
-      {
-        withCredentials: true,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const response = await axios.get(`/api/history`, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json" },
+    });
     dispatch(setHistroy(response.data.data));
   } catch (error) {}
 };
 
+import {
+  setDestinasiPesawat,
+  setTiketPesawatPergi,
+  setTiketPesawatPulang,
+} from "../Reducers/TiketReducer";
+import {
+  setDataChekoutBerangkat,
+  setDataHasilCheckot,
+  setHasilPostCeckout,
+  setHasilPostDataPenumpang,
+  setHasilPostDataPenumpangPergi,
+  setHasilPostDataPenumpangPulang,
+} from "../Reducers/DataBooking";
+import { setOrderId } from "../Reducers/DataBooking";
+
 export const fetchUserData = () => async (dispatch) => {
   try {
-    const response = await axios.get(
-      `/api/user/profile`,
-      {
-        withCredentials: true,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const response = await axios.get(`/api/user/profile`, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json" },
+    });
     dispatch(setLoginStatus(response.data.status));
   } catch (error) {
-    dispatch(setLoginStatus(error.response.status)); 
+    dispatch(setLoginStatus(error.response.status));
   }
 };
 
+//data BAndara
 export const GetTiket = () => async (dispatch, getState) => {
   try {
     const response = await axios.get("/api/airport");
@@ -44,32 +57,151 @@ export const GetTiket = () => async (dispatch, getState) => {
   }
 };
 
+// Fetch Data Bandara
 export const GetDataBandara = () => async (dispatch, getState) => {
   try {
     const response = await axios.get("/api/airport");
     dispatch(setLokasi(response.data));
-    console.log("CEK DATA BARU", response);
+    // console.log("CEK DATA BARU", response);
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      alert(error.message);
+      // alert(error.message);
+      console.log("error", error.message);
       return;
     }
     // alert(error.message);
   }
 };
 
+// Fetch Data Tiket
 export const getTiketSearch = () => async (dispatch, getState) => {
+  // console.log("GET STATE",getState().tiket)
+  const {
+    KelasPenerbangan,
+    LokasiKeberangkatan,
+    TanggalKeberangkatan,
+    TanggalKepulangan,
+    lokasiTujuan,
+    totalSemuaPenumpang,
+  } = getState().tiket;
+
   try {
-    const response = await axios.get(
-      "/api/ticket?bandara_keberangkatan=CGK&bandara_kedatangan=DPS&tanggal_pergi=2024-06-19&tanggal_pulang=2024-06-19&kelas=Economy"
-    );
-    dispatch(setTiketPesawat(response.data));
-    // console.log("CEK DATA",response)
+    // Fetch data tiket pergi
+    let apiEndpoint1 = `/api/ticket?bandara_keberangkatan=${LokasiKeberangkatan}&bandara_kedatangan=${lokasiTujuan}&tanggal_pergi=${TanggalKeberangkatan}&kelas=${KelasPenerbangan}&jumlah=${totalSemuaPenumpang}`;
+    const response1 = await axios.get(apiEndpoint1);
+    dispatch(setTiketPesawatPergi(response1.data));
+    // console.log("CEK DATA PERGI", apiEndpoint1);
+
+    // Fetch data tiket pulang jika tanggal_pulang ada
+    if (TanggalKepulangan !== "") {
+      let apiEndpoint2 = `/api/ticket?bandara_keberangkatan=${lokasiTujuan}&bandara_kedatangan=${LokasiKeberangkatan}&tanggal_pergi=${TanggalKepulangan}&kelas=${KelasPenerbangan}&jumlah=${totalSemuaPenumpang}`;
+      const response2 = await axios.get(apiEndpoint2);
+      dispatch(setTiketPesawatPulang(response2.data));
+      // console.log("CEK DATA PULANG", response2.data);
+    }
   } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log("error", error.message);
+    } else {
+      console.log("error", error.message);
+    }
+  }
+};
+
+//post order data
+export const getPayment =
+  (orderId, paramsData, navigate) => async (dispatch, getState) => {
+    const tipePenumpang = getState().tiket?.typePenerbanngan;
+    // console.log("Data ID PERGI", orderId);
+    try {
+      // Tampilkan paramsData sebelum permintaan POST
+      // console.log("Data yang dikirim ke server:", paramsData);
+
+      // Proses untuk penerbangan pertama (pergi)
+      const response1 = await axios.post(
+        `/api/order/${orderId[0]}`,
+        paramsData.penumpang
+      );
+      // console.log("Response Payment Sekali Jalan:", response1);
+      dispatch(setHasilPostDataPenumpang(response1.data)); // Pastikan payload benar
+
+      // Jika tipe penumpang adalah "Pergi - Pulang" dan ada ID untuk penerbangan pulang
+      if (
+        tipePenumpang === "Pergi - Pulang" &&
+        orderId.length === 2 &&
+        typeof orderId[1] === "number"
+      ) {
+        const response2 = await axios.post(
+          `/api/order/${orderId[1]}`,
+          paramsData.penumpang
+        );
+        // console.log("Response Payment Pulang Pergi:", response2);
+        dispatch(setHasilPostDataPenumpang(response2.data)); // Pastikan payload benar
+      }
+
+      // Dispatch action Redux untuk meng-update status pengiriman data penumpang
+      alert("Data Berhasil Tersimpan");
+
+      // Navigasi ke halaman pembayaran
+      navigate("/payment");
+    } catch (error) {
+      console.error(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
+      alert("Kamu harus login dulu!");
+    }
+  };
+
+//Get DEtail Cekout
+export const getDetailPesanan = (checkoutId) => async (dispatch) => {
+  try {
+    const repsonse = await axios.get(`/api/checkout/${checkoutId}`);
+    dispatch(setDataChekoutBerangkat(repsonse.data.data));
+    // console.log("seriesssss", repsonse.data.data);
+  } catch (error) {
+    // console.log("error", error);
     if (axios.isAxiosError(error)) {
       alert(error.message);
       return;
     }
-    // alert(error.message);
+    alert(error.message);
   }
 };
+
+//post order data
+export const getPaymentCekout =
+  (metode_pembayaran, checkoutId, navigate) => async (dispatch) => {
+    // console.log("ckoitu IDD", checkoutId);
+    // console.log("Data yang Server:", metode_pembayaran);
+    try {
+      // Tampilkan paramsData sebelum permintaan POST
+
+      const response = await axios.post(
+        `/api/checkout/${checkoutId}`,
+        {
+          metode_pembayaran,
+        },
+        {
+          withCredentials: true,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      console.log(
+        "RESPON HSITORY",
+        response?.data?.data?.History_Transaction?.id
+      );
+      dispatch(
+        setDataHasilCheckot(response?.data?.data?.History_Transaction?.id)
+      );
+      return response.status;
+    } catch (error) {
+      console.error(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
+      alert("Kamu harus login dulu!");
+    }
+  };

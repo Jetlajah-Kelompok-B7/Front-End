@@ -19,6 +19,7 @@ import ForgotPassword from "./Pages/forgotPassword";
 import ConfirmPassword from "./Pages/confirmPassword";
 import Team from "./Pages/Team";
 import Page404 from "./Pages/Page404";
+import Berhasil_bayar from "./Pages/Berhasil_bayar";
 
 
 export default function App() {
@@ -72,12 +73,12 @@ export default function App() {
       element: <DetailTiket />,
     },
     {
-      path: "/payment",
+      path: "/Payment",
       element: <Payment />,
     },
     {
       path: "/team",
-      element: <Team />,
+      element: <Team   />,
     },
     {
       path: "/travelDokumen",
@@ -85,6 +86,10 @@ export default function App() {
     },  {
       path: "*", // Wildcard route for 404
       element: <Page404 />, // Element to render for 404
+    },
+    {
+      path: "/bayar_berhasil",
+      element: <Berhasil_bayar />,
     },
   ]);
 

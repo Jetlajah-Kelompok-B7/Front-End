@@ -7,12 +7,15 @@ import TiketReducer from "./Reducers/TiketReducer";
 import FilterHargaReducers from "./Reducers/FilterHargaReducers";
 import reducersLogin from "./Reducers/reducersLogin";
 import TiketReducerforSecure from "./Reducers/TiketReducerforSecure";
+import DataBooking from "./Reducers/DataBooking";
+
 
 const rootReducers = combineReducers({
   tiket: TiketReducer,
   filter: FilterHargaReducers,
   login: reducersLogin,
   tiket2: TiketReducerforSecure,
+  booking: DataBooking,
 });
 
 const persistConfig = { key: "root", storage };

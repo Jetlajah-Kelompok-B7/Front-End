@@ -4,10 +4,11 @@ import Dropdown from "../Modal/ModalJumlahPenumpang";
 import { useDispatch, useSelector } from "react-redux";
 import ModalLokasi from "../Modal/ModalLokasiAwal";
 import PilihKelasPenerbangan from "../Modal/KelasPenerbangan";
-import { swapLokasi } from "../../../redux/Reducers/TiketReducer";
-import { GetTiket } from "../../../redux/Action/TiketAction";
+import { setTypePenerbangan, swapLokasi } from "../../../redux/Reducers/TiketReducer";
+import { GetTiket, getTiketSearch } from "../../../redux/Action/TiketAction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+
 
 export default function ModalPemesananTiketMobile() {
   const dispatch = useDispatch();
@@ -34,8 +35,6 @@ export default function ModalPemesananTiketMobile() {
       if (
         kotaAwal !== "" &&
         destinasi !== "" &&
-        kelas_penerbangan !== "" &&
-        total_penumpang !== 0 &&
         tanggalBerangkat !== ""
       ) {
         if (kotaAwal === destinasi) {
@@ -64,6 +63,8 @@ export default function ModalPemesananTiketMobile() {
           });
           return;
         }
+        dispatch(getTiketSearch())
+        dispatch(setTypePenerbangan(pilihanUser))
         navigate("/resultSearch");
         return;
       } else {
@@ -83,8 +84,6 @@ export default function ModalPemesananTiketMobile() {
       if (
         kotaAwal !== "" &&
         destinasi !== "" &&
-        kelas_penerbangan !== "" &&
-        total_penumpang !== 0 &&
         tanggalBerangkat !== "" &&
         tanggalPulang !== ""
       ) {
@@ -114,6 +113,8 @@ export default function ModalPemesananTiketMobile() {
           });
           return;
         }
+        dispatch(getTiketSearch())  
+        dispatch(setTypePenerbangan(pilihanUser))
         navigate("/resultSearch");
         return;
       } else {
@@ -141,6 +142,27 @@ export default function ModalPemesananTiketMobile() {
   useEffect(() => {
     dispatch(GetTiket());
   }, [dispatch]);
+
+  const DataBaru = useSelector((state) => state?.tiket);
+  const {
+    KelasPenerbangan,
+    LokasiKeberangkatan,
+    TanggalKeberangkatan,
+    TanggalKepulangan,
+    lokasiTujuan,
+    totalSemuaPenumpang,
+    idTiket,
+  } = DataBaru || {};
+
+  useEffect(() => {
+  
+   
+    dispatch(getTiketSearch());
+  
+   
+  }, [dispatch]);
+ 
+
 
   return (
     <div className="relative">
@@ -225,6 +247,8 @@ export default function ModalPemesananTiketMobile() {
   );
 }
 function PilihanUser({ pilihan, setPilihan, list, setId }) {
+
+  const dispatch = useDispatch();
   return (
     <div className="flex justify-center gap-4">
       {list.map((e, i) => (
@@ -234,6 +258,7 @@ function PilihanUser({ pilihan, setPilihan, list, setId }) {
           onClick={() => {
             setPilihan(e);
             setId(i + 1);
+            dispatch(setTypePenerbangan(e))
           }}
         >
           {e === pilihan ? (

@@ -1,10 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setPin, clearPin } from "../redux/Reducers/reducersLogin";
 import { pinValidate } from "../redux/Action/actionLogin";
 import { useNavigate } from "react-router-dom";
+import { setIsValidated } from "../redux/Reducers/DataBooking";
 import "../App.css";
 
 export default function AddPin() {
@@ -67,7 +68,17 @@ export default function AddPin() {
   const handleSubmit = async (e) => {
     e?.preventDefault();
     setLoading(true);
-    dispatch(pinValidate(pin)); // Kirim pin ke action creator createPin
+    let params = new URLSearchParams(document.location.search);
+    let checkoutId = params.get("checkoutId");
+    let metode_pembayaran = params.get("metode_pembayaran");
+    const response = await dispatch(
+      pinValidate(pin, metode_pembayaran, checkoutId, navigate)
+    ); // Kirim pin ke action creator createPin
+    console.log("RESPON", response);
+    if (response.status === 200) {
+      // dispatch(setIsValidated(true))
+      // navigate("/payment");
+    }
     setLoading(false);
   };
 

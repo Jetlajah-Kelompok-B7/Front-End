@@ -2,13 +2,19 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   idTiket: 1,
+  Halaman_Aktif: "",
   lokasiTujuan: "",
   LokasiKeberangkatan: "",
   KelasPenerbangan: "",
   TanggalKeberangkatan: "",
   TanggalKepulangan: "",
+  typePenerbanngan: "Sekali Jalan",
   TotalPenumpang: { Dewasa: 0, Anak: 0, Bayi: 0 },
   totalSemuaPenumpang: 0,
+  dataPesawatPergi: [],
+  dataPesawatPulang: [],
+  dataInputanSearch: [],
+  lokasi:[],
 };
 
 const tiketSlicer = createSlice({
@@ -16,8 +22,13 @@ const tiketSlicer = createSlice({
   initialState,
   reducers: {
     reset: () => initialState,
+
+    setHalaman: (state, action) => {
+      state.Halaman_Aktif = action.payload;
+    },
+    reset: () => initialState,
     setkelas: (state, action) => {
-      state.kelas = action.payload;
+      state.Kelas = action.payload;
     },
     setSemua: (state, action) => {
       state.SemuaData = action.payload;
@@ -55,14 +66,28 @@ const tiketSlicer = createSlice({
     hitungsemuapenumpang: (state, action) => {
       state.totalSemuaPenumpang = action.payload;
     },
+
+    setTiketPesawatPergi: (state, action) => {
+      state.dataPesawatPergi = action.payload;
+    },
+
+    setTiketPesawatPulang: (state, action) => {
+      state.dataPesawatPulang = action.payload;
+    },
+
+    setInputSearch: (state, action) => {
+      state.dataInputanSearch = action.payload;
+    },
+    setTypePenerbangan: (state, action) => {
+      state.typePenerbanngan = action.payload;
+    },
   },
 });
 
 export const {
   setLokasiKeberangkatan,
   setLokasiTujuan,
-  swapLokasi,
-  setUserCondition,
+  swapLokasi, 
   setSemua,
   setKelasPenerbangan,
   setKeberangaktan,
@@ -71,7 +96,12 @@ export const {
   setDestinasiPesawat,
   setkelas,
   hitungsemuapenumpang,
+  setTiketPesawatPergi,
+  setTiketPesawatPulang,
+  setInputSearch,
   reset,
+  setHalaman,
+  setTypePenerbangan,
 } = tiketSlicer.actions;
 
 export default tiketSlicer.reducer;

@@ -4,6 +4,7 @@ import {
   setDestinasiPesawat,
   setLokasiKeberangkatan,
 } from "../../../redux/Reducers/TiketReducer";
+import { GetDataBandara } from "../../../redux/Action/TiketAction";
 
 export default function ModalLokasi({
   visible,

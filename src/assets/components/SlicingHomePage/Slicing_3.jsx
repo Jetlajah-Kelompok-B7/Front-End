@@ -8,15 +8,13 @@ export default function Slicing_3() {
           <h1 className=" text-[40px] max-xs:text-[35px] font-bold mb-4 max-sm:ml-4">
             About<span className="text-[#FE5D02]">Jetlajah.In</span>
           </h1>
-          <p className="ml-6 mt-[27px] mb-2 text-[20px]">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently.
+          <p className="ml-6 mt-[27px] mb-2 text-[20px] text-justify  ">
+            JetLajahin adalah platform booking tiket pesawat yang memudahkan perjalanan udara
+            Anda dengan menyediakan layanan pemesanan tiket pesawat yang cepat,
+            aman, dan terpercaya. Dengan antarmuka yang intuitif dan
+            user-friendly, JetLajahin memungkinkan pengguna untuk mencari,
+            membandingkan, dan memesan tiket pesawat ke berbagai destinasi di
+            seluruh Indonesia.
           </p>
           <div className="flex gap-2   justify-center text-white">
             <button className="bg-[#176B87] py-[14px]  px-6 items rounded-2xl">

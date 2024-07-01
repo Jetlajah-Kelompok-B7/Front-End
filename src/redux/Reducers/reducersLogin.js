@@ -65,6 +65,12 @@ const login = createSlice({
     clearPin(state) {
       state.pin = "";
     },
+    clearMessage(state) {
+      state.message = "";
+    },
+    clearPin(state) {
+      state.pin = "";
+    }
   },
 });
 

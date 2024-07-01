@@ -45,17 +45,17 @@ export default function MyModal({
       tanggalPulang("");
       setSelectedDate(pass_tanggal_berangkat);
       setSelectedDatePulang("");
-      dispatch(setKepulangan(""));
+     
     };
   }, [idTanggal]);
   const daysOfWeek = ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"]; // Custom Indonesian days of week
 
   const handlePrevMonth = () => {
     // Format nama bulan dari currentMonth
-    const currentMonthFormatted = format(currentMonth, "MMMM", { locale: id });
+    const currentMonthFormatted = format(currentMonth, "MM", { locale: id });
 
     // Ambil nama bulan saat ini dari tanggal sekarang
-    const currentMonthNow = format(new Date(), "MMMM", { locale: id });
+    const currentMonthNow = format(new Date(), "MM", { locale: id });
 
     // Menentukan kondisi ketika tombol tidak boleh berfungsi
     if (currentMonthFormatted === currentMonthNow) {
@@ -246,7 +246,7 @@ export default function MyModal({
             <div className="flex flex-col items-center gap-4 max-lg:hidden">
               <div className="flex w-full">
                 <div className="flex-1 flex justify-center">
-                  {format(nextMonth, "MMMM - yyyy", { locale: id })}
+                  {format(nextMonth, "MM - yyyy", { locale: id })}
                 </div>
                 <button onClick={handleNextMonth} className="text-gray-400">
                   <img

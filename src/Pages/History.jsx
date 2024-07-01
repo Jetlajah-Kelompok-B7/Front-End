@@ -31,6 +31,10 @@ export default function History() {
   const Condition = useSelector((state) => {
     return state.tiket2.isLoggin;
   });
+
+  const Data = useSelector((state) => {
+    return state?.tiket2?.history;
+  });
   useEffect(() => {
     if (Condition !== true) {
       navigate("/login");

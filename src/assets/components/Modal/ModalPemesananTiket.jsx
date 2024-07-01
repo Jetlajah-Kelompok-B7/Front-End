@@ -4,8 +4,8 @@ import Dropdown from "../Modal/ModalJumlahPenumpang";
 import { useDispatch, useSelector } from "react-redux";
 import ModalLokasi from "../Modal/ModalLokasiAwal";
 import PilihKelasPenerbangan from "../Modal/KelasPenerbangan";
-import { swapLokasi } from "../../../redux/Reducers/TiketReducer";
-import { GetTiket } from "../../../redux/Action/TiketAction";
+import { setInputSearch, setTypePenerbangan, swapLokasi } from "../../../redux/Reducers/TiketReducer";
+import { GetTiket, getTiketSearch } from "../../../redux/Action/TiketAction";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -70,6 +70,8 @@ export default function ModalPemesananTiket() {
           });
           return;
         }
+        dispatch(getTiketSearch())  
+        dispatch(setTypePenerbangan(pilihanUser))
         navigate("/resultSearch");
         return;
       } else {
@@ -120,6 +122,8 @@ export default function ModalPemesananTiket() {
           });
           return;
         }
+        dispatch(getTiketSearch()) 
+        dispatch(setTypePenerbangan(pilihanUser)) 
         navigate("/resultSearch");
         return;
       } else {
@@ -144,6 +148,30 @@ export default function ModalPemesananTiket() {
     dispatch(swapLokasi());
   };
 
+  useEffect(() => {
+    dispatch(GetTiket());
+  }, [dispatch]);
+
+
+  const DataBaru = useSelector((state) => state.tiket);
+  const {
+    KelasPenerbangan,
+    LokasiKeberangkatan,
+    TanggalKeberangkatan,
+    TanggalKepulangan,
+    lokasiTujuan,
+    totalSemuaPenumpang,
+    idTiket,
+  } = DataBaru || {};
+
+  
+
+  useEffect(() => {
+
+    dispatch(getTiketSearch());
+    
+  }, [dispatch]);
+
   return (
     <div className="w-[1060px] container">
       <div className="relative mx-auto max-xl:mx-5">
@@ -161,6 +189,7 @@ export default function ModalPemesananTiket() {
                   onClick={() => {
                     setPilihanUser(e);
                     setIdTanggal(i + 1);
+                    dispatch(setTypePenerbangan(e))
                   }}
                 >
                   {e === pilihanUser ? (
