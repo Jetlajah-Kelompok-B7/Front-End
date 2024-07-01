@@ -28,7 +28,7 @@ export default function ModalLokasi({
   return (
     <div className="absolute max-lg:fixed max-lg:top-0 z-50 max-lg:bg-black max-lg:bg-opacity-30 max-lg:h-screen max-lg:flex max-lg:justify-center max-lg:items-start  inset-0 top-[155px]">
       <div className="flex justify-center items-center z-50  max-xl:w-screen max-xl:mx-3">
-        <div className="bg-white relative py-3 px-6 border-4 rounded-2xl max-lg:rounded-b-none border-[#176B87] w-[700px] max-xl:w-full  max-lg:w-screen max-lg:border-none max-lg:absolute max-lg:bottom-0 max-lg:h-[60vh]">
+        <div className="bg-white relative py-3 px-6 border-4 rounded-2xl max-lg:rounded-b-none border-[#176B87] w-[700px] max-lg:w-full  max-lg:border-none max-lg:absolute max-lg:bottom-0 max-lg:h-[60vh]">
           <div className="flex justify-between">
             <p className=" text-lg font-bold text-[#176B87] ">
               {id === 1 ? (
@@ -65,41 +65,42 @@ export default function ModalLokasi({
             />
           </div>
           <div className="h-[45vh] max-lg:h-[40vh] overflow-y-auto flex flex-col gap-3">
-            {filteredData && filteredData?.map((lokasi, index) => (
-              <div
-                key={index}
-                className=" hover:cursor-pointer"
-                onClick={() => {
-                  if (id === 1) {
-                    dispatch(setLokasiKeberangkatan(lokasi.kode_bandara));
-                    setKotaAwal(lokasi.lokasi);
-                    setSelectedkota(lokasi.lokasi);
-                  } else {
-                    setDestinasi(lokasi.lokasi);
-                    dispatch(setDestinasiPesawat(lokasi.kode_bandara));
-                    setSelectedDestinasi(lokasi.lokasi);
-                  }
-                }}
-              >
-                {lokasi.lokasi ===
-                (id === 1 ? selectedKota : selectedDestinasi) ? (
-                  <div className="border-b-2 border-[#176B87]">
-                    {lokasi.lokasi} <br />
-                    <span className="text-gray-500">
-                      {lokasi.kode_bandara} - {lokasi.nama_bandara}
-                    </span>
-                  </div>
-                ) : (
-                  <div className="border-b-2">
-                    {lokasi.lokasi}
-                    <br />
-                    <span className="text-gray-500">
-                      {lokasi.kode_bandara} - {lokasi.nama_bandara}
-                    </span>
-                  </div>
-                )}
-              </div>
-            ))}
+            {filteredData &&
+              filteredData?.map((lokasi, index) => (
+                <div
+                  key={index}
+                  className=" hover:cursor-pointer"
+                  onClick={() => {
+                    if (id === 1) {
+                      dispatch(setLokasiKeberangkatan(lokasi.kode_bandara));
+                      setKotaAwal(lokasi.lokasi.split(",")[0]);
+                      setSelectedkota(lokasi.lokasi);
+                    } else {
+                      setDestinasi(lokasi.lokasi.split(",")[0]);
+                      dispatch(setDestinasiPesawat(lokasi.kode_bandara));
+                      setSelectedDestinasi(lokasi.lokasi);
+                    }
+                  }}
+                >
+                  {lokasi.lokasi ===
+                  (id === 1 ? selectedKota : selectedDestinasi) ? (
+                    <div className="border-b-2 border-[#176B87]">
+                      {lokasi.lokasi} <br />
+                      <span className="text-gray-500">
+                        {lokasi.kode_bandara} - {lokasi.nama_bandara}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="border-b-2">
+                      {lokasi.lokasi}
+                      <br />
+                      <span className="text-gray-500">
+                        {lokasi.kode_bandara} - {lokasi.nama_bandara}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
           </div>
         </div>
       </div>

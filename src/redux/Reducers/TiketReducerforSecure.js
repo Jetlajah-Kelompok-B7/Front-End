@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isLoggin: false,
+  isLoggin: null,
   lokasi: [],
   Halaman_Aktif: "",
   history: [],

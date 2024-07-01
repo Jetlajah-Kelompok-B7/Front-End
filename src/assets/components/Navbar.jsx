@@ -22,7 +22,7 @@ export default function Navbar() {
   const [first, setFirst] = useState(true);
 
   const Condition = useSelector((state) => {
-    return state.tiket.UserCondition;
+    return state.tiket2.isLoggin;
   });
   useEffect(() => {
     dispatch(fetchUserData());
@@ -37,7 +37,6 @@ export default function Navbar() {
     }
   };
 
-  // console.log("Condition  Condition:", Condition);
 
   useEffect(() => {
     setLogout(false);

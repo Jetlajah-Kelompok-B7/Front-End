@@ -6,6 +6,7 @@ import ModalLokasi from "../Modal/ModalLokasiAwal";
 import PilihKelasPenerbangan from "../Modal/KelasPenerbangan";
 import { swapLokasi } from "../../../redux/Reducers/TiketReducer";
 import { GetTiket } from "../../../redux/Action/TiketAction";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 export default function ModalPemesananTiketMobile() {
@@ -23,6 +24,11 @@ export default function ModalPemesananTiketMobile() {
   const [total_penumpang, setTotal_penumpang] = useState(0);
   const [kelas_penerbangan, setKelas_penerbangan] = useState("");
 
+  const totalperpenumpang = useSelector(
+    (state) => state?.tiket?.TotalPenumpang
+  );
+  const { Dewasa, Bayi, Anak } = totalperpenumpang;
+
   const handlePemesanan = () => {
     if (idTanggal === 1) {
       if (
@@ -33,13 +39,44 @@ export default function ModalPemesananTiketMobile() {
         tanggalBerangkat !== ""
       ) {
         if (kotaAwal === destinasi) {
-          alert("Lokasi Awal dan Destinasi Tidak Boleh Sama");
+          toast.warning("Kotanya masih sama tuh", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          return;
+        }
+        if (Dewasa <= 0) {
+          toast.warning("Harus dalam pendampingan orang dewasa nih", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
           return;
         }
         navigate("/resultSearch");
         return;
       } else {
-        alert("Harap Lengkapi Semua Formulir");
+        toast.warning("Ada yang kosong nih", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
         return;
       }
     } else {
@@ -52,13 +89,44 @@ export default function ModalPemesananTiketMobile() {
         tanggalPulang !== ""
       ) {
         if (kotaAwal === destinasi) {
-          alert("Lokasi Awal dan Destinasi Tidak Boleh Sama");
+          toast.warning("nama kotanya sama nih", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          return;
+        }
+        if (Dewasa <= 0) {
+          toast.warning("Harus dalam pendampingan orang dewasa nih", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
           return;
         }
         navigate("/resultSearch");
         return;
       } else {
-        alert("Harap Lengkapi Semua Formulir");
+        toast.warning("Formnya masih ada yang kosong nih", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
         return;
       }
     }

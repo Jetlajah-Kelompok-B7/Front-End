@@ -57,7 +57,7 @@ export default function ProfileUser() {
 
   // pengaman agar jika user belum login
   const Condition = useSelector((state) => {
-    return state.tiket.UserCondition;
+    return state.tiket2.isLoggin;
   });
   useEffect(() => {
     if (Condition !== true) {

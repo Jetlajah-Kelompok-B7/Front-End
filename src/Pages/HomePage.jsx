@@ -14,6 +14,7 @@ import { setHalaman } from "../redux/Reducers/TiketReducerforSecure";
 export default function HomePage() {
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(reset());
     dispatch(setHalaman("Beranda"));
     dispatch(fetchUserData());
   }, []);

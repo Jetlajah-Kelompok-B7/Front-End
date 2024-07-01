@@ -18,11 +18,9 @@ export default function DetailTiket() {
   const [modalTiket, setModalTiket] = useState(false);
   const [qr, setQr] = useState("");
   const [data_tiket, setData_tiket] = useState([]);
-  // console.log("DetailTiket  data_tiket:", data_tiket.data);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // console.log(data_tiket.length);
 
   useEffect(() => {
     dispatch(setHalaman("Tiket"));
@@ -30,7 +28,7 @@ export default function DetailTiket() {
 
   //pengaman agar jika user belum login
   // const Condition = useSelector((state) => {
-  //   return state.tiket.UserCondition;
+  //   return state.tiket2.isLoggin;
   // });
   // useEffect(() => {
   //   if (Condition !== true) {
@@ -56,9 +54,7 @@ export default function DetailTiket() {
 
   const Orders = data_tiket?.data?.checkout?.order?.Orders || [];
   const ticket = data_tiket?.data?.checkout?.order?.ticket || {};
-  console.log("DetailTiket  ticket:", ticket);
   const flight = ticket?.schedule?.flight || {};
-  console.log("DetailTiket  flight:", flight);
   const checkoutID = data_tiket?.data?.checkoutId;
   const pembayaran = data_tiket?.data?.checkout?.status || {};
   // console.log("DetailTiket  pembayaran:", data_tiket?.data);
