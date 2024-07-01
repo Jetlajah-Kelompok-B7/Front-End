@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faInstagram,
-  faWhatsapp,
   faGithub,
   faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
@@ -42,7 +41,7 @@ export default function Team() {
     },
     {
       name: "Syaiful Rizal Sidiq",
-      position: "Frontend Developer",
+      position: "Backend Developer",
       image: "/images/rizal.jpg",
       social: {
         instagram: "https://www.instagram.com/syaifulrizal504/?hl=en",
@@ -55,14 +54,14 @@ export default function Team() {
       position: "Backend Developer",
       image: "/images/zabil.jpeg",
       social: {
-        instagram: "https://www.instagram.com/",
+        instagram: "https://www.instagram.com/zabilsabri",
         Linkedin: "https://www.linkedin.com/in/hilzi-maulana-conquero/",
-        github: "https://github.com/",
+        github: "https://github.com/zabilsabri",
       },
     },
     {
       name: "Hanafi Ulin Nuha",
-      position: "Frontend Developer",
+      position: "Backend Developer",
       image: "/images/hacker.jpg",
       social: {
         instagram: "",
@@ -102,7 +101,7 @@ export default function Team() {
                 <img
                   src={member.image}
                   alt={`${member.name}'s profile`}
-                  className="size-24 bg-center bg-co rounded-full mx-auto mb-4"
+                  className="size-24 bg-center bg-cover rounded-full mx-auto mb-4"
                 />
                 <h2 className="text-xl font-semibold mb-2">{member.name}</h2>
                 <p className="text-gray-600 mb-4">{member.position}</p>
