@@ -4,14 +4,29 @@ import {
   hitungsemuapenumpang,
   setTotalPenumpang,
 } from "../../../redux/Reducers/TiketReducer";
+import { toast } from "react-toastify";
 
 export default function Dropdown({ visible, onClose, total, set_total }) {
   const dispatch = useDispatch();
   const [dewasa, setDewasa] = useState(0);
   const [anak, setAnak] = useState(0);
   const [bayi, setBayi] = useState(0);
+  const totalDewasa = dewasa + anak;
 
   const handleIncrementDewasa = () => {
+    if (totalDewasa >= 7) {
+      toast.warning("Maksimal 7 kursi untuk Dewasa dan Anak", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
     setDewasa(dewasa + 1);
   };
   const handleDecrementdewasa = () => {
@@ -20,6 +35,19 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
     }
   };
   const handleIncrementAnak = () => {
+    if (totalDewasa >= 7) {
+      toast.warning("Maksimal 7 kursi untuk Dewasa dan Anak", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
     setAnak(anak + 1);
   };
   const handleDecrementAnak = () => {
@@ -28,6 +56,19 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
     }
   };
   const handleIncrementBayi = () => {
+    if (bayi >= 4) {
+      toast.warning("Maksimal 4 kursi untuk Bayi", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
     setBayi(bayi + 1);
   };
   const handleDecrementBayi = () => {
@@ -64,16 +105,16 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
             className="h-4 w-4 my-[14px] mx-4 hover:cursor-pointer"
           />
         </div>
-        <div className="bg-white px-10 rounded-b-2xl max-lg:rounded-none shadow-lg pt-5 pb-3">
-          <div className="flex flex-col gap-4">
+        <div className="bg-white px-10 max-sm:px-6 rounded-b-2xl  max-lg:rounded-none shadow-lg pt-5 pb-3">
+          <div className="flex flex-col gap-4 ">
             {/* dewasa */}
             <div className="flex justify-between gap-14 border-b pb-2">
               <div className="flex items-start gap-2 w-60">
                 <img src="/images/VectorDewasa.png" alt="" className=" h-5" />
                 <div className="flex flex-col gap-1">
-                  <p className="leading-none font-bold">Dewasa</p>
-                  <p className=" text-sm text-gray-400 whitespace-nowrap">
-                    (12 tahun ke atas)
+                  <p className="leading-none font-bold ">Dewasa</p>
+                  <p className=" text-sm text-gray-400 whitespace-nowrap max-sm:text-xs text-wrap">
+                    {`(> 12 tahun)`}
                   </p>
                 </div>
               </div>
@@ -84,7 +125,7 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
                   className="cursor-pointer h-10 w-10"
                   onClick={handleDecrementdewasa}
                 />
-                <div className="px-5 py-[7px] border-2 rounded-md">
+                <div className="px-5 py-[7px] border-2 rounded-md w-[55px]">
                   {dewasa}
                 </div>
                 <img
@@ -101,8 +142,8 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
                 <img src="/images/VectorAnak.png" alt="" className=" h-5" />
                 <div className="flex flex-col gap-1">
                   <p className="leading-none font-bold">Anak</p>
-                  <p className=" text-sm text-gray-400 whitespace-nowrap">
-                    (12 tahun ke atas)
+                  <p className=" text-sm max-sm:text-xs text-wrap text-gray-400 whitespace-nowrap">
+                    (2-11 tahun)
                   </p>
                 </div>
               </div>
@@ -113,7 +154,9 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
                   className="cursor-pointer h-10 w-10"
                   onClick={handleDecrementAnak}
                 />
-                <div className="px-5 py-[7px] border-2 rounded-md">{anak}</div>
+                <div className="px-5 py-[7px] border-2 rounded-md w-[55px]">
+                  {anak}
+                </div>
                 <img
                   src="/images/Plus.png"
                   alt="Increase"
@@ -129,7 +172,7 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
                 <div className="flex flex-col gap-1">
                   <p className="leading-none font-bold">Bayi</p>
                   <p className=" text-sm text-gray-400 whitespace-nowrap">
-                    (12 tahun ke atas)
+                    {`< 2 tahun`}
                   </p>
                 </div>
               </div>
@@ -140,7 +183,9 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
                   className="cursor-pointer h-10 w-10"
                   onClick={handleDecrementBayi}
                 />
-                <div className="px-5 py-[7px] border-2 rounded-md">{bayi}</div>
+                <div className="px-5 py-[7px] border-2 rounded-md w-[55px]">
+                  {bayi}
+                </div>
                 <img
                   src="/images/Plus.png"
                   alt="Increase"
