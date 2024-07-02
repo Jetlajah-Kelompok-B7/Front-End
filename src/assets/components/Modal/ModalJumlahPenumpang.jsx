@@ -172,7 +172,7 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
                 <div className="flex flex-col gap-1">
                   <p className="leading-none font-bold">Bayi</p>
                   <p className=" text-sm text-gray-400 whitespace-nowrap">
-                    {`< 2 tahun`}
+                    {`(< 2 tahun)`}
                   </p>
                 </div>
               </div>
