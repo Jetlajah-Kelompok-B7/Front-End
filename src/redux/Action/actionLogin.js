@@ -370,6 +370,7 @@ export const logout = () => async () => {
   }
 };
 
+
 export const forgotPassword = (email) => async (dispatch) => {
   try {
     const response_forgot = await axios.post(
