@@ -6,7 +6,7 @@ const PaymentTimer = () => {
   const DetailPenumpangCekout = useSelector(
     (state) => state?.booking?.dataCheckoutBerangkat
   );
-  console.log("DetailPEnumpangCK", DetailPenumpangCekout);
+  // console.log("DetailPEnumpangCK", DetailPenumpangCekout);
   const { tanggal_waktu, berlaku_sampai } = DetailPenumpangCekout;
   const navigate = useNavigate();
 

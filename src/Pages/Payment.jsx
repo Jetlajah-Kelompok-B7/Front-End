@@ -114,12 +114,39 @@ export default function Payment() {
   const DataPayment = useSelector(
     (state) => state?.booking?.inputanDataPenumpang?.data
   );
-  console.log("Payment  DataPayment:", DataPayment);
-  console.log("DataPayment?.price?.tax", DataPayment?.price?.tax);
+  // console.log("Payment  DataPayment:", DataPayment);
+  // console.log("DataPayment?.price?.tax", DataPayment?.price?.tax);
   const DetailPenumpangCekout = useSelector(
     (state) => state?.booking?.dataCheckoutBerangkat
   );
-  console.log("Data PENUMPANG", DetailPenumpangCekout);
+  // console.log("DetailPEnumpangCK baruuuuuuuuuuuuuuuuu", DetailPenumpangCekout);
+  // console.log("Data PENUMPANG", DetailPenumpangCekout?.orders);
+
+  //hitung penumpang
+  const [dewasa, setDewasa] = useState(0);
+  const [bayi, setBayi] = useState(0);
+  const penumpangArray = Object.values(DetailPenumpangCekout?.orders);
+  //Data Harga
+  const totalHarga = DetailPenumpangCekout?.total;
+  const taxTiket = DetailPenumpangCekout?.tax;
+  const hargaTiket =
+    (DetailPenumpangCekout?.total - taxTiket) / penumpangArray.length;
+
+  useEffect(() => {
+    let dewasaCount = 0;
+    let bayiCount = 0;
+
+    penumpangArray?.forEach((e) => {
+      if (e.is_baby === false) {
+        dewasaCount++;
+      } else {
+        bayiCount++;
+      }
+    });
+
+    setDewasa(dewasaCount);
+    setBayi(bayiCount);
+  }, []);
 
   // //Mengambil data booking tiket hasil post
   // const DataPaymentPulang = useSelector(
@@ -135,14 +162,15 @@ export default function Payment() {
 
   //Mengambil data ID User
   const userCkId = useSelector((state) => state?.booking?.inputanDataPenumpang);
-  console.log("Payment  userCkId:", userCkId);
+  // console.log("Payment  userCkId:", userCkId);
 
   //use buat nyimpan ID ke Action
-  useEffect(() => {
-    dispatch(getDetailPesanan(userCkIdPergi));
-  }, [dispatch, userCkId]);
 
-  console.log("data Inputan Pulang", userCkId);
+  // useEffect(() => {
+  //   dispatch(getDetailPesanan(userCkIdPergi));
+  // }, [dispatch, userCkId]);
+
+  // console.log("data Inputan Pulang", userCkId);
 
   //Fect DAta DEtail PEnumpang Berangkat (DATANYA)
 
@@ -167,7 +195,7 @@ export default function Payment() {
 
   // formatRupiah
   const formatRupiah = (price) => {
-    console.log("formatRupiah  price:", price);
+    // console.log("formatRupiah  price:", price);
     return price
       .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
       .replace(/\,00$/, "");
@@ -648,35 +676,27 @@ export default function Payment() {
               {/* Rincian Harga */}
               <div className="my-3 py-2 border-t-2 border-b-2">
                 <p className="font-bold text-xl">Rincian Harga</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {Object.entries(groupPenumpangData).map(
-                    ([name, { count, ageGroup }]) => (
-                      <div
-                        className="flex justify-between col-span-2"
-                        key={name}
-                      >
-                        <div className="flex gap-2">
-                          <p>{count}</p>
-                          <p>{name}</p>
-                        </div>
-                        <p className="">
-                          {ageGroup === "BABY"
-                            ? "0"
-                            : formatRupiah(DataPayment?.ticket?.harga * count)}
-                        </p>
-                      </div>
-                    )
-                  )}
-                  <div className="flex justify-between col-span-2">
-                    <p>Tax + Donasi Palestina 10%</p>
-                    <p>{formatRupiah(DataPayment?.price?.tax)}</p>
+                {dewasa > 0 && (
+                  <div className="flex justify-between">
+                    <p>{dewasa} Dewasa</p>
+                    <p>IDR {(hargaTiket * dewasa).toLocaleString("id-ID")}</p>
                   </div>
+                )}
+                {bayi > 0 && (
+                  <div className="flex justify-between">
+                    <p>{bayi} Bayi</p>
+                    <p>IDR 0</p>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <p>Tax + Donasi Palestina 10%</p>
+                  IDR {taxTiket.toLocaleString("id-ID")}
                 </div>
               </div>
               <div className="flex justify-between">
                 <p className="font-bold text-xl">Total</p>
                 <p className="font-bold text-xl text-[#176B87]">
-                  {formatRupiah(DataPayment?.price?.price)}
+                  IDR {totalHarga.toLocaleString("id-ID")}
                 </p>
               </div>
             </div>
