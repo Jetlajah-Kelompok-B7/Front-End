@@ -5,7 +5,6 @@ export default function ModalRincianHarga({ visible, data_tiket }) {
   const [bayi, setBayi] = useState(0);
 
   const Orders = data_tiket?.data?.checkout?.order?.Orders || [];
-  console.log("ModalRincianHarga  Orders:", Orders);
   const Harga = data_tiket?.data?.checkout?.order?.ticket?.harga;
   const total = data_tiket?.data?.price?.total;
   const tax = data_tiket?.data?.price?.tax;
