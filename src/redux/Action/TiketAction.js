@@ -173,9 +173,9 @@ export const getDetailPesanan = (checkoutId) => async (dispatch) => {
 
 //post order data
 export const getPaymentCekout =
-  (metode_pembayaran, checkoutId, navigate) => async (dispatch) => {
-    // console.log("ckoitu IDD", checkoutId);
-    // console.log("Data yang Server:", metode_pembayaran);
+  (metode_pembayaran, checkoutId) => async (dispatch) => {
+    console.log("ckoitu IDD", checkoutId);
+    console.log("Data yang Server:", metode_pembayaran);
     try {
       // Tampilkan paramsData sebelum permintaan POST
 
