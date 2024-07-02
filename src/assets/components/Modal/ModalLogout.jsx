@@ -27,11 +27,15 @@ export default function ModalLogout({ visible, onClose }) {
         <p
           className="text-base text-red-500 py-1 hover:cursor-pointer"
           onClick={() => {
-            dispatch(logout())
-              .then(() => {
-                window.location.reload();
-              })
-              .catch((error) => {});
+            if (window.confirm("Yakin ingin log-out nih ?")) {
+              dispatch(logout())
+                .then(() => {
+                  window.location.reload();
+                })
+                .catch((error) => {
+
+               });
+            }
           }}
         >
           Log-out
