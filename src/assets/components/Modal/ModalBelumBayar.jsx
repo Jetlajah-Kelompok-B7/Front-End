@@ -37,7 +37,7 @@ export default function ModalBelumBayar({ visible, onClose, idcheckout }) {
                   navigate("/payment");
                 }
               } catch (error) {
-                console.log("Failed to fetch details:", error);
+                // console.log("Failed to fetch details:", error);
               }
             }}
           >

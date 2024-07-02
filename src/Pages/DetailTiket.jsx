@@ -15,11 +15,13 @@ import ModalBelumBayar from "../assets/components/Modal/ModalBelumBayar";
 export default function DetailTiket() {
   const location = useLocation();
   const id = location?.state?.id || undefined;
+  console.log("DetailTiket  id:", id);
   const [modal, setModal] = useState(false);
   const [modalBayar, setModalBayar] = useState(false);
   const [modalTiket, setModalTiket] = useState(false);
   const [qr, setQr] = useState("");
   const [data_tiket, setData_tiket] = useState([]);
+  console.log("DetailTiket  data_tiket:", data_tiket);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
