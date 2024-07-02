@@ -15,13 +15,11 @@ import ModalBelumBayar from "../assets/components/Modal/ModalBelumBayar";
 export default function DetailTiket() {
   const location = useLocation();
   const id = location?.state?.id || undefined;
-  console.log("DetailTiket  id:", id);
   const [modal, setModal] = useState(false);
   const [modalBayar, setModalBayar] = useState(false);
   const [modalTiket, setModalTiket] = useState(false);
   const [qr, setQr] = useState("");
   const [data_tiket, setData_tiket] = useState([]);
-  console.log("DetailTiket  data_tiket:", data_tiket);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -76,7 +74,7 @@ export default function DetailTiket() {
         });
         setQr(response.data.data.qr_code_url);
       } catch (error) {
-        console.error("Error fetching print data:", error);
+        // console.error("Error fetching print data:", error);
       }
     };
 
@@ -175,20 +173,16 @@ export default function DetailTiket() {
             <div className=" px-[69px] max-lg:px-6 max-xs:px-3 mt-4 py-3 border shadow mx-[276px] max-xl:mx-24 max-lg:mx-10 max-sm:mx-0 max-xs:mx-2 mb-7 rounded-[4px]">
               <div className="flex justify-between ">
                 <p className="w-full font-bold text-lg">Detail Pesanan</p>
-                {console.log(
-                  "data_tiket?.data?.checkout?.is_payment",
-                  data_tiket?.data?.checkout?.is_payment
-                )}
                 <p
                   className={`text-sm max-sm:text-xs text-white flex rounded-2xl py-1 px-3 items-center ${
-                    data_tiket?.data?.checkout?.is_payment === true
+                    data_tiket?.data?.checkout?.status === "Paid"
                       ? "bg-[#73CA5C]"
+                      : data_tiket?.data?.checkout?.status === "Cancelled"
+                      ? "bg-gray-500"
                       : "bg-red-500"
                   } whitespace-nowrap`}
                 >
-                  {data_tiket?.data?.checkout?.is_payment === true
-                    ? "Paid"
-                    : "Unpaid"}
+                  {data_tiket?.data?.checkout?.status}
                 </p>
               </div>
               <p className="w-full text-lg pb-[10px]">
