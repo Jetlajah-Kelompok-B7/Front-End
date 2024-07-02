@@ -114,11 +114,12 @@ export default function Payment() {
   const DataPayment = useSelector(
     (state) => state?.booking?.inputanDataPenumpang?.data
   );
+  console.log("Payment  DataPayment:", DataPayment);
+  console.log("DataPayment?.price?.tax", DataPayment?.price?.tax);
   const DetailPenumpangCekout = useSelector(
     (state) => state?.booking?.dataCheckoutBerangkat
   );
   console.log("Data PENUMPANG", DetailPenumpangCekout);
-
 
   // //Mengambil data booking tiket hasil post
   // const DataPaymentPulang = useSelector(
@@ -133,21 +134,17 @@ export default function Payment() {
   // console.log("ID CEKOUT UNTUK GET DATA CEKOUT", userCkIdPergi);
 
   //Mengambil data ID User
-  const userCkId = useSelector(
-    (state) => state?.booking?.inputanDataPenumpang
-  );
-    console.log("Payment  userCkId:", userCkId);
+  const userCkId = useSelector((state) => state?.booking?.inputanDataPenumpang);
+  console.log("Payment  userCkId:", userCkId);
 
   //use buat nyimpan ID ke Action
   useEffect(() => {
     dispatch(getDetailPesanan(userCkIdPergi));
-  }, [dispatch,userCkId]);
+  }, [dispatch, userCkId]);
 
-  
   console.log("data Inputan Pulang", userCkId);
 
   //Fect DAta DEtail PEnumpang Berangkat (DATANYA)
-
 
   // const DataBooking = useSelector(
 
