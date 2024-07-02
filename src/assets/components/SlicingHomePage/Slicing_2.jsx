@@ -59,8 +59,8 @@ export default function Slicing_2() {
           <h1 className=" text-[40px] font-bold mb-4 max-sm:ml-4 max-xs:text-[35px]">
             Promo Menarik <span className="text-[#FE5D02]">Tiket Pesawat</span>
           </h1>
-          <div>
-            <div className="slider-container px-9 custom-slick z-10">
+          <div className="max-xs:flex max-xs:justify-center">
+            <div className="slider-container px-9 max-xs:w-[50vh] custom-slick z-10">
               <Slider {...sliderSettings}>{Image_Slider}</Slider>
             </div>
           </div>
