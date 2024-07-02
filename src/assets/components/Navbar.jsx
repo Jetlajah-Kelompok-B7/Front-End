@@ -38,7 +38,6 @@ export default function Navbar() {
     }
   };
 
-
   useEffect(() => {
     setLogout1(false);
   }, []);
@@ -201,7 +200,7 @@ export default function Navbar() {
                     if (window.confirm("Yakin ingin log-out nih ?")) {
                       dispatch(logout())
                         .then(() => {
-                          window.location.reload();
+                          navigate("/");
                         })
                         .catch((error) => {
                           console.error("Error during logout:", error);

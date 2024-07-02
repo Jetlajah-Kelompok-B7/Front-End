@@ -30,11 +30,9 @@ export default function ModalLogout({ visible, onClose }) {
             if (window.confirm("Yakin ingin log-out nih ?")) {
               dispatch(logout())
                 .then(() => {
-                  window.location.reload();
+                  navigate("/");
                 })
-                .catch((error) => {
-
-               });
+                .catch((error) => {});
             }
           }}
         >
