@@ -11,7 +11,6 @@ import { getDetailPesanan } from "../../../redux/Action/TiketAction";
 export default function ModalBelumBayar({ visible, onClose, idcheckout }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log("idcheckout", idcheckout);
   const handleContainerClick = (e) => {
     if (e.target.id === "container") {
       onClose();

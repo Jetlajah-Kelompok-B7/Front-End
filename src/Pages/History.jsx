@@ -152,7 +152,7 @@ export default function History() {
                       ? "bg-green-500"
                       : e?.status === "Unpaid"
                       ? "bg-red-500"
-                      : "bg-gray-300"
+                      : "bg-gray-500"
                   }`}
                 >
                   {e?.status}
