@@ -30,7 +30,7 @@ export default function ModalLogout({ visible, onClose }) {
             if (window.confirm("Yakin ingin log-out nih ?")) {
               dispatch(logout())
                 .then(() => {
-                  navigate("/");
+                  navigate("/login");
                 })
                 .catch((error) => {
                   console.error("Logout failed:", error);
