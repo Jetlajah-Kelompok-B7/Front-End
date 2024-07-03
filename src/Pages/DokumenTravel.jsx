@@ -39,8 +39,9 @@ const travelDokumen = () => {
   );
   // console.log("DATA PULANG", DataBookingPulang);
 
+  //MENAMPILKAN  DATA PENUMPANG KESELURAHN
   const DataPenumpang = useSelector((state) => state.tiket);
-  // console.log("Data penumpangoONE", DataPenumpang);
+  //  console.log("Data penumpangoONE", DataPenumpang);
 
   // const DataBaru = useSelector((state) => state?.tiket);
   const typePenerbanngan = useSelector(
