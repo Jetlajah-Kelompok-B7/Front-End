@@ -32,7 +32,9 @@ export default function ModalLogout({ visible, onClose }) {
                 .then(() => {
                   navigate("/");
                 })
-                .catch((error) => {});
+                .catch((error) => {
+                  console.error("Logout failed:", error);
+                });
             }
           }}
         >
