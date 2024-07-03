@@ -14,15 +14,6 @@ export default function ForgotPassword() {
   const pesan = useSelector((state) => state.login?.message);
   const [isActivePage, setIsActivePage] = useState(true);
 
- //pengaman agar jika user belum login
- const Condition = useSelector((state) => {
-  return state.tiket2.isLoggin;
-});
-useEffect(() => {
-  if (Condition !== true) {
-    navigate("/login");
-  }
-}, [dispatch]);
   const theState = useSelector((state) => state);
   const handleEmailChange = (event) => {
     dispatch(setEmail(event.target.value)); // Dispatch action untuk mengubah email di Redux state
