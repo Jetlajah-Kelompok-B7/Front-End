@@ -26,8 +26,6 @@ import BackToTop from "../assets/components/Modal/TombolBalikAtas";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
-
 function Icon({ id, open }) {
   return (
     <svg
@@ -62,8 +60,9 @@ export default function Payment() {
   const handleOpen = (value) => setOpen(open === value ? 0 : value);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   // const theState = useSelector((state) => state);
-  // // console.log("theState", theState);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -130,27 +129,58 @@ export default function Payment() {
   // );
   // console.log("Data Pulang penumpnag", DatahasilOrderPulang);
 
-   //Mengambil data booking tiket hasil post
-   const DataPayment = useSelector(
+  //Mengambil data booking tiket hasil post
+  const DataPayment = useSelector(
     (state) => state?.booking?.inputanDataPenumpang?.data
   );
-   console.log("Payment  DataPayment:", DataPayment);
+  console.log("Payment  DataPayment:", DataPayment);
   // console.log("DataPayment?.price?.tax", DataPayment?.price?.tax);
+ 
+ 
+  //Mengambil data ID User Pergi
+ const userCkIdPergi = useSelector(
+  (state) => state?.booking?.inputanDataPenumpang?.data
+);
+console.log("ID CEKOUT UNTUK GET DATA CEKOUT", userCkIdPergi);
+
+
+
+  useEffect(() => {
+    console.log("DATA DATA")
+    dispatch(getDetailPesanan( userCkIdPergi));
+  }, [dispatch,  userCkIdPergi]);
+
   const DetailPenumpangCekout = useSelector(
     (state) => state?.booking?.dataCheckoutBerangkat
   );
-   console.log("DetailPEnumpangCK baruuuuuuuuuuuuuuuuu", DetailPenumpangCekout);
-  // console.log("Data PENUMPANG", DetailPenumpangCekout?.orders);
+  console.log("DetailPEnumpangCK baruuuuuuuuuuuuuuuuu", DetailPenumpangCekout);
 
-  //hitung penumpang
+  // Initialize state for passenger counts
   const [dewasa, setDewasa] = useState(0);
   const [bayi, setBayi] = useState(0);
-  const penumpangArray = Object.values(DetailPenumpangCekout?.orders);
-  //Data Harga
-  const totalHarga = DetailPenumpangCekout?.total;
-  const taxTiket = DetailPenumpangCekout?.tax;
+
+  // Check if orders are present and not empty
+  const penumpangArray = DetailPenumpangCekout?.orders
+    ? Object.values(DetailPenumpangCekout.orders)
+    : [];
+
+  // Calculate ticket price only if there are passengers
+  const totalHarga = DetailPenumpangCekout?.total || 0;
+  const taxTiket = DetailPenumpangCekout?.tax || 0;
   const hargaTiket =
-    (DetailPenumpangCekout?.total - taxTiket) / penumpangArray.length;
+    penumpangArray.length > 0
+      ? (DetailPenumpangCekout.total - taxTiket) / penumpangArray.length
+      : 0;
+
+  // Check and update passenger counts
+  useEffect(() => {
+    if (penumpangArray.length > 0) {
+      const dewasaCount = penumpangArray.filter((p) => p.age >= 18).length;
+      const bayiCount = penumpangArray.filter((p) => p.age < 2).length;
+      setDewasa(dewasaCount);
+      setBayi(bayiCount);
+    }
+  }, [penumpangArray]);
 
   useEffect(() => {
     let dewasaCount = 0;
@@ -174,15 +204,10 @@ export default function Payment() {
   // );
   // console.log("Data PENUMPANG HASIL POST PULANG", DataPaymentPulang);
 
-  //Mengambil data ID User Pergi
-  const userCkIdPergi = useSelector(
-    (state) => state?.booking?.inputanDataPenumpang?.data?.checkoutId
-  );
-   console.log("ID CEKOUT UNTUK GET DATA CEKOUT", userCkIdPergi);
-
+ 
   //Mengambil data ID User
   const userCkId = useSelector((state) => state?.booking?.inputanDataPenumpang);
-   console.log("Payment  userCkId:", userCkId);
+  console.log("Payment  userCkId:", userCkId);
 
   //use buat nyimpan ID ke Action
 
@@ -254,11 +279,11 @@ export default function Payment() {
 
   return (
     <div className="bg-white ">
-     <div className="fixed  w-full bg-white z-50 shadow">
+      <div className="fixed  w-full bg-white z-50 shadow">
         <Navbar />
       </div>
-       {/* Header PIlihan */}
-       <div className="bg-white shadow-md  w-full max-sm:px-0 lg:px-36 max-sm:w-full  ">
+      {/* Header PIlihan */}
+      <div className="bg-white shadow-md  w-full max-sm:px-0 lg:px-36 max-sm:w-full  ">
         <div className="mx-4 sm:mx-20 pt-5">
           <div className="flex mt-28">
             <button
@@ -286,11 +311,10 @@ export default function Payment() {
         {/* FORM PENBAYARAN*/}
         <div className="lg:mx-[220px] sm:mx-[80px] max-sm:w-full flex max-lg:flex-col-reverse ">
           <div className="flex flex-col gap-4 flex-1 max-sm:p-5 p-8 md:px-2">
-       
             <p className="text-[20px] font-bold">Pembayaran</p>
             {/* GOPAY*/}
             <Accordion open={open === 1}>
-            <AccordionHeader
+              <AccordionHeader
                 onClick={() => handleOpen(1)}
                 className="bg-[#176B87] rounded-[4px]"
               >
@@ -731,7 +755,7 @@ export default function Payment() {
           </div>
         </div>
       </div>
-      <BackToTop/>
+      <BackToTop />
     </div>
   );
 }

@@ -8,7 +8,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getPayment } from "../redux/Action/TiketAction";
+import { getDetailPesanan, getPayment } from "../redux/Action/TiketAction";
 import { setDokumenBooking } from "../redux/Reducers/DataBooking";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -234,71 +234,78 @@ const travelDokumen = () => {
   // console.log("DATA PULANG DARI ORDER", dataInputanPesananPulang);
 
   const handleSimpanDataPenumpang = () => {
-    const isValid = penumpangData.every(
-      (penumpang) =>
-        penumpang.titel &&
-        penumpang.nama &&
-        penumpang.tanggal_lahir &&
-        penumpang.kewarganegaraan &&
-        penumpang.ktp_pasport &&
-        penumpang.negara_penerbit &&
-        penumpang.berlaku_sampai
-    );
+    return new Promise((resolve, reject) => {
+      const isValid = penumpangData.every(
+        (penumpang) =>
+          penumpang.titel &&
+          penumpang.nama &&
+          penumpang.tanggal_lahir &&
+          penumpang.kewarganegaraan &&
+          penumpang.ktp_pasport &&
+          penumpang.negara_penerbit &&
+          penumpang.berlaku_sampai
+      );
 
-    if (isValid) {
-      const dataToSave = penumpangData.map((penumpang, tipePenumpang) => ({
-        titel: penumpang.titel,
-        nama: penumpang.nama,
-        tanggal_lahir: penumpang.tanggal_lahir,
-        kewarganegaraan: penumpang.kewarganegaraan,
-        ktp_pasport: penumpang.ktp_pasport,
-        negara_penerbit: penumpang.negara_penerbit,
-        // Format tanggal berlaku
-        berlaku_sampai: new Date(penumpang.berlaku_sampai).toISOString(),
-        is_baby: penumpang.is_baby,
-      }));
+      if (isValid) {
+        const dataToSave = penumpangData.map((penumpang, tipePenumpang) => ({
+          titel: penumpang.titel,
+          nama: penumpang.nama,
+          tanggal_lahir: penumpang.tanggal_lahir,
+          kewarganegaraan: penumpang.kewarganegaraan,
+          ktp_pasport: penumpang.ktp_pasport,
+          negara_penerbit: penumpang.negara_penerbit,
+          // Format tanggal berlaku
+          berlaku_sampai: new Date(penumpang.berlaku_sampai).toISOString(),
+          is_baby: penumpang.is_baby,
+        }));
 
-      // Simpan dataToSave ke dalam state atau lakukan dispatch ke action lain sesuai kebutuhan
-      // console.log("Data to save:", dataToSave);
+        // Simpan dataToSave ke dalam state atau lakukan dispatch ke action lain sesuai kebutuhan
+        const paramsData = {
+          penumpang: dataToSave,
+          tipePenumpang: typePenerbanngan,
+        };
 
-      const paramsData = {
-        penumpang: dataToSave,
-        tipePenumpang: typePenerbanngan,
-      };
-      dispatch(
-        getPayment(
-          [dataInputPesanan.id, dataInputanPesananPulang.id],
-          paramsData,
-          navigate
-        )
-      ); // Pastikan dataInputPesanan.id tersedia
-      dispatch(setDokumenBooking(paramsData));
-    } else {
-      toast.warning("Semua form wajib diisi!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-   
-    }
-    // console.log("data Inputan Pergi", dataInputPesanan.id);
-    // console.log("data Inputan Pulang", dataInputanPesananPulang.id);
+        dispatch(
+          getPayment(
+            [dataInputPesanan.id, dataInputanPesananPulang.id],
+            paramsData,
+            navigate
+          )
+        ); // Pastikan dataInputPesanan.id tersedia
+        dispatch(setDokumenBooking(paramsData));
+
+        resolve(); // Resolve the promise when done
+      } else {
+        toast.warning("Semua form wajib diisi!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+
+        reject("Form is incomplete"); // Reject the promise if form is incomplete
+      }
+    });
   };
 
   const dataPemesan = useSelector((state) => state?.login);
   //  console.log("Data Pemesan user", dataPemesan);
 
+  const userCkIdPergi = useSelector(
+    (state) => state?.booking?.inputanDataPenumpang?.data?.checkoutId
+  );
+  console.log("ID CEKOUT UNTUK GET DATA CEKOUT", userCkIdPergi);
+
   return (
     <>
       <div className="bg-white">
-      <div className="fixed  w-full bg-white z-50 shadow">
-        <Navbar />
-      </div>
+        <div className="fixed  w-full bg-white z-50 shadow">
+          <Navbar />
+        </div>
         {/* Header Atas */}
         <div className="bg-white shadow-md w-full max-sm:w-full md:px-4 ma ">
           <div className="mx-4 lg:mx-20 pt-5 ">
@@ -730,7 +737,9 @@ const travelDokumen = () => {
                       <div className="py-5 border-t-2">
                         <button
                           className="bg-[#176B87] w-full text-white text-xl font-semibold py-2 px-5 flex justify-center items-center rounded-xl "
-                          onClick={handleSimpanDataPenumpang}
+                          onClick={() => {
+                            handleSimpanDataPenumpang();
+                          }}
                         >
                           Lanjut Bayar
                         </button>
@@ -742,7 +751,7 @@ const travelDokumen = () => {
             </div>
           </div>
         </div>
-        <BackToTop/>
+        <BackToTop />
       </div>
     </>
   );

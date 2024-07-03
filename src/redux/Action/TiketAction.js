@@ -108,8 +108,8 @@ export const getPayment =
         `/api/order/${orderId[0]}`,
         paramsData.penumpang
       );
-      // console.log("Response Payment Sekali Jalan:", response1);
-      dispatch(setHasilPostDataPenumpang(response1.data)); // Pastikan payload benar
+      console.log("Response Payment Sekali Jalan:", response1.data.checkoutId);
+      dispatch(setHasilPostDataPenumpang(response1.data.checkoutId)); // Pastikan payload benar
 
       // Jika tipe penumpang adalah "Pergi - Pulang" dan ada ID untuk penerbangan pulang
       if (
@@ -138,7 +138,8 @@ export const getPayment =
         theme: "colored",
       });
       // Navigasi ke halaman pembayaran
-      navigate("/payment");
+      navigate("/Payment");
+   
     } catch (error) {
       console.error(
         "Error:",
@@ -165,10 +166,10 @@ export const getDetailPesanan = (checkoutId) => async (dispatch) => {
     const repsonse = await axios.get(`/api/checkout/${checkoutId}`);
     // console.log("checkoutId", checkoutId);
     dispatch(setDataChekoutBerangkat(repsonse.data.data));
-    // console.log("seriesssss", repsonse);
+    console.log("seriesssss", repsonse);
     return repsonse;
   } catch (error) {
-    // console.log("error", error);
+    console.log("error", error);
     if (axios.isAxiosError(error)) {
       alert(error.message);
       return;
