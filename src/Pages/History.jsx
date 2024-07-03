@@ -75,11 +75,11 @@ export default function History() {
 
   return (
     <div className="bg-white h-screen overflow-y-auto">
-      <div className="shadow">
+      <div className="fixed  w-full bg-white z-50 shadow">
         <Navbar />
       </div>
       {/* Riwayat Pemesanan */}
-      <div className="shadow flex flex-col gap-3 pb-3 pt-[47px] px-[260px] max-xl:px-5">
+      <div className="shadow flex flex-col gap-3 pb-3 pt-[47px] px-[260px] max-xl:px-5 mt-20">
         <div className="w-full  text-xl font-bold">Riwayat Pemesanan</div>
         <div className="flex mx-[16px] items-cente mt-6 gap-4 max-xs:flex-col max-xs:mx-0">
           <button

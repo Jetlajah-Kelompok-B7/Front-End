@@ -6,6 +6,7 @@ import { getNotification } from "../redux/Action/actionLogin";
 import { useDispatch, useSelector } from "react-redux";
 import { format, differenceInMinutes } from "date-fns";
 import { id } from "date-fns/locale"; // Import locale ID
+import BackToTop from "../assets/components/Modal/TombolBalikAtas.jsx";
 
 export default function Notification() {
   const navigate = useNavigate();
@@ -51,9 +52,11 @@ export default function Notification() {
 
   return (
     <>
-      <Navbar />
+      <div className="fixed  w-full bg-white z-50 shadow">
+        <Navbar />
+      </div>
       <div className="flex flex-col items-center justify-center mb-10">
-        <div className="flex w-full h-auto mt-[15px]">
+        <div className="flex w-full h-auto mt-[50px] ">
           <div className="w-full flex lg:mx-auto">
             <div className="w-full flex flex-col justify-center mx-10 max-sm:mx-2 pb-5">
               <h1 className="poppins-bold ml-5 text-4xl">Notifikasi</h1>
@@ -227,6 +230,7 @@ export default function Notification() {
             </div>
           </div>
         </div>
+        <BackToTop/>
       </div>
     </>
   );

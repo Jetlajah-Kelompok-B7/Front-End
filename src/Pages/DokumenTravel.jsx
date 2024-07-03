@@ -10,6 +10,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getPayment } from "../redux/Action/TiketAction";
 import { setDokumenBooking } from "../redux/Reducers/DataBooking";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import BackToTop from "../assets/components/Modal/TombolBalikAtas";
 
 const travelDokumen = () => {
   const [penumpangData, setPenumpangData] = useState([]);
@@ -261,7 +264,6 @@ const travelDokumen = () => {
         penumpang: dataToSave,
         tipePenumpang: typePenerbanngan,
       };
-
       dispatch(
         getPayment(
           [dataInputPesanan.id, dataInputanPesananPulang.id],
@@ -271,7 +273,17 @@ const travelDokumen = () => {
       ); // Pastikan dataInputPesanan.id tersedia
       dispatch(setDokumenBooking(paramsData));
     } else {
-      alert("Semua form wajib diisi!");
+      toast.warning("Semua form wajib diisi!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+   
     }
     // console.log("data Inputan Pergi", dataInputPesanan.id);
     // console.log("data Inputan Pulang", dataInputanPesananPulang.id);
@@ -282,41 +294,43 @@ const travelDokumen = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="container mx-auto">
-        <div className="">
-          {/* Header Atas */}
-          <div className="bg-white shadow-md  w-full max-sm:px-0 px-36 max-sm:w-full">
-            <div className="mx-4 sm:mx-20  pt-5 ">
-              <div className="flex">
-                <button className="flex items-center ml-4 text-lg font-bold text-[#176B87] ">
-                  Isi Data diri
-                  <ChevronRightIcon className="h-6 w-6 text-[#176B87] mr-1" />
-                </button>
-                <button className="flex items-center ml-4 text-lg font-semibold text-slate-500 ">
-                  Bayar
-                  <ChevronRightIcon className="h-6 w-6 text-text-slate-500 mr-1" />
-                </button>
-                <button className="flex items-center ml-4 text-lg font-semibold text-slate-500 ">
-                  Selesai
-                  <ChevronRightIcon className="h-6 w-6 text-text-slate-500 mr-1" />{" "}
-                </button>
-              </div>
-            </div>
-            <div className=" mx-4 sm:mx-auto sm:max-w-none sm:mr-0 sm:pl-2  md:mr-20 md:pl-52 py-5 text-center">
-              <button
-                className=" max-sm:w-full flex items-center pl-5 gap-5 w-[800px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl"
-                onClick={() => navigate("/resultSearch")}
-              >
-                <ArrowLongLeftIcon className="h-12 w-12 text-slate-200 mr-1 pl-1 flex items-center" />
-                Kembali
+      <div className="bg-white">
+      <div className="fixed  w-full bg-white z-50 shadow">
+        <Navbar />
+      </div>
+        {/* Header Atas */}
+        <div className="bg-white shadow-md w-full max-sm:w-full md:px-4  ">
+          <div className="mx-4 lg:mx-20 pt-5 ">
+            <div className="flex mt-28 lg:mx-36">
+              <button className="flex items-center lg:ml-4 text-lg font-bold text-[#176B87] ">
+                Isi Data diri
+                <ChevronRightIcon className="h-6 w-6 text-[#176B87] mr-1" />
+              </button>
+              <button className="flex items-center ml-4 text-lg font-semibold text-slate-500 ">
+                Bayar
+                <ChevronRightIcon className="h-6 w-6 text-text-slate-500 mr-1" />
+              </button>
+              <button className="flex items-center ml-4 text-lg font-semibold text-slate-500 ">
+                Selesai
+                <ChevronRightIcon className="h-6 w-6 text-text-slate-500 mr-1" />{" "}
               </button>
             </div>
           </div>
-          <div  className="max-sm:w-full max-sm:flex-col flex justify-center gap-10 mx-10 px-20 max-sm:px-0 max-sm:mx-0">
+          <div className=" mx-4 sm:mx-auto sm:max-w-none sm:mr-0 sm:pl-2  flex justify-center py-5 text-center">
+            <button
+              className=" max-sm:w-full flex items-center pl-5 gap-5 w-[800px] h-[50] text-white font-semibold bg-gradient-to-r from-[#176B87] to-[#64CCC5] rounded-xl"
+              onClick={() => navigate("/resultSearch")}
+            >
+              <ArrowLongLeftIcon className="h-12 w-12 text-slate-200 mr-1 pl-1 flex items-center" />
+              Kembali
+            </button>
+          </div>
+        </div>
+        <div className="container mx-auto">
+          <div className="max-sm:w-full max-lg:flex-col flex justify-center gap-10 mx-10 px-20 max-sm:px-0 max-sm:mx-0">
             <div>
-                  {/* Data Pemesanan */}
-                  <div className="max-sm:w-full mt-10 border rounded-xl border-slate-300 p-10 w-[600px] text-xl">
+              {/* Data Pemesanan */}
+              <div className="max-sm:w-full mt-10 border rounded-xl border-slate-300 p-10 lg:w-[600px] w-full text-xl">
                 <p className="text-[#176B87] font-semibold pb-5">
                   Isi Data Pemesanan
                 </p>
@@ -326,29 +340,29 @@ const travelDokumen = () => {
                   </p>
                   {<form action="" className="py-3 "></form>}
                   <p className="text-[#176B87] font-semibold">Nama Lengkap</p>
-                  <p className="border border-slate-300 w-[520px] p-2 my-2 max-sm:w-full">
+                  <p className="border border-slate-300 lg:w-[520px] w-full p-2 my-2 max-sm:w-full">
                     {dataPemesan?.nama}
                   </p>
                   <p className="text-[#176B87] font-semibold">Nomor Telepon</p>
-                  <p className="border border-slate-300 w-[520px] p-2 my-2 max-sm:w-full">
+                  <p className="border border-slate-300 lg:w-[520px] w-full p-2 my-2 max-sm:w-full">
                     {dataPemesan?.no_telp}
                   </p>
                   <p className="text-[#176B87] font-semibold">Alamat</p>
-                  <p className="border border-slate-300 w-[520px] p-2 my-2 max-sm:w-full">
+                  <p className="border border-slate-300 lg:w-[520px] w-full p-2 my-2 max-sm:w-full">
                     {dataPemesan?.alamat}
                   </p>
                 </div>
               </div>
 
               {/* Isi Data Penumpang */}
-              <div className="mt-10 border rounded-xl border-slate-300 p-10 w-[600px] text-xl max-sm:w-full max-sm:p-5 ">
-                <p className="text-[#176B87] font-semibold pb-5 " >
+              <div className="mt-10 border rounded-xl border-slate-300 p-10 lg:w-[600px] w-full text-xl max-sm:w-full max-sm:p-5 ">
+                <p className="text-[#176B87] font-semibold pb-5 ">
                   Isi Data Penumpang
                 </p>
                 {penumpangData.map((penumpang, index) => (
                   <div
                     key={penumpang?.id}
-                    className="mt-5 border rounded-xl border-slate-300 p-10 w-[520px] text-xl max-sm:w-full max-sm:p-5"
+                    className="mt-5 border rounded-xl border-slate-300 p-10 lg:w-[520px] w-full text-xl max-sm:w-full max-sm:p-5"
                   >
                     <div>
                       <p className="bg-[#176B87] text-white rounded-t-md py-2 px-4">
@@ -367,7 +381,7 @@ const travelDokumen = () => {
                             e?.target?.value
                           )
                         }
-                        className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full    "
+                        className="border border-slate-300 lg:lg:w-[440px] w-full w-full p-2 my-2 max-sm:w-full    "
                       >
                         <option value=""></option>
                         <option value="Tuan">Tuan</option>
@@ -388,7 +402,7 @@ const travelDokumen = () => {
                             e.target.value
                           )
                         }
-                        className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full"
+                        className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
                       />
                       <label className="text-[#176B87] font-semibold">
                         Tanggal Lahir
@@ -404,7 +418,7 @@ const travelDokumen = () => {
                             e.target.value
                           )
                         }
-                        className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full"
+                        className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
                       />
                       <label className="text-[#176B87] font-semibold">
                         Kewarganegaraan
@@ -412,7 +426,8 @@ const travelDokumen = () => {
                       <Select
                         required
                         value={options.find(
-                          (option) => option.value === penumpang?.kewarganegaraan
+                          (option) =>
+                            option.value === penumpang?.kewarganegaraan
                         )}
                         onChange={(selectedOption) =>
                           handleInputChange(
@@ -422,7 +437,7 @@ const travelDokumen = () => {
                           )
                         }
                         options={options}
-                        className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full"
+                        className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
                       />
                       <label className="text-[#176B87] font-semibold">
                         No KTP/Paspor
@@ -438,7 +453,7 @@ const travelDokumen = () => {
                             e?.target?.value
                           )
                         }
-                        className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full"
+                        className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
                       />
                       <label className="text-[#176B87] font-semibold">
                         Negara Penerbit
@@ -446,7 +461,8 @@ const travelDokumen = () => {
                       <Select
                         required
                         value={options.find(
-                          (option) => option?.value === penumpang?.negara_penerbit
+                          (option) =>
+                            option?.value === penumpang?.negara_penerbit
                         )}
                         onChange={(selectedOption) =>
                           handleInputChange(
@@ -456,7 +472,7 @@ const travelDokumen = () => {
                           )
                         }
                         options={options}
-                        className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full"
+                        className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
                       />
                       <label className="text-[#176B87] font-semibold">
                         Berlaku Sampai
@@ -472,7 +488,7 @@ const travelDokumen = () => {
                             e?.target?.value
                           )
                         }
-                        className="border border-slate-300 w-[440px] p-2 my-2 max-sm:w-full"
+                        className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
                       />
                     </div>
                   </div>
@@ -489,7 +505,7 @@ const travelDokumen = () => {
             </div>
 
             {/* Detail Penerbangan */}
-            <div className="w-[400px] mt-10 max-sm:w-full">
+            <div className="lg:w-[400px] mt-10 w-full">
               <div className="p-5 border-2 border-slate-200 rounded-xl">
                 <div>
                   <div className="mt-5">
@@ -509,7 +525,9 @@ const travelDokumen = () => {
                             </p>
                           </div>
 
-                          <p>{formatDate(DataBooking?.schedule?.takeoff?.time)}</p>
+                          <p>
+                            {formatDate(DataBooking?.schedule?.takeoff?.time)}
+                          </p>
                           <p>{DataBooking?.schedule?.takeoff?.airport_name}</p>
                           <p>
                             Terminal {DataBooking?.schedule?.takeoff?.terminal}
@@ -532,7 +550,8 @@ const travelDokumen = () => {
                             <p>{DataBooking?.class}</p>
                             <p>Bagasi {DataBooking?.plane?.baggage} Kg</p>
                             <p>
-                              Bagasi Kabin {DataBooking?.plane?.cabin_baggage} Kg
+                              Bagasi Kabin {DataBooking?.plane?.cabin_baggage}{" "}
+                              Kg
                             </p>
                             {/* <p>Fasilitas {DataBooking.Fasilitas}</p> */}
                           </div>
@@ -547,7 +566,9 @@ const travelDokumen = () => {
                             </p>
                           </div>
 
-                          <p>{formatDate(DataBooking?.schedule?.landing?.time)}</p>
+                          <p>
+                            {formatDate(DataBooking?.schedule?.landing?.time)}
+                          </p>
                           <p>{DataBooking?.schedule?.landing?.airport_name}</p>
                           <p>
                             Terminal {DataBooking?.schedule?.landing?.terminal}
@@ -568,7 +589,8 @@ const travelDokumen = () => {
                                   <div className="flex justify-between">
                                     <p className="font-bold text-xl">
                                       {formatTime(
-                                        DataBookingPulang?.schedule?.takeoff?.time
+                                        DataBookingPulang?.schedule?.takeoff
+                                          ?.time
                                       )}
                                     </p>
                                     <p className="font-semibold text-[#64CCC5]">
@@ -582,7 +604,8 @@ const travelDokumen = () => {
                                   </p>
                                   <p>
                                     {
-                                      DataBookingPulang.schedule?.takeoff?.airport_name
+                                      DataBookingPulang.schedule?.takeoff
+                                        ?.airport_name
                                     }
                                   </p>
                                   <p>
@@ -597,7 +620,9 @@ const travelDokumen = () => {
                                   <div className="flex items-center">
                                     <img
                                       src={DataBookingPulang?.plane?.logo}
-                                      alt={DataBookingPulang?.plane?.airline_name}
+                                      alt={
+                                        DataBookingPulang?.plane?.airline_name
+                                      }
                                       className="h-6 w-6"
                                     />
                                   </div>
@@ -616,7 +641,8 @@ const travelDokumen = () => {
                                     </p>
                                     <p>
                                       Bagasi Kabin{" "}
-                                      {DataBookingPulang?.plane?.cabin_baggage} Kg
+                                      {DataBookingPulang?.plane?.cabin_baggage}{" "}
+                                      Kg
                                     </p>
                                   </div>
                                 </div>
@@ -624,7 +650,8 @@ const travelDokumen = () => {
                                   <div className="flex justify-between">
                                     <p className="font-bold text-xl">
                                       {formatTime(
-                                        DataBookingPulang?.schedule?.landing?.time
+                                        DataBookingPulang?.schedule?.landing
+                                          ?.time
                                       )}
                                     </p>
                                     <p className="font-semibold text-[#64CCC5]">
@@ -701,7 +728,7 @@ const travelDokumen = () => {
                       </div>
                       <div className="py-5 border-t-2">
                         <button
-                          className="bg-[#176B87] text-white text-xl font-semibold py-2 px-5 flex justify-center items-center rounded-xl w-[350px] max-sm:w-full"
+                          className="bg-[#176B87] w-full text-white text-xl font-semibold py-2 px-5 flex justify-center items-center rounded-xl "
                           onClick={handleSimpanDataPenumpang}
                         >
                           Lanjut Bayar
@@ -714,6 +741,7 @@ const travelDokumen = () => {
             </div>
           </div>
         </div>
+        <BackToTop/>
       </div>
     </>
   );

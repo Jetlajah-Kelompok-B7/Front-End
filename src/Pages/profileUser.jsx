@@ -129,7 +129,6 @@ export default function ProfileUser() {
     dispatch(profileUser());
   }, [dispatch]);
 
-
   //-----------CHANGE PASSWORD FIELD------------------------------
   const [passwordLama, setPasswordLama] = useState("");
   const [passwordBaru, setPasswordBaru] = useState("");
@@ -284,10 +283,12 @@ export default function ProfileUser() {
   };
   return (
     <div>
-      <Navbar />
-      <div className="flex flex-col items-center justify-center mb-10 w-screen px-2">
-        <div className="flex flex-col w-[70%] max-lg:w-full h-auto py-5 border-[2px] rounded-3xl shadow-lg shadow-[#64CCC5]/20 mt-[15px]">
-          <h1 className="poppins-bold ml-5">Akun</h1>
+      <div className="fixed  w-full bg-white z-50 shadow">
+        <Navbar />
+      </div>
+      <div className="flex flex-col items-center justify-center mb-10 w-screen px-2 ">
+        <div className="flex flex-col w-[70%] max-lg:w-full h-auto py-5 border-[2px] rounded-3xl shadow-lg shadow-[#64CCC5]/20 mt-[150px] ">
+          <h1 className="poppins-bold ml-5 text-center text-2xl bg-black">Akun</h1>
           {/* Button Beranda */}
           <button onClick={() => navigate("/")}>
             <div className="flex items-center text-white text-left px-[16px] mx-5 mt-[22px] w-auto h-[55px] bg-[#04364A] hover:bg-[#142a32] rounded-xl gap-[8px]">

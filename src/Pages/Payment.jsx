@@ -22,6 +22,12 @@ import {
   ArrowDownLeftIcon,
 } from "@heroicons/react/24/outline";
 import PaymentTimer from "./timerPage";
+import BackToTop from "../assets/components/Modal/TombolBalikAtas";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
+
 function Icon({ id, open }) {
   return (
     <svg
@@ -90,6 +96,20 @@ export default function Payment() {
     // navigate(`/confirm-pin?checkoutId=${checkoutId}&metode_pembayaran=${selectedMethod}`);
     // }
 
+    if (!selectedMethod) {
+      toast.warning("Harap Isi Jenis Pembayaran !", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
+
     navigate(
       `/confirm-pin?checkoutId=${checkoutId}&metode_pembayaran=${selectedMethod}`
     );
@@ -115,7 +135,6 @@ export default function Payment() {
     (state) => state?.booking?.inputanDataPenumpang?.data
   );
 
-
   // //Mengambil data booking tiket hasil post
   // const DataPaymentPulang = useSelector(
   //   (state) => state?.booking?.inputanDataPenumpang?.data
@@ -132,21 +151,20 @@ export default function Payment() {
   const userCkId = useSelector(
     (state) => state?.booking?.inputanDataPenumpang?.data?.checkoutId
   );
-  console.log("ID CEKOUT UNTUK GET DATA CEKOUT");
+  // console.log("ID CEKOUT UNTUK GET DATA CEKOUT");
 
   //use buat nyimpan ID ke Action
   useEffect(() => {
     dispatch(getDetailPesanan(userCkIdPergi));
-  }, [dispatch,userCkId]);
+  }, [dispatch, userCkId]);
 
-  
-  console.log("data Inputan Pulang", userCkId);
+  // console.log("data Inputan Pulang", userCkId);
 
   //Fect DAta DEtail PEnumpang Berangkat (DATANYA)
   const DetailPenumpangCekout = useSelector(
     (state) => state?.booking?.dataCheckoutBerangkat
   );
-  console.log("DATA DETAIL CEKOUT", DetailPenumpangCekout);
+  // console.log("DATA DETAIL CEKOUT", DetailPenumpangCekout);
 
   // const DataBooking = useSelector(
   //   (state) => state?.booking?.bookingTiketPesawatPergi
@@ -172,6 +190,8 @@ export default function Payment() {
       .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
       .replace(/\,00$/, "");
   };
+
+  // buat ngitung data Penumpang di jumlah paymnet
 
   useEffect(() => {
     const initialPenumpangData = [];
@@ -206,46 +226,48 @@ export default function Payment() {
 
   return (
     <div className="bg-white ">
-      <Navbar />
-      <div className="container mx-auto">
-        {/* Header PIlihan */}
-        <div className="bg-white shadow-md  w-full max-sm:px-0 px-36 max-sm:w-full">
-          <div className="mx-4 sm:mx-20 pt-5 ">
-            <div className="flex">
-              <button
-                className="flex items-center ml-4 text-lg font-semibold text-slate-500 "
-                onClick={() => navigate("/travelDokumen")}
-              >
-                Isi Data diri
-                <ChevronRightIcon className="h-6 w-6 text-[#176B87] mr-1" />
-              </button>
-              <button className="flex items-center ml-4 text-lg font-bold text-[#176B87] ">
-                Bayar
-                <ChevronRightIcon className="h-6 w-6 text-text-slate-500 mr-1" />
-              </button>
-              <button className="flex items-center ml-4 text-lg font-semibold text-slate-500 ">
-                Selesai
-                <ChevronRightIcon className="h-6 w-6 text-text-slate-500 mr-1" />
-              </button>
-            </div>
-          </div>
-          <div className="max-w-full mx-4 sm:mx-auto sm:max-w-none sm:mr-0 sm:pl-2  md:mr-20 md:pl-52 py-5 text-center">
-            <PaymentTimer />
+     <div className="fixed  w-full bg-white z-50 shadow">
+        <Navbar />
+      </div>
+       {/* Header PIlihan */}
+       <div className="bg-white shadow-md  w-full max-sm:px-0 lg:px-36 max-sm:w-full  ">
+        <div className="mx-4 sm:mx-20 pt-5">
+          <div className="flex mt-28">
+            <button
+              className="flex items-center lg:ml-4 text-lg font-semibold text-slate-500 "
+              onClick={() => navigate("/travelDokumen")}
+            >
+              Isi Data diri
+              <ChevronRightIcon className="h-6 w-6 text-[#176B87] mr-1" />
+            </button>
+            <button className="flex items-center ml-4 text-lg font-bold text-[#176B87] ">
+              Bayar
+              <ChevronRightIcon className="h-6 w-6 text-text-slate-500 mr-1" />
+            </button>
+            <button className="flex items-center ml-4 text-lg font-semibold text-slate-500 ">
+              Selesai
+              <ChevronRightIcon className="h-6 w-6 text-text-slate-500 mr-1" />
+            </button>
           </div>
         </div>
-
+        <div className="max-w-full mx-4 sm:mx-auto sm:max-w-none sm:mr-0 sm:pl-2  md:mr-20 md:pl-24 py-5 text-center">
+          <PaymentTimer />
+        </div>
+      </div>
+      <div className="container mx-auto ">
         {/* FORM PENBAYARAN*/}
-        <div className="mx-[276px] max-sm:mx-5 flex  max-sm:flex-col-reverse ">
-          <div className="flex flex-col gap-4 flex-1 p-8">
-            <p className="text-[20px] font-bold">Isi Data Pembayaran</p>
+        <div className="lg:mx-[220px] sm:mx-[80px] max-sm:w-full flex max-lg:flex-col-reverse ">
+          <div className="flex flex-col gap-4 flex-1 max-sm:p-5 p-8 md:px-2">
+       
+            <p className="text-[20px] font-bold">Pembayaran</p>
             {/* GOPAY*/}
             <Accordion open={open === 1}>
-              <AccordionHeader
+            <AccordionHeader
                 onClick={() => handleOpen(1)}
                 className="bg-[#176B87] rounded-[4px]"
               >
                 <div className="flex justify-between items-center w-full -mr-4 px-4 font-medium text-lg text-white">
-                  GoPay <Icon id={1} open={open} />
+                  Gopay <Icon id={1} open={open} />
                 </div>
               </AccordionHeader>
               <AccordionBody>
@@ -406,19 +428,19 @@ export default function Payment() {
           </div>
 
           {/* Booking Code */}
-          <div className="py-8">
-            <div className=" text-sm border-2 rounded-lg w-[400px] max-sm:w-full">
+          <div className="pt-20 max-sm:pt-10 max-sm:m-5">
+            <div className=" text-sm border-2 rounded-lg lg:w-[400px] w-[600px] max-sm:w-full ">
               {/* Keberangkatan */}
-              <p className=" text-xl text-white font-bold border bg-[#176B87] py-2  text-center rounded-t-lg ">
+              <p className=" text-xl text-white font-bold border bg-[#176B87] py-4  text-center rounded-t-lg ">
                 Pergi
               </p>
-              <p className="font-bold text-lg border-b-2 px-2 py-2">
+              <p className="font-bold text-lg border-b-2 px-5 py-2">
                 Booking Code :{" "}
                 <span className="text-[#176B87] ">
                   {DetailPenumpangCekout?.booking_code}
                 </span>
               </p>
-              <div className="px-2">
+              <div className="px-5">
                 <p className="text-base">
                   <span className="font-semibold flex items-center gap-2">
                     {" "}
@@ -437,7 +459,7 @@ export default function Payment() {
               </div>
 
               {/* PESAWAT PERGI */}
-              <div className="flex items-start gap-2 border-b border-t py-2 mt-4 mb-3">
+              <div className="flex items-start gap-2 border-b border-t py-2 px-5 mt-4 mb-3">
                 <img
                   src={DetailPenumpangCekout?.maskapai?.logo_maskapai}
                   alt=""
@@ -462,7 +484,7 @@ export default function Payment() {
                 <Accordion open={open === 4}>
                   <AccordionHeader
                     onClick={() => handleOpen(4)}
-                    className="bg-[#176B87] rounded-[4px]"
+                    className="bg-[#64CCC5] rounded-[4px]"
                   >
                     <div className="flex justify-between items-center w-full -mr-4 px-4 font-medium text-lg text-white">
                       Detail Penerbangan <Icon id={4} open={open} />
@@ -470,15 +492,18 @@ export default function Payment() {
                   </AccordionHeader>
 
                   <AccordionBody>
-                    <div className="px-5">
-                      <div>
+                    <div className="px-5 text-black">
+                      <div className="font-normal">
                         <p className="text-sm">
                           <span className="text-lg font-bold">
                             Informasi Keberangkatan
                           </span>{" "}
                           <br />
                           Bandara Keberangkatan :{" "}
-                          {DetailPenumpangCekout?.orders?.no_kursi}
+                          {
+                            DetailPenumpangCekout?.bandara_keberangkatan
+                              ?.nama_bandara
+                          }
                         </p>
                         <p className="text-sm">
                           Terminal_kedatanga :{" "}
@@ -496,22 +521,25 @@ export default function Payment() {
                         </p>
                       </div>
                       <div className="pt-5">
-                        <p className="text-sm">
+                        <p className="text-sm font-normal">
                           <span className="text-lg font-bold">
                             Informasi Kedatangan
                           </span>{" "}
                           <br />
-                          Bandara Keberangkatan :{" "}
-                          {DetailPenumpangCekout?.orders?.no_kursi}
+                          Bandara Kedatangan :{" "}
+                          {
+                            DetailPenumpangCekout?.bandara_kedatangan
+                              ?.nama_bandara
+                          }
                         </p>
-                        <p className="text-sm">
+                        <p className="text-sm font-normal">
                           Terminal_kedatanga :{" "}
                           {
                             DetailPenumpangCekout?.bandara_keberangkatan
                               ?.terminal_kedatangan
                           }
                         </p>
-                        <p className="text-sm">
+                        <p className="text-sm font-normal ">
                           Kode Bandara :{" "}
                           {
                             DetailPenumpangCekout?.bandara_keberangkatan
@@ -647,12 +675,12 @@ export default function Payment() {
 
               {/* Rincian Harga */}
               <div className="my-3 py-2 border-t-2 border-b-2">
-                <p className="font-bold text-xl">Rincian Harga</p>
-                <div className="grid grid-cols-2 gap-2">
+                <p className="font-bold text-xl px-5">Rincian Harga</p>
+                <div className="grid grid-cols-2 gap-2 ">
                   {Object.entries(groupPenumpangData).map(
                     ([name, { count, ageGroup }]) => (
                       <div
-                        className="flex justify-between col-span-2"
+                        className="flex justify-between col-span-2 px-5"
                         key={name}
                       >
                         <div className="flex gap-2">
@@ -667,15 +695,15 @@ export default function Payment() {
                       </div>
                     )
                   )}
-                  <div className="flex justify-between col-span-2">
+                  <div className="flex justify-between col-span-2 px-5">
                     <p>Tax + Donasi Palestina 10%</p>
                     <p>{formatRupiah(DataPayment?.price?.tax)}</p>
                   </div>
                 </div>
               </div>
-              <div className="flex justify-between">
-                <p className="font-bold text-xl">Total</p>
-                <p className="font-bold text-xl text-[#176B87]">
+              <div className="flex justify-between px-5 ">
+                <p className="font-bold text-xl text-[#176B87]  ">Total</p>
+                <p className="font-bold text-xl text-[#176B87]  ">
                   {formatRupiah(DataPayment?.price?.price)}
                 </p>
               </div>
@@ -683,6 +711,7 @@ export default function Payment() {
           </div>
         </div>
       </div>
+      <BackToTop/>
     </div>
   );
 }

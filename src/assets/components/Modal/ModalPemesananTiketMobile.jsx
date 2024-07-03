@@ -167,7 +167,7 @@ export default function ModalPemesananTiketMobile() {
   return (
     <div className="relative">
       <div className=" w-screen">
-        <div className="bg-white mx-3 max-xs:mx-1 rounded-2xl border">
+        <div className="bg-white mx-3 max-sm:mx-1 md:ml-0 rounded-2xl border">
           <div className=" px-6 py-2">
             <div className="flex items-center flex-col">
               {/* lokasi */}

@@ -16,7 +16,7 @@ export default function AddPin() {
   const [loading, setLoading] = useState(false);
   const pinRefs = useRef([]);
 
-  console.log("theState", theState);
+  // console.log("theState", theState);
 
   //pengaman agar jika user belum login
   const Condition = useSelector((state) => {
@@ -67,6 +67,20 @@ export default function AddPin() {
 
   const handleSubmit = async (e) => {
     e?.preventDefault();
+    if (pin.length < 6) {
+      toast.warning("Silahkan Inputkan Pin Anda!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
+
     setLoading(true);
     let params = new URLSearchParams(document.location.search);
     let checkoutId = params.get("checkoutId");
@@ -83,37 +97,39 @@ export default function AddPin() {
   };
 
   return (
-    <div className="bg-white flex justify-center h-screen items-center w-[70%] max-sm:w-full mx-auto max-sm:px-2">
-      <div className="w-full h-[482px]  max-sm:h-auto flex flex-col border-[2px] rounded-3xl shadow-lg shadow-[#64CCC5]/20">
-        <h1 className="text-[24px] poppins-bold items-start ml-[84px] mt-[69px] max-sm:text-center max-sm:ml-0">
-          Konfirmasi PIN
-        </h1>
-        <div className="flex flex-col justify-center place-items-center mt-[40px]">
-          <p className="text-sm">Konfirmasi PIN dengan 6 angka</p>
-          <div className="flex gap-3 mt-[44px]">
-            {getPinArray(pin).map((data, i) => (
-              <input
-                key={i}
-                type="text"
-                value={data}
-                onChange={(e) => handleChange(e, i)}
-                onKeyDown={(e) => handleKeyDown(e, i)}
-                maxLength={1}
-                className="input-pin"
-                ref={(el) => (pinRefs.current[i] = el)}
-              />
-            ))}
+    <div className="bg-white">
+      <div className="bg-white flex justify-center h-screen items-center w-[70%] max-sm:w-full mx-auto max-sm:px-2">
+        <div className="w-full h-[482px]  max-sm:h-auto flex flex-col border-[2px] rounded-3xl shadow-lg shadow-[#64CCC5]/20">
+          <h1 className="text-[24px] poppins-bold items-start ml-[84px] mt-[69px] max-sm:text-center max-sm:ml-0">
+            Konfirmasi PIN
+          </h1>
+          <div className="flex flex-col justify-center place-items-center mt-[40px]">
+            <p className="text-sm">Konfirmasi PIN dengan 6 angka</p>
+            <div className="flex gap-3 mt-[44px]">
+              {getPinArray(pin).map((data, i) => (
+                <input
+                  key={i}
+                  type="text"
+                  value={data}
+                  onChange={(e) => handleChange(e, i)}
+                  onKeyDown={(e) => handleKeyDown(e, i)}
+                  maxLength={1}
+                  className="input-pin"
+                  ref={(el) => (pinRefs.current[i] = el)}
+                />
+              ))}
+            </div>
+            <button
+              disabled={loading}
+              onClick={handleSubmit}
+              className="max-sm:w-[70%] w-[40%] h-[48px] max-sm:mb-5 flex mt-[81px] bg-[#176B87] hover:bg-[#114B5E] text-sm text-white rounded-2xl justify-center items-center"
+            >
+              {loading ? "Loading" : "Konfirmasi"}
+            </button>
           </div>
-          <button
-            disabled={loading}
-            onClick={handleSubmit}
-            className="max-sm:w-[70%] w-[40%] h-[48px] max-sm:mb-5 flex mt-[81px] bg-[#176B87] hover:bg-[#114B5E] text-sm text-white rounded-2xl justify-center items-center"
-          >
-            {loading ? "Loading" : "Konfirmasi"}
-          </button>
         </div>
+        <ToastContainer />
       </div>
-      <ToastContainer />
     </div>
   );
 }

@@ -6,6 +6,8 @@ import {
   setLoginStatus,
   setPenerbangan,
 } from "../Reducers/TiketReducerforSecure";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const tikethistory = () => async (dispatch) => {
   try {
@@ -44,7 +46,7 @@ export const fetchUserData = () => async (dispatch) => {
   }
 };
 
-//data BAndara
+//DATA BANDA
 export const GetTiket = () => async (dispatch, getState) => {
   try {
     const response = await axios.get("/api/airport");
@@ -54,22 +56,6 @@ export const GetTiket = () => async (dispatch, getState) => {
     return response;
   } catch (error) {
     console.log("error", error);
-  }
-};
-
-// Fetch Data Bandara
-export const GetDataBandara = () => async (dispatch, getState) => {
-  try {
-    const response = await axios.get("/api/airport");
-    dispatch(setLokasi(response.data));
-    // console.log("CEK DATA BARU", response);
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      // alert(error.message);
-      console.log("error", error.message);
-      return;
-    }
-    // alert(error.message);
   }
 };
 
@@ -140,8 +126,17 @@ export const getPayment =
       }
 
       // Dispatch action Redux untuk meng-update status pengiriman data penumpang
-      alert("Data Berhasil Tersimpan");
 
+      toast.success("Data Berhasil Tersimpan", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       // Navigasi ke halaman pembayaran
       navigate("/payment");
     } catch (error) {
@@ -149,7 +144,18 @@ export const getPayment =
         "Error:",
         error.response ? error.response.data : error.message
       );
-      alert("Kamu harus login dulu!");
+      toast.error("Kamu harus login dulu!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
+      // alert("");
     }
   };
 
@@ -158,7 +164,7 @@ export const getDetailPesanan = (checkoutId) => async (dispatch) => {
   try {
     const repsonse = await axios.get(`/api/checkout/${checkoutId}`);
     dispatch(setDataChekoutBerangkat(repsonse.data.data));
-    // console.log("seriesssss", repsonse.data.data);
+    //  console.log("seriesssss", repsonse.data.data);
   } catch (error) {
     // console.log("error", error);
     if (axios.isAxiosError(error)) {
@@ -202,6 +208,15 @@ export const getPaymentCekout =
         "Error:",
         error.response ? error.response.data : error.message
       );
-      alert("Kamu harus login dulu!");
+      toast.error("Kamu harus login dulu!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
