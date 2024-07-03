@@ -19,6 +19,13 @@ export default function ModalLokasi({
   const Data = useSelector((state) => {
     return state?.tiket2.lokasi;
   });
+  
+  const Destinasi = useSelector((state) => {
+    return state?.tiket?.lokasiTujuan
+  });
+  const Kota = useSelector((state) => {
+    return state?.tiket?.LokasiKeberangkatan
+  });
 
   useEffect(() => {
     setNamaKota("");
@@ -69,11 +76,11 @@ export default function ModalLokasi({
             />
           </div>
           <div className="h-[45vh] max-lg:h-[40vh] overflow-y-auto flex flex-col gap-3">
-            {filteredData &&
-              filteredData?.map((lokasi, index) => (
+            {filteredData && filteredData.length > 0 ? (
+              filteredData.map((lokasi, index) => (
                 <div
                   key={index}
-                  className=" hover:cursor-pointer"
+                  className="hover:cursor-pointer"
                   onClick={() => {
                     if (id === 1) {
                       dispatch(setLokasiKeberangkatan(lokasi.kode_bandara));
@@ -88,8 +95,8 @@ export default function ModalLokasi({
                     }
                   }}
                 >
-                  {lokasi.lokasi ===
-                  (id === 1 ? selectedKota : selectedDestinasi) ? (
+                  {lokasi?.kode_bandara ===
+                  (id === 1 ? Kota : Destinasi) ? (
                     <div className="border-b-2 border-[#176B87]">
                       {lokasi.lokasi.split(",")[0]} <br />
                       <span className="text-gray-500 text-sm">
@@ -106,7 +113,12 @@ export default function ModalLokasi({
                     </div>
                   )}
                 </div>
-              ))}
+              ))
+            ) : (
+              <div className="text-center text-red-500 mt-4">
+                Kota tidak ada
+              </div>
+            )}
           </div>
         </div>
       </div>
