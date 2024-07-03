@@ -15,6 +15,11 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
 
   const handleIncrementDewasa = () => {
     if (totalDewasa >= 7) {
+      if (anak > 0) {
+        setAnak(anak - 1);
+        setDewasa(dewasa + 1);
+        return;
+      }
       toast.warning("Maksimal 7 kursi untuk Dewasa dan Anak", {
         position: "top-right",
         autoClose: 2000,
@@ -36,6 +41,11 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
   };
   const handleIncrementAnak = () => {
     if (totalDewasa >= 7) {
+      if (dewasa > 0) {
+        setDewasa(dewasa - 1);
+        setAnak(anak + 1);
+        return;
+      }
       toast.warning("Maksimal 7 kursi untuk Dewasa dan Anak", {
         position: "top-right",
         autoClose: 2000,
