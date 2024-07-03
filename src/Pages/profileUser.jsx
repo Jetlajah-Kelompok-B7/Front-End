@@ -72,8 +72,7 @@ export default function ProfileUser() {
   const [value, setValue] = useState(`henry`);
 
   const theState = useSelector((state) => state);
-  console.log("theState", theState);
-
+  
   const handleSubmitPin = () => {
     if (value === "111111") {
       toast.success("PIN Terkonfirmasi", {
@@ -288,7 +287,7 @@ export default function ProfileUser() {
       </div>
       <div className="flex flex-col items-center justify-center mb-10 w-screen px-2 ">
         <div className="flex flex-col w-[70%] max-lg:w-full h-auto py-5 border-[2px] rounded-3xl shadow-lg shadow-[#64CCC5]/20 mt-[150px] ">
-          <h1 className="poppins-bold ml-5 text-center text-2xl bg-black">Akun</h1>
+          <h1 className="poppins-bold ml-5 text-center text-2xl">Akun</h1>
           {/* Button Beranda */}
           <button onClick={() => navigate("/")}>
             <div className="flex items-center text-white text-left px-[16px] mx-5 mt-[22px] w-auto h-[55px] bg-[#04364A] hover:bg-[#142a32] rounded-xl gap-[8px]">

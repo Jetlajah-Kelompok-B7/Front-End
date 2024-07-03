@@ -19,7 +19,7 @@ export default function Team() {
 
   const teamMembers = [
     {
-      name: "Hilzi Maulana Concquero",
+      name: "Hilzi Maulana Conquero",
       position: "Frontend Developer",
       image: "/images/hlzi.jpeg",
       social: {
@@ -42,7 +42,7 @@ export default function Team() {
     {
       name: "Syaiful Rizal Sidiq",
       position: "Frontend Developer",
-      image: "/images/rizal.jpg",
+      image: "/images/rizal2baru.jpg",
       social: {
         instagram: "https://www.instagram.com/syaifulrizal504/?hl=en",
         Linkedin: "https://www.linkedin.com/in/syaiful-rizal-sidiq/",
@@ -55,17 +55,17 @@ export default function Team() {
       image: "/images/zabil.jpeg",
       social: {
         instagram: "https://www.instagram.com/zabilsabri",
-        Linkedin: "https://www.linkedin.com/in/hilzi-maulana-conquero/",
+        Linkedin: "https://www.linkedin.com/in/zabil-sabri-muhammad-37694a233/",
         github: "https://github.com/zabilsabri",
       },
     },
     {
       name: "Hanafi Ulin Nuha",
       position: "Backend Developer",
-      image: "/images/hacker.jpg",
+      image: "/images/hanafi.png",
       social: {
-        instagram: "",
-        Linkedin: "",
+        instagram: "https://www.instagram.com/envystfu/",
+        Linkedin: "https://www.linkedin.com/in/hanhanafi/",
         github: "https://github.com/yokunoshita",
       },
     },
@@ -74,7 +74,7 @@ export default function Team() {
       position: "Backend Developer",
       image: "/images/balya.jpg",
       social: {
-        instagram: "",
+        instagram: "https://www.instagram.com/balyar.r/",
         Linkedin: "https://www.linkedin.com/in/balya-aqila-rizqi-rabbi/",
         github: "https://github.com/rizqi-r",
       },

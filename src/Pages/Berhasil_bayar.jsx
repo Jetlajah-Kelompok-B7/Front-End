@@ -22,8 +22,8 @@ export default function Berhasil_bayar() {
         const response = await axios.get(`/api/checkout/${checkoutId}`, {
           withCredentials: true,
         });
-        // console.log("fetchUserData response:", response.data.data);
-        setDataIdTiket(response?.data?.data?.id);
+        setDataIdTiket(response?.data?.data?.history_transactionId
+        );
         // setQr(response.data.data);
       } catch (error) {
         console.error("Error fetching print data:", error);
@@ -83,7 +83,7 @@ export default function Berhasil_bayar() {
           <button
             className="bg-[#176B87] py-2 px-5 border rounded-lg text-white font-semibold "
             onClick={() =>
-              navigate("/DetailTiket", { state: { id: dataIdHistory } })
+              navigate("/DetailTiket", { state: { id: dataIdTiket } })
             }
           >
             Cetak Tiket

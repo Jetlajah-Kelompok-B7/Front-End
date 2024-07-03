@@ -163,8 +163,10 @@ export const getPayment =
 export const getDetailPesanan = (checkoutId) => async (dispatch) => {
   try {
     const repsonse = await axios.get(`/api/checkout/${checkoutId}`);
+    // console.log("checkoutId", checkoutId);
     dispatch(setDataChekoutBerangkat(repsonse.data.data));
-    //  console.log("seriesssss", repsonse.data.data);
+    // console.log("seriesssss", repsonse);
+    return repsonse;
   } catch (error) {
     // console.log("error", error);
     if (axios.isAxiosError(error)) {
@@ -177,7 +179,7 @@ export const getDetailPesanan = (checkoutId) => async (dispatch) => {
 
 //post order data
 export const getPaymentCekout =
-  (metode_pembayaran, checkoutId, navigate) => async (dispatch) => {
+  (metode_pembayaran, checkoutId) => async (dispatch) => {
     // console.log("ckoitu IDD", checkoutId);
     // console.log("Data yang Server:", metode_pembayaran);
     try {
@@ -195,10 +197,10 @@ export const getPaymentCekout =
           headers: { "Content-Type": "application/json" },
         }
       );
-      console.log(
-        "RESPON HSITORY",
-        response?.data?.data?.History_Transaction?.id
-      );
+      // console.log(
+      //   "RESPON HSITORY",
+      //   response?.data?.data?.History_Transaction?.id
+      // );
       dispatch(
         setDataHasilCheckot(response?.data?.data?.History_Transaction?.id)
       );

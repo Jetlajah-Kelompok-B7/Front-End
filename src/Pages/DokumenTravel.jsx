@@ -299,7 +299,7 @@ const travelDokumen = () => {
         <Navbar />
       </div>
         {/* Header Atas */}
-        <div className="bg-white shadow-md w-full max-sm:w-full md:px-4  ">
+        <div className="bg-white shadow-md w-full max-sm:w-full md:px-4 ma ">
           <div className="mx-4 lg:mx-20 pt-5 ">
             <div className="flex mt-28 lg:mx-36">
               <button className="flex items-center lg:ml-4 text-lg font-bold text-[#176B87] ">

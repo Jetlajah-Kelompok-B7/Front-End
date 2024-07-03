@@ -13,11 +13,12 @@ import { RiMenuFill } from "react-icons/ri";
 import { Button, Drawer } from "antd";
 import { setHalaman } from "../../redux/Reducers/TiketReducerforSecure";
 import { fetchUserData } from "../../redux/Action/TiketAction";
+import { logout } from "../../redux/Action/actionLogin";
 
 export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [logout, setLogout] = useState(false);
+  const [logout1, setLogout1] = useState(false);
   const [open, setOpen] = useState(false);
   const [first, setFirst] = useState(true);
 
@@ -37,9 +38,8 @@ export default function Navbar() {
     }
   };
 
-
   useEffect(() => {
-    setLogout(false);
+    setLogout1(false);
   }, []);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = () => {
-    setLogout(true);
+    setLogout1(true);
   };
 
   const active = useSelector((state) => {
@@ -79,7 +79,7 @@ export default function Navbar() {
           <button
             className={active === "Beranda" ? "font-bold" : ""}
             onClick={() => {
-              setLogout(false);
+              setLogout1(false);
               HandleClick("Beranda");
               navigate("/");
             }}
@@ -90,7 +90,7 @@ export default function Navbar() {
             <button
               className={active === "Tiket" ? "font-bold" : ""}
               onClick={() => {
-                setLogout(false);
+                setLogout1(false);
                 HandleClick("Tiket");
                 navigate("/history");
               }}
@@ -106,7 +106,7 @@ export default function Navbar() {
             <button
               onClick={() => {
                 HandleClick("bell");
-                setLogout(false);
+                setLogout1(false);
                 navigate("/notification");
               }}
             >
@@ -115,12 +115,15 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => {
-                  logout === true ? setLogout(false) : setLogout(true);
+                  logout1 === true ? setLogout1(false) : setLogout1(true);
                 }}
               >
                 {active === "profileUser" ? <Person /> : <PersonOutline />}
               </button>
-              <ModalLogout onClose={() => setLogout(false)} visible={logout} />
+              <ModalLogout
+                onClose={() => setLogout1(false)}
+                visible={logout1}
+              />
             </div>
           </div>
         ) : (
@@ -142,10 +145,10 @@ export default function Navbar() {
         <Drawer title="Menu" onClose={onClose} open={open}>
           <div className="flex flex-col items-start gap-1 text-lg ">
             <button
-              className={`z-50${active === "Beranda" ? "font-bold z-50" : ""}`}
+              className={`z-50 ${active === "Beranda" ? " font-bold" : ""}`}
               onClick={() => {
                 onClose();
-                setLogout(false);
+                setLogout1(false);
                 HandleClick("Beranda");
                 navigate("/");
               }}
@@ -154,11 +157,11 @@ export default function Navbar() {
             </button>
             {Condition === true ? (
               <button
-                className={active === "Tiket" ? "font-bold" : ""}
+                className={`z-50 ${active === "tiket" ? "font-bold" : ""}`}
                 onClick={() => {
                   onClose();
-                  setLogout(false);
-                  HandleClick("Tiket");
+                  setLogout1(false);
+                  HandleClick("tiket");
                   navigate("/history");
                 }}
               >
@@ -167,10 +170,10 @@ export default function Navbar() {
             ) : null}
             {Condition === true ? (
               <button
-                className={active === "Profile" ? "font-bold" : ""}
+                className={`z-50 ${active === "Profile" ? "font-bold" : ""}`}
                 onClick={() => {
                   onClose();
-                  setLogout(false);
+                  setLogout1(false);
                   HandleClick("Profile");
                   navigate("/profileUser");
                 }}
@@ -179,21 +182,30 @@ export default function Navbar() {
               </button>
             ) : null}
             {Condition === true ? (
-              <div>
+              <div className="flex flex-col items-start">
                 <button
+                  className={`z-50 ${active === "bell" ? "font-bold" : ""}`}
                   onClick={() => {
                     onClose();
                     HandleClick("bell");
-                    setLogout(false);
+                    navigate("/notification");
+                    setLogout1(false);
                   }}
                 >
                   Notifications
                 </button>
                 <button
+                  className="text-red-500 z-50"
                   onClick={() => {
-                    onClose();
-                    handleLogout();
-                    HandleClick("logout");
+                    if (window.confirm("Yakin ingin log-out nih ?")) {
+                      dispatch(logout())
+                        .then(() => {
+                          navigate("/");
+                        })
+                        .catch((error) => {
+                          console.error("Error during logout:", error);
+                        });
+                    }
                   }}
                 >
                   Logout
@@ -201,6 +213,7 @@ export default function Navbar() {
               </div>
             ) : (
               <button
+                className="z-50"
                 onClick={() => {
                   onClose();
                   navigate("/login");

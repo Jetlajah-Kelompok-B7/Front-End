@@ -3,7 +3,7 @@ import React from "react";
 export default function Slicing_3() {
   return (
     <div className="container mx-auto">
-      <div className=" mt-40 w-[70%] mx-auto max-2xl:w-[85%] max-xl:w-[97%]">
+      <div className=" mt-16 w-[70%] mx-auto max-2xl:w-[85%] max-xl:w-[97%]">
         <div>
           <h1 className=" text-[40px] max-xs:text-[35px] font-bold mb-4 max-sm:ml-4">
             About<span className="text-[#FE5D02]">Jetlajah.In</span>
@@ -16,11 +16,6 @@ export default function Slicing_3() {
             membandingkan, dan memesan tiket pesawat ke berbagai destinasi di
             seluruh Indonesia.
           </p>
-          <div className="flex gap-2   justify-center text-white">
-            <button className="bg-[#176B87] py-[14px]  px-6 items rounded-2xl">
-              More
-            </button>
-          </div>
         </div>
         <div className="">
           <h1 className=" text-[40px] max-xs:text-[35px] font-bold mb-4 mt-16 max-sm:ml-4 ">

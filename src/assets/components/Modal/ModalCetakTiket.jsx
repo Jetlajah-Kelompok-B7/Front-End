@@ -51,9 +51,6 @@ export default function ModalCetakTiket({ visible, onClose, data_tiket, qr }) {
       )
     : 0;
 
-  const jam = Math.floor(selisih / 60);
-  const menit = selisih % 60;
-  const durasi = `${jam}j ${menit}m`;
 
   if (!visible) return null;
   return (

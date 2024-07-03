@@ -250,11 +250,11 @@ function PilihanUser({ pilihan, setPilihan, list, setId }) {
 
   const dispatch = useDispatch();
   return (
-    <div className="flex justify-center gap-4">
+    <div className="flex justify-center gap-1 max-xs:-mx-4">
       {list.map((e, i) => (
         <div
           key={i}
-          className="hover:cursor-pointer w-full"
+          className="hover:cursor-pointer w-full truncate  "
           onClick={() => {
             setPilihan(e);
             setId(i + 1);

@@ -25,7 +25,7 @@ export default function Notification() {
   }, [dispatch]);
 
   const theState = useSelector((state) => state);
-  console.log("theState", theState);
+ 
   useEffect(() => {
     dispatch(getNotification());
   }, [dispatch]);

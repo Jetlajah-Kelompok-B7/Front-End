@@ -25,7 +25,7 @@ const TiketPesawat = () => {
         onClose={() => setOpenModal(false)}
         className="fixed inset-0 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50"
       >
-        <div className="bg-white rounded-2xl lg:w-[1060px] md:w-[755px]  max-sm:w-full">
+        <div className="bg-white rounded-2xl lg:w-[1060px] sm:w-full max-sm:w-full">
           <Modal.Header>Pilih Tiket</Modal.Header>
           {/* Container tiket */}
           <div className="max-xl:hidden">

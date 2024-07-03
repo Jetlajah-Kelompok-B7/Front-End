@@ -27,13 +27,12 @@ export default function ModalPemesananTiket() {
   useEffect(() => {
     dispatch(GetTiket());
   }, [dispatch]);
+  
 
   const totalperpenumpang = useSelector(
     (state) => state?.tiket?.TotalPenumpang
   );
   const { Dewasa, Bayi, Anak } = totalperpenumpang;
-  console.log("ModalPemesananTiket  totalperpenumpang:", totalperpenumpang);
-  console.log("ModalPemesananTiket  Dewasa:", Dewasa);
 
   const handlePemesanan = () => {
     if (idTanggal === 1) {
@@ -153,23 +152,12 @@ export default function ModalPemesananTiket() {
   }, [dispatch]);
 
 
-  const DataBaru = useSelector((state) => state.tiket);
-  const {
-    KelasPenerbangan,
-    LokasiKeberangkatan,
-    TanggalKeberangkatan,
-    TanggalKepulangan,
-    lokasiTujuan,
-    totalSemuaPenumpang,
-    idTiket,
-  } = DataBaru || {};
+
 
   
 
   useEffect(() => {
-
     dispatch(getTiketSearch());
-    
   }, [dispatch]);
 
   return (
@@ -193,7 +181,7 @@ export default function ModalPemesananTiket() {
                   }}
                 >
                   {e === pilihanUser ? (
-                    <button className="rounded-full border-2 border-[#176B87] bg-[#64CCC5] px-6">
+                    <button className="rounded-full text-white border-2 border-[#176B87] bg-[#64CCC5] px-6">
                       {e}
                     </button>
                   ) : (
@@ -283,12 +271,12 @@ export default function ModalPemesananTiket() {
                   <div className="flex items-center flex-1">
                     <div className="flex gap-2 flex-1">
                       {pilihanUser === "Pergi - Pulang" ? (
-                        <div className="flex flex-col">
+                        <div className="flex flex-col flex-1">
                           <p className="text-base text-gray-500 truncate">
                             Tanggal Pulang
                           </p>
                           <button
-                            className=" border-b font-medium text-[#176B87] text-[18px] text-start py-2"
+                            className=" border-b truncate font-medium text-[#176B87] text-[18px] text-start py-2"
                             onClick={() => {
                               setModalNama("tanggal");
                             }}

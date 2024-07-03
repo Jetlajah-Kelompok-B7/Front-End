@@ -55,7 +55,7 @@ const ResultSearchFilm = () => {
     // Check if the screen width is less than or equal to lg (1024px)
     if (window.innerWidth <= 500) {
       setN(3);
-    } else if (window.innerWidth <= 768) {
+    } else if (window.innerWidth <= 1024) {
       setN(6);
     } else {
       setN(7);

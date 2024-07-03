@@ -185,7 +185,7 @@ export const profileUser = () => async (dispatch) => {
     dispatch(setTanggal_lahir(isiTanggal));
 
     if (response_profile?.status === 200) {
-      console.log("Data", response_profile.data);
+      // console.log("Data", response_profile.data);
       return { status: 200 }; // Return status for successful login
     } else {
       return { status: 401 }; // Return status for failed login
@@ -369,6 +369,7 @@ export const logout = () => async () => {
     return { status: 500 }; // Return status for internal server error
   }
 };
+
 
 export const forgotPassword = (email) => async (dispatch) => {
   try {
@@ -673,7 +674,7 @@ export const getNotification = () => async (dispatch) => {
       withCredentials: true,
       headers: { "Content-Type": "application/json" },
     });
-    console.log("response_getNotif", response_getNotif);
+    // console.log("response_getNotif", response_getNotif);
     const notifikasi = response_getNotif?.data?.data;
     dispatch(setDataNotif(notifikasi));
 
