@@ -98,45 +98,29 @@ export default function Payment() {
   const DataPayment = useSelector(
     (state) => state?.booking?.inputanDataPenumpang?.data
   );
-
   const DetailPenumpangCekout = useSelector(
     (state) => state?.booking?.dataCheckoutBerangkat
   );
-  console.log("Detail Penumpang", DetailPenumpangCekout);
-
   const userCkIdPergi = useSelector(
     (state) => state?.booking?.inputanDataPenumpang
   );
-  // console.log("ID CEKOUT UNTUK GET DATA CEKOUT", userCkIdPergi);
 
   useEffect(() => {
-    // console.log("Payment  userCkIdPergi:", userCkIdPergi);
     dispatch(getDetailPesanan(userCkIdPergi));
   }, []);
-  // console.log("DetailPenumpangCekout.length");
 
   let penumpangArray = [];
   let totalHarga = 0;
   let taxTiket = 0;
   let hargaTiket = 0;
 
-  if (Object.values(DetailPenumpangCekout).length > 0) {
-    penumpangArray = Object.values(DetailPenumpangCekout?.orders);
-    totalHarga = DetailPenumpangCekout?.total || 0;
-    taxTiket = DetailPenumpangCekout?.tax || 0;
-    hargaTiket = (totalHarga - taxTiket) / penumpangArray?.length;
-  }
-
   const [dewasa, setDewasa] = useState(0);
   const [anak, setAnak] = useState(0);
   const [bayi, setBayi] = useState(0);
-  console.log('first', penumpangArray.length)
-
   useEffect(() => {
     let dewasaCount = 0;
     let anakCount = 0;
     let bayiCount = 0;
-
     penumpangArray.forEach((e) => {
       if (e?.is_baby === false) {
         const umur = differenceInYears(new Date(), new Date(e?.tanggal_lahir));
@@ -148,6 +132,7 @@ export default function Payment() {
           return;
         }
       } else {
+        console.log("e?.is_baby", e?.is_baby);
         bayiCount++;
       }
     });
@@ -156,11 +141,17 @@ export default function Payment() {
     setAnak(anakCount);
     setBayi(bayiCount);
   }, []);
+  console.log("Payment  bayiCount:", bayi);
 
+  if (Object.values(DetailPenumpangCekout).length > 0) {
+    penumpangArray = Object.values(DetailPenumpangCekout?.orders);
+    totalHarga = DetailPenumpangCekout?.total;
+    taxTiket = DetailPenumpangCekout?.tax;
+    hargaTiket = (totalHarga - taxTiket) / (penumpangArray?.length - bayi);
+  }
   const typePenerbanngan = useSelector(
     (state) => state?.tiket?.typePenerbanngan
   );
-
   return (
     <div className="bg-white ">
       <div className="fixed  w-full bg-white z-50 shadow">
