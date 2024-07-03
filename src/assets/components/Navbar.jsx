@@ -200,7 +200,7 @@ export default function Navbar() {
                     if (window.confirm("Yakin ingin log-out nih ?")) {
                       dispatch(logout())
                         .then(() => {
-                          navigate("/");
+                          navigate("/login");
                         })
                         .catch((error) => {
                           console.error("Error during logout:", error);
