@@ -12,7 +12,7 @@ import {
 } from "../Reducers/reducersLogin";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getPaymentCekout } from "./TiketAction";
+import { fetchUserData, getPaymentCekout } from "./TiketAction";
 import { setHasilPostCeckout } from "../Reducers/DataBooking";
 
 export const login = (email, password, navigate) => async (dispatch) => {
@@ -226,7 +226,14 @@ export const createPin = (pin, navigate) => async (dispatch) => {
         progress: undefined,
         theme: "colored",
       });
-      navigate("/");
+      dispatch(fetchUserData())
+        .then(() => {
+          navigate("/");
+        })
+        .catch((err) => {
+          console.error("An error occurred:", err);
+        });
+
       return { status: 200 }; // Return status for successful creation
     } else {
       toast.error("PIN GAGAL DIBUAT", {
