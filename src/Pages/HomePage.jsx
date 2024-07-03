@@ -10,6 +10,7 @@ import { profileUser } from "../redux/Action/actionLogin"; // Ganti dengan path 
 import { reset } from "../redux/Reducers/TiketReducer";
 import { fetchUserData } from "../redux/Action/TiketAction";
 import { setHalaman } from "../redux/Reducers/TiketReducerforSecure";
+import BackToTop from "../assets/components/Modal/TombolBalikAtas";
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ export default function HomePage() {
         <Slicing_3 />
         <Footer />
       </div>
+      <BackToTop/>
     </div>
   );
 }

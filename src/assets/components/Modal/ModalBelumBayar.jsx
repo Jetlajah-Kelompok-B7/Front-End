@@ -28,16 +28,9 @@ export default function ModalBelumBayar({ visible, onClose, idcheckout }) {
         <div className="flex text-center mt-4 gap-1">
           <button
             className="flex-1 bg-[#176B87] font-semibold text-white py-2 px-6 rounded-xl"
-            onClick={async () => {
-              try {
-                const response = await dispatch(getDetailPesanan(idcheckout));
-                if (response.status === 200) {
-                  // Ensure the response status is 200 before navigating
-                  navigate("/payment");
-                }
-              } catch (error) {
-                // console.log("Failed to fetch details:", error);
-              }
+            onClick={() => {
+              dispatch(setHasilPostDataPenumpang(idcheckout));
+              navigate("/payment");
             }}
           >
             Bayar Sekarang

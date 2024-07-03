@@ -4,11 +4,13 @@ import Dropdown from "../Modal/ModalJumlahPenumpang";
 import { useDispatch, useSelector } from "react-redux";
 import ModalLokasi from "../Modal/ModalLokasiAwal";
 import PilihKelasPenerbangan from "../Modal/KelasPenerbangan";
-import { setTypePenerbangan, swapLokasi } from "../../../redux/Reducers/TiketReducer";
+import {
+  setTypePenerbangan,
+  swapLokasi,
+} from "../../../redux/Reducers/TiketReducer";
 import { GetTiket, getTiketSearch } from "../../../redux/Action/TiketAction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
 
 export default function ModalPemesananTiketMobile() {
   const dispatch = useDispatch();
@@ -35,6 +37,8 @@ export default function ModalPemesananTiketMobile() {
       if (
         kotaAwal !== "" &&
         destinasi !== "" &&
+        kelas_penerbangan !== "" &&
+        total_penumpang !== 0 &&
         tanggalBerangkat !== ""
       ) {
         if (kotaAwal === destinasi) {
@@ -63,8 +67,8 @@ export default function ModalPemesananTiketMobile() {
           });
           return;
         }
-        dispatch(getTiketSearch())
-        dispatch(setTypePenerbangan(pilihanUser))
+        dispatch(getTiketSearch());
+        dispatch(setTypePenerbangan(pilihanUser));
         navigate("/resultSearch");
         return;
       } else {
@@ -81,55 +85,17 @@ export default function ModalPemesananTiketMobile() {
         return;
       }
     } else {
-      if (
-        kotaAwal !== "" &&
-        destinasi !== "" &&
-        tanggalBerangkat !== "" &&
-        tanggalPulang !== ""
-      ) {
-        if (kotaAwal === destinasi) {
-          toast.warning("nama kotanya sama nih", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-          return;
-        }
-        if (Dewasa <= 0) {
-          toast.warning("Harus dalam pendampingan orang dewasa nih", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-          return;
-        }
-        dispatch(getTiketSearch())  
-        dispatch(setTypePenerbangan(pilihanUser))
-        navigate("/resultSearch");
-        return;
-      } else {
-        toast.warning("Formnya masih ada yang kosong nih", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-        return;
-      }
+      toast.warning("Ada yang kosong nih", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
     }
   };
 
@@ -155,19 +121,13 @@ export default function ModalPemesananTiketMobile() {
   } = DataBaru || {};
 
   useEffect(() => {
-  
-   
     dispatch(getTiketSearch());
-  
-   
   }, [dispatch]);
- 
-
 
   return (
     <div className="relative">
       <div className=" w-screen">
-        <div className="bg-white mx-3 max-xs:mx-1 rounded-2xl border">
+        <div className="bg-white mx-3 max-sm:mx-1 md:ml-0 rounded-2xl border">
           <div className=" px-6 py-2">
             <div className="flex items-center flex-col">
               {/* lokasi */}
@@ -247,7 +207,6 @@ export default function ModalPemesananTiketMobile() {
   );
 }
 function PilihanUser({ pilihan, setPilihan, list, setId }) {
-
   const dispatch = useDispatch();
   return (
     <div className="flex justify-center gap-1 max-xs:-mx-4">
@@ -258,7 +217,7 @@ function PilihanUser({ pilihan, setPilihan, list, setId }) {
           onClick={() => {
             setPilihan(e);
             setId(i + 1);
-            dispatch(setTypePenerbangan(e))
+            dispatch(setTypePenerbangan(e));
           }}
         >
           {e === pilihan ? (

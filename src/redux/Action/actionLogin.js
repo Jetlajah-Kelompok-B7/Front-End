@@ -185,7 +185,7 @@ export const profileUser = () => async (dispatch) => {
     dispatch(setTanggal_lahir(isiTanggal));
 
     if (response_profile?.status === 200) {
-      console.log("Data", response_profile.data);
+      // console.log("Data", response_profile.data);
       return { status: 200 }; // Return status for successful login
     } else {
       return { status: 401 }; // Return status for failed login
@@ -446,8 +446,17 @@ export const pinValidate =
 
       if (response_validatePin?.status === 200) {
         // console.log("response_validatePin", response_validatePin);
-        alert("Berhasil")
-        navigate("/bayar_berhasil");
+        toast.success("PembayaranBerhasil", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        },[5000]);
+       
 
         // Call the getPaymentCekout function and handle the response
         const paymentResponse = await dispatch(getPaymentCekout(metode_pembayaran, checkoutId)
@@ -457,15 +466,33 @@ export const pinValidate =
         // console.log("Payment Response", paymentResponse);
         dispatch(setHasilPostCeckout(paymentResponse)); // Dispatch the action to update the Redux store
        
-
+        navigate("/bayar_berhasil");
         return { status: 200 }; // Return status for successful login
       } else {
-       alert("Gagal ")
+        toast.error("Pesanan Gagal", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
         return { status: 401 }; // Return status for failed login
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Gagal 2")
+      toast.error("Pin Salah", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return { status: 500 }; // Return status for internal server error
     }
   };
@@ -647,7 +674,7 @@ export const getNotification = () => async (dispatch) => {
       withCredentials: true,
       headers: { "Content-Type": "application/json" },
     });
-    console.log("response_getNotif", response_getNotif);
+    // console.log("response_getNotif", response_getNotif);
     const notifikasi = response_getNotif?.data?.data;
     dispatch(setDataNotif(notifikasi));
 

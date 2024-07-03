@@ -12,7 +12,7 @@ export default function Berhasil_bayar() {
     (state) => state.booking.dataCheckoutBerangkat.id
   );
 
-  console.log("CEKOUT ID", checkoutId);
+  // console.log("CEKOUT ID", checkoutId);
 
   const navigate = useNavigate();
 
@@ -45,19 +45,19 @@ export default function Berhasil_bayar() {
   //   console.log("HISOTRY ID", dataCKHISTORY);
 
   return (
-    <div>
-      <Navbar />
-
+    <div className="bg-white">
+      <div className="fixed top-0 w-full bg-white z-50 shadow">
+        <Navbar />
+      </div>
       {/* Header Atas */}
-      <div className="bg-white shadow-md  w-full max-sm:px-0 px-36 max-sm:w-full"
-      >
-        <div className="mx-4 sm:mx-20  pt-5 ">
+      <div className="bg-white shadow-md w-full lg:px-36 max-sm:w-full mt-20  ">
+        <div className="mx-4 sm:mx-20 pt-5">
           <div className="flex">
-            <button className="flex items-center ml-4 text-lg font-bold text-slate-500   ">
+            <button className="flex items-center lg:ml-4 text-lg font-bold text-slate-500   ">
               Isi Data diri
               <ChevronRightIcon className="h-6 w-6 text-[#176B87] mr-1" />
             </button>
-            <button className="flex items-center ml-4 text-lg font-semibold text-slate-500  "  onClick={() => navigate("/Payment")}>
+            <button className="flex items-center ml-4 text-lg font-semibold text-slate-500  ">
               Bayar
               <ChevronRightIcon className="h-6 w-6 text-text-slate-500 mr-1" />
             </button>
@@ -67,8 +67,8 @@ export default function Berhasil_bayar() {
             </button>
           </div>
         </div>
-        <div className="  max-sm:mr-0 max-sm:pl-2 mr-20 pl-52 py-5 text-center">
-          <p className="flex  text-center pl-5 py-3 gap-5 w-[800px] h-[50] text-white font-semibold bg-[#64CCC5] rounded-xl max-sm:w-full">
+        <div className="mx-4 sm:mx-auto sm:max-w-none sm:mr-0 sm:pl-2  flex justify-center py-5 text-center">
+          <p className="flex items-center justify-center text-center pl-5 py-3 gap-5 w-[800px] md:w-[700px] h-[50] text-[#053B50] font-semibold bg-[#64CCC5] rounded-xl max-sm:w-full ">
             Selamat Transaksi Berhasil !
           </p>
         </div>

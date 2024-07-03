@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { differenceInYears } from "date-fns";
 
 export default function ModalRincianHarga({ visible, data_tiket }) {
   const [dewasa, setDewasa] = useState(0);
+  const [anak, setAnak] = useState(0);
   const [bayi, setBayi] = useState(0);
 
   const Orders = data_tiket?.data?.checkout?.order?.Orders || [];
@@ -11,17 +13,26 @@ export default function ModalRincianHarga({ visible, data_tiket }) {
 
   useEffect(() => {
     let dewasaCount = 0;
+    let anakCount = 0;
     let bayiCount = 0;
 
     Orders.forEach((e) => {
-      if (e.is_baby === false) {
-        dewasaCount++;
+      if (e?.is_baby === false) {
+        const umur = differenceInYears(new Date(), new Date(e?.tanggal_lahir));
+        if (umur < 12) {
+          anakCount++;
+          return;
+        } else {
+          dewasaCount++;
+          return;
+        }
       } else {
         bayiCount++;
       }
     });
 
     setDewasa(dewasaCount);
+    setAnak(anakCount);
     setBayi(bayiCount);
   }, []);
 
@@ -36,6 +47,14 @@ export default function ModalRincianHarga({ visible, data_tiket }) {
             <>
               <p>{dewasa} Dewasa</p>
               <p>IDR {(Harga * dewasa).toLocaleString("id-ID")}</p>
+            </>
+          )}
+        </div>
+        <div className="flex justify-between">
+          {anak > 0 && (
+            <>
+              <p>{anak} Anak</p>
+              <p>IDR {(Harga * anak).toLocaleString("id-ID")}</p>
             </>
           )}
         </div>

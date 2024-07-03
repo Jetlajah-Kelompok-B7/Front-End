@@ -6,6 +6,8 @@ import {
   setLoginStatus,
   setPenerbangan,
 } from "../Reducers/TiketReducerforSecure";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const tikethistory = () => async (dispatch) => {
   try {
@@ -44,7 +46,7 @@ export const fetchUserData = () => async (dispatch) => {
   }
 };
 
-//data BAndara
+//DATA BANDA
 export const GetTiket = () => async (dispatch, getState) => {
   try {
     const response = await axios.get("/api/airport");
@@ -53,23 +55,7 @@ export const GetTiket = () => async (dispatch, getState) => {
     }
     return response;
   } catch (error) {
-    return error;
-  }
-};
-
-// Fetch Data Bandara
-export const GetDataBandara = () => async (dispatch, getState) => {
-  try {
-    const response = await axios.get("/api/airport");
-    dispatch(setLokasi(response.data));
-    // console.log("CEK DATA BARU", response);
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      // alert(error.message);
-      console.log("error", error.message);
-      return;
-    }
-    // alert(error.message);
+    console.log("error", error);
   }
 };
 
@@ -122,8 +108,11 @@ export const getPayment =
         `/api/order/${orderId[0]}`,
         paramsData.penumpang
       );
-      // console.log("Response Payment Sekali Jalan:", response1);
-      dispatch(setHasilPostDataPenumpang(response1.data)); // Pastikan payload benar
+      // console.log(
+      //   "Response Payment Sekali Jalan:",
+      //   response1?.data?.data?.checkoutId
+      // );
+      dispatch(setHasilPostDataPenumpang(response1?.data?.data?.checkoutId)); // Pastikan payload benar
 
       // Jika tipe penumpang adalah "Pergi - Pulang" dan ada ID untuk penerbangan pulang
       if (
@@ -140,8 +129,17 @@ export const getPayment =
       }
 
       // Dispatch action Redux untuk meng-update status pengiriman data penumpang
-      alert("Data Berhasil Tersimpan");
 
+      toast.success("Data Berhasil Tersimpan", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       // Navigasi ke halaman pembayaran
       navigate("/payment");
     } catch (error) {
@@ -149,17 +147,29 @@ export const getPayment =
         "Error:",
         error.response ? error.response.data : error.message
       );
-      alert("Kamu harus login dulu!");
+      toast.error("Kamu harus login dulu!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
+      // alert("");
     }
   };
 
 //Get DEtail Cekout
 export const getDetailPesanan = (checkoutId) => async (dispatch) => {
+  console.log("getDetailPesanan  checkoutId:", checkoutId);
   try {
     const repsonse = await axios.get(`/api/checkout/${checkoutId}`);
     // console.log("checkoutId", checkoutId);
     dispatch(setDataChekoutBerangkat(repsonse.data.data));
-    console.log("seriesssss", repsonse);
+    // console.log("seriesssss", repsonse);
     return repsonse;
   } catch (error) {
     // console.log("error", error);
@@ -174,8 +184,8 @@ export const getDetailPesanan = (checkoutId) => async (dispatch) => {
 //post order data
 export const getPaymentCekout =
   (metode_pembayaran, checkoutId) => async (dispatch) => {
-    console.log("ckoitu IDD", checkoutId);
-    console.log("Data yang Server:", metode_pembayaran);
+    // console.log("ckoitu IDD", checkoutId);
+    // console.log("Data yang Server:", metode_pembayaran);
     try {
       // Tampilkan paramsData sebelum permintaan POST
 
@@ -191,10 +201,10 @@ export const getPaymentCekout =
           headers: { "Content-Type": "application/json" },
         }
       );
-      console.log(
-        "RESPON HSITORY",
-        response?.data?.data?.History_Transaction?.id
-      );
+      // console.log(
+      //   "RESPON HSITORY",
+      //   response?.data?.data?.History_Transaction?.id
+      // );
       dispatch(
         setDataHasilCheckot(response?.data?.data?.History_Transaction?.id)
       );
@@ -204,6 +214,15 @@ export const getPaymentCekout =
         "Error:",
         error.response ? error.response.data : error.message
       );
-      alert("Kamu harus login dulu!");
+      toast.error("Kamu harus login dulu!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
