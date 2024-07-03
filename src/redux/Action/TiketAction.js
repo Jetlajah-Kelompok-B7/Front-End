@@ -40,6 +40,10 @@ export const fetchUserData = () => async (dispatch) => {
       withCredentials: true,
       headers: { "Content-Type": "application/json" },
     });
+    if (response_profile?.data?.pin === null) {
+      navigate("/add-pin");
+      return;
+    }
     dispatch(setLoginStatus(response.data.status));
   } catch (error) {
     dispatch(setLoginStatus(error.response.status));
