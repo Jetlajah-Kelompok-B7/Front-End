@@ -20,6 +20,10 @@ export default function ModalLokasi({
     return state?.tiket2.lokasi;
   });
 
+  useEffect(() => {
+    setNamaKota("");
+  }, [id]);
+
   const filteredData = Data?.filter((lokasi) =>
     lokasi.lokasi.toLowerCase().includes(namaKota.toLowerCase())
   );
