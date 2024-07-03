@@ -2,6 +2,7 @@ import axios from "axios";
 import { setTiketPesawat } from "../Reducers/FilterHargaReducers";
 import { ColorizeSharp } from "@mui/icons-material";
 import {
+  isPINtrue,
   setHistroy,
   setLoginStatus,
   setPenerbangan,
@@ -40,11 +41,8 @@ export const fetchUserData = () => async (dispatch) => {
       withCredentials: true,
       headers: { "Content-Type": "application/json" },
     });
-    if (response_profile?.data?.pin === null) {
-      navigate("/add-pin");
-      return;
-    }
-    dispatch(setLoginStatus(response.data.status));
+    dispatch(setLoginStatus(response?.data?.status));
+    dispatch(isPINtrue(response?.data?.data?.pin));
   } catch (error) {
     dispatch(setLoginStatus(error.response.status));
   }

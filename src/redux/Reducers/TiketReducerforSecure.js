@@ -5,6 +5,7 @@ const initialState = {
   lokasi: [],
   Halaman_Aktif: "",
   history: [],
+  pin: null,
 };
 
 const TSlicer = createSlice({
@@ -24,10 +25,13 @@ const TSlicer = createSlice({
     setHalaman: (state, action) => {
       state.Halaman_Aktif = action.payload;
     },
+    isPINtrue: (state, action) => {
+      state.pin = action.payload;
+    },
   },
 });
 
-export const { setLoginStatus, setHalaman, setPenerbangan, setHistroy } =
+export const { setLoginStatus, setHalaman, setPenerbangan, setHistroy, reset, isPINtrue } =
   TSlicer.actions;
 
 export default TSlicer.reducer;
