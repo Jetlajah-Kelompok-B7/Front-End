@@ -18,7 +18,6 @@ export default function DetailTiket() {
   const [modal, setModal] = useState(false);
   const [modalBayar, setModalBayar] = useState(false);
   const [modalTiket, setModalTiket] = useState(false);
-  const [qr, setQr] = useState("");
   const [data_tiket, setData_tiket] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -56,34 +55,7 @@ export default function DetailTiket() {
   const Orders = data_tiket?.data?.checkout?.order?.Orders || [];
   const ticket = data_tiket?.data?.checkout?.order?.ticket || {};
   const flight = ticket?.schedule?.flight || {};
-  const checkoutID = data_tiket?.data?.checkoutId;
   const pembayaran = data_tiket?.data?.checkout?.status || {};
-
-  //mengirim ke checkout
-  // useEffect(() => {
-  //   console.log("FDFAFrqwrq");
-  //   dispatch(getDetailPesanan(userCkId));
-  //   navigate("/payment");
-  // }, []);
-
-  useEffect(() => {
-    const fetchPrint = async () => {
-      try {
-        const response = await axios.get(`/api/checkout/${checkoutID}/print`, {
-          withCredentials: true,
-        });
-        setQr(response.data.data.qr_code_url);
-      } catch (error) {
-        // console.error("Error fetching print data:", error);
-      }
-    };
-
-    if (checkoutID && pembayaran === "Paid") {
-      fetchPrint();
-    } else {
-      null;
-    }
-  }, [checkoutID]);
 
   const selisih = ticket?.schedule?.kedatangan
     ? differenceInMinutes(
@@ -353,7 +325,6 @@ export default function DetailTiket() {
                   onClose={() => setModalTiket(false)}
                   visible={modalTiket}
                   data_tiket={data_tiket}
-                  qr={qr}
                   pembayaran={pembayaran}
                 />
               </div>

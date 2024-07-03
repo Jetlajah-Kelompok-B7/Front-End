@@ -108,8 +108,11 @@ export const getPayment =
         `/api/order/${orderId[0]}`,
         paramsData.penumpang
       );
-      // console.log("Response Payment Sekali Jalan:", response1);
-      dispatch(setHasilPostDataPenumpang(response1.data)); // Pastikan payload benar
+      // console.log(
+      //   "Response Payment Sekali Jalan:",
+      //   response1?.data?.data?.checkoutId
+      // );
+      dispatch(setHasilPostDataPenumpang(response1?.data?.data?.checkoutId)); // Pastikan payload benar
 
       // Jika tipe penumpang adalah "Pergi - Pulang" dan ada ID untuk penerbangan pulang
       if (
@@ -161,6 +164,7 @@ export const getPayment =
 
 //Get DEtail Cekout
 export const getDetailPesanan = (checkoutId) => async (dispatch) => {
+  console.log("getDetailPesanan  checkoutId:", checkoutId);
   try {
     const repsonse = await axios.get(`/api/checkout/${checkoutId}`);
     // console.log("checkoutId", checkoutId);

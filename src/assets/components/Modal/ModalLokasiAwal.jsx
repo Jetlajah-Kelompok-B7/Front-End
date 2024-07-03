@@ -5,7 +5,6 @@ import {
   setLokasiKeberangkatan,
 } from "../../../redux/Reducers/TiketReducer";
 
-
 export default function ModalLokasi({
   visible,
   onClose,
@@ -76,10 +75,12 @@ export default function ModalLokasi({
                       dispatch(setLokasiKeberangkatan(lokasi.kode_bandara));
                       setKotaAwal(lokasi.lokasi.split(",")[0]);
                       setSelectedkota(lokasi.lokasi);
+                      onClose();
                     } else {
                       setDestinasi(lokasi.lokasi.split(",")[0]);
                       dispatch(setDestinasiPesawat(lokasi.kode_bandara));
                       setSelectedDestinasi(lokasi.lokasi);
+                      onClose();
                     }
                   }}
                 >

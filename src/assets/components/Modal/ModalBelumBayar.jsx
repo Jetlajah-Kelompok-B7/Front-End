@@ -29,13 +29,8 @@ export default function ModalBelumBayar({ visible, onClose, idcheckout }) {
           <button
             className="flex-1 bg-[#176B87] font-semibold text-white py-2 px-6 rounded-xl"
             onClick={() => {
-              dispatch(getDetailPesanan(idcheckout))
-                .then(() => {
-                  navigate("/payment");
-                })
-                .catch((error) => {
-                  console.error("Error during get data", error);
-                });
+              dispatch(setHasilPostDataPenumpang(idcheckout));
+              navigate("/payment");
             }}
           >
             Bayar Sekarang

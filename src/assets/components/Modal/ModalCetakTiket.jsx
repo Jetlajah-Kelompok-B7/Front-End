@@ -3,18 +3,35 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 import { useReactToPrint } from "react-to-print";
 import { format, differenceInMinutes } from "date-fns";
+import axios from "axios";
 
-export default function ModalCetakTiket({ visible, onClose, data_tiket, qr }) {
+export default function ModalCetakTiket({ visible, onClose, data_tiket }) {
   const componentRef = useRef();
+  const [qr, setQr] = useState("");
   const [first, setfirst] = useState(false);
+
   const reactToPrintContent = useCallback(() => {
     return componentRef.current;
   }, [componentRef.current]);
   const handlePrint = useReactToPrint({
-    // content: () => componentRef.current,
     content: reactToPrintContent,
-    // print: customToPrint,
   });
+
+  const checkoutID = data_tiket?.data?.checkoutId;
+  useEffect(() => {
+    const fetchPrint = async () => {
+      try {
+        const response = await axios.get(`/api/checkout/${checkoutID}/print`, {
+          withCredentials: true,
+        });
+        setQr(response.data.data.qr_code_url);
+      } catch (error) {
+        console.error("Error fetching print data:", error);
+      }
+    };
+    fetchPrint();
+  }, [visible]);
+
   const handleClose = (e) => {
     if (e.target.id === "container") return onClose();
   };
@@ -36,8 +53,11 @@ export default function ModalCetakTiket({ visible, onClose, data_tiket, qr }) {
   }, []);
 
   if (first === true) {
-    handlePrint();
-    onClose();
+    if (qr) {
+      handlePrint();
+      onClose();
+    }
+    return null;
   }
 
   const Orders = data_tiket?.data?.checkout?.order?.Orders || [];
@@ -50,7 +70,6 @@ export default function ModalCetakTiket({ visible, onClose, data_tiket, qr }) {
         new Date(ticket.schedule.keberangkatan)
       )
     : 0;
-
 
   if (!visible) return null;
   return (
@@ -164,9 +183,14 @@ export default function ModalCetakTiket({ visible, onClose, data_tiket, qr }) {
       <div className=" bg-white w-[700px] -mt-1 flex items-center justify-center py-3">
         <button
           className="bg-[#176B87] px-10 rounded-xl py-3 text-white font-semi-bold"
-          onClick={handlePrint}
+          onClick={() => {
+            if (qr) {
+              handlePrint();
+            }
+            return null;
+          }}
         >
-          Cetak tiket
+          Download Tiket
         </button>
       </div>
     </div>
