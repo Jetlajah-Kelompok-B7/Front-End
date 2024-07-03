@@ -246,7 +246,7 @@ export default function MyModal({
             <div className="flex flex-col items-center gap-4 max-lg:hidden">
               <div className="flex w-full">
                 <div className="flex-1 flex justify-center">
-                  {format(nextMonth, "MM - yyyy", { locale: id })}
+                  {format(nextMonth, "MMMM - yyyy", { locale: id })}
                 </div>
                 <button onClick={handleNextMonth} className="text-gray-400">
                   <img
