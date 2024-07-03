@@ -484,7 +484,7 @@ console.log("ID CEKOUT UNTUK GET DATA CEKOUT", userCkIdPergi);
             <div className=" text-sm border-2 rounded-lg lg:w-[400px] w-[600px] max-sm:w-full ">
               {/* Keberangkatan */}
               <p className=" text-xl text-white font-bold border bg-[#176B87] py-4  text-center rounded-t-lg ">
-                Pergi
+               Detail Pemesanan Tiket
               </p>
               <p className="font-bold text-lg border-b-2 px-5 py-2">
                 Booking Code :{" "}
@@ -731,24 +731,24 @@ console.log("ID CEKOUT UNTUK GET DATA CEKOUT", userCkIdPergi);
                 {dewasa > 0 && (
                   <div className="flex justify-between">
                     <p>{dewasa} Dewasa</p>
-                    <p>IDR {(hargaTiket * dewasa).toLocaleString("id-ID")}</p>
+                    <p>Rp. {(hargaTiket * dewasa).toLocaleString("id-ID")}</p>
                   </div>
                 )}
                 {bayi > 0 && (
                   <div className="flex justify-between">
                     <p>{bayi} Bayi</p>
-                    <p>IDR 0</p>
+                    <p>Rp. 0</p>
                   </div>
                 )}
                 <div className="flex justify-between">
                   <p>Tax + Donasi Palestina 10%</p>
-                  IDR {taxTiket.toLocaleString("id-ID")}
+                  Rp. {taxTiket.toLocaleString("id-ID")}
                 </div>
               </div>
               <div className="flex justify-between">
                 <p className="font-bold text-xl">Total</p>
                 <p className="font-bold text-xl text-[#176B87]">
-                  IDR {totalHarga.toLocaleString("id-ID")}
+                  Rp. {totalHarga.toLocaleString("id-ID")}
                 </p>
               </div>
             </div>

@@ -139,7 +139,7 @@ const ResultSearchFilm = () => {
     return { hari, tanggal };
   };
 
-  // Generate dates for the next 50 days
+  // Tampiin 50 data hari penerbangan
   const dates = Array.from({ length: 50 }, (_, i) => CurrentDate(i));
 
   // Constants for pagination
@@ -185,7 +185,7 @@ const ResultSearchFilm = () => {
   const tiketPergi = useSelector(
     (state) => state?.tiket?.dataPesawatPergi?.data
   );
-  // console.log("tiket pergi", tiketPergi);
+   console.log("tiket pergi", tiketPergi);
 
   //Menampilkan tikel pulang
   const tiketPulang = useSelector(
@@ -262,6 +262,7 @@ const ResultSearchFilm = () => {
     dispatch(getTiketSearch());
   };
   const buttonText = `${LokasiKeberangkatan} - ${lokasiTujuan} `;
+  
 
   // formatRupiah
   const formatRupiah = (price) => {
