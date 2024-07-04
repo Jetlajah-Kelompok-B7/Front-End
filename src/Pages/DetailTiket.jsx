@@ -56,6 +56,7 @@ export default function DetailTiket() {
   const ticket = data_tiket?.data?.checkout?.order?.ticket || {};
   const flight = ticket?.schedule?.flight || {};
   const pembayaran = data_tiket?.data?.checkout?.status || {};
+  console.log("DetailTiket  pembayaran:", pembayaran);
 
   const selisih = ticket?.schedule?.kedatangan
     ? differenceInMinutes(
@@ -310,8 +311,13 @@ export default function DetailTiket() {
               {/* Cetak Tiket */}
               <div className="text-center pt-[18px] pb-[13px]">
                 <button
-                  className=" text-white bg-[#176B87] text-sm px-[85px] py-3 rounded-lg"
+                  className={`text-white bg-[#176B87] text-sm px-[85px] py-3 rounded-lg ${
+                    pembayaran === "Cancelled" ? "bg-gray-500" : ""
+                  }`}
                   onClick={() => {
+                    if (pembayaran === "Cancelled") {
+                      return;
+                    }
                     if (pembayaran !== "Paid") {
                       setModalBayar(true);
                       return;

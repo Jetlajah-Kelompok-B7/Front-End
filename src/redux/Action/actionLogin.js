@@ -124,7 +124,6 @@ export const register =
 
       if (response_register?.status === 200) {
         navigate("/add-pin");
-        console.log("Data", response_register.data);
         toast.success("Berhasil Register", {
           position: "bottom-center",
           autoClose: 5000,
@@ -195,7 +194,6 @@ export const profileUser = () => async (dispatch) => {
     dispatch(setTanggal_lahir(isiTanggal));
 
     if (response_profile?.status === 200) {
-      // console.log("Data", response_profile.data);
       return { status: 200 }; // Return status for successful login
     } else {
       return { status: 401 }; // Return status for failed login
@@ -218,9 +216,6 @@ export const createPin = (pin, navigate) => async (dispatch) => {
         headers: { "Content-Type": "application/json" },
       }
     );
-
-    console.log("pin", pin);
-
     if (response_pin?.status === 200) {
       toast.success("PIN BERHASIL DIBUAT", {
         position: "bottom-center",
@@ -278,8 +273,6 @@ export const updateProfile =
     data.append("tanggal_lahir", tanggal_lahir);
     data.append("alamat", alamat);
     data.append("file", file);
-
-    console.log(file);
     try {
       const response_updateProfile = await axios.put(
         "/api/user/profile",
@@ -299,7 +292,6 @@ export const updateProfile =
       );
 
       if (response_updateProfile?.status === 200) {
-        // console.log("Response", response_updateProfile);
         toast.success("Berhasil Update", {
           position: "bottom-center",
           autoClose: 5000,
@@ -402,7 +394,6 @@ export const forgotPassword = (email) => async (dispatch) => {
     if (response_forgot?.status === 200) {
       const pesan = response_forgot?.data;
       dispatch(setMessage(pesan));
-      // console.log("response_forgot", response_forgot);
       toast.success("Permintaan reset password berhasil dikirim", {
         position: "bottom-center",
         autoClose: 5000,
@@ -445,10 +436,7 @@ export const forgotPassword = (email) => async (dispatch) => {
 
 export const pinValidate =
   (pin, metode_pembayaran, checkoutId, navigate) => async (dispatch) => {
-    // console.log("ckoitu IDD PIN", checkoutId)
-    // console.log("Data yang Server: PIN", metode_pembayaran);
     try {
-      // console.log("pin", pin);
       const response_validatePin = await axios.post(
         "/api/pin-validation",
         {
@@ -461,7 +449,6 @@ export const pinValidate =
       );
 
       if (response_validatePin?.status === 200) {
-        // console.log("response_validatePin", response_validatePin);
         toast.success(
           "PembayaranBerhasil",
           {
@@ -483,7 +470,6 @@ export const pinValidate =
         );
 
         // Handle the payment response here
-        // console.log("Payment Response", paymentResponse);
         dispatch(setHasilPostCeckout(paymentResponse)); // Dispatch the action to update the Redux store
 
         navigate("/bayar_berhasil");
@@ -534,7 +520,6 @@ export const changePassword =
       );
 
       if (response_changePassword?.status === 200) {
-        console.log("response_changePassword", response_changePassword);
         toast.success("Berhasil Mengganti Password", {
           position: "bottom-center",
           autoClose: 5000,
@@ -591,7 +576,6 @@ export const changePin = (pinLama, pinBaru2, pinBaru3) => async (dispatch) => {
     );
 
     if (response_changePin?.status === 200) {
-      // console.log("response_changePin", response_changePin);
       toast.success("Berhasil Mengganti PIN", {
         position: "bottom-center",
         autoClose: 5000,
@@ -647,7 +631,6 @@ export const forgotPin = (passwordForgotPin, pinBaru) => async (dispatch) => {
     );
 
     if (response_forgotPin?.status === 201) {
-      // console.log("response_forgotPin", response_forgotPin);
       toast.success("Berhasil Mengganti PIN", {
         position: "bottom-center",
         autoClose: 5000,
@@ -694,7 +677,6 @@ export const getNotification = () => async (dispatch) => {
       withCredentials: true,
       headers: { "Content-Type": "application/json" },
     });
-    // console.log("response_getNotif", response_getNotif);
     const notifikasi = response_getNotif?.data?.data;
     dispatch(setDataNotif(notifikasi));
 

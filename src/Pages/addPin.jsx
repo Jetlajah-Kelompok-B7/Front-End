@@ -23,8 +23,6 @@ export default function AddPin() {
     }
   }, [dispatch]);
 
-  console.log("theState", theState);
-
   // Fungsi untuk mengonversi string pin ke array
   const getPinArray = (c) => {
     c = pin?.toString() || "";
@@ -67,7 +65,6 @@ export default function AddPin() {
     setLoading(true);
     const response = await dispatch(createPin(pin, navigate)); // Kirim pin ke action creator createPin
     setLoading(false);
-    // console.log("Response", response);
   };
 
   return (

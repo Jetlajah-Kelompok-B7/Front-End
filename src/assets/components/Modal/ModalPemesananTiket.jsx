@@ -18,6 +18,7 @@ export default function ModalPemesananTiket() {
   const navigate = useNavigate();
   const [id, setId] = useState(null);
   const [idTanggal, setIdTanggal] = useState(1);
+  console.log("ModalPemesananTiket  idTanggal:", idTanggal);
   const list_Pilihan = ["Sekali Jalan", "Pergi - Pulang"];
   const [pilihanUser, setPilihanUser] = useState("Sekali Jalan");
   const [modalMaaf, setModalMaaf] = useState(false);
@@ -48,7 +49,7 @@ export default function ModalPemesananTiket() {
         tanggalBerangkat !== ""
       ) {
         if (kotaAwal === destinasi) {
-          toast.warning("Kotanya masih sama nih", {
+          toast.warning("Kotanya masih sama tuh", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -78,7 +79,7 @@ export default function ModalPemesananTiket() {
         navigate("/resultSearch");
         return;
       } else {
-        toast.warning("Formnya ada yang kosong nih", {
+        toast.warning("Ada yang kosong nih", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -92,7 +93,7 @@ export default function ModalPemesananTiket() {
       }
     } else {
       toast.warning("Mohon Maff Fitur masih maintance 🙏", {
-        position: "top-right ",
+        position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -101,8 +102,10 @@ export default function ModalPemesananTiket() {
         progress: undefined,
         theme: "colored",
       });
+      return;
     }
   };
+  
   const handleswap = () => {
     let temp = kotaAwal;
     setKotaAwal(destinasi);

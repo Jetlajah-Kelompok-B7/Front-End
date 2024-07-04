@@ -28,6 +28,7 @@ export default function Register() {
   const no_telp = useSelector((state) => state.login?.no_telp);
   const theState = useSelector((state) => state);
 
+
   const handleEmailChange = (event) => {
     dispatch(setEmail(event.target.value)); // Dispatch action untuk mengubah email di Redux state
   };

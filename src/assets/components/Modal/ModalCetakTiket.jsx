@@ -104,7 +104,7 @@ export default function ModalCetakTiket({ visible, onClose, data_tiket }) {
         </div>
         <div className="bg-white p-4 flex w-[700px]  justify-center items-center">
           {/* kiri */}
-          <div className="w-full text-start grid  grid-cols-2 gap-12 -mr-[250px] ml-2">
+          <div className="w-full text-start flex flex-col gap-5 -mr-[250px] ml-2">
             <div>
               Nama Penumpang :
               <ul className="list-disc pl-5 font-bold">
@@ -118,7 +118,7 @@ export default function ModalCetakTiket({ visible, onClose, data_tiket }) {
                 ))}
               </ul>
             </div>
-            <div className="flex flex-col mr-2.5">
+            <div className="flex mr-2 gap-4">
               Tanggal {" : "}
               <span className="font-bold mb-1">
                 {format(
@@ -132,33 +132,36 @@ export default function ModalCetakTiket({ visible, onClose, data_tiket }) {
                 {ticket?.schedule?.keberangkatan.split("T")[1].split(":")[1]}
               </span>
             </div>
-            <div>
-              <p>
-                Maskapai :{" "}
-                <span className="font-bold">
-                  {flight?.Plane?.Airline?.nama_maskapai}
-                </span>
-              </p>
-              <p>
-                Gerbang :{" "}
-                <span className="font-bold">
-                  {flight?.terminal_keberangkatan}
-                </span>
-              </p>
-            </div>
-            <div>
-              <p>
-                Dari :{" "}
-                <span className="font-bold">
-                  {flight?.bandara_keberangkatan?.lokasi?.split(",")[0]}
-                </span>
-              </p>
-              <p>
-                Ke :{" "}
-                <span className="font-bold">
-                  {flight?.bandara_kedatangan?.lokasi?.split(",")[0]}
-                </span>
-              </p>
+
+            <div className="flex gap-5">
+              <div>
+                <p>
+                  Maskapai :{" "}
+                  <span className="font-bold">
+                    {flight?.Plane?.Airline?.nama_maskapai}
+                  </span>
+                </p>
+                <p>
+                  Gerbang :{" "}
+                  <span className="font-bold">
+                    {flight?.terminal_keberangkatan}
+                  </span>
+                </p>
+              </div>
+              <div>
+                <p>
+                  Dari :{" "}
+                  <span className="font-bold">
+                    {flight?.bandara_keberangkatan?.lokasi?.split(",")[0]}
+                  </span>
+                </p>
+                <p>
+                  Ke :{" "}
+                  <span className="font-bold">
+                    {flight?.bandara_kedatangan?.lokasi?.split(",")[0]}
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
           {/* Kanan */}
