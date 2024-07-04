@@ -64,47 +64,7 @@ export default function Payment() {
   // const theState = useSelector((state) => state);
   // // console.log("theState", theState);
 
- //Pengaman jika data belum terisi
- const DataBaru = useSelector((state) => state?.tiket);
- const {
-   KelasPenerbangan,
-   LokasiKeberangkatan,
-   TanggalKeberangkatan,
-   TanggalKepulangan,
-   lokasiTujuan,
-   totalSemuaPenumpang,
-   idTiket,
- } = DataBaru || {};
 
- // console.log("TYPE PENERBANGAN", typePenerbanngan);
- useEffect(() => {
-   if (idTiket === 1) {
-     if (
-       lokasiTujuan === "" ||
-       LokasiKeberangkatan === "" ||
-       TanggalKeberangkatan === "" ||
-       totalSemuaPenumpang <= 0 ||
-       KelasPenerbangan === ""
-     ) {
-       alert("Harap Lengkapi Semua Data Tiket");
-       navigate("/");
-       return;
-     }
-   } else {
-     if (
-       lokasiTujuan === "" ||
-       LokasiKeberangkatan === "" ||
-       TanggalKeberangkatan === "" ||
-       TanggalKepulangan === "" ||
-       totalSemuaPenumpang <= 0 ||
-       KelasPenerbangan === ""
-     ) {
-       alert("Harap Lengkapi Semua Data Tiket");
-       navigate("/");
-       return;
-     }
-   }
- }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -174,7 +134,7 @@ export default function Payment() {
           return;
         }
       } else {
-        console.log("e?.is_baby", e?.is_baby);
+        // console.log("e?.is_baby", e?.is_baby);
         bayiCount++;
       }
     });
@@ -183,7 +143,7 @@ export default function Payment() {
     setAnak(anakCount);
     setBayi(bayiCount);
   }, []);
-  console.log("Payment  bayiCount:", bayi);
+  // console.log("Payment  bayiCount:", bayi);
 
   if (Object.values(DetailPenumpangCekout).length > 0) {
     penumpangArray = Object.values(DetailPenumpangCekout?.orders);

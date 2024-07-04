@@ -67,7 +67,7 @@ export default function AddPin() {
     setLoading(true);
     const response = await dispatch(createPin(pin, navigate)); // Kirim pin ke action creator createPin
     setLoading(false);
-    console.log("Response", response);
+    // console.log("Response", response);
   };
 
   return (

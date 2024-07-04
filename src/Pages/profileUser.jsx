@@ -111,14 +111,14 @@ export default function ProfileUser() {
   useEffect(() => {
     if (file instanceof Blob) {
       const fileURL = URL.createObjectURL(file);
-      console.log("fileURL", fileURL);
+      // console.log("fileURL", fileURL);
       setPreview(fileURL);
     }
   }, [file]);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-    console.log("selectedFile", selectedFile);
+    // console.log("selectedFile", selectedFile);
     if (selectedFile) {
       dispatch(setFile(selectedFile));
     }

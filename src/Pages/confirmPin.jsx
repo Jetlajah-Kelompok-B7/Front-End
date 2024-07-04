@@ -94,7 +94,7 @@ export default function AddPin() {
     // console.log("RESPON", response);
     if (response.status === 200) {
       dispatch(getPaymentCekout(metode_pembayaran, checkoutId));
-      // navigate("/payment");
+
     }
     setLoading(false);
   };

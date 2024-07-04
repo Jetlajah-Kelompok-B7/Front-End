@@ -299,7 +299,7 @@ export const updateProfile =
       );
 
       if (response_updateProfile?.status === 200) {
-        console.log("Response", response_updateProfile);
+        // console.log("Response", response_updateProfile);
         toast.success("Berhasil Update", {
           position: "bottom-center",
           autoClose: 5000,
@@ -402,7 +402,7 @@ export const forgotPassword = (email) => async (dispatch) => {
     if (response_forgot?.status === 200) {
       const pesan = response_forgot?.data;
       dispatch(setMessage(pesan));
-      console.log("response_forgot", response_forgot);
+      // console.log("response_forgot", response_forgot);
       toast.success("Permintaan reset password berhasil dikirim", {
         position: "bottom-center",
         autoClose: 5000,
@@ -591,7 +591,7 @@ export const changePin = (pinLama, pinBaru2, pinBaru3) => async (dispatch) => {
     );
 
     if (response_changePin?.status === 200) {
-      console.log("response_changePin", response_changePin);
+      // console.log("response_changePin", response_changePin);
       toast.success("Berhasil Mengganti PIN", {
         position: "bottom-center",
         autoClose: 5000,
@@ -647,7 +647,7 @@ export const forgotPin = (passwordForgotPin, pinBaru) => async (dispatch) => {
     );
 
     if (response_forgotPin?.status === 201) {
-      console.log("response_forgotPin", response_forgotPin);
+      // console.log("response_forgotPin", response_forgotPin);
       toast.success("Berhasil Mengganti PIN", {
         position: "bottom-center",
         autoClose: 5000,

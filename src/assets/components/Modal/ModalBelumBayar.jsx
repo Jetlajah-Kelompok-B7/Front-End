@@ -30,7 +30,7 @@ export default function ModalBelumBayar({ visible, onClose, idcheckout }) {
             className="flex-1 bg-[#176B87] font-semibold text-white py-2 px-6 rounded-xl"
             onClick={() => {
               dispatch(setHasilPostDataPenumpang(idcheckout));
-              navigate("/payment");
+              navigate("/Payment");
             }}
           >
             Bayar Sekarang
