@@ -31,10 +31,6 @@ export const login = (email, password, navigate) => async (dispatch) => {
     );
 
     if (response_login?.status === 200) {
-      if (response_login?.data?.data?.pin === null) {
-        navigate("/add-pin");
-        return;
-      }
       toast.success("Berhasil login", {
         position: "bottom-center",
         autoClose: 5000,
