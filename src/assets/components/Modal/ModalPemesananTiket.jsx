@@ -91,7 +91,7 @@ export default function ModalPemesananTiket() {
         return;
       }
     } else {
-      toast.warning("Mohon Maff Fitur masih maintance 🙏", {
+      toast.warning("Maaf, sistem Pergi - Pulang masih dalam perbaikan", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -135,6 +135,22 @@ export default function ModalPemesananTiket() {
                   key={i}
                   className=" hover:cursor-pointer"
                   onClick={() => {
+                    if (e === "Pergi - Pulang") {
+                      toast.warning(
+                        "Maaf, sistem Pergi - Pulang masih dalam perbaikan",
+                        {
+                          position: "top-right",
+                          autoClose: 3000,
+                          hideProgressBar: false,
+                          closeOnClick: true,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                          theme: "colored",
+                        }
+                      );
+                      return;
+                    }
                     setPilihanUser(e);
                     setIdTanggal(i + 1);
                     setModalNama("");
