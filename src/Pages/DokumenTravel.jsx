@@ -382,7 +382,7 @@ const travelDokumen = () => {
                             e?.target?.value
                           )
                         }
-                        className="border border-slate-300 lg:lg:w-[440px] w-full w-full p-2 my-2 max-sm:w-full    "
+                        className="border border-slate-300 lg:lg:w-[440px] w-full p-2 my-2 max-sm:w-full    "
                       >
                         <option value=""></option>
                         <option value="Tuan">Tuan</option>
