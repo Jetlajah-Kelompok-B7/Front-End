@@ -27,6 +27,49 @@ const travelDokumen = () => {
       .replace(/\,00$/, "");
   };
 
+
+   //Pengaman jika data belum terisi
+   const DataBaru = useSelector((state) => state?.tiket);
+   const {
+     KelasPenerbangan,
+     LokasiKeberangkatan,
+     TanggalKeberangkatan,
+     TanggalKepulangan,
+     lokasiTujuan,
+     totalSemuaPenumpang,
+     idTiket,
+   } = DataBaru || {};
+ 
+   // console.log("TYPE PENERBANGAN", typePenerbanngan);
+   useEffect(() => {
+     if (idTiket === 1) {
+       if (
+         lokasiTujuan === "" ||
+         LokasiKeberangkatan === "" ||
+         TanggalKeberangkatan === "" ||
+         totalSemuaPenumpang <= 0 ||
+         KelasPenerbangan === ""
+       ) {
+         alert("Harap Lengkapi Semua Data Tiket");
+         navigate("/");
+         return;
+       }
+     } else {
+       if (
+         lokasiTujuan === "" ||
+         LokasiKeberangkatan === "" ||
+         TanggalKeberangkatan === "" ||
+         TanggalKepulangan === "" ||
+         totalSemuaPenumpang <= 0 ||
+         KelasPenerbangan === ""
+       ) {
+         alert("Harap Lengkapi Semua Data Tiket");
+         navigate("/");
+         return;
+       }
+     }
+   }, []);
+
   //MENAMPILKAN DATA TIKET PERGI
   const DataBooking = useSelector(
     (state) => state?.booking?.bookingTiketPesawatPergi
@@ -75,24 +118,26 @@ const travelDokumen = () => {
   }
 
   //Fungsi  FETHING API Option Negara
-  useEffect(() => {
-    // Fetch data dari API dan update options
-    axios
-      .get("https://restcountries.com/v3.1/all")
-      .then((response) => {
-        const data = response.data;
-        const countryOptions = data.map((country) => ({
-          value: country.name.common,
-          label: country.name.common,
-        }));
-
-        // Urutkan countryOptions berdasarkan label (nama negara)
-        countryOptions.sort((a, b) => a.label.localeCompare(b.label));
-
-        setOptions(countryOptions); // Update state options
-      })
-      .catch((error) => console.error("Error fetching country data:", error));
-  }, []); // Kosong array dependencies berarti useEffect hanya berjalan sekali saat komponen mount
+    useEffect(() => {
+      // Fetch data dari API dan update options
+      axios
+        .get("https://restcountries.com/v3.1/all")
+        .then((response) => {
+          const data = response.data;
+          const countryOptions = data
+            .map((country) => ({
+              value: country.name.common,
+              label: country.name.common,
+            }))
+            .filter((country) => country.label !== "Israel"); // Filter Israel
+    
+          // Urutkan countryOptions berdasarkan label (nama negara)
+          countryOptions.sort((a, b) => a.label.localeCompare(b.label));
+    
+          setOptions(countryOptions); // Update state options
+        })
+        .catch((error) => console.error("Error fetching country data:", error));
+    }, []);// Kosong array dependencies berarti useEffect hanya berjalan sekali saat komponen mount
 
   // Setting ageGroup by jumlah penumpang
   useEffect(() => {
@@ -213,6 +258,61 @@ const travelDokumen = () => {
     }
     setPenumpangData(initialPenumpangData);
   }, [DataPenumpang?.TotalPenumpang]);
+
+
+  // Fungsi validasi untuk nama (harus huruf)
+  const validateName = (name) => {
+    return name === "" || /^[a-zA-Z\s]+$/.test(name);
+  };
+
+  // Fungsi validasi untuk NIK (harus angka dan 16 digit)
+  const validateNIK = (nik) => {
+    // Hanya mengizinkan angka di input, tanpa menghalangi pengguna untuk menghapus angka pertama
+    return nik === "" || /^[0-9]*$/.test(nik);
+  };
+
+  // Fungsi validasi untuk umur minimal 12 tahun
+  const validasiTanggalLahir = (dob) => {
+    const today = new Date();
+    const birthDate = new Date(dob);
+    const twoDaysAgo = new Date(today.setDate(today.getDate() - 2));
+
+    if (birthDate > twoDaysAgo) {
+      return false; // Tanggal lahir tidak valid jika lebih dari 2 hari yang lalu
+    }
+    return true; // Tanggal lahir valid jika 2 hari atau lebih dari hari ini
+  };
+
+  const validasasiMasaBerlaku = (dob) => {
+    const today = new Date();
+    const birthDate = new Date(dob);
+    const hariIni = new Date(today.setDate(today.getDate()));
+
+    if (hariIni > birthDate) {
+      return false; // Tanggal berlaku tidak valid jika kurang dari hari ini
+    }
+    return true; // Tanggal berlaku valid jika tidak kurang dari hari ini
+  };
+
+  const handleChange = (id, field, value) => {
+    if (field === "nama" && !validateName(value)) {
+      alert("Nama harus berupa huruf.");
+      return;
+    }
+    if (field === "ktp_pasport" && !validateNIK(value)) {
+      alert("NIK/Paspot harus berupa angka.");
+      return;
+    }
+    if (field === "tanggal_lahir" && !validasiTanggalLahir(value)) {
+      alert("Tanggal lahir harus setidaknya 2 hari sebelum hari ini.");
+      return;
+    }
+    if (field === "berlaku_sampai" && !validasasiMasaBerlaku(value)) {
+      alert("Tanggal tidak boleh kurang hari ini.");
+      return;
+    }
+    handleInputChange(id, field, value); // handleInputChange adalah fungsi yang mengubah state atau data penumpang
+  };
 
   const handleInputChange = (id, field, value) => {
     setPenumpangData((prevData) =>
@@ -376,7 +476,7 @@ const travelDokumen = () => {
                       <select
                         value={penumpang?.titel}
                         onChange={(e) =>
-                          handleInputChange(
+                          handleChange(
                             penumpang?.id,
                             "titel",
                             e?.target?.value
@@ -397,7 +497,7 @@ const travelDokumen = () => {
                         value={penumpang?.nama}
                         required
                         onChange={(e) =>
-                          handleInputChange(
+                          handleChange(
                             penumpang?.id,
                             "nama",
                             e.target.value
@@ -413,7 +513,7 @@ const travelDokumen = () => {
                         value={penumpang?.tanggal_lahir}
                         required
                         onChange={(e) =>
-                          handleInputChange(
+                          handleChange(
                             penumpang?.id,
                             "tanggal_lahir",
                             e.target.value
@@ -431,7 +531,7 @@ const travelDokumen = () => {
                             option.value === penumpang?.kewarganegaraan
                         )}
                         onChange={(selectedOption) =>
-                          handleInputChange(
+                          handleChange(
                             penumpang?.id,
                             "kewarganegaraan",
                             selectedOption?.value
@@ -448,7 +548,7 @@ const travelDokumen = () => {
                         value={penumpang?.ktp_pasport}
                         required
                         onChange={(e) =>
-                          handleInputChange(
+                          handleChange(
                             penumpang?.id,
                             "ktp_pasport",
                             e?.target?.value
@@ -466,7 +566,7 @@ const travelDokumen = () => {
                             option?.value === penumpang?.negara_penerbit
                         )}
                         onChange={(selectedOption) =>
-                          handleInputChange(
+                          handleChange(
                             penumpang.id,
                             "negara_penerbit",
                             selectedOption?.value
@@ -483,7 +583,7 @@ const travelDokumen = () => {
                         value={penumpang?.berlaku_sampai}
                         required
                         onChange={(e) =>
-                          handleInputChange(
+                          handleChange(
                             penumpang?.id,
                             "berlaku_sampai",
                             e?.target?.value
@@ -514,7 +614,7 @@ const travelDokumen = () => {
                       {/* TIKET PERGI */}
                       <div>
                         <p className="font-bold text-[#176B87] pt-5 pb-3 text-xl">
-                          Detail Penerbangan Pergi
+                          Detail Penerbangan
                         </p>
                         <div>
                           <div className="flex justify-between">

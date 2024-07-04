@@ -419,7 +419,7 @@ const ResultSearchFilm = () => {
                               </p>
                             </div>
                             <div>
-                              <div className="border-b-2 max-sm:px-11 sm:px-9 lg:sm:px-16">
+                              <div className="border-b-2 max-sm:px-11 sm:px-5 lg:sm:px-20">
                                 <p className="text-xs text-gray-500">
                                   {calculateFlightDuration(
                                     flight?.schedule?.takeoff?.time,
@@ -443,7 +443,7 @@ const ResultSearchFilm = () => {
                           <div className="max-sm:w-full flex gap-10 justify-end">
                             <div className="flex flex-col justify-end">
                               <p className="font-semibold text-red-600">
-                                {formatRupiah(flight?.price)}/ Pax
+                                 {formatRupiah(flight?.price * 1.1)}/ Pax (incl. tax)
                               </p>
                               <button
                                 className="bg-[#176B87] rounded-lg py-2 px-5 text-white font-semibold"
