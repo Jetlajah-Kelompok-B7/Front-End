@@ -26,11 +26,10 @@ export default function ModalPemesananTiketMobile() {
   const [tanggalPulang, setTanggalPulang] = useState("");
   const [total_penumpang, setTotal_penumpang] = useState(0);
   const [kelas_penerbangan, setKelas_penerbangan] = useState("");
-
   const totalperpenumpang = useSelector(
     (state) => state?.tiket?.TotalPenumpang
   );
-  const { Dewasa, Bayi, Anak } = totalperpenumpang;
+  const { Dewasa } = totalperpenumpang;
 
   const handlePemesanan = () => {
     if (idTanggal === 1) {
@@ -85,7 +84,7 @@ export default function ModalPemesananTiketMobile() {
         return;
       }
     } else {
-      toast.warning("Ada yang kosong nih", {
+      toast.warning("Mohon Maff Fitur masih maintance 🙏", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -108,17 +107,6 @@ export default function ModalPemesananTiketMobile() {
   useEffect(() => {
     dispatch(GetTiket());
   }, [dispatch]);
-
-  const DataBaru = useSelector((state) => state?.tiket);
-  const {
-    KelasPenerbangan,
-    LokasiKeberangkatan,
-    TanggalKeberangkatan,
-    TanggalKepulangan,
-    lokasiTujuan,
-    totalSemuaPenumpang,
-    idTiket,
-  } = DataBaru || {};
 
   useEffect(() => {
     dispatch(getTiketSearch());
@@ -189,7 +177,14 @@ export default function ModalPemesananTiketMobile() {
               </div>
               {/* penumpang */}
               <div className="w-full flex mt-6">
-                <Inputpenumpang modal={modalNama} setmodal={setModalNama} />
+                <Inputpenumpang
+                  modal={modalNama}
+                  setmodal={setModalNama}
+                  setTotal={setTotal_penumpang}
+                  total_penumpang={total_penumpang}
+                  kelas={kelas_penerbangan}
+                  setKelas={setKelas_penerbangan}
+                />
               </div>
             </div>
           </div>
@@ -386,10 +381,14 @@ function Inputtanggal({
     </div>
   );
 }
-function Inputpenumpang({ modal, setmodal }) {
-  const [total_penumpang, setTotal_penumpang] = useState(0);
-  const [kelas_penerbangan, setKelas_penerbangan] = useState("");
-
+function Inputpenumpang({
+  modal,
+  kelas,
+  setKelas,
+  setmodal,
+  total_penumpang,
+  setTotal,
+}) {
   return (
     <div className="flex items-center w-full">
       <img src="/images/iconDuduk.png" alt="" className="w-6 h-6 mr-2" />
@@ -412,7 +411,7 @@ function Inputpenumpang({ modal, setmodal }) {
                 setmodal("");
               }}
               total={total_penumpang}
-              set_total={setTotal_penumpang}
+              set_total={setTotal}
               visible={modal === "kursi"}
             />
           </div>
@@ -428,17 +427,17 @@ function Inputpenumpang({ modal, setmodal }) {
                   setmodal("kelas");
                 }}
               >
-                {kelas_penerbangan === "" ? (
+                {kelas === "" ? (
                   <div>Pilih Kelas</div>
                 ) : (
-                  <div className="whitespace-nowrap">{kelas_penerbangan}</div>
+                  <div className="whitespace-nowrap">{kelas}</div>
                 )}
               </button>
               <PilihKelasPenerbangan
                 onClose={() => {
                   setmodal("");
                 }}
-                kelas_penerbangan={setKelas_penerbangan}
+                kelas_penerbangan={setKelas}
                 visible={modal === "kelas"}
               />
             </div>

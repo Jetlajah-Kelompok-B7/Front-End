@@ -91,8 +91,8 @@ export default function ModalPemesananTiket() {
         return;
       }
     } else {
-      toast.warning("Kotanya masih sama nih", {
-        position: "top-right",
+      toast.warning("Mohon Maff Fitur masih maintance 🙏", {
+        position: "top-right ",
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
