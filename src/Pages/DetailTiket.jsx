@@ -48,7 +48,7 @@ export default function DetailTiket() {
     if (id) {
       fetchUserData();
     } else {
-      null;
+      navigate("/history");
     }
   }, [id]);
 
