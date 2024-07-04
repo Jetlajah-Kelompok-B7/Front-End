@@ -89,7 +89,7 @@ export default function AddPin() {
     ); // Kirim pin ke action creator createPin
     if (response.status === 200) {
       dispatch(getPaymentCekout(metode_pembayaran, checkoutId));
-      // navigate("/payment");
+
     }
     setLoading(false);
   };

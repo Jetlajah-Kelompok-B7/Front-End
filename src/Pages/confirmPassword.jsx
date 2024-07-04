@@ -31,7 +31,7 @@ export default function ConfirmPassword() {
   const email = useSelector((state) => state.login?.email);
   const password = useSelector((state) => state.login?.password);
   const theState = useSelector((state) => state);
-  console.log("theState", theState);
+  // console.log("theState", theState);
 
   //pengaman agar jika user belum login
   const Condition = useSelector((state) => {

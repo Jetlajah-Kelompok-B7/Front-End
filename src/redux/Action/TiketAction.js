@@ -143,7 +143,7 @@ export const getPayment =
         theme: "colored",
       });
       // Navigasi ke halaman pembayaran
-      navigate("/payment");
+      navigate("/Payment");
     } catch (error) {
       console.error(
         "Error:",
@@ -166,7 +166,7 @@ export const getPayment =
 
 //Get DEtail Cekout
 export const getDetailPesanan = (checkoutId) => async (dispatch) => {
-  console.log("getDetailPesanan  checkoutId:", checkoutId);
+  // console.log("getDetailPesanan  checkoutId:", checkoutId);
   try {
     const repsonse = await axios.get(`/api/checkout/${checkoutId}`);
     // console.log("checkoutId", checkoutId);

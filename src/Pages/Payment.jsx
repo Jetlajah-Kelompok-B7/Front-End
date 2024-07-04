@@ -64,6 +64,8 @@ export default function Payment() {
   // const theState = useSelector((state) => state);
   // // console.log("theState", theState);
 
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCreditCardInfo({ ...creditCardInfo, [name]: value });
@@ -132,7 +134,7 @@ export default function Payment() {
           return;
         }
       } else {
-        console.log("e?.is_baby", e?.is_baby);
+        // console.log("e?.is_baby", e?.is_baby);
         bayiCount++;
       }
     });
@@ -141,7 +143,7 @@ export default function Payment() {
     setAnak(anakCount);
     setBayi(bayiCount);
   }, []);
-  console.log("Payment  bayiCount:", bayi);
+  // console.log("Payment  bayiCount:", bayi);
 
   if (Object.values(DetailPenumpangCekout).length > 0) {
     penumpangArray = Object.values(DetailPenumpangCekout?.orders);
@@ -610,30 +612,30 @@ export default function Payment() {
                   {dewasa > 0 && (
                     <div className="flex justify-between">
                       <p>{dewasa} Dewasa</p>
-                      <p>IDR {(hargaTiket * dewasa).toLocaleString("id-ID")}</p>
+                      <p>Rp. {(hargaTiket * dewasa).toLocaleString("id-ID")}</p>
                     </div>
                   )}
                   {anak > 0 && (
                     <div className="flex justify-between">
                       <p>{anak} Anak</p>
-                      <p>IDR {(hargaTiket * anak).toLocaleString("id-ID")}</p>
+                      <p>Rp. {(hargaTiket * anak).toLocaleString("id-ID")}</p>
                     </div>
                   )}
                   {bayi > 0 && (
                     <div className="flex justify-between">
                       <p>{bayi} Bayi</p>
-                      <p>IDR 0</p>
+                      <p>Rp. 0</p>
                     </div>
                   )}
                   <div className="flex justify-between">
                     <p>Tax + Donasi Palestina 10%</p>
-                    IDR {taxTiket?.toLocaleString("id-ID")}
+                    Rp. {taxTiket?.toLocaleString("id-ID")}
                   </div>
                 </div>
                 <div className="flex justify-between">
                   <p className="font-bold text-xl">Total</p>
                   <p className="font-bold text-xl text-[#176B87]">
-                    IDR {totalHarga?.toLocaleString("id-ID")}
+                    Rp. {totalHarga?.toLocaleString("id-ID")}
                   </p>
                 </div>
               </div>
