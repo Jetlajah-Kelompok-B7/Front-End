@@ -45,7 +45,13 @@ export const login = (email, password, navigate) => async (dispatch) => {
         navigate("/add-pin");
         return;
       }
-      navigate("/");
+      dispatch(fetchUserData())
+        .then(() => {
+          navigate("/");
+        })
+        .catch((err) => {
+          console.error("An error occurred:", err);
+        });
       return { status: 200 }; // Return status for successful login
     } else if (response_login?.status === 401) {
       const pesan =
