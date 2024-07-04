@@ -26,31 +26,10 @@ export default function ModalPemesananTiketMobile() {
   const [tanggalPulang, setTanggalPulang] = useState("");
   const [total_penumpang, setTotal_penumpang] = useState(0);
   const [kelas_penerbangan, setKelas_penerbangan] = useState("");
-
-  const DataBaru = useSelector((state) => state?.tiket);
-  const {
-    KelasPenerbangan,
-    LokasiKeberangkatan,
-    TanggalKeberangkatan,
-    TanggalKepulangan,
-    lokasiTujuan,
-    totalSemuaPenumpang,
-    idTiket,
-    typePenerbanngan,
-  } = DataBaru || {};
-  console.log("typePenerbanngan:", typePenerbanngan);
-  console.log("idTiket:", idTiket);
-  console.log("totalSemuaPenumpang:", totalSemuaPenumpang);
-  console.log("lokasiTujuan:", lokasiTujuan);
-  console.log("TanggalKepulangan:", TanggalKepulangan);
-  console.log("KelasPenerbangan", KelasPenerbangan);
-  console.log("LokasiKeberangkatan", LokasiKeberangkatan);
-  console.log("TanggalKeberangkatan", TanggalKeberangkatan);
-
   const totalperpenumpang = useSelector(
     (state) => state?.tiket?.TotalPenumpang
   );
-  const { Dewasa, Bayi, Anak } = totalperpenumpang;
+  const { Dewasa } = totalperpenumpang;
 
   const handlePemesanan = () => {
     if (idTanggal === 1) {
