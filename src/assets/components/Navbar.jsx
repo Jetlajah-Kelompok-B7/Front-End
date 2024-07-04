@@ -30,10 +30,12 @@ export default function Navbar() {
   });
   useEffect(() => {
     dispatch(fetchUserData());
-    if (Pin === null) {
-      navigate("/add-pin");
+    if (Condition) {
+      if (Pin === null) {
+        navigate("/add-pin");
+      }
     }
-  }, [dispatch, Pin]);
+  }, [dispatch, Pin, Condition]);
 
   const handleResize = () => {
     if (window.innerWidth <= 1028) {
