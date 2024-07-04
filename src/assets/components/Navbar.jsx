@@ -28,9 +28,11 @@ export default function Navbar() {
   const Pin = useSelector((state) => {
     return state.tiket2.pin;
   });
+  console.log("Pin  Pin:", Pin);
+
   useEffect(() => {
     dispatch(fetchUserData());
-    if (Condition) {
+    if (Condition === true) {
       if (Pin === null) {
         navigate("/add-pin");
       }
