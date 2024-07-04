@@ -17,8 +17,6 @@ export default function AddPin() {
   const [loading, setLoading] = useState(false);
   const pinRefs = useRef([]);
 
-  // console.log("theState", theState);
-
   //pengaman agar jika user belum login
   const Condition = useSelector((state) => {
     return state.tiket2.isLoggin;
@@ -85,13 +83,10 @@ export default function AddPin() {
     setLoading(true);
     let params = new URLSearchParams(document.location.search);
     let checkoutId = params.get("checkoutId");
-    // console.log("handleSubmit  checkoutId:", checkoutId);
     let metode_pembayaran = params.get("metode_pembayaran");
-    // console.log("handleSubmit  metode_pembayaran:", metode_pembayaran);
     const response = await dispatch(
       pinValidate(pin, metode_pembayaran, checkoutId, navigate)
     ); // Kirim pin ke action creator createPin
-    // console.log("RESPON", response);
     if (response.status === 200) {
       dispatch(getPaymentCekout(metode_pembayaran, checkoutId));
       // navigate("/payment");
