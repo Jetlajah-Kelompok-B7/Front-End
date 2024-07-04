@@ -284,6 +284,7 @@ const travelDokumen = () => {
         progress: undefined,
         theme: "colored",
       });
+   
     }
     // console.log("data Inputan Pergi", dataInputPesanan.id);
     // console.log("data Inputan Pulang", dataInputanPesananPulang.id);
@@ -292,49 +293,12 @@ const travelDokumen = () => {
   const dataPemesan = useSelector((state) => state?.login);
   //  console.log("Data Pemesan user", dataPemesan);
 
-  // Fungsi validasi untuk nama (harus huruf)
-  const validateName = (name) => /^[a-zA-Z\s]+$/.test(name);
-
-  // Fungsi validasi untuk NIK (harus angka dan 16 digit)
-  const validateNIK = (nik) => /^[0-9]{16}$/.test(nik);
-
-  // Fungsi validasi untuk umur minimal 12 tahun
-  const validateDateOfBirth = (dob) => {
-    const today = new Date();
-    const birthDate = new Date(dob);
-    const age = today.getFullYear() - birthDate.getFullYear();
-    const monthDifference = today.getMonth() - birthDate.getMonth();
-    if (
-      monthDifference < 0 ||
-      (monthDifference === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      return age - 1;
-    }
-    return age;
-  };
-
-  const handleChange = (id, field, value) => {
-    if (field === "nama" && !validateName(value)) {
-      alert("Nama harus berupa huruf.");
-      return;
-    }
-    if (field === "ktp_pasport" && !validateNIK(value)) {
-      alert("NIK harus berupa angka dan terdiri dari 16 digit.");
-      return;
-    }
-    if (field === "tanggal_lahir" && validateDateOfBirth(value) < 12) {
-      alert("Umur minimal adalah 12 tahun.");
-      return;
-    }
-    handleInputChange(id, field, value);
-  };
-
   return (
     <>
       <div className="bg-white">
-        <div className="fixed  w-full bg-white z-50 shadow">
-          <Navbar />
-        </div>
+      <div className="fixed  w-full bg-white z-50 shadow">
+        <Navbar />
+      </div>
         {/* Header Atas */}
         <div className="bg-white shadow-md w-full max-sm:w-full md:px-4 ma ">
           <div className="mx-4 lg:mx-20 pt-5 ">
@@ -393,7 +357,7 @@ const travelDokumen = () => {
 
               {/* Isi Data Penumpang */}
               <div className="mt-10 border rounded-xl border-slate-300 p-10 lg:w-[600px] w-full text-xl max-sm:w-full max-sm:p-5 ">
-                <p className="text-[#176B87] font-semibold pb-5">
+                <p className="text-[#176B87] font-semibold pb-5 ">
                   Isi Data Penumpang
                 </p>
                 {penumpangData.map((penumpang, index) => (
@@ -405,125 +369,128 @@ const travelDokumen = () => {
                       <p className="bg-[#176B87] text-white rounded-t-md py-2 px-4">
                         Data Diri Penumpang {index + 1} - {penumpang?.name}
                       </p>
-                      <form action="" className="py-3">
-                        <label className="text-[#176B87] font-semibold">
-                          Titel
-                        </label>
-                        <select
-                          value={penumpang?.titel}
-                          onChange={(e) =>
-                            handleChange(
-                              penumpang?.id,
-                              "titel",
-                              e?.target?.value
-                            )
-                          }
-                          className="border border-slate-300 lg:lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
-                        >
-                          <option value=""></option>
-                          <option value="Tuan">Tuan</option>
-                          <option value="Nyonya">Nyonya</option>
-                          <option value="Nona">Nona</option>
-                        </select>
-                        <label className="text-[#176B87] font-semibold">
-                          Nama Lengkap
-                        </label>
-                        <input
-                          type="text"
-                          value={penumpang?.nama}
-                          required
-                          onChange={(e) =>
-                            handleChange(penumpang?.id, "nama", e.target.value)
-                          }
-                          className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
-                        />
-                        <label className="text-[#176B87] font-semibold">
-                          Tanggal Lahir
-                        </label>
-                        <input
-                          type="date"
-                          value={penumpang?.tanggal_lahir}
-                          required
-                          onChange={(e) =>
-                            handleChange(
-                              penumpang?.id,
-                              "tanggal_lahir",
-                              e.target.value
-                            )
-                          }
-                          className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
-                        />
-                        <label className="text-[#176B87] font-semibold">
-                          Kewarganegaraan
-                        </label>
-                        <Select
-                          required
-                          value={options.find(
-                            (option) =>
-                              option.value === penumpang?.kewarganegaraan
-                          )}
-                          onChange={(selectedOption) =>
-                            handleChange(
-                              penumpang?.id,
-                              "kewarganegaraan",
-                              selectedOption?.value
-                            )
-                          }
-                          options={options}
-                          className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
-                        />
-                        <label className="text-[#176B87] font-semibold">
-                          No KTP/Paspor
-                        </label>
-                        <input
-                          type="text"
-                          value={penumpang?.ktp_pasport}
-                          required
-                          onChange={(e) =>
-                            handleChange(
-                              penumpang?.id,
-                              "ktp_pasport",
-                              e?.target?.value
-                            )
-                          }
-                          className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
-                        />
-                        <label className="text-[#176B87] font-semibold">
-                          Negara Penerbit
-                        </label>
-                        <Select
-                          required
-                          value={options.find(
-                            (option) =>
-                              option?.value === penumpang?.negara_penerbit
-                          )}
-                          onChange={(selectedOption) =>
-                            handleChange(
-                              penumpang.id,
-                              "negara_penerbit",
-                              selectedOption?.value
-                            )
-                          }
-                          options={options}
-                          className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
-                        />
-                        <label className="text-[#176B87] font-semibold">
-                          Berlaku Sampai
-                        </label>
-                        <input
-                          type="date"
-                          value={penumpang?.berlaku_sampai}
-                          required
-                          onChange={(e) =>
-                            handleChange(
-                              penumpang?.id,
-                              "berlaku_sampai",
-                              e?.target?.value
-                            )
-                          }
-                          className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
-                        />
-                      </form>
+                      <form action="" className="py-3"></form>
+                      <label className="text-[#176B87] font-semibold">
+                        titel
+                      </label>
+                      <select
+                        value={penumpang?.titel}
+                        onChange={(e) =>
+                          handleInputChange(
+                            penumpang?.id,
+                            "titel",
+                            e?.target?.value
+                          )
+                        }
+                        className="border border-slate-300 lg:lg:w-[440px] w-full w-full p-2 my-2 max-sm:w-full    "
+                      >
+                        <option value=""></option>
+                        <option value="Tuan">Tuan</option>
+                        <option value="Nyonya">Nyonya</option>
+                        <option value="Nona">Nona</option>
+                      </select>
+                      <label className="text-[#176B87] font-semibold">
+                        Nama Lengkap
+                      </label>
+                      <input
+                        type="text"
+                        value={penumpang?.nama}
+                        required
+                        onChange={(e) =>
+                          handleInputChange(
+                            penumpang?.id,
+                            "nama",
+                            e.target.value
+                          )
+                        }
+                        className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
+                      />
+                      <label className="text-[#176B87] font-semibold">
+                        Tanggal Lahir
+                      </label>
+                      <input
+                        type="date"
+                        value={penumpang?.tanggal_lahir}
+                        required
+                        onChange={(e) =>
+                          handleInputChange(
+                            penumpang?.id,
+                            "tanggal_lahir",
+                            e.target.value
+                          )
+                        }
+                        className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
+                      />
+                      <label className="text-[#176B87] font-semibold">
+                        Kewarganegaraan
+                      </label>
+                      <Select
+                        required
+                        value={options.find(
+                          (option) =>
+                            option.value === penumpang?.kewarganegaraan
+                        )}
+                        onChange={(selectedOption) =>
+                          handleInputChange(
+                            penumpang?.id,
+                            "kewarganegaraan",
+                            selectedOption?.value
+                          )
+                        }
+                        options={options}
+                        className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
+                      />
+                      <label className="text-[#176B87] font-semibold">
+                        No KTP/Paspor
+                      </label>
+                      <input
+                        type="text"
+                        value={penumpang?.ktp_pasport}
+                        required
+                        onChange={(e) =>
+                          handleInputChange(
+                            penumpang?.id,
+                            "ktp_pasport",
+                            e?.target?.value
+                          )
+                        }
+                        className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
+                      />
+                      <label className="text-[#176B87] font-semibold">
+                        Negara Penerbit
+                      </label>
+                      <Select
+                        required
+                        value={options.find(
+                          (option) =>
+                            option?.value === penumpang?.negara_penerbit
+                        )}
+                        onChange={(selectedOption) =>
+                          handleInputChange(
+                            penumpang.id,
+                            "negara_penerbit",
+                            selectedOption?.value
+                          )
+                        }
+                        options={options}
+                        className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
+                      />
+                      <label className="text-[#176B87] font-semibold">
+                        Berlaku Sampai
+                      </label>
+                      <input
+                        type="date"
+                        value={penumpang?.berlaku_sampai}
+                        required
+                        onChange={(e) =>
+                          handleInputChange(
+                            penumpang?.id,
+                            "berlaku_sampai",
+                            e?.target?.value
+                          )
+                        }
+                        className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
+                      />
                     </div>
                   </div>
                 ))}
@@ -547,7 +514,7 @@ const travelDokumen = () => {
                       {/* TIKET PERGI */}
                       <div>
                         <p className="font-bold text-[#176B87] pt-5 pb-3 text-xl">
-                          Detail Penerbangan
+                          Detail Penerbangan 
                         </p>
                         <div>
                           <div className="flex justify-between">
@@ -775,7 +742,7 @@ const travelDokumen = () => {
             </div>
           </div>
         </div>
-        <BackToTop />
+        <BackToTop/>
       </div>
     </>
   );

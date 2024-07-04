@@ -2,6 +2,7 @@ import axios from "axios";
 import { setTiketPesawat } from "../Reducers/FilterHargaReducers";
 import { ColorizeSharp } from "@mui/icons-material";
 import {
+  isPINtrue,
   setHistroy,
   setLoginStatus,
   setPenerbangan,
@@ -40,7 +41,8 @@ export const fetchUserData = () => async (dispatch) => {
       withCredentials: true,
       headers: { "Content-Type": "application/json" },
     });
-    dispatch(setLoginStatus(response.data.status));
+    dispatch(setLoginStatus(response?.data?.status));
+    dispatch(isPINtrue(response?.data?.data?.pin));
   } catch (error) {
     dispatch(setLoginStatus(error.response.status));
   }
@@ -108,8 +110,11 @@ export const getPayment =
         `/api/order/${orderId[0]}`,
         paramsData.penumpang
       );
-      console.log("Response Payment Sekali Jalan:", response1.data.checkoutId);
-      dispatch(setHasilPostDataPenumpang(response1.data.checkoutId)); // Pastikan payload benar
+      console.log(
+        "Response Payment Sekali Jalan:",
+        response1?.data?.data?.checkoutId
+      );
+      dispatch(setHasilPostDataPenumpang(response1?.data?.data?.checkoutId)); // Pastikan payload benar
 
       // Jika tipe penumpang adalah "Pergi - Pulang" dan ada ID untuk penerbangan pulang
       if (
@@ -162,6 +167,7 @@ export const getPayment =
 
 //Get DEtail Cekout
 export const getDetailPesanan = (checkoutId) => async (dispatch) => {
+  console.log("getDetailPesanan  checkoutId:", checkoutId);
   try {
     const repsonse = await axios.get(`/api/checkout/${checkoutId}`);
     // console.log("checkoutId", checkoutId);

@@ -25,6 +25,7 @@ import PaymentTimer from "./timerPage";
 import BackToTop from "../assets/components/Modal/TombolBalikAtas";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { differenceInYears } from "date-fns";
 
 function Icon({ id, open }) {
   return (
@@ -62,6 +63,48 @@ export default function Payment() {
   const dispatch = useDispatch();
 
   // const theState = useSelector((state) => state);
+//Pengaman jika data belum terisi
+const DataBaru = useSelector((state) => state?.tiket);
+const {
+  KelasPenerbangan,
+  LokasiKeberangkatan,
+  TanggalKeberangkatan,
+  TanggalKepulangan,
+  lokasiTujuan,
+  totalSemuaPenumpang,
+  idTiket,
+
+} = DataBaru || {};
+
+// console.log("TYPE PENERBANGAN", typePenerbanngan);
+useEffect(() => {
+  if (idTiket === 1) {
+    if (
+      lokasiTujuan === "" ||
+      LokasiKeberangkatan === "" ||
+      TanggalKeberangkatan === "" ||
+      totalSemuaPenumpang <= 0 ||
+      KelasPenerbangan === ""
+    ) {
+      alert("Harap Lengkapi Semua Data Tiket");
+      navigate("/");
+      return;
+    }
+  } else {
+    if (
+      lokasiTujuan === "" ||
+      LokasiKeberangkatan === "" ||
+      TanggalKeberangkatan === "" ||
+      TanggalKepulangan === "" ||
+      totalSemuaPenumpang <= 0 ||
+      KelasPenerbangan === ""
+    ) {
+      alert("Harap Lengkapi Semua Data Tiket");
+      navigate("/");
+      return;
+    }
+  }
+}, []);
 
 
   const handleInputChange = (e) => {
@@ -74,27 +117,9 @@ export default function Payment() {
     (state) => state?.booking?.dataCheckoutBerangkat?.id
   );
 
-  // console.log("ID State", checkoutIdPulang);
-  //ID CEKOUT PULANG
-  // const checkoutIdPulang = useSelector((state) => state?.booking?);
-  // // console.log("DATA CEKOUT ", checkoutIdPulang);
-  // checkoutPulang
-
   const isValidated = useSelector((state) => state?.booking?.isValidated);
-  // console.log("Selected IIDID", checkoutId);
-  // console.log("Selected isValidated", isValidated);
 
   const handleSubmit = () => {
-    // if (selectedMethod === "creditCard") {
-    //   console.log("Credit Card Info:", creditCardInfo);
-    // } else {
-    //   console.log("Selected Payment Method:", selectedMethod);
-    // }
-
-    // if (!isValidated) {
-    // navigate(`/confirm-pin?checkoutId=${checkoutId}&metode_pembayaran=${selectedMethod}`);
-    // }
-
     if (!selectedMethod) {
       toast.warning("Harap Isi Jenis Pembayaran !", {
         position: "top-right",
@@ -108,175 +133,68 @@ export default function Payment() {
       });
       return;
     }
-
     navigate(
       `/confirm-pin?checkoutId=${checkoutId}&metode_pembayaran=${selectedMethod}`
     );
-
-    // console.log("Selected Payment Method:", selectedMethod);
-    // dispatch(setMetodePembayaran(selectedMethod, checkoutId));
-    // dispatch(getPaymentCekout(selectedMethod, checkoutId, navigate));
   };
 
-  //Mengambil data booking tiket pergi dari hasil post
-  // const DatahasilOrderPergi = useSelector(
-  //   (state) => state?.booking);
-  // console.log("Data Pergi penumpnag", DatahasilOrderPergi);
-
-  // //Mengambil data booking tiket pergi dari hasil post
-  // const DatahasilOrderPulang = useSelector(
-  //   (state) => state?.booking
-  // );
-  // console.log("Data Pulang penumpnag", DatahasilOrderPulang);
-
-  //Mengambil data booking tiket hasil post
   const DataPayment = useSelector(
     (state) => state?.booking?.inputanDataPenumpang?.data
   );
-  console.log("Payment  DataPayment:", DataPayment);
-  // console.log("DataPayment?.price?.tax", DataPayment?.price?.tax);
- 
- 
-  //Mengambil data ID User Pergi
- const userCkIdPergi = useSelector(
-  (state) => state?.booking?.inputanDataPenumpang?.data
-);
-console.log("ID CEKOUT UNTUK GET DATA CEKOUT", userCkIdPergi);
-
-
-
-  useEffect(() => {
-    console.log("DATA DATA")
-    dispatch(getDetailPesanan( userCkIdPergi));
-  }, [dispatch,  userCkIdPergi]);
-
   const DetailPenumpangCekout = useSelector(
     (state) => state?.booking?.dataCheckoutBerangkat
   );
-  console.log("DetailPEnumpangCK baruuuuuuuuuuuuuuuuu", DetailPenumpangCekout);
+  const userCkIdPergi = useSelector(
+    (state) => state?.booking?.inputanDataPenumpang
+  );
 
-  // Initialize state for passenger counts
-  const [dewasa, setDewasa] = useState(0);
-  const [bayi, setBayi] = useState(0);
-
-  // Check if orders are present and not empty
-  const penumpangArray = DetailPenumpangCekout?.orders
-    ? Object.values(DetailPenumpangCekout.orders)
-    : [];
-
-  // Calculate ticket price only if there are passengers
-  const totalHarga = DetailPenumpangCekout?.total || 0;
-  const taxTiket = DetailPenumpangCekout?.tax || 0;
-  const hargaTiket =
-    penumpangArray.length > 0
-      ? (DetailPenumpangCekout.total - taxTiket) / penumpangArray.length
-      : 0;
-
-  // Check and update passenger counts
   useEffect(() => {
-    if (penumpangArray.length > 0) {
-      const dewasaCount = penumpangArray.filter((p) => p.age >= 18).length;
-      const bayiCount = penumpangArray.filter((p) => p.age < 2).length;
-      setDewasa(dewasaCount);
-      setBayi(bayiCount);
-    }
-  }, [penumpangArray]);
+    dispatch(getDetailPesanan(userCkIdPergi));
+  }, []);
 
+  let penumpangArray = [];
+  let totalHarga = 0;
+  let taxTiket = 0;
+  let hargaTiket = 0;
+
+  const [dewasa, setDewasa] = useState(0);
+  const [anak, setAnak] = useState(0);
+  const [bayi, setBayi] = useState(0);
   useEffect(() => {
     let dewasaCount = 0;
+    let anakCount = 0;
     let bayiCount = 0;
-
-    penumpangArray?.forEach((e) => {
-      if (e.is_baby === false) {
-        dewasaCount++;
+    penumpangArray.forEach((e) => {
+      if (e?.is_baby === false) {
+        const umur = differenceInYears(new Date(), new Date(e?.tanggal_lahir));
+        if (umur < 12) {
+          anakCount++;
+          return;
+        } else {
+          dewasaCount++;
+          return;
+        }
       } else {
+        console.log("e?.is_baby", e?.is_baby);
         bayiCount++;
       }
     });
 
     setDewasa(dewasaCount);
+    setAnak(anakCount);
     setBayi(bayiCount);
   }, []);
+  console.log("Payment  bayiCount:", bayi);
 
-  // //Mengambil data booking tiket hasil post
-  // const DataPaymentPulang = useSelector(
-  //   (state) => state?.booking?.inputanDataPenumpang?.data
-  // );
-  // console.log("Data PENUMPANG HASIL POST PULANG", DataPaymentPulang);
-
- 
-  //Mengambil data ID User
-  const userCkId = useSelector((state) => state?.booking?.inputanDataPenumpang);
-  console.log("Payment  userCkId:", userCkId);
-
-  //use buat nyimpan ID ke Action
-
-  // useEffect(() => {
-  //   dispatch(getDetailPesanan(userCkIdPergi));
-  // }, [dispatch, userCkId]);
-
-  // console.log("data Inputan Pulang", userCkId);
-
-  //Fect DAta DEtail PEnumpang Berangkat (DATANYA)
-
-  // const DataBooking = useSelector(
-
-  //   (state) => state?.booking?.bookingTiketPesawatPergi
-  // );
-
-  //unutk perkalian data penumpang]
-  const [penumpangData, setPenumpangData] = useState([]);
-  const DataPenumpang = useSelector((state) => state.tiket);
-  // console.log("Data penum", DataPenumpang);
-
-  // Group passengers by type and count
-  const groupPenumpangData = penumpangData.reduce((acc, penumpang) => {
-    if (!acc[penumpang.name]) {
-      acc[penumpang.name] = { count: 0, ageGroup: penumpang.ageGroup };
-    }
-    acc[penumpang.name].count += 1;
-    return acc;
-  }, {});
-
-  // formatRupiah
-  const formatRupiah = (price) => {
-    // console.log("formatRupiah  price:", price);
-    return price
-      .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
-      .replace(/\,00$/, "");
-  };
-
-  useEffect(() => {
-    const initialPenumpangData = [];
-    for (let i = 0; i < DataPenumpang.TotalPenumpang.Dewasa; i++) {
-      initialPenumpangData.push({
-        ageGroup: "ADULT",
-        id: `dewasa-${i}`,
-        name: "Dewasa",
-      });
-    }
-    for (let i = 0; i < DataPenumpang.TotalPenumpang.Anak; i++) {
-      initialPenumpangData.push({
-        ageGroup: "CHILD",
-        id: `anak-${i}`,
-        name: "Anak",
-      });
-    }
-    for (let i = 0; i < DataPenumpang.TotalPenumpang.Bayi; i++) {
-      initialPenumpangData.push({
-        ageGroup: "BABY",
-        id: `bayi-${i}`,
-        name: "Bayi",
-      });
-    }
-    setPenumpangData(initialPenumpangData);
-  }, [DataPenumpang?.TotalPenumpang]);
-
+  if (Object.values(DetailPenumpangCekout).length > 0) {
+    penumpangArray = Object.values(DetailPenumpangCekout?.orders);
+    totalHarga = DetailPenumpangCekout?.total;
+    taxTiket = DetailPenumpangCekout?.tax;
+    hargaTiket = (totalHarga - taxTiket) / (penumpangArray?.length - bayi);
+  }
   const typePenerbanngan = useSelector(
     (state) => state?.tiket?.typePenerbanngan
   );
-  // console.log("TYPE PENERBANGAN", typePenerbanngan)
-
   return (
     <div className="bg-white ">
       <div className="fixed  w-full bg-white z-50 shadow">
@@ -480,279 +398,290 @@ console.log("ID CEKOUT UNTUK GET DATA CEKOUT", userCkIdPergi);
           </div>
 
           {/* Booking Code */}
-          <div className="pt-20 max-sm:pt-10 max-sm:m-5">
-            <div className=" text-sm border-2 rounded-lg lg:w-[400px] w-[600px] max-sm:w-full ">
-              {/* Keberangkatan */}
-              <p className=" text-xl text-white font-bold border bg-[#176B87] py-4  text-center rounded-t-lg ">
-               Detail Pemesanan Tiket
-              </p>
-              <p className="font-bold text-lg border-b-2 px-5 py-2">
-                Booking Code :{" "}
-                <span className="text-[#176B87] ">
-                  {DetailPenumpangCekout?.booking_code}
-                </span>
-              </p>
-              <div className="px-5">
-                <p className="text-base">
-                  <span className="font-semibold flex items-center gap-2">
-                    {" "}
-                    <ArrowUpRightIcon className="text-sm h-5 w-5 text-[#176B87] mr-1 pl-1 flex items-center" />{" "}
-                    {DetailPenumpangCekout?.bandara_keberangkatan?.lokasi}
+          {Object.values(DetailPenumpangCekout).length > 0 && (
+            <div className="pt-20 max-sm:pt-10 max-sm:m-5">
+              <div className=" text-sm border-2 rounded-lg lg:w-[400px] w-[600px] max-sm:w-full ">
+                {/* Keberangkatan */}
+                <p className=" text-xl text-white font-bold border bg-[#176B87] py-4  text-center rounded-t-lg ">
+                  Pergi
+                </p>
+                <p className="font-bold text-lg border-b-2 px-5 py-2">
+                  Booking Code :{" "}
+                  <span className="text-[#176B87] ">
+                    {DetailPenumpangCekout?.booking_code}
                   </span>
                 </p>
-                <p className="font-bold text-[#64ccc5]"> To</p>
-
-                <p className="text-base">
-                  <span className="font-semibold flex items-center gap-2">
-                    {DetailPenumpangCekout?.bandara_kedatangan?.lokasi}
-                    <ArrowDownLeftIcon className="text-sm h-5 w-5 text-[#176B87] mr-1 pl-1 flex items-center" />{" "}
-                  </span>
-                </p>
-              </div>
-
-              {/* PESAWAT PERGI */}
-              <div className="flex items-start gap-2 border-b border-t py-2 px-5 mt-4 mb-3">
-                <img
-                  src={DetailPenumpangCekout?.maskapai?.logo_maskapai}
-                  alt=""
-                  className="h-6 w-6"
-                />
-                <div className="flex flex-1 flex-col justify-between gap-2">
-                  <p className=" text-sm font-bold ">
-                    {DetailPenumpangCekout?.maskapai?.nama_maskapai}
-                  </p>
-
-                  <p className="text-sm">
-                    <span className="font-bold">Informasi :</span> <br />
-                    Baggage : {DetailPenumpangCekout?.informasi?.bagasi} kg{" "}
-                    <br />
-                    Cabin baggage :{" "}
-                    {DetailPenumpangCekout?.informasi?.bagasi_kabin} kg <br />
-                  </p>
-                </div>
-              </div>
-              {/* DEtail */}
-              <div className="flex justify-between border-b pb-4">
-                <Accordion open={open === 4}>
-                  <AccordionHeader
-                    onClick={() => handleOpen(4)}
-                    className="bg-[#64CCC5] rounded-[4px]"
-                  >
-                    <div className="flex justify-between items-center w-full -mr-4 px-4 font-medium text-lg text-white">
-                      Detail Penerbangan <Icon id={4} open={open} />
-                    </div>
-                  </AccordionHeader>
-
-                  <AccordionBody>
-                    <div className="px-5 text-black">
-                      <div className="font-normal">
-                        <p className="text-sm">
-                          <span className="text-lg font-bold">
-                            Informasi Keberangkatan
-                          </span>{" "}
-                          <br />
-                          Bandara Keberangkatan :{" "}
-                          {
-                            DetailPenumpangCekout?.bandara_keberangkatan
-                              ?.nama_bandara
-                          }
-                        </p>
-                        <p className="text-sm">
-                          Terminal_kedatanga :{" "}
-                          {
-                            DetailPenumpangCekout?.bandara_kedatangan
-                              ?.terminal_kedatangan
-                          }
-                        </p>
-                        <p className="text-sm">
-                          Kode Bandara :{" "}
-                          {
-                            DetailPenumpangCekout?.bandara_kedatangan
-                              ?.kode_bandara
-                          }
-                        </p>
-                      </div>
-                      <div className="pt-5">
-                        <p className="text-sm font-normal">
-                          <span className="text-lg font-bold">
-                            Informasi Kedatangan
-                          </span>{" "}
-                          <br />
-                          Bandara Kedatangan :{" "}
-                          {
-                            DetailPenumpangCekout?.bandara_kedatangan
-                              ?.nama_bandara
-                          }
-                        </p>
-                        <p className="text-sm font-normal">
-                          Terminal_kedatanga :{" "}
-                          {
-                            DetailPenumpangCekout?.bandara_keberangkatan
-                              ?.terminal_kedatangan
-                          }
-                        </p>
-                        <p className="text-sm font-normal ">
-                          Kode Bandara :{" "}
-                          {
-                            DetailPenumpangCekout?.bandara_keberangkatan
-                              ?.kode_bandara
-                          }
-                        </p>
-                      </div>
-                    </div>
-                  </AccordionBody>
-                </Accordion>
-              </div>
-
-              {/* Pulang */}
-              {typePenerbanngan == "Pergi - Pulang" && (
-                <>
-                  <p className=" text-xl text-white font-bold border bg-[#176B87] py-2  text-center rounded-t-lg">
-                    Pulang
-                  </p>
-                  <p className="font-bold text-lg border-b-2 px-2 py-2">
-                    Booking Code :{" "}
-                    <span className="text-[#176B87] ">
-                      {DetailPenumpangCekout?.booking_code}
+                <div className="px-5">
+                  <p className="text-base">
+                    <span className="font-semibold flex items-center gap-2">
+                      {" "}
+                      <ArrowUpRightIcon className="text-sm h-5 w-5 text-[#176B87] mr-1 pl-1 flex items-center" />{" "}
+                      {DetailPenumpangCekout?.bandara_keberangkatan?.lokasi}
                     </span>
                   </p>
-                  <div className="px-2">
-                    <p className="text-base">
-                      <span className="font-semibold flex items-center gap-2">
-                        {" "}
-                        <ArrowUpRightIcon className="text-sm h-5 w-5 text-[#176B87] mr-1 pl-1 flex items-center" />{" "}
-                        {DetailPenumpangCekout?.bandara_kedatangan?.lokasi}
-                      </span>
-                    </p>
-                    <p className="font-bold text-[#64ccc5]"> To</p>
+                  <p className="font-bold text-[#64ccc5]"> To</p>
 
-                    <p className="text-base">
-                      <span className="font-semibold flex items-center gap-2">
-                        {DetailPenumpangCekout?.bandara_keberangkatan?.lokasi}
-                        <ArrowDownLeftIcon className="text-sm h-5 w-5 text-[#176B87] mr-1 pl-1 flex items-center" />{" "}
-                      </span>
+                  <p className="text-base">
+                    <span className="font-semibold flex items-center gap-2">
+                      {DetailPenumpangCekout?.bandara_kedatangan?.lokasi}
+                      <ArrowDownLeftIcon className="text-sm h-5 w-5 text-[#176B87] mr-1 pl-1 flex items-center" />{" "}
+                    </span>
+                  </p>
+                </div>
+
+                {/* PESAWAT PERGI */}
+                <div className="flex items-start gap-2 border-b border-t py-2 px-5 mt-4 mb-3">
+                  <img
+                    src={DetailPenumpangCekout?.maskapai?.logo_maskapai}
+                    alt=""
+                    className="h-6 w-6"
+                  />
+                  <div className="flex flex-1 flex-col justify-between gap-2">
+                    <p className=" text-sm font-bold ">
+                      {DetailPenumpangCekout?.maskapai?.nama_maskapai}
+                    </p>
+
+                    <p className="text-sm">
+                      <span className="font-bold">Informasi :</span> <br />
+                      Baggage : {
+                        DetailPenumpangCekout?.informasi?.bagasi
+                      } kg <br />
+                      Cabin baggage :{" "}
+                      {DetailPenumpangCekout?.informasi?.bagasi_kabin} kg <br />
                     </p>
                   </div>
-                  {/* DETAIL PULANG */}
-                  <div className="flex items-start gap-2 border-b border-t py-2 mt-4 mb-3">
-                    <img
-                      src={DetailPenumpangCekout?.maskapai?.logo_maskapai}
-                      alt=""
-                      className="h-6 w-6"
-                    />
-                    <div className="flex flex-1 flex-col justify-between gap-2">
-                      <p className=" text-sm font-bold ">
-                        {DetailPenumpangCekout?.maskapai?.nama_maskapai}
-                      </p>
+                </div>
+                {/* DEtail */}
+                <div className="flex justify-between border-b pb-4">
+                  <Accordion open={open === 4}>
+                    <AccordionHeader
+                      onClick={() => handleOpen(4)}
+                      className="bg-[#64CCC5] rounded-[4px]"
+                    >
+                      <div className="flex justify-between items-center w-full -mr-4 px-4 font-medium text-lg text-white">
+                        Detail Penerbangan <Icon id={4} open={open} />
+                      </div>
+                    </AccordionHeader>
 
-                      <p className="text-sm">
-                        <span className="font-bold">Informasi :</span> <br />
-                        Baggage : {
-                          DetailPenumpangCekout?.informasi?.bagasi
-                        } kg <br />
-                        Cabin baggage :{" "}
-                        {DetailPenumpangCekout?.informasi?.bagasi_kabin} kg{" "}
-                        <br />
+                    <AccordionBody>
+                      <div className="px-5 text-black">
+                        <div className="font-normal">
+                          <p className="text-sm">
+                            <span className="text-lg font-bold">
+                              Informasi Keberangkatan
+                            </span>{" "}
+                            <br />
+                            Bandara Keberangkatan :{" "}
+                            {
+                              DetailPenumpangCekout?.bandara_keberangkatan
+                                ?.nama_bandara
+                            }
+                          </p>
+                          <p className="text-sm">
+                            Terminal_kedatanga :{" "}
+                            {
+                              DetailPenumpangCekout?.bandara_kedatangan
+                                ?.terminal_kedatangan
+                            }
+                          </p>
+                          <p className="text-sm">
+                            Kode Bandara :{" "}
+                            {
+                              DetailPenumpangCekout?.bandara_kedatangan
+                                ?.kode_bandara
+                            }
+                          </p>
+                        </div>
+                        <div className="pt-5">
+                          <p className="text-sm font-normal">
+                            <span className="text-lg font-bold">
+                              Informasi Kedatangan
+                            </span>{" "}
+                            <br />
+                            Bandara Kedatangan :{" "}
+                            {
+                              DetailPenumpangCekout?.bandara_kedatangan
+                                ?.nama_bandara
+                            }
+                          </p>
+                          <p className="text-sm font-normal">
+                            Terminal_kedatanga :{" "}
+                            {
+                              DetailPenumpangCekout?.bandara_keberangkatan
+                                ?.terminal_kedatangan
+                            }
+                          </p>
+                          <p className="text-sm font-normal ">
+                            Kode Bandara :{" "}
+                            {
+                              DetailPenumpangCekout?.bandara_keberangkatan
+                                ?.kode_bandara
+                            }
+                          </p>
+                        </div>
+                      </div>
+                    </AccordionBody>
+                  </Accordion>
+                </div>
+
+                {/* Pulang */}
+                {typePenerbanngan == "Pergi - Pulang" && (
+                  <>
+                    <p className=" text-xl text-white font-bold border bg-[#176B87] py-2  text-center rounded-t-lg">
+                      Pulang
+                    </p>
+                    <p className="font-bold text-lg border-b-2 px-2 py-2">
+                      Booking Code :{" "}
+                      <span className="text-[#176B87] ">
+                        {DetailPenumpangCekout?.booking_code}
+                      </span>
+                    </p>
+                    <div className="px-2">
+                      <p className="text-base">
+                        <span className="font-semibold flex items-center gap-2">
+                          {" "}
+                          <ArrowUpRightIcon className="text-sm h-5 w-5 text-[#176B87] mr-1 pl-1 flex items-center" />{" "}
+                          {DetailPenumpangCekout?.bandara_kedatangan?.lokasi}
+                        </span>
+                      </p>
+                      <p className="font-bold text-[#64ccc5]"> To</p>
+
+                      <p className="text-base">
+                        <span className="font-semibold flex items-center gap-2">
+                          {DetailPenumpangCekout?.bandara_keberangkatan?.lokasi}
+                          <ArrowDownLeftIcon className="text-sm h-5 w-5 text-[#176B87] mr-1 pl-1 flex items-center" />{" "}
+                        </span>
                       </p>
                     </div>
-                  </div>
-                  {/* DEtail */}
-                  <div className="flex justify-between border-b pb-4">
-                    <Accordion open={open === 5}>
-                      <AccordionHeader
-                        onClick={() => handleOpen(5)}
-                        className="bg-[#176B87] rounded-[4px]"
-                      >
-                        <div className="flex justify-between items-center w-full mr-4 px-4 font-medium text-lg text-white">
-                          Detail Penerbangan <Icon id={5} open={open} />
-                        </div>
-                      </AccordionHeader>
+                    {/* DETAIL PULANG */}
+                    <div className="flex items-start gap-2 border-b border-t py-2 mt-4 mb-3">
+                      <img
+                        src={DetailPenumpangCekout?.maskapai?.logo_maskapai}
+                        alt=""
+                        className="h-6 w-6"
+                      />
+                      <div className="flex flex-1 flex-col justify-between gap-2">
+                        <p className=" text-sm font-bold ">
+                          {DetailPenumpangCekout?.maskapai?.nama_maskapai}
+                        </p>
 
-                      <AccordionBody>
-                        <div className="px-5">
-                          <div>
-                            <p className="text-sm">
-                              <span className="text-lg font-bold">
-                                Informasi Keberangkatan
-                              </span>{" "}
-                              <br />
-                              Bandara Keberangkatan :{" "}
-                              {DetailPenumpangCekout?.orders?.no_kursi}
-                            </p>
-                            <p className="text-sm">
-                              Terminal_kedatanga :{" "}
-                              {
-                                DetailPenumpangCekout?.bandara_kedatangan
-                                  ?.terminal_kedatangan
-                              }
-                            </p>
-                            <p className="text-sm">
-                              Kode Bandara :{" "}
-                              {
-                                DetailPenumpangCekout?.bandara_kedatangan
-                                  ?.kode_bandara
-                              }
-                            </p>
+                        <p className="text-sm">
+                          <span className="font-bold">Informasi :</span> <br />
+                          Baggage : {
+                            DetailPenumpangCekout?.informasi?.bagasi
+                          }{" "}
+                          kg <br />
+                          Cabin baggage :{" "}
+                          {
+                            DetailPenumpangCekout?.informasi?.bagasi_kabin
+                          } kg <br />
+                        </p>
+                      </div>
+                    </div>
+                    {/* DEtail */}
+                    <div className="flex justify-between border-b pb-4">
+                      <Accordion open={open === 5}>
+                        <AccordionHeader
+                          onClick={() => handleOpen(5)}
+                          className="bg-[#176B87] rounded-[4px]"
+                        >
+                          <div className="flex justify-between items-center w-full mr-4 px-4 font-medium text-lg text-white">
+                            Detail Penerbangan <Icon id={5} open={open} />
                           </div>
-                          <div className="pt-5">
-                            <p className="text-sm">
-                              <span className="text-lg font-bold">
-                                Informasi Kedatangan
-                              </span>{" "}
-                              <br />
-                              Bandara Keberangkatan :{" "}
-                              {DetailPenumpangCekout?.orders?.no_kursi}
-                            </p>
-                            <p className="text-sm">
-                              Terminal_kedatanga :{" "}
-                              {
-                                DetailPenumpangCekout?.bandara_keberangkatan
-                                  ?.terminal_kedatangan
-                              }
-                            </p>
-                            <p className="text-sm">
-                              Kode Bandara :{" "}
-                              {
-                                DetailPenumpangCekout?.bandara_keberangkatan
-                                  ?.kode_bandara
-                              }
-                            </p>
-                          </div>
-                        </div>
-                      </AccordionBody>
-                    </Accordion>
-                  </div>
-                </>
-              )}
+                        </AccordionHeader>
 
-              {/* Rincian Harga */}
-              <div className="my-3 py-2 border-t-2 border-b-2">
-                <p className="font-bold text-xl">Rincian Harga</p>
-                {dewasa > 0 && (
-                  <div className="flex justify-between">
-                    <p>{dewasa} Dewasa</p>
-                    <p>Rp. {(hargaTiket * dewasa).toLocaleString("id-ID")}</p>
-                  </div>
+                        <AccordionBody>
+                          <div className="px-5">
+                            <div>
+                              <p className="text-sm">
+                                <span className="text-lg font-bold">
+                                  Informasi Keberangkatan
+                                </span>{" "}
+                                <br />
+                                Bandara Keberangkatan :{" "}
+                                {DetailPenumpangCekout?.orders?.no_kursi}
+                              </p>
+                              <p className="text-sm">
+                                Terminal_kedatanga :{" "}
+                                {
+                                  DetailPenumpangCekout?.bandara_kedatangan
+                                    ?.terminal_kedatangan
+                                }
+                              </p>
+                              <p className="text-sm">
+                                Kode Bandara :{" "}
+                                {
+                                  DetailPenumpangCekout?.bandara_kedatangan
+                                    ?.kode_bandara
+                                }
+                              </p>
+                            </div>
+                            <div className="pt-5">
+                              <p className="text-sm">
+                                <span className="text-lg font-bold">
+                                  Informasi Kedatangan
+                                </span>{" "}
+                                <br />
+                                Bandara Keberangkatan :{" "}
+                                {DetailPenumpangCekout?.orders?.no_kursi}
+                              </p>
+                              <p className="text-sm">
+                                Terminal_kedatanga :{" "}
+                                {
+                                  DetailPenumpangCekout?.bandara_keberangkatan
+                                    ?.terminal_kedatangan
+                                }
+                              </p>
+                              <p className="text-sm">
+                                Kode Bandara :{" "}
+                                {
+                                  DetailPenumpangCekout?.bandara_keberangkatan
+                                    ?.kode_bandara
+                                }
+                              </p>
+                            </div>
+                          </div>
+                        </AccordionBody>
+                      </Accordion>
+                    </div>
+                  </>
                 )}
-                {bayi > 0 && (
+
+                {/* Rincian Harga */}
+                <div className="my-3 py-2 border-t-2 border-b-2">
+                  <p className="font-bold text-xl">Rincian Harga</p>
+                  {dewasa > 0 && (
+                    <div className="flex justify-between">
+                      <p>{dewasa} Dewasa</p>
+                      <p>IDR {(hargaTiket * dewasa).toLocaleString("id-ID")}</p>
+                    </div>
+                  )}
+                  {anak > 0 && (
+                    <div className="flex justify-between">
+                      <p>{anak} Anak</p>
+                      <p>IDR {(hargaTiket * anak).toLocaleString("id-ID")}</p>
+                    </div>
+                  )}
+                  {bayi > 0 && (
+                    <div className="flex justify-between">
+                      <p>{bayi} Bayi</p>
+                      <p>IDR 0</p>
+                    </div>
+                  )}
                   <div className="flex justify-between">
-                    <p>{bayi} Bayi</p>
-                    <p>Rp. 0</p>
+                    <p>Tax + Donasi Palestina 10%</p>
+                    IDR {taxTiket?.toLocaleString("id-ID")}
                   </div>
-                )}
+                </div>
                 <div className="flex justify-between">
-                  <p>Tax + Donasi Palestina 10%</p>
-                  Rp. {taxTiket.toLocaleString("id-ID")}
+                  <p className="font-bold text-xl">Total</p>
+                  <p className="font-bold text-xl text-[#176B87]">
+                    IDR {totalHarga?.toLocaleString("id-ID")}
+                  </p>
                 </div>
               </div>
-              <div className="flex justify-between">
-                <p className="font-bold text-xl">Total</p>
-                <p className="font-bold text-xl text-[#176B87]">
-                  Rp. {totalHarga.toLocaleString("id-ID")}
-                </p>
-              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
       <BackToTop />

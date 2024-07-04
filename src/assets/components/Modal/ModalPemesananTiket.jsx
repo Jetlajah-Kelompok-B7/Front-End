@@ -4,7 +4,11 @@ import Dropdown from "../Modal/ModalJumlahPenumpang";
 import { useDispatch, useSelector } from "react-redux";
 import ModalLokasi from "../Modal/ModalLokasiAwal";
 import PilihKelasPenerbangan from "../Modal/KelasPenerbangan";
-import { setInputSearch, setTypePenerbangan, swapLokasi } from "../../../redux/Reducers/TiketReducer";
+import {
+  setInputSearch,
+  setTypePenerbangan,
+  swapLokasi,
+} from "../../../redux/Reducers/TiketReducer";
 import { GetTiket, getTiketSearch } from "../../../redux/Action/TiketAction";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -16,6 +20,7 @@ export default function ModalPemesananTiket() {
   const [idTanggal, setIdTanggal] = useState(1);
   const list_Pilihan = ["Sekali Jalan", "Pergi - Pulang"];
   const [pilihanUser, setPilihanUser] = useState("Sekali Jalan");
+  const [modalMaaf, setModalMaaf] = useState(false);
   const [modalNama, setModalNama] = useState("");
   const [kotaAwal, setKotaAwal] = useState("");
   const [destinasi, setDestinasi] = useState("");
@@ -27,7 +32,6 @@ export default function ModalPemesananTiket() {
   useEffect(() => {
     dispatch(GetTiket());
   }, [dispatch]);
-  
 
   const totalperpenumpang = useSelector(
     (state) => state?.tiket?.TotalPenumpang
@@ -69,8 +73,8 @@ export default function ModalPemesananTiket() {
           });
           return;
         }
-        dispatch(getTiketSearch())  
-        dispatch(setTypePenerbangan(pilihanUser))
+        dispatch(getTiketSearch());
+        dispatch(setTypePenerbangan(pilihanUser));
         navigate("/resultSearch");
         return;
       } else {
@@ -87,57 +91,16 @@ export default function ModalPemesananTiket() {
         return;
       }
     } else {
-      if (
-        kotaAwal !== "" &&
-        destinasi !== "" &&
-        kelas_penerbangan !== "" &&
-        total_penumpang !== 0 &&
-        tanggalBerangkat !== "" &&
-        tanggalPulang !== ""
-      ) {
-        if (kotaAwal === destinasi) {
-          toast.warning("nama kotanya sama nih", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-          return;
-        }
-        if (Dewasa <= 0) {
-          toast.warning("Harus dalam pendampingan orang dewasa nih", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-          return;
-        }
-        dispatch(getTiketSearch()) 
-        dispatch(setTypePenerbangan(pilihanUser)) 
-        navigate("/resultSearch");
-        return;
-      } else {
-        toast.warning("Formnya masih ada yang kosong nih", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-        return;
-      }
+      toast.warning("Kotanya masih sama nih ", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
   const handleswap = () => {
@@ -150,11 +113,6 @@ export default function ModalPemesananTiket() {
   useEffect(() => {
     dispatch(GetTiket());
   }, [dispatch]);
-
-
-
-
-  
 
   useEffect(() => {
     dispatch(getTiketSearch());
@@ -177,7 +135,8 @@ export default function ModalPemesananTiket() {
                   onClick={() => {
                     setPilihanUser(e);
                     setIdTanggal(i + 1);
-                    dispatch(setTypePenerbangan(e))
+                    setModalNama("");
+                    dispatch(setTypePenerbangan(e));
                   }}
                 >
                   {e === pilihanUser ? (
@@ -249,6 +208,10 @@ export default function ModalPemesananTiket() {
                     <button
                       className=" flex-1 border-b font-medium text-[#176B87] text-[18px] text-start py-2 whitespace-nowrap"
                       onClick={() => {
+                        if (modalNama === "tanggal") {
+                          setModalNama("");
+                          return;
+                        }
                         setModalNama("tanggal");
                       }}
                     >
@@ -278,6 +241,10 @@ export default function ModalPemesananTiket() {
                           <button
                             className=" border-b truncate font-medium text-[#176B87] text-[18px] text-start py-2"
                             onClick={() => {
+                              if (modalNama === "tanggal") {
+                                setModalNama("");
+                                return;
+                              }
                               setModalNama("tanggal");
                             }}
                           >
@@ -287,15 +254,6 @@ export default function ModalPemesananTiket() {
                               <div>{tanggalPulang}</div>
                             )}
                           </button>
-                          <MyModal
-                            onClose={() => setModalNama("")}
-                            idTanggal={idTanggal}
-                            visible={modalNama === "tanggal"}
-                            pass_tanggal_berangkat={tanggalBerangkat}
-                            pass_tanggal_pulang={tanggalPulang}
-                            tanggalPulang={setTanggalPulang}
-                            tanggalBerangkat={setTanggalBerangkat}
-                          />
                         </div>
                       ) : (
                         <div className="  w-full bg-white  h-1"></div> // untuk placeholder saja supaya ukuran tidak berubah

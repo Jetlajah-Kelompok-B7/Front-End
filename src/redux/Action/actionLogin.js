@@ -12,7 +12,7 @@ import {
 } from "../Reducers/reducersLogin";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getPaymentCekout } from "./TiketAction";
+import { fetchUserData, getPaymentCekout } from "./TiketAction";
 import { setHasilPostCeckout } from "../Reducers/DataBooking";
 
 export const login = (email, password, navigate) => async (dispatch) => {
@@ -41,6 +41,10 @@ export const login = (email, password, navigate) => async (dispatch) => {
         progress: undefined,
         theme: "colored",
       });
+      if (response_login?.data?.data?.pin === null) {
+        navigate("/add-pin");
+        return;
+      }
       navigate("/");
       return { status: 200 }; // Return status for successful login
     } else if (response_login?.status === 401) {
@@ -222,7 +226,14 @@ export const createPin = (pin, navigate) => async (dispatch) => {
         progress: undefined,
         theme: "colored",
       });
-      navigate("/");
+      dispatch(fetchUserData())
+        .then(() => {
+          navigate("/");
+        })
+        .catch((err) => {
+          console.error("An error occurred:", err);
+        });
+
       return { status: 200 }; // Return status for successful creation
     } else {
       toast.error("PIN GAGAL DIBUAT", {
@@ -370,7 +381,6 @@ export const logout = () => async () => {
   }
 };
 
-
 export const forgotPassword = (email) => async (dispatch) => {
   try {
     const response_forgot = await axios.post(
@@ -446,26 +456,30 @@ export const pinValidate =
 
       if (response_validatePin?.status === 200) {
         // console.log("response_validatePin", response_validatePin);
-        toast.success("PembayaranBerhasil", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        },[5000]);
-       
+        toast.success(
+          "PembayaranBerhasil",
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          },
+          [5000]
+        );
 
         // Call the getPaymentCekout function and handle the response
-        const paymentResponse = await dispatch(getPaymentCekout(metode_pembayaran, checkoutId)
+        const paymentResponse = await dispatch(
+          getPaymentCekout(metode_pembayaran, checkoutId)
         );
 
         // Handle the payment response here
         // console.log("Payment Response", paymentResponse);
         dispatch(setHasilPostCeckout(paymentResponse)); // Dispatch the action to update the Redux store
-       
+
         navigate("/bayar_berhasil");
         return { status: 200 }; // Return status for successful login
       } else {

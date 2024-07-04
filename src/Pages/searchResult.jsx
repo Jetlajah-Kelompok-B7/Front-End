@@ -420,7 +420,7 @@ const ResultSearchFilm = () => {
                               </p>
                             </div>
                             <div>
-                              <div className="border-b-2 max-sm:px-11 sm:px-9 lg:sm:px-16">
+                              <div className="border-b-2 max-sm:px-11 sm:px-9 lg:sm:px-32">
                                 <p className="text-xs text-gray-500">
                                   {calculateFlightDuration(
                                     flight?.schedule?.takeoff?.time,

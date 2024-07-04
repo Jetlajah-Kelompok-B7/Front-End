@@ -43,9 +43,8 @@ export default function MyModal({
   useEffect(() => {
     return () => {
       tanggalPulang("");
-      setSelectedDate(pass_tanggal_berangkat);
       setSelectedDatePulang("");
-     
+      dispatch(setKepulangan(""));
     };
   }, [idTanggal]);
   const daysOfWeek = ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"]; // Custom Indonesian days of week
@@ -120,6 +119,7 @@ export default function MyModal({
           dispatch(setKepulangan(format(date, "yyyy MM d", { locale: id })));
           setSelectedDatePulang(date);
           tanggalPulang(format(date, "d MMMM yyyy", { locale: id }));
+          onClose();
         } else if (isBefore(date, selectedDate)) {
           dispatch(
             setKeberangaktan(format(date, "d MMMM yyyy", { locale: id }))
@@ -161,10 +161,10 @@ export default function MyModal({
     }
 
     if (isSameMonth(day, month)) {
-      if (isSameDay(day, pass_tanggal_berangkat)) {
+      if (isSameDay(day, selectedDate)) {
         return "bg-[#176B87] text-white rounded-xl "; // Jika day sama dengan selectedDate atau selectedDateBerangkat
       }
-      if (isSameDay(day, pass_tanggal_pulang)) {
+      if (isSameDay(day, selectedDatePulang)) {
         return "bg-[#176B87] text-white rounded-xl"; // Jika day sama dengan selectedDate atau selectedDateBerangkat
       }
       if (isSunday(day)) {
@@ -223,7 +223,7 @@ export default function MyModal({
                 {currentMonthDays.map((day, index) => (
                   <div
                     key={day.getTime()} // Using getTime() as a unique key for Date objects
-                    className={`my-2 mx-0.5 px-3 py-4 text-center hover:cursor-pointer ${
+                    className={`my-2 mx-0.5 px-3 group py-4 text-center hover:cursor-pointer rounded-xl hover:bg-[#64CCC5] hover:text-white ${
                       index === 0 && colStartClasses[getDay(day)]
                     } ${getDateClass(day, currentMonth)}`}
                     onClick={() => handleDateClick(day)}
@@ -232,7 +232,7 @@ export default function MyModal({
                       {isToday(day) &&
                       !isSameDay(day, selectedDate) &&
                       !isSameDay(day, selectedDatePulang) ? (
-                        <span className="absolute top-0 inset-0 text-xs">
+                        <span className="absolute group-hover:hidden top-0 inset-0 text-xs truncate">
                           Hari Ini
                         </span>
                       ) : null}
@@ -265,7 +265,7 @@ export default function MyModal({
                 {nextMonthDays.map((day, index) => (
                   <div
                     key={day.getTime()}
-                    className={`my-2 mx-0.5 px-3 py-4 text-center hover:cursor-pointer ${
+                    className={`my-2 mx-0.5 px-3 py-4 text-center hover:text-white hover:cursor-pointer  rounded-xl hover:bg-[#64CCC5] ${
                       index === 0 && colStartClasses[getDay(day)]
                     } ${getDateClass(day, nextMonth)}`}
                     onClick={() => handleDateClick(day)}

@@ -11,20 +11,9 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
   const [dewasa, setDewasa] = useState(0);
   const [anak, setAnak] = useState(0);
   const [bayi, setBayi] = useState(0);
-  const totalDewasa = dewasa + anak;
 
   const handleIncrementDewasa = () => {
-    if (totalDewasa >= 7) {
-      toast.warning("Maksimal 7 kursi untuk Dewasa dan Anak", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+    if (dewasa >= 7) {
       return;
     }
     setDewasa(dewasa + 1);
@@ -35,17 +24,7 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
     }
   };
   const handleIncrementAnak = () => {
-    if (totalDewasa >= 7) {
-      toast.warning("Maksimal 7 kursi untuk Dewasa dan Anak", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+    if (anak >= 7) {
       return;
     }
     setAnak(anak + 1);
@@ -56,17 +35,7 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
     }
   };
   const handleIncrementBayi = () => {
-    if (bayi >= 4) {
-      toast.warning("Maksimal 4 kursi untuk Bayi", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+    if (bayi >= 5) {
       return;
     }
     setBayi(bayi + 1);
@@ -112,7 +81,14 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
               <div className="flex items-start gap-2 w-60">
                 <img src="/images/VectorDewasa.png" alt="" className=" h-5" />
                 <div className="flex flex-col gap-1">
-                  <p className="leading-none font-bold ">Dewasa</p>
+                  <p className="leading-none font-bold flex gap-1">
+                    Dewasa
+                    {dewasa >= 7 && (
+                      <div className="text-xs text-red-500 text-opacity-70">
+                        maks
+                      </div>
+                    )}
+                  </p>
                   <p className=" text-sm text-gray-400 whitespace-nowrap max-sm:text-xs text-wrap">
                     {`(> 12 tahun)`}
                   </p>
@@ -141,9 +117,16 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
               <div className="flex items-start gap-2 w-60">
                 <img src="/images/VectorAnak.png" alt="" className=" h-5" />
                 <div className="flex flex-col gap-1">
-                  <p className="leading-none font-bold">Anak</p>
+                  <p className="leading-none font-bold flex gap-1">
+                    Anak
+                    {anak >= 7 && (
+                      <p className="text-xs text-red-500 text-opacity-70">
+                        maks
+                      </p>
+                    )}
+                  </p>
                   <p className=" text-sm max-sm:text-xs text-wrap text-gray-400 whitespace-nowrap">
-                    (2-11 tahun)
+                    (2-12 tahun)
                   </p>
                 </div>
               </div>
@@ -170,7 +153,14 @@ export default function Dropdown({ visible, onClose, total, set_total }) {
               <div className="flex items-start gap-2 w-60">
                 <img src="/images/VectorLaki.png" alt="" className="h-5" />
                 <div className="flex flex-col gap-1">
-                  <p className="leading-none font-bold">Bayi</p>
+                  <p className="leading-none font-bold flex gap-1">
+                    Bayi
+                    {bayi >= 5 && (
+                      <p className="text-xs text-red-500 text-opacity-70">
+                        maks
+                      </p>
+                    )}
+                  </p>
                   <p className=" text-sm text-gray-400 whitespace-nowrap">
                     {`(< 2 tahun)`}
                   </p>

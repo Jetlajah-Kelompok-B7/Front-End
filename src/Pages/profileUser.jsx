@@ -243,7 +243,7 @@ export default function ProfileUser() {
       const response = await dispatch(logout());
       if (response.status === 200) {
         dispatch(setLogout()); // Dispatch the reset action
-        navigate("/");
+        navigate("/login");
         toast.success("Berhasil Logout", {
           position: "bottom-center",
           autoClose: 5000,
