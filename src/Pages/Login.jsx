@@ -22,7 +22,6 @@ export default function Login() {
   const email = useSelector((state) => state.login?.email);
   const password = useSelector((state) => state.login?.password);
   const theState = useSelector((state) => state);
-  console.log("theState", theState);
 
   const handleEmailChange = (event) => {
     dispatch(setEmail(event.target.value)); // Dispatch action untuk mengubah email di Redux state
