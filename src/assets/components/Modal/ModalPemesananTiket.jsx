@@ -18,7 +18,6 @@ export default function ModalPemesananTiket() {
   const navigate = useNavigate();
   const [id, setId] = useState(null);
   const [idTanggal, setIdTanggal] = useState(1);
-  console.log("ModalPemesananTiket  idTanggal:", idTanggal);
   const list_Pilihan = ["Sekali Jalan", "Pergi - Pulang"];
   const [pilihanUser, setPilihanUser] = useState("Sekali Jalan");
   const [modalMaaf, setModalMaaf] = useState(false);
@@ -105,7 +104,7 @@ export default function ModalPemesananTiket() {
       return;
     }
   };
-  
+
   const handleswap = () => {
     let temp = kotaAwal;
     setKotaAwal(destinasi);
