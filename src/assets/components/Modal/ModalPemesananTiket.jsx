@@ -36,7 +36,7 @@ export default function ModalPemesananTiket() {
   const totalperpenumpang = useSelector(
     (state) => state?.tiket?.TotalPenumpang
   );
-  const { Dewasa, Bayi, Anak } = totalperpenumpang;
+  const { Dewasa } = totalperpenumpang;
 
   const handlePemesanan = () => {
     if (idTanggal === 1) {
