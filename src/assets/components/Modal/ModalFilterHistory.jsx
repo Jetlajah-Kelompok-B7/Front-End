@@ -7,7 +7,7 @@ export default function ModalFilterKeberangkatan({
   setFilter,
 }) {
   const [selectedclass, setSelectedclass] = useState("");
-  const filter = ["Issued", "Unpaid", "Cancelled"];
+  const filter = ["Issued", "Unpaid"];
   if (!visible) return null;
   return (
     <div className="absolute top-[50px] shadow-lg rounded-2xl right-0">
@@ -38,7 +38,7 @@ export default function ModalFilterKeberangkatan({
               }}
             >
               {kelas === selectedclass ? (
-                kelas === "Cancelled" ? (
+                kelas === "Unpaid" ? (
                   <div className=" bg-[#176B87] border-b px-2 py-3 flex justify-between items-center rounded-b-xl">
                     <div className="text-white">{kelas}</div>
                     <img src="/images/centang.png" alt="" className="w-6 h-6" />

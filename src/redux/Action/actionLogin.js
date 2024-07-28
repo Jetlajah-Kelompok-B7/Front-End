@@ -41,10 +41,6 @@ export const login = (email, password, navigate) => async (dispatch) => {
         progress: undefined,
         theme: "colored",
       });
-      if (response_login?.data?.data?.pin === null) {
-        navigate("/add-pin");
-        return;
-      }
       dispatch(fetchUserData())
         .then(() => {
           navigate("/");

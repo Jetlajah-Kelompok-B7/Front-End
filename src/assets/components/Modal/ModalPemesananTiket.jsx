@@ -18,7 +18,6 @@ export default function ModalPemesananTiket() {
   const navigate = useNavigate();
   const [id, setId] = useState(null);
   const [idTanggal, setIdTanggal] = useState(1);
-  console.log("ModalPemesananTiket  idTanggal:", idTanggal);
   const list_Pilihan = ["Sekali Jalan", "Pergi - Pulang"];
   const [pilihanUser, setPilihanUser] = useState("Sekali Jalan");
   const [modalMaaf, setModalMaaf] = useState(false);
@@ -37,7 +36,7 @@ export default function ModalPemesananTiket() {
   const totalperpenumpang = useSelector(
     (state) => state?.tiket?.TotalPenumpang
   );
-  const { Dewasa, Bayi, Anak } = totalperpenumpang;
+  const { Dewasa } = totalperpenumpang;
 
   const handlePemesanan = () => {
     if (idTanggal === 1) {
@@ -92,7 +91,7 @@ export default function ModalPemesananTiket() {
         return;
       }
     } else {
-      toast.warning("Mohon Maff Fitur masih maintance 🙏", {
+      toast.warning("Maaf, sistem Pergi - Pulang masih dalam perbaikan", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -105,7 +104,7 @@ export default function ModalPemesananTiket() {
       return;
     }
   };
-  
+
   const handleswap = () => {
     let temp = kotaAwal;
     setKotaAwal(destinasi);
@@ -136,6 +135,22 @@ export default function ModalPemesananTiket() {
                   key={i}
                   className=" hover:cursor-pointer"
                   onClick={() => {
+                    if (e === "Pergi - Pulang") {
+                      toast.warning(
+                        "Maaf, sistem Pergi - Pulang masih dalam perbaikan",
+                        {
+                          position: "top-right",
+                          autoClose: 3000,
+                          hideProgressBar: false,
+                          closeOnClick: true,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                          theme: "colored",
+                        }
+                      );
+                      return;
+                    }
                     setPilihanUser(e);
                     setIdTanggal(i + 1);
                     setModalNama("");

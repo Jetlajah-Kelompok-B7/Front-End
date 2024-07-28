@@ -84,7 +84,7 @@ export default function ModalPemesananTiketMobile() {
         return;
       }
     } else {
-      toast.warning("Mohon Maff Fitur masih maintance 🙏", {
+      toast.warning("Maaf, sistem Pergi - Pulang masih dalam perbaikan", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -210,8 +210,25 @@ function PilihanUser({ pilihan, setPilihan, list, setId }) {
           key={i}
           className="hover:cursor-pointer w-full truncate  "
           onClick={() => {
+            if (e === "Pergi - Pulang") {
+              toast.warning(
+                "Maaf, sistem Pergi - Pulang masih dalam perbaikan",
+                {
+                  position: "top-right",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                }
+              );
+              return;
+            }
             setPilihan(e);
             setId(i + 1);
+            setModalNama("");
             dispatch(setTypePenerbangan(e));
           }}
         >

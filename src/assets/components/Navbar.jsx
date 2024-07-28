@@ -28,12 +28,16 @@ export default function Navbar() {
   const Pin = useSelector((state) => {
     return state.tiket2.pin;
   });
+
+
   useEffect(() => {
     dispatch(fetchUserData());
-    if (Pin === null) {
-      navigate("/add-pin");
+    if (Condition === true) {
+      if (Pin === null) {
+        navigate("/add-pin");
+      }
     }
-  }, [dispatch, Pin]);
+  }, [dispatch, Pin, Condition]);
 
   const handleResize = () => {
     if (window.innerWidth <= 1028) {
