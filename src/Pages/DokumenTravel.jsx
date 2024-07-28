@@ -17,6 +17,7 @@ import BackToTop from "../assets/components/Modal/TombolBalikAtas";
 const travelDokumen = () => {
   const [penumpangData, setPenumpangData] = useState([]);
   const [options, setOptions] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -27,48 +28,63 @@ const travelDokumen = () => {
       .replace(/\,00$/, "");
   };
 
+  //PENGAMAN BELUM LOGIN
+  const Condition = useSelector((state) => {
+    return state?.tiket2?.isLoggin;
+  });
+  console.log("condisi", Condition);
+  useEffect(() => {
+    if (Condition !== true) {
+      setShowModal(true);
+    }
+  }, [Condition]);
 
-   //Pengaman jika data belum terisi
-   const DataBaru = useSelector((state) => state?.tiket);
-   const {
-     KelasPenerbangan,
-     LokasiKeberangkatan,
-     TanggalKeberangkatan,
-     TanggalKepulangan,
-     lokasiTujuan,
-     totalSemuaPenumpang,
-     idTiket,
-   } = DataBaru || {};
- 
-   // console.log("TYPE PENERBANGAN", typePenerbanngan);
-   useEffect(() => {
-     if (idTiket === 1) {
-       if (
-         lokasiTujuan === "" ||
-         LokasiKeberangkatan === "" ||
-         TanggalKeberangkatan === "" ||
-         totalSemuaPenumpang <= 0 ||
-         KelasPenerbangan === ""
-       ) {
-         alert("Harap Lengkapi Semua Data Tiket");
-         navigate("/");
-         return;
-       }
-     } else {
-       if (
-         lokasiTujuan === "" ||
-         LokasiKeberangkatan === "" ||
-         TanggalKeberangkatan === "" ||
-         TanggalKepulangan === "" ||
-         totalSemuaPenumpang <= 0 ||
-         KelasPenerbangan === ""
-       ) {
-         alert("Harap Lengkapi Semua Data Tiket");
-         navigate("/");
-         return;
-       }
-     }
-   }, []);
+  const handleLogin = () => {
+    setShowModal(false);
+    navigate("/login");
+  };
+
+  //Pengaman jika data belum terisi
+  const DataBaru = useSelector((state) => state?.tiket);
+  const {
+    KelasPenerbangan,
+    LokasiKeberangkatan,
+    TanggalKeberangkatan,
+    TanggalKepulangan,
+    lokasiTujuan,
+    totalSemuaPenumpang,
+    idTiket,
+  } = DataBaru || {};
+
+  // console.log("TYPE PENERBANGAN", typePenerbanngan);
+  useEffect(() => {
+    if (idTiket === 1) {
+      if (
+        lokasiTujuan === "" ||
+        LokasiKeberangkatan === "" ||
+        TanggalKeberangkatan === "" ||
+        totalSemuaPenumpang <= 0 ||
+        KelasPenerbangan === ""
+      ) {
+        alert("Harap Lengkapi Semua Data Tiket");
+        navigate("/");
+        return;
+      }
+    } else {
+      if (
+        lokasiTujuan === "" ||
+        LokasiKeberangkatan === "" ||
+        TanggalKeberangkatan === "" ||
+        TanggalKepulangan === "" ||
+        totalSemuaPenumpang <= 0 ||
+        KelasPenerbangan === ""
+      ) {
+        alert("Harap Lengkapi Semua Data Tiket");
+        navigate("/");
+        return;
+      }
+    }
+  }, []);
 
   //MENAMPILKAN DATA TIKET PERGI
   const DataBooking = useSelector(
@@ -118,26 +134,26 @@ const travelDokumen = () => {
   }
 
   //Fungsi  FETHING API Option Negara
-    useEffect(() => {
-      // Fetch data dari API dan update options
-      axios
-        .get("https://restcountries.com/v3.1/all")
-        .then((response) => {
-          const data = response.data;
-          const countryOptions = data
-            .map((country) => ({
-              value: country.name.common,
-              label: country.name.common,
-            }))
-            .filter((country) => country.label !== "Israel"); // Filter Israel
-    
-          // Urutkan countryOptions berdasarkan label (nama negara)
-          countryOptions.sort((a, b) => a.label.localeCompare(b.label));
-    
-          setOptions(countryOptions); // Update state options
-        })
-        .catch((error) => console.error("Error fetching country data:", error));
-    }, []);// Kosong array dependencies berarti useEffect hanya berjalan sekali saat komponen mount
+  useEffect(() => {
+    // Fetch data dari API dan update options
+    axios
+      .get("https://restcountries.com/v3.1/all")
+      .then((response) => {
+        const data = response.data;
+        const countryOptions = data
+          .map((country) => ({
+            value: country.name.common,
+            label: country.name.common,
+          }))
+          .filter((country) => country.label !== "Israel"); // Filter Israel
+
+        // Urutkan countryOptions berdasarkan label (nama negara)
+        countryOptions.sort((a, b) => a.label.localeCompare(b.label));
+
+        setOptions(countryOptions); // Update state options
+      })
+      .catch((error) => console.error("Error fetching country data:", error));
+  }, []); // Kosong array dependencies berarti useEffect hanya berjalan sekali saat komponen mount
 
   // Setting ageGroup by jumlah penumpang
   useEffect(() => {
@@ -258,7 +274,6 @@ const travelDokumen = () => {
     }
     setPenumpangData(initialPenumpangData);
   }, [DataPenumpang?.TotalPenumpang]);
-
 
   // Fungsi validasi untuk nama (harus huruf)
   const validateName = (name) => {
@@ -384,7 +399,6 @@ const travelDokumen = () => {
         progress: undefined,
         theme: "colored",
       });
-   
     }
     // console.log("data Inputan Pergi", dataInputPesanan.id);
     // console.log("data Inputan Pulang", dataInputanPesananPulang.id);
@@ -396,9 +410,9 @@ const travelDokumen = () => {
   return (
     <>
       <div className="bg-white">
-      <div className="fixed  w-full bg-white z-50 shadow">
-        <Navbar />
-      </div>
+        <div className="fixed  w-full bg-white z-50 shadow">
+          <Navbar />
+        </div>
         {/* Header Atas */}
         <div className="bg-white shadow-md w-full max-sm:w-full md:px-4 ma ">
           <div className="mx-4 lg:mx-20 pt-5 ">
@@ -427,6 +441,28 @@ const travelDokumen = () => {
             </button>
           </div>
         </div>
+
+        {showModal && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="fixed inset-0 bg-black opacity-50"></div>
+            <div className="bg-white rounded-lg p-6 z-10">
+              <h2 className="text-xl font-semibold mb-4 text-center">
+                Belum Login❗
+              </h2>
+              <p className="mb-4">
+                Kamu harus login untuk melanjutkan pemesanan !
+              </p>
+              <div className="flex justify-center">
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg "
+                  onClick={handleLogin}
+                >
+                  Login
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="container mx-auto">
           <div className="max-sm:w-full max-lg:flex-col flex justify-center gap-10 mx-10 px-20 max-sm:px-0 max-sm:mx-0">
             <div>
@@ -476,11 +512,7 @@ const travelDokumen = () => {
                       <select
                         value={penumpang?.titel}
                         onChange={(e) =>
-                          handleChange(
-                            penumpang?.id,
-                            "titel",
-                            e?.target?.value
-                          )
+                          handleChange(penumpang?.id, "titel", e?.target?.value)
                         }
                         className="border border-slate-300 lg:lg:w-[440px] w-full p-2 my-2 max-sm:w-full    "
                       >
@@ -497,11 +529,7 @@ const travelDokumen = () => {
                         value={penumpang?.nama}
                         required
                         onChange={(e) =>
-                          handleChange(
-                            penumpang?.id,
-                            "nama",
-                            e.target.value
-                          )
+                          handleChange(penumpang?.id, "nama", e.target.value)
                         }
                         className="border border-slate-300 lg:w-[440px] w-full p-2 my-2 max-sm:w-full"
                       />
@@ -842,7 +870,7 @@ const travelDokumen = () => {
             </div>
           </div>
         </div>
-        <BackToTop/>
+        <BackToTop />
       </div>
     </>
   );

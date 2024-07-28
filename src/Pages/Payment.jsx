@@ -362,7 +362,7 @@ export default function Payment() {
               <div className=" text-sm border-2 rounded-lg lg:w-[400px] w-[600px] max-sm:w-full ">
                 {/* Keberangkatan */}
                 <p className=" text-xl text-white font-bold border bg-[#176B87] py-4  text-center rounded-t-lg ">
-                  Pergi
+                  Detail Pemesanan
                 </p>
                 <p className="font-bold text-lg border-b-2 px-5 py-2">
                   Booking Code :{" "}
